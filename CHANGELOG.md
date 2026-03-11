@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-03-11
+
+### Added
+- **VR grant** — Research section now includes a funding note for the Swedish Research Council project grant (2025-04468, 5,045,000 SEK, 3 years) on social boundaries through partner choice and residential segregation
+- **Postdoc timeline entry** — Background section updated with upcoming postdoctoral researcher position at IAS, Linköping University (2026–)
+- CSS for `.research-funding` element with accent border and responsive grid handling
+
+### Changed
+- PhD timeline entry date updated from "2021 — present" to "2021 — 2025" to reflect upcoming defense
+
 ## [2.0.0] - 2026-03-11
 
 ### Changed
