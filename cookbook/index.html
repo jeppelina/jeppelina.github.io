@@ -188,6 +188,12 @@
             margin-top: 4px;
         }
 
+        /* Embedded mode (in iframe) — hide header and sidebar, full map */
+        .embedded .header { display: none; }
+        .embedded .sidebar { display: none; }
+        .embedded .layout { height: 100vh; }
+        .embedded #map { flex: 1; }
+
         /* Mobile */
         @media (max-width: 768px) {
             .layout {
@@ -227,6 +233,12 @@
         </div>
     </div>
 
+    <script>
+        // Detect if loaded inside an iframe and switch to embedded mode
+        if (window.self !== window.top) {
+            document.body.classList.add('embedded');
+        }
+    </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
     const stops = [
@@ -441,6 +453,7 @@
             <div class="popup-location">${stop.distance} from Stockholm</div>
             <div class="popup-story">${stop.story}</div>
             <div style="margin-top:10px;padding-top:8px;border-top:1px solid #eee;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#E85D3A;margin-bottom:6px;">Recipes</div>
                 ${recipesHtml}
             </div>
         `;
@@ -457,6 +470,7 @@
         el.innerHTML = `
             <div class="country-name">${i + 1}. ${stop.country}</div>
             <div class="country-distance">${stop.distance} from Stockholm</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#E85D3A;margin:8px 0 4px;">Recipes</div>
             <ul class="recipe-list">
                 ${stop.recipes.map(r => `<li>${r.name} <span class="recipe-location">${r.location}</span></li>`).join('')}
             </ul>
