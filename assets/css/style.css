@@ -720,7 +720,7 @@ img {
 .timeline-image {
     margin-top: var(--space-sm);
     border-radius: var(--radius-md);
-    max-height: 380px;
+    max-height: 440px;
     object-fit: cover;
     width: 100%;
     box-shadow: 0 8px 30px rgba(0,0,0,0.06);
