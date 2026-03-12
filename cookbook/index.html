@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cookbook Adventure — Route Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --color-bg: #FAFAF8;
+            --color-text: #1a1a1a;
+            --color-text-muted: #6b6b6b;
+            --color-accent: #E85D3A;
+            --color-border: #e8e6e1;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .header h1 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 400;
+        }
+        .header h1 em { color: var(--color-accent); }
+        .header a {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            text-decoration: none;
+        }
+        .header a:hover { color: var(--color-accent); }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            height: calc(100vh - 61px);
+        }
+
+        /* Map */
+        #map {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 380px;
+            overflow-y: auto;
+            border-left: 1px solid var(--color-border);
+            background: var(--color-bg);
+            flex-shrink: 0;
+        }
+        .sidebar-intro {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .sidebar-intro h2 {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-intro p {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+        .stat-value {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            display: block;
+        }
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+        }
+
+        /* Country list */
+        .country-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .country-item:hover { background: #f5f4f0; }
+        .country-item.active { background: #FFF0EC; }
+        .country-name {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .country-distance {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .recipe-list {
+            list-style: none;
+        }
+        .recipe-list li {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            padding: 3px 0 3px 14px;
+            position: relative;
+        }
+        .recipe-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            opacity: 0.5;
+        }
+        .recipe-location {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: #999;
+        }
+
+        /* Leaflet popup styling */
+        .leaflet-popup-content-wrapper {
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            font-family: var(--font-sans);
+        }
+        .leaflet-popup-content {
+            margin: 14px 16px;
+            line-height: 1.5;
+        }
+        .popup-country {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+        .popup-location {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+        .popup-recipe {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--color-accent);
+        }
+        .popup-story {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            margin-top: 4px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .layout {
+                flex-direction: column;
+                height: auto;
+            }
+            #map {
+                height: 50vh;
+            }
+            .sidebar {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--color-border);
+                max-height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>The Cookbook Adventure <em>— Route Map</em></h1>
+        <a href="../">&larr; Back to site</a>
+    </div>
+    <div class="layout">
+        <div id="map"></div>
+        <div class="sidebar">
+            <div class="sidebar-intro">
+                <h2>Stockholm to Ulan Bator</h2>
+                <p>In the summer of 2012, three friends drove 15,000 km from Sweden to Mongolia. Along the way they collected recipes and stories from the people they met. This map traces the route and every dish cooked along the way.</p>
+                <div class="stats">
+                    <div><span class="stat-value">12</span><span class="stat-label">Countries</span></div>
+                    <div><span class="stat-value">27</span><span class="stat-label">Recipes</span></div>
+                    <div><span class="stat-value">15k</span><span class="stat-label">Kilometres</span></div>
+                </div>
+            </div>
+            <div id="country-list"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+    const stops = [
+        {
+            country: "Sweden",
+            lat: 59.33, lng: 18.07,
+            distance: "0 km",
+            story: "The journey began in Stockholm on June 12, 2012. Three friends, a Hyundai Getz, and a vague plan to reach Mongolia.",
+            recipes: [
+                { name: "Queen Margarete's Herring", location: "Halmstad" },
+                { name: "Napoleon's Swedish Mustard Herring", location: "Halmstad" },
+                { name: "Swedish Snaps", location: "Stockholm" }
+            ]
+        },
+        {
+            country: "Germany",
+            lat: 52.52, lng: 13.41,
+            distance: "1,083 km",
+            story: "The autobahn experience was humbling — the Getz was outpaced by everything. In Berlin, they made bratwurst from scratch with their hosts Daniel and Mui.",
+            recipes: [
+                { name: "Carson City Bratwurst", location: "Berlin" }
+            ]
+        },
+        {
+            country: "Czech Republic",
+            lat: 50.08, lng: 14.44,
+            distance: "1,429 km",
+            story: "In Prague, they found a pub that used to be a post office with a massive underground cellar kitchen, and cooked a Czech classic.",
+            recipes: [
+                { name: "Svíčková — The Postman's Lunch", location: "Prague" }
+            ]
+        },
+        {
+            country: "Romania",
+            lat: 45.65, lng: 24.35,
+            distance: "2,983 km",
+            story: "Crossing the Transalpina mountain pass, they met Johnica — a construction worker with a passion for Japanese gardening — who cooked a mountain stew. On the coast at Vama Veche, a fisherman grilled turbot basted in lemon and beer.",
+            recipes: [
+                { name: "The Mountain Stew — by Johnica", location: "Parâng Mountains" },
+                { name: "The Hangover Turbot", location: "Vama Veche" },
+                { name: "Glazed Mackerel Filét", location: "Vama Veche" }
+            ]
+        },
+        {
+            country: "Turkey",
+            lat: 41.01, lng: 28.98,
+            distance: "~4,000 km",
+            story: "Istanbul brought Sultan's Delight and köfte. Along the Black Sea coast in Giresun — cherry capital of the world — they learned to braise cherries and forage wild mushrooms.",
+            recipes: [
+                { name: "Sultan's Delight", location: "Istanbul" },
+                { name: "Istanbul Köfte", location: "Istanbul" },
+                { name: "Braised Cherries", location: "Giresun" },
+                { name: "Braised Mushrooms", location: "Giresun" }
+            ]
+        },
+        {
+            country: "Georgia",
+            lat: 41.72, lng: 44.79,
+            distance: "~5,500 km",
+            story: "Tbilisi delivered khinkali — Georgian dumplings — made in what they describe as a dungeon-like cellar kitchen.",
+            recipes: [
+                { name: "Khinkali from the Dungeon", location: "Tbilisi" }
+            ]
+        },
+        {
+            country: "Azerbaijan",
+            lat: 40.41, lng: 49.87,
+            distance: "~6,000 km",
+            story: "Somewhere between the Georgian border and Baku, roadside stops yielded a warming chicken soup and a quick omelette — simple food from generous strangers.",
+            recipes: [
+                { name: "Toyug Shorbasi", location: "Between border and Baku" },
+                { name: "Quick Stop Omelette", location: "Between border and Baku" }
+            ]
+        },
+        {
+            country: "Turkmenistan",
+            lat: 40.0, lng: 57.5,
+            distance: "~7,500 km",
+            story: "The Karakum Desert crossing meant navigating unreliable fuel supplies and intense heat. In Erbent, an oasis town, they found steamed dumplings with yogurt and proper shashlik kebabs. Somewhere in the Dashoguz region, flatbread was baked in a clay oven.",
+            recipes: [
+                { name: "Steamed Dumplings with Yogurt", location: "Erbent" },
+                { name: "The Turkmen Shashlik Kebab", location: "Erbent" },
+                { name: "Flatbread", location: "Dashoguz region" }
+            ]
+        },
+        {
+            country: "Uzbekistan",
+            lat: 41.31, lng: 69.28,
+            distance: "~8,500 km",
+            story: "The Silk Road cities of Khiva, Bukhara, and Samarkand. Plov — the Uzbek national dish — was cooked in a huge kazan between Khiva and Gazli. Shashlik by Yuliya somewhere on the road to Samarkand.",
+            recipes: [
+                { name: "Saviour's Plov", location: "Between Khiva and Gazli" },
+                { name: "Shashlik by Yuliya", location: "Between Bukhara and Samarkand" },
+                { name: "Fishy Cops", location: "Between Samarkand and Tashkent" }
+            ]
+        },
+        {
+            country: "Kazakhstan",
+            lat: 48.0, lng: 68.0,
+            distance: "~10,000 km",
+            story: "The vast Kazakh steppe. They tried qurut — dried fermented cheese balls — somewhere between Balqash and Karagandy (with a warning label). Beshbarmak, the horselord's dish, was the real prize.",
+            recipes: [
+                { name: "Qurut (Warning)", location: "Between Balqash and Karagandy" },
+                { name: "The Horselord's Beshbarmak", location: "Between Karagandy and Pavlodar" }
+            ]
+        },
+        {
+            country: "Russia",
+            lat: 52.52, lng: 83.97,
+            distance: "~12,000 km",
+            story: "Crossing into Siberia at Novoaltaysk, near the Altai Mountains. A petrol station served surprisingly good borscht.",
+            recipes: [
+                { name: "Petrol Station Borscht", location: "Novoaltaysk" }
+            ]
+        },
+        {
+            country: "Mongolia",
+            lat: 47.92, lng: 106.92,
+            distance: "~15,000 km",
+            story: "The final destination. In Ulan Bator they learned khuushuur (fried meat pies) and khorkhog (meat cooked with hot stones). Out on the steppe, a countryside soup was made in a yurt.",
+            recipes: [
+                { name: "Khuushuur", location: "Ulan Bator" },
+                { name: "Khorkhog", location: "Ulan Bator" },
+                { name: "Countryside Soup", location: "In a yurt on the countryside" }
+            ]
+        }
+    ];
+
+    // Route coordinates for the polyline
+    const routeCoords = [
+        [59.33, 18.07],   // Stockholm
+        [55.68, 12.57],   // Copenhagen area (transit)
+        [52.52, 13.41],   // Berlin
+        [50.08, 14.44],   // Prague
+        [47.15, 27.58],   // Romania (transit)
+        [45.35, 23.75],   // Transalpina
+        [43.85, 28.58],   // Vama Veche area
+        [41.01, 28.98],   // Istanbul
+        [41.00, 38.72],   // Giresun area
+        [41.72, 44.79],   // Tbilisi
+        [40.41, 49.87],   // Baku
+        [38.97, 53.85],   // Turkmenbashi area
+        [40.50, 56.00],   // Erbent area
+        [41.80, 59.95],   // Dashoguz area
+        [41.55, 60.63],   // Khiva
+        [39.77, 64.42],   // Bukhara
+        [39.65, 66.96],   // Samarkand
+        [41.31, 69.28],   // Tashkent
+        [43.24, 76.95],   // Almaty area (transit)
+        [46.85, 75.00],   // Balqash
+        [49.80, 73.10],   // Karagandy
+        [52.28, 76.97],   // Pavlodar
+        [52.52, 83.97],   // Novoaltaysk
+        [49.95, 92.07],   // Border area
+        [47.92, 106.92]   // Ulan Bator
+    ];
+
+    // Initialise map
+    const map = L.map('map', {
+        center: [45, 55],
+        zoom: 4,
+        zoomControl: true,
+        scrollWheelZoom: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+    }).addTo(map);
+
+    // Draw route
+    L.polyline(routeCoords, {
+        color: '#E85D3A',
+        weight: 2.5,
+        opacity: 0.6,
+        dashArray: '8, 6',
+        smoothFactor: 1.5
+    }).addTo(map);
+
+    // Custom marker
+    const createIcon = (index) => L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="
+            width: 28px; height: 28px;
+            background: #E85D3A;
+            border: 2.5px solid white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        ">${index + 1}</div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
+        popupAnchor: [0, -16]
+    });
+
+    // Add markers and build sidebar
+    const countryListEl = document.getElementById('country-list');
+    const markers = [];
+
+    stops.forEach((stop, i) => {
+        // Popup content
+        const recipesHtml = stop.recipes.map(r =>
+            `<div class="popup-recipe">${r.name}</div><div class="popup-story" style="font-size:0.7rem;color:#999;">${r.location}</div>`
+        ).join('');
+
+        const popupContent = `
+            <div class="popup-country">${stop.country}</div>
+            <div class="popup-location">${stop.distance} from Stockholm</div>
+            <div class="popup-story">${stop.story}</div>
+            <div style="margin-top:10px;padding-top:8px;border-top:1px solid #eee;">
+                ${recipesHtml}
+            </div>
+        `;
+
+        const marker = L.marker([stop.lat, stop.lng], { icon: createIcon(i) })
+            .addTo(map)
+            .bindPopup(popupContent, { maxWidth: 300 });
+
+        markers.push(marker);
+
+        // Sidebar entry
+        const el = document.createElement('div');
+        el.className = 'country-item';
+        el.innerHTML = `
+            <div class="country-name">${i + 1}. ${stop.country}</div>
+            <div class="country-distance">${stop.distance} from Stockholm</div>
+            <ul class="recipe-list">
+                ${stop.recipes.map(r => `<li>${r.name} <span class="recipe-location">${r.location}</span></li>`).join('')}
+            </ul>
+        `;
+        el.addEventListener('click', () => {
+            map.flyTo([stop.lat, stop.lng], 7, { duration: 1 });
+            marker.openPopup();
+            document.querySelectorAll('.country-item').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+        });
+        countryListEl.appendChild(el);
+    });
+
+    // Fit bounds to route
+    map.fitBounds(routeCoords, { padding: [30, 30] });
+    </script>
+</body>
+</html>
