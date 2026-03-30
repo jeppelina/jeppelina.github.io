@@ -405,7 +405,8 @@ img {
     font-size: 1.05rem;
     color: var(--color-text-muted);
     margin-top: var(--space-sm);
-    max-width: 600px;
+    max-width: 700px;
+    line-height: 1.7;
 }
 
 /* --- Research cards --- */
