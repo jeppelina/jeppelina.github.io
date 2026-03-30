@@ -255,8 +255,15 @@
     if (window.self !== window.top) document.body.classList.add('embedded');
 
     const canvas = document.getElementById('canvas');
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = 420, cssH = 420;
+    canvas.width = cssW * dpr;
+    canvas.height = cssH * dpr;
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
     const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
+    ctx.scale(dpr, dpr);
+    const W = cssW, H = cssH;
 
     const segSlider = document.getElementById('segregation');
     const prefSlider = document.getElementById('preference');
@@ -460,7 +467,7 @@
         for (const a of agents) {
             const c = a.group === 0 ? '#E85D3A' : '#2D5BFF';
             ctx.globalAlpha = matched && !a.paired ? 0.15 : 0.85;
-            const r = 3.5 + (a.paired ? pulse : 0);
+            const r = 4.2 + (a.paired ? pulse : 0);
             ctx.beginPath();
             ctx.arc(a.x, a.y, r, 0, Math.PI * 2);
             ctx.fillStyle = c;

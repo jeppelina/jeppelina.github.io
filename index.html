@@ -94,7 +94,7 @@
                 <p class="hero-greeting">Hello, I'm</p>
                 <h1 class="hero-name">Jesper<br>Lindmarker</h1>
                 <p class="hero-tagline">
-                    I research how people sort into partnerships and what that reveals about social boundaries. I also teach quantitative methods and have a background in running businesses.
+                    I research how people sort into partnerships and what that reveals about social boundaries. I teach quantitative methods, build simulations, and work with large-scale data — in academia and occasionally with organisations facing similar analytical challenges.
                 </p>
                 <p class="hero-sub">
                     PhD Candidate &amp; Lecturer at <a href="https://liu.se/en/organisation/liu/iei/ias" target="_blank" rel="noopener">Linköping University</a>, where I teach statistics and data science in the master's programme in Computational Social Science.
@@ -126,7 +126,7 @@
             <div class="research-simulation-inline">
                 <div class="sim-layout">
                     <div class="canvas-wrap">
-                        <canvas id="sim-canvas" width="420" height="420"></canvas>
+                        <canvas id="sim-canvas" width="520" height="520"></canvas>
                     </div>
                     <div class="sim-panel">
                         <p class="sim-intro">
@@ -213,11 +213,13 @@
                 <article class="paper-item">
                     <div class="paper-status">Published &middot; European Journal of Population, 2025</div>
                     <h3>Cohabitation and Mortality Across the Life Course</h3>
-                    <p class="paper-subtitle">A longitudinal cohort study with Swedish register-based sibling comparisons</p>
                     <p class="paper-authors">Jesper Lindmarker, Martin Kolk &amp; Sven Drefahl</p>
                     <div class="paper-abstract">
                         <p>
-                            Using Swedish register data for 2012–2017 covering 5.6 million individuals, this study investigates how cohabitation relates to mortality across the life course. Sibling fixed-effects models account for family-of-origin confounding. Cohabitation reduces mortality risk relative to being single, though the association is weaker than for marriage and varies by age and previous marital history.
+                            Living with a partner is linked to living longer. But is that the relationship itself, or do healthier people just couple up more? We compared siblings — same family, different relationship paths — to separate the two. Cohabitation does appear protective, though less so than marriage, and the effect varies across the life course.
+                        </p>
+                        <p class="paper-method">
+                            Sibling fixed-effects survival models on Swedish register data covering 5.6 million individuals (2012–2017), separating selection from causal partnership effects on mortality.
                         </p>
                     </div>
                     <div class="paper-links">
@@ -229,11 +231,13 @@
                 <article class="paper-item">
                     <div class="paper-status">Preprint &middot; SocArXiv</div>
                     <h3>However Far Away? The Spatial Contingencies of Assortative Mating</h3>
-                    <p class="paper-subtitle">Propinquity and ethnic endogamy in Sweden, 1990–2017</p>
                     <p class="paper-authors">Jesper Lindmarker &amp; Benjamin F. Jarvis</p>
                     <div class="paper-abstract">
                         <p>
-                            This study examines how the spatial segregation of ethnic groups contributes to patterns of ethnic endogamy. Conditional logit models applied to Swedish population registers compare observed unions to counterfactual draws from the available pool of singles. Proximity strongly predicts partnering, but ancestry assortativity matters too, particularly for non-Western groups. Mediation analysis shows that failing to account for propinquity overstates endogamy by 20–40 percent for these groups. Presented at PAA 2025 and INAS 2023.
+                            People tend to partner within their own ethnic group. The usual explanation is preference. But when we account for who actually lives nearby, 20–40% of same-group partnering is explained by geography alone. Segregation narrows who you can meet before preference even enters the picture.
+                        </p>
+                        <p class="paper-method">
+                            Conditional logit models on Swedish population registers (1990–2017), comparing observed unions to counterfactual partners drawn from the local singles pool, with mediation analysis separating residential proximity from ancestry preference.
                         </p>
                     </div>
                     <div class="paper-links">
@@ -244,12 +248,14 @@
 
                 <article class="paper-item">
                     <div class="paper-status">Working paper</div>
-                    <h3>2,500 Ethnic Boundaries in Sweden</h3>
-                    <p class="paper-subtitle">A simulation-based analysis of assortative mating using register data</p>
+                    <h3>Beyond Majority and Minority: Fine-Grained Ethnic Boundary Structures in Swedish Assortative Mating</h3>
                     <p class="paper-authors">Jesper Lindmarker &amp; Carl Nordlund</p>
                     <div class="paper-abstract">
                         <p>
-                            The first systematic mapping of ethnic assortative mating at the ancestry-group level in Sweden, analyzing 2,500 gender-specific pairings across 50 ancestry groups in unions formed between 1991 and 2022. A two-sided matching simulation accounts for opportunity structures. The results reveal seven clusters reflecting geographic and cultural proximity, with strongest endogamy among Horn of Africa and MENA groups and pronounced gender asymmetries.
+                            Most studies compare "majority" with "minority." We look at all 2,500 possible pairings across 50 ancestry groups in Sweden. Some groups partner at 294 times the expected rate; others far below. Seven distinct clusters emerge, shaped by geography, culture, and gender. The same boundary can be open for women and closed for men.
+                        </p>
+                        <p class="paper-method">
+                            Two-sided matching simulation with log-linear models and Walktrap community detection on full-population Swedish register data (1991–2022), mapping the complete matrix of ethnic over- and underrepresentation across 50 ancestry groups.
                         </p>
                     </div>
                     <button class="paper-toggle" aria-expanded="false">Read more</button>
@@ -258,11 +264,13 @@
                 <article class="paper-item">
                     <div class="paper-status">Working paper</div>
                     <h3>Three Decades of Ethnic Assortative Mating in Sweden</h3>
-                    <p class="paper-subtitle">Decomposing trends into structural change and assortativity dynamics</p>
                     <p class="paper-authors">Jesper Lindmarker</p>
                     <div class="paper-abstract">
                         <p>
-                            Interethnic unions have risen in Sweden, but is this driven by changing preferences or simply by growing diversity? Using simulation-based decomposition of 30 years of register data, this paper shows that observed exogamy rises are largely driven by structural change — more diversity in the partner market — while net-of-opportunity endogamy preferences have remained stable or even strengthened for some groups.
+                            Interethnic couples have become more common in Sweden over 30 years. That looks like progress. But most of the increase comes from growing diversity — more people of different backgrounds simply being around. When you account for that, same-group preferences have barely changed, and for some groups they got stronger.
+                        </p>
+                        <p class="paper-method">
+                            Conditional logit models with Oaxaca-Blinder decomposition on Swedish register data (1991–2022), separating structural partner market shifts from changes in ethnic assortativity across six ancestry groups and two immigrant generations.
                         </p>
                     </div>
                     <button class="paper-toggle" aria-expanded="false">Read more</button>
@@ -270,12 +278,14 @@
 
                 <article class="paper-item">
                     <div class="paper-status">In progress</div>
-                    <h3>Working Together, Living Together?</h3>
-                    <p class="paper-subtitle">Institutional co-membership, residential proximity, and educational assortative mating</p>
-                    <p class="paper-authors">Jesper Lindmarker</p>
+                    <h3>The Opportunity Structure of Educational Homogamy</h3>
+                    <p class="paper-authors">Jesper Lindmarker &amp; Benjamin F. Jarvis</p>
                     <div class="paper-abstract">
                         <p>
-                            How much of educational homogamy reflects preferences versus opportunity? This study decomposes educational assortative mating into components attributable to residential proximity, shared workplaces, and shared universities. Proximity and institutional overlap together mediate 29–40% of educational homogamy among medium- and highly-educated pairs. Institutional effects follow a dose–response pattern: each additional year of overlap substantially increases union probability.
+                            Highly educated people tend to partner with each other. But is that a preference for education, or a side effect of spending years at the same university and then the same workplace? Shared institutions explain 30–40% of it, and each extra year of overlap makes a union more likely. The places that shape your career also shape who you end up with.
+                        </p>
+                        <p class="paper-method">
+                            Conditional logit discrete choice models with KHB mediation decomposition on 1.25 million first unions from Swedish registers (1990–2022), isolating the contributions of university co-enrollment, workplace co-membership, and residential proximity.
                         </p>
                     </div>
                     <button class="paper-toggle" aria-expanded="false">Read more</button>
@@ -432,7 +442,7 @@
                 <div class="contact-text">
                     <span class="section-label">Contact</span>
                     <h2>Let's talk</h2>
-                    <p>For research collaboration, questions, or anything else.</p>
+                    <p>For research collaboration, teaching enquiries, or consulting.</p>
                 </div>
                 <div class="contact-links">
                     <a href="mailto:jesper.lindmarker@gmail.com" class="contact-link">
@@ -473,8 +483,15 @@
     (function() {
         const canvas = document.getElementById('sim-canvas');
         if (!canvas) return;
+        const dpr = window.devicePixelRatio || 1;
+        const cssW = 520, cssH = 520;
+        canvas.width = cssW * dpr;
+        canvas.height = cssH * dpr;
+        canvas.style.width = cssW + 'px';
+        canvas.style.height = cssH + 'px';
         const ctx = canvas.getContext('2d');
-        const W = canvas.width, H = canvas.height;
+        ctx.scale(dpr, dpr);
+        const W = cssW, H = cssH;
 
         const segSlider = document.getElementById('segregation');
         const prefSlider = document.getElementById('preference');
@@ -624,7 +641,7 @@
             for (const a of agents) {
                 const c = a.group === 0 ? '#E85D3A' : '#2D5BFF';
                 ctx.globalAlpha = matched && !a.paired ? 0.15 : 0.85;
-                const r = 3.5 + (a.paired ? pulse : 0);
+                const r = 4.2 + (a.paired ? pulse : 0);
                 ctx.beginPath(); ctx.arc(a.x, a.y, r, 0, Math.PI * 2);
                 ctx.fillStyle = c; ctx.fill(); ctx.globalAlpha = 1;
             }
