@@ -450,6 +450,17 @@ img {
 }
 .research-card p strong { color: var(--color-text); }
 .research-card p em { color: var(--color-text); font-style: italic; }
+.card-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition);
+}
+.card-link:hover { border-bottom-color: var(--color-accent); }
 
 .research-visual {
     grid-column: span 3;
