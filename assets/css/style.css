@@ -567,7 +567,7 @@ img {
 @media (max-width: 800px) {
     .sim-layout { flex-direction: column; }
     .canvas-wrap { padding: 0 0 1rem 0; justify-content: center; }
-    .canvas-wrap canvas { max-width: 100%; height: auto; }
+    .canvas-wrap canvas { max-width: 100%; aspect-ratio: 1 / 1; height: auto; }
     .sim-grid { grid-template-columns: 1fr; }
     .sim-insight { grid-column: span 1; }
 }
