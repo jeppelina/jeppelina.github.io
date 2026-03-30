@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Scroll-triggered fade-in animations ---
     const animateElements = () => {
         const targets = document.querySelectorAll(
-            '.research-simulation, .paper-item, .timeline-item, .teaching-card, .papers-note, .contact-link'
+            '.research-simulation-inline, .paper-item, .timeline-item, .teaching-card, .papers-note, .contact-link'
         );
         targets.forEach(el => {
             if (!el.classList.contains('fade-in')) {

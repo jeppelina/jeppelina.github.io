@@ -123,9 +123,78 @@
                 <p class="section-desc">Every society has groups that mix more or less easily — ethnic, religious, cultural. These invisible lines are what we call <em>social boundaries</em>. But how much of who we end up with is actual <em>preference</em>, and how much is about who we <em>meet</em>, work with, or live close to? Funded by a <a href="https://www.vr.se" target="_blank" rel="noopener">Swedish Research Council</a> grant.</p>
             </div>
 
-            <div class="research-simulation">
-                <iframe src="simulation/" class="simulation-embed" loading="lazy" title="Matching simulation — how segregation shapes partner choice"></iframe>
-                <p class="simulation-caption">Adjust segregation and preference, then press Match. With high segregation and zero preference, most pairs are still same-group — purely from spatial proximity. <a href="simulation/" target="_blank">Open full version &rarr;</a></p>
+            <div class="research-simulation-inline">
+                <div class="sim-layout">
+                    <div class="canvas-wrap">
+                        <canvas id="sim-canvas" width="420" height="420"></canvas>
+                    </div>
+                    <div class="sim-panel">
+                        <p class="sim-intro">
+                            Two groups live in a city. People form partnerships with those nearby. How much of the observed sorting is driven by <em>where people live</em> versus <em>who they prefer</em>?
+                        </p>
+                        <div class="sim-grid">
+                            <div class="sim-col">
+                                <div class="sim-legend">
+                                    <div class="sim-legend-item"><div class="sim-dot" style="background:#E85D3A;"></div> Group A</div>
+                                    <div class="sim-legend-item"><div class="sim-dot" style="background:#2D5BFF;"></div> Group B</div>
+                                </div>
+                                <div class="sim-control">
+                                    <div class="sim-control-label">
+                                        <span>Segregation</span>
+                                        <span class="sim-control-value" id="seg-value">50%</span>
+                                    </div>
+                                    <input type="range" id="segregation" min="0" max="100" value="50">
+                                    <div class="sim-control-hint">Spatial clustering of groups</div>
+                                </div>
+                                <div class="sim-control">
+                                    <div class="sim-control-label">
+                                        <span>In-group preference</span>
+                                        <span class="sim-control-value" id="pref-value">0%</span>
+                                    </div>
+                                    <input type="range" id="preference" min="0" max="100" value="0">
+                                    <div class="sim-control-hint">Bonus for same-group partners</div>
+                                </div>
+                                <div class="sim-control">
+                                    <div class="sim-control-label">
+                                        <span>Population</span>
+                                        <span class="sim-control-value" id="pop-value">200</span>
+                                    </div>
+                                    <input type="range" id="population" min="50" max="400" value="200" step="10">
+                                </div>
+                                <div class="sim-btn-row">
+                                    <button class="sim-btn-match" id="btn-match">Match</button>
+                                    <button class="sim-btn-reset" id="btn-reset">Reset</button>
+                                </div>
+                            </div>
+                            <div class="sim-col">
+                                <div id="sim-results" style="visibility:hidden;">
+                                    <div class="sim-results-title">Results</div>
+                                    <div class="sim-result-row">
+                                        <span class="sim-result-label">Pairs formed</span>
+                                        <span class="sim-result-value" id="r-pairs">—</span>
+                                    </div>
+                                    <div class="sim-result-row">
+                                        <span class="sim-result-label">Same-group pairs</span>
+                                        <span class="sim-result-value sim-highlight" id="r-endogamy">—</span>
+                                    </div>
+                                    <div class="sim-result-row">
+                                        <span class="sim-result-label">Random baseline</span>
+                                        <span class="sim-result-value" id="r-random">50%</span>
+                                    </div>
+                                    <div class="sim-result-row">
+                                        <span class="sim-result-label">Spatial effect</span>
+                                        <span class="sim-result-value" id="r-spatial">—</span>
+                                    </div>
+                                    <div class="sim-result-row">
+                                        <span class="sim-result-label">Preference effect</span>
+                                        <span class="sim-result-value" id="r-preference">—</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sim-insight" id="sim-insight"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -398,6 +467,207 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
+
+    <!-- Inline simulation -->
+    <script>
+    (function() {
+        const canvas = document.getElementById('sim-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+
+        const segSlider = document.getElementById('segregation');
+        const prefSlider = document.getElementById('preference');
+        const popSlider = document.getElementById('population');
+        const segValue = document.getElementById('seg-value');
+        const prefValue = document.getElementById('pref-value');
+        const popValue = document.getElementById('pop-value');
+        const btnMatch = document.getElementById('btn-match');
+        const btnReset = document.getElementById('btn-reset');
+
+        let agents = [], pairs = [], matched = false, matchAnimFrame = null, animProgress = 0, moveAnimFrame = null;
+
+        function gaussRandom(mean, std) {
+            let u = 0, v = 0;
+            while (!u) u = Math.random();
+            while (!v) v = Math.random();
+            return mean + std * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+        }
+        function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+        function generateAgents() {
+            const n = parseInt(popSlider.value);
+            agents = []; pairs = []; matched = false; animProgress = 0;
+            const half = Math.floor(n / 2), pad = 10;
+            for (let i = 0; i < n; i++) {
+                const group = i < half ? 0 : 1;
+                const rx = pad + Math.random() * (W - 2 * pad);
+                const ry = pad + Math.random() * (H - 2 * pad);
+                const sx = clamp(group === 0 ? gaussRandom(W * 0.28, W * 0.1) : gaussRandom(W * 0.72, W * 0.1), pad, W - pad);
+                const sy = clamp(gaussRandom(H * 0.5, H * 0.17), pad, H - pad);
+                agents.push({ rx, ry, sx, sy, x: 0, y: 0, group, paired: false, partner: null });
+            }
+            updatePositions(segSlider.value / 100);
+        }
+
+        function updatePositions(seg) {
+            for (const a of agents) {
+                a.x = a.rx + (a.sx - a.rx) * seg;
+                a.y = a.ry + (a.sy - a.ry) * seg;
+            }
+        }
+
+        let currentSeg = 0.5, targetSeg = 0.5;
+
+        function animatePositions() {
+            const diff = targetSeg - currentSeg;
+            if (Math.abs(diff) < 0.002) {
+                currentSeg = targetSeg; updatePositions(currentSeg); draw(); moveAnimFrame = null; return;
+            }
+            currentSeg += diff * 0.12;
+            updatePositions(currentSeg); draw();
+            moveAnimFrame = requestAnimationFrame(animatePositions);
+        }
+        function startMoveAnimation() {
+            if (!moveAnimFrame) moveAnimFrame = requestAnimationFrame(animatePositions);
+        }
+
+        function doMatch(prefStrength) {
+            const indices = agents.map((_, i) => i);
+            for (let i = indices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indices[i], indices[j]] = [indices[j], indices[i]];
+            }
+            const taken = new Set(), result = [];
+            for (const i of indices) {
+                if (taken.has(i)) continue;
+                const a = agents[i];
+                let bestJ = -1, bestScore = -Infinity;
+                for (const j of indices) {
+                    if (j === i || taken.has(j)) continue;
+                    const b = agents[j];
+                    const dx = a.x - b.x, dy = a.y - b.y;
+                    let score = -Math.sqrt(dx * dx + dy * dy);
+                    if (a.group === b.group) score += prefStrength * W * 0.5;
+                    score += (Math.random() - 0.5) * W * 0.04;
+                    if (score > bestScore) { bestScore = score; bestJ = j; }
+                }
+                if (bestJ >= 0) { taken.add(i); taken.add(bestJ); result.push([i, bestJ]); }
+            }
+            return result;
+        }
+
+        function endogamyRate(pairList) {
+            if (!pairList.length) return 0;
+            return pairList.filter(([i, j]) => agents[i].group === agents[j].group).length / pairList.length;
+        }
+
+        function runAndShow() {
+            if (matchAnimFrame) cancelAnimationFrame(matchAnimFrame);
+            const pref = prefSlider.value / 100;
+            const mainPairs = doMatch(pref);
+            const mainEndogamy = endogamyRate(mainPairs);
+            const spatialPairs = doMatch(0);
+            const spatialEndogamy = endogamyRate(spatialPairs);
+            const randomExpected = 0.5;
+            const spatialEffect = spatialEndogamy - randomExpected;
+            const prefEffect = mainEndogamy - spatialEndogamy;
+
+            agents.forEach(a => { a.paired = false; a.partner = null; });
+            for (const [i, j] of mainPairs) {
+                agents[i].paired = true; agents[i].partner = j;
+                agents[j].paired = true; agents[j].partner = i;
+            }
+            pairs = mainPairs; matched = true; animProgress = 0;
+
+            document.getElementById('sim-results').style.visibility = 'visible';
+            document.getElementById('r-pairs').textContent = mainPairs.length;
+            document.getElementById('r-endogamy').textContent = Math.round(mainEndogamy * 100) + '%';
+            document.getElementById('r-random').textContent = Math.round(randomExpected * 100) + '%';
+            document.getElementById('r-spatial').textContent = (spatialEffect >= 0 ? '+' : '') + Math.round(spatialEffect * 100) + ' pp';
+            document.getElementById('r-preference').textContent = (prefEffect >= 0 ? '+' : '') + Math.round(prefEffect * 100) + ' pp';
+
+            const insight = document.getElementById('sim-insight');
+            const seg = parseInt(segSlider.value), prefVal = parseInt(prefSlider.value);
+            if (seg > 40 && prefVal === 0 && mainEndogamy > 0.55) {
+                insight.innerHTML = '<strong>' + Math.round(mainEndogamy * 100) + '% same-group pairs with zero preference.</strong> All of this sorting comes from where people live — not from whom they prefer.';
+                insight.style.display = 'block';
+            } else if (prefVal > 0 && seg > 30 && mainEndogamy > randomExpected) {
+                const pct = Math.min(99, Math.round(spatialEffect / (mainEndogamy - randomExpected) * 100));
+                if (pct > 15) {
+                    insight.innerHTML = 'Of the excess same-group pairing, roughly <strong>' + pct + '% is explained by proximity</strong>. Ignoring where people live overstates the role of preference.';
+                    insight.style.display = 'block';
+                } else { insight.style.display = 'none'; }
+            } else if (seg <= 10 && prefVal === 0) {
+                insight.innerHTML = 'No segregation, no preference — same-group pairs hover around <strong>50%</strong>. Pure chance.';
+                insight.style.display = 'block';
+            } else { insight.style.display = 'none'; }
+
+            animateMatching();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            if (matched && pairs.length > 0) {
+                const p = Math.min(1, animProgress);
+                ctx.lineWidth = 1;
+                for (const [i, j] of pairs) {
+                    const a = agents[i], b = agents[j];
+                    ctx.strokeStyle = a.group === b.group ? 'rgba(150,150,150,0.22)' : 'rgba(100,200,100,0.35)';
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p);
+                    ctx.stroke();
+                }
+            }
+            const pulse = matched ? Math.max(0, 1 - animProgress) * 1.5 : 0;
+            for (const a of agents) {
+                const c = a.group === 0 ? '#E85D3A' : '#2D5BFF';
+                ctx.globalAlpha = matched && !a.paired ? 0.15 : 0.85;
+                const r = 3.5 + (a.paired ? pulse : 0);
+                ctx.beginPath(); ctx.arc(a.x, a.y, r, 0, Math.PI * 2);
+                ctx.fillStyle = c; ctx.fill(); ctx.globalAlpha = 1;
+            }
+        }
+
+        function animateMatching() {
+            animProgress += 0.025; draw();
+            if (animProgress < 1) matchAnimFrame = requestAnimationFrame(animateMatching);
+        }
+
+        segSlider.addEventListener('input', () => {
+            segValue.textContent = segSlider.value + '%';
+            targetSeg = segSlider.value / 100;
+            if (matched) {
+                matched = false; pairs = [];
+                agents.forEach(a => { a.paired = false; a.partner = null; });
+                document.getElementById('sim-results').style.visibility = 'hidden';
+                document.getElementById('sim-insight').style.display = 'none';
+            }
+            startMoveAnimation();
+        });
+        prefSlider.addEventListener('input', () => { prefValue.textContent = prefSlider.value + '%'; });
+        popSlider.addEventListener('input', () => {
+            popValue.textContent = popSlider.value;
+            currentSeg = segSlider.value / 100; targetSeg = currentSeg;
+            generateAgents(); draw();
+            document.getElementById('sim-results').style.visibility = 'hidden';
+            document.getElementById('sim-insight').style.display = 'none';
+        });
+        btnMatch.addEventListener('click', runAndShow);
+        btnReset.addEventListener('click', () => {
+            if (matchAnimFrame) cancelAnimationFrame(matchAnimFrame);
+            currentSeg = segSlider.value / 100; targetSeg = currentSeg;
+            generateAgents(); matched = false; animProgress = 0; draw();
+            document.getElementById('sim-results').style.visibility = 'hidden';
+            document.getElementById('sim-insight').style.display = 'none';
+        });
+
+        currentSeg = segSlider.value / 100; targetSeg = currentSeg;
+        generateAgents(); draw();
+    })();
+    </script>
+
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

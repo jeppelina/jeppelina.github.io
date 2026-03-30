@@ -463,28 +463,113 @@ img {
 }
 .card-link:hover { border-bottom-color: var(--color-accent); }
 
-.research-simulation {
+/* Inline simulation */
+.research-simulation-inline {
     margin-top: var(--space-lg);
 }
-.simulation-embed {
-    width: 100%;
-    height: 500px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+.sim-layout {
+    display: flex;
+    gap: 0;
 }
-.simulation-caption {
-    margin-top: var(--space-xs);
+.canvas-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1.5rem 1.5rem 1.5rem 0;
+}
+.canvas-wrap canvas {
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    border: 1px solid var(--color-border);
+    display: block;
+}
+.sim-panel {
+    flex: 1;
+    min-width: 0;
+    padding: 1.5rem 0;
+}
+.sim-intro {
     font-size: 0.82rem;
     color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    line-height: 1.55;
 }
-.simulation-caption a {
-    color: var(--color-accent);
-    text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
+.sim-intro em { color: var(--color-text); }
+.sim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1.5rem;
 }
-.simulation-caption a:hover { text-decoration: underline; }
+.sim-legend {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+}
+.sim-legend-item { display: flex; align-items: center; gap: 5px; }
+.sim-dot { width: 8px; height: 8px; border-radius: 50%; }
+.sim-control { margin-bottom: 1rem; }
+.sim-control-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+}
+.sim-control-label span:first-child { font-size: 0.78rem; font-weight: 500; }
+.sim-control-value { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); }
+.sim-control-hint { font-size: 0.68rem; color: #aaa; margin-top: 2px; }
+.sim-control input[type="range"] {
+    -webkit-appearance: none; width: 100%; height: 4px;
+    border-radius: 2px; background: var(--color-border); outline: none;
+}
+.sim-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--color-accent); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.sim-btn-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.sim-btn-match {
+    flex: 1; padding: 0.55rem; font-family: var(--font-sans); font-size: 0.82rem;
+    font-weight: 500; color: white; background: var(--color-accent);
+    border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+}
+.sim-btn-match:hover { background: #d04e2e; }
+.sim-btn-reset {
+    padding: 0.55rem 0.8rem; font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--color-text-muted); background: transparent;
+    border: 1px solid var(--color-border); border-radius: 6px; cursor: pointer;
+}
+.sim-btn-reset:hover { border-color: var(--color-text-muted); }
+.sim-results-title {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--color-text-muted); margin-bottom: 0.5rem;
+    padding-top: 0.75rem; border-top: 1px solid var(--color-border);
+}
+.sim-result-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.35rem 0; border-bottom: 1px solid #f5f4f0;
+}
+.sim-result-label { font-size: 0.75rem; }
+.sim-result-value { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; }
+.sim-result-value.sim-highlight { color: var(--color-accent); font-size: 0.95rem; }
+.sim-insight {
+    grid-column: span 2;
+    margin-top: 0.75rem; padding: 0.75rem;
+    background: #FFF8F6; border-left: 3px solid var(--color-accent);
+    border-radius: 0 6px 6px 0; font-size: 0.78rem;
+    line-height: 1.55; display: none;
+}
+.sim-insight strong { color: var(--color-accent); }
+
+@media (max-width: 800px) {
+    .sim-layout { flex-direction: column; }
+    .canvas-wrap { padding: 0 0 1rem 0; justify-content: center; }
+    .canvas-wrap canvas { max-width: 100%; height: auto; }
+    .sim-grid { grid-template-columns: 1fr; }
+    .sim-insight { grid-column: span 1; }
+}
 
 .research-visual {
     grid-column: span 3;
