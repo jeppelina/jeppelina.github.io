@@ -270,8 +270,9 @@
     let agents = [];
     let pairs = [];
     let matched = false;
-    let animFrame = null;
+    let matchAnimFrame = null;
     let animProgress = 0;
+    let moveAnimFrame = null;
 
     function gaussRandom(mean, std) {
         let u = 0, v = 0;
@@ -280,40 +281,78 @@
         return mean + std * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     }
 
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+    // Each agent has a random position and a segregated position.
+    // Current position = lerp between them based on segregation slider.
     function generateAgents() {
         const n = parseInt(popSlider.value);
-        const seg = segSlider.value / 100;
         agents = [];
         pairs = [];
         matched = false;
         animProgress = 0;
         const half = Math.floor(n / 2);
+        const pad = 10;
 
         for (let i = 0; i < n; i++) {
             const group = i < half ? 0 : 1;
-            let x, y;
-            if (Math.random() < seg) {
-                if (group === 0) {
-                    x = gaussRandom(W * 0.3, W * 0.12);
-                    y = gaussRandom(H * 0.5, H * 0.18);
-                } else {
-                    x = gaussRandom(W * 0.7, W * 0.12);
-                    y = gaussRandom(H * 0.5, H * 0.18);
-                }
-            } else {
-                x = W * 0.06 + Math.random() * W * 0.88;
-                y = H * 0.06 + Math.random() * H * 0.88;
-            }
-            x = Math.max(10, Math.min(W - 10, x));
-            y = Math.max(10, Math.min(H - 10, y));
-            agents.push({ x, y, group, paired: false, partner: null });
+
+            // Random (mixed) position
+            const rx = pad + Math.random() * (W - 2 * pad);
+            const ry = pad + Math.random() * (H - 2 * pad);
+
+            // Segregated position — group 0 left, group 1 right
+            const sx = clamp(group === 0
+                ? gaussRandom(W * 0.28, W * 0.1)
+                : gaussRandom(W * 0.72, W * 0.1), pad, W - pad);
+            const sy = clamp(gaussRandom(H * 0.5, H * 0.17), pad, H - pad);
+
+            agents.push({
+                rx, ry,     // random position
+                sx, sy,     // segregated position
+                x: 0, y: 0, // current (computed)
+                group,
+                paired: false,
+                partner: null
+            });
+        }
+        updatePositions(segSlider.value / 100);
+    }
+
+    function updatePositions(seg) {
+        for (const a of agents) {
+            a.x = a.rx + (a.sx - a.rx) * seg;
+            a.y = a.ry + (a.sy - a.ry) * seg;
         }
     }
 
-    // Matching with a given preference strength, returns pairs array
+    // Smooth animation towards target segregation
+    let currentSeg = 0.5;
+    let targetSeg = 0.5;
+
+    function animatePositions() {
+        const diff = targetSeg - currentSeg;
+        if (Math.abs(diff) < 0.002) {
+            currentSeg = targetSeg;
+            updatePositions(currentSeg);
+            draw();
+            moveAnimFrame = null;
+            return;
+        }
+        // Ease towards target
+        currentSeg += diff * 0.12;
+        updatePositions(currentSeg);
+        draw();
+        moveAnimFrame = requestAnimationFrame(animatePositions);
+    }
+
+    function startMoveAnimation() {
+        if (!moveAnimFrame) moveAnimFrame = requestAnimationFrame(animatePositions);
+    }
+
+    // --- Matching ---
     function doMatch(prefStrength) {
         const indices = agents.map((_, i) => i);
-        // Shuffle
         for (let i = indices.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [indices[i], indices[j]] = [indices[j], indices[i]];
@@ -350,15 +389,11 @@
     }
 
     function runAndShow() {
-        if (animFrame) cancelAnimationFrame(animFrame);
+        if (matchAnimFrame) cancelAnimationFrame(matchAnimFrame);
 
         const pref = prefSlider.value / 100;
-
-        // Run main matching
         const mainPairs = doMatch(pref);
         const mainEndogamy = endogamyRate(mainPairs);
-
-        // Run counterfactual (proximity only, no preference)
         const spatialPairs = doMatch(0);
         const spatialEndogamy = endogamyRate(spatialPairs);
 
@@ -366,7 +401,6 @@
         const spatialEffect = spatialEndogamy - randomExpected;
         const prefEffect = mainEndogamy - spatialEndogamy;
 
-        // Apply main pairs to agents for drawing
         agents.forEach(a => { a.paired = false; a.partner = null; });
         for (const [i, j] of mainPairs) {
             agents[i].paired = true; agents[i].partner = j;
@@ -376,7 +410,6 @@
         matched = true;
         animProgress = 0;
 
-        // Show results
         document.getElementById('results').style.visibility = 'visible';
         document.getElementById('r-pairs').textContent = mainPairs.length;
         document.getElementById('r-endogamy').textContent = Math.round(mainEndogamy * 100) + '%';
@@ -384,7 +417,6 @@
         document.getElementById('r-spatial').textContent = (spatialEffect >= 0 ? '+' : '') + Math.round(spatialEffect * 100) + ' pp';
         document.getElementById('r-preference').textContent = (prefEffect >= 0 ? '+' : '') + Math.round(prefEffect * 100) + ' pp';
 
-        // Insight
         const insight = document.getElementById('insight');
         const seg = parseInt(segSlider.value);
         const prefVal = parseInt(prefSlider.value);
@@ -403,10 +435,10 @@
             insight.style.display = 'block';
         } else { insight.style.display = 'none'; }
 
-        // Animate
         animateMatching();
     }
 
+    // --- Drawing ---
     function draw() {
         ctx.clearRect(0, 0, W, H);
 
@@ -424,14 +456,15 @@
             }
         }
 
+        const pulse = matched ? Math.max(0, 1 - animProgress) * 1.5 : 0;
         for (const a of agents) {
             const c = a.group === 0 ? '#E85D3A' : '#2D5BFF';
             ctx.globalAlpha = matched && !a.paired ? 0.15 : 0.85;
+            const r = 3.5 + (a.paired ? pulse : 0);
             ctx.beginPath();
-            ctx.arc(a.x, a.y, matched && a.paired ? 4.5 : 3.5, 0, Math.PI * 2);
+            ctx.arc(a.x, a.y, r, 0, Math.PI * 2);
             ctx.fillStyle = c;
             ctx.fill();
-            if (matched && a.paired) { ctx.strokeStyle = c; ctx.lineWidth = 1.2; ctx.stroke(); }
             ctx.globalAlpha = 1;
         }
     }
@@ -439,18 +472,29 @@
     function animateMatching() {
         animProgress += 0.025;
         draw();
-        if (animProgress < 1) animFrame = requestAnimationFrame(animateMatching);
+        if (animProgress < 1) matchAnimFrame = requestAnimationFrame(animateMatching);
     }
 
+    // --- Event handlers ---
     segSlider.addEventListener('input', () => {
         segValue.textContent = segSlider.value + '%';
-        generateAgents(); draw();
-        document.getElementById('results').style.visibility = 'hidden';
-        document.getElementById('insight').style.display = 'none';
+        targetSeg = segSlider.value / 100;
+        // Clear matching state when slider moves
+        if (matched) {
+            matched = false; pairs = [];
+            agents.forEach(a => { a.paired = false; a.partner = null; });
+            document.getElementById('results').style.visibility = 'hidden';
+            document.getElementById('insight').style.display = 'none';
+        }
+        startMoveAnimation();
     });
+
     prefSlider.addEventListener('input', () => { prefValue.textContent = prefSlider.value + '%'; });
+
     popSlider.addEventListener('input', () => {
         popValue.textContent = popSlider.value;
+        currentSeg = segSlider.value / 100;
+        targetSeg = currentSeg;
         generateAgents(); draw();
         document.getElementById('results').style.visibility = 'hidden';
         document.getElementById('insight').style.display = 'none';
@@ -458,12 +502,17 @@
 
     btnMatch.addEventListener('click', runAndShow);
     btnReset.addEventListener('click', () => {
-        if (animFrame) cancelAnimationFrame(animFrame);
+        if (matchAnimFrame) cancelAnimationFrame(matchAnimFrame);
+        currentSeg = segSlider.value / 100;
+        targetSeg = currentSeg;
         generateAgents(); matched = false; animProgress = 0; draw();
         document.getElementById('results').style.visibility = 'hidden';
         document.getElementById('insight').style.display = 'none';
     });
 
+    // --- Init ---
+    currentSeg = segSlider.value / 100;
+    targetSeg = currentSeg;
     generateAgents();
     draw();
     </script>
