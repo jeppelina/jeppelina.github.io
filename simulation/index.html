@@ -21,8 +21,6 @@
             --color-accent: #E85D3A;
             --color-accent-2: #2D5BFF;
             --color-border: #e8e6e1;
-            --group-a: #E85D3A;
-            --group-b: #2D5BFF;
         }
 
         body {
@@ -32,228 +30,139 @@
             line-height: 1.6;
         }
 
-        /* Header */
+        /* Header — only shown standalone */
         .header {
-            padding: 1.5rem 2rem;
+            padding: 1rem 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid var(--color-border);
         }
-        .header h1 {
-            font-family: var(--font-serif);
-            font-size: 1.3rem;
-            font-weight: 400;
-        }
+        .header h1 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; }
         .header h1 em { color: var(--color-accent); }
-        .header a {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--color-text-muted);
-            text-decoration: none;
-        }
+        .header a { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); text-decoration: none; }
         .header a:hover { color: var(--color-accent); }
 
-        /* Layout */
-        .layout {
+        /* Main layout: canvas left, panel right */
+        .sim-layout {
             display: flex;
-            min-height: calc(100vh - 61px);
+            gap: 0;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        /* Canvas area */
-        .canvas-area {
-            flex: 1;
+        .canvas-wrap {
+            flex-shrink: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 2rem;
-            position: relative;
+            padding: 1.5rem;
         }
         canvas {
-            border-radius: 12px;
+            border-radius: 10px;
             background: white;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 16px rgba(0,0,0,0.05);
             border: 1px solid var(--color-border);
-            max-width: 100%;
+            display: block;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 360px;
-            padding: 2rem;
-            border-left: 1px solid var(--color-border);
-            background: white;
-            overflow-y: auto;
-            flex-shrink: 0;
+        /* Right panel — two-column grid */
+        .panel {
+            flex: 1;
+            min-width: 0;
+            padding: 1.5rem 1.5rem 1.5rem 0;
         }
-
-        .sidebar h2 {
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-        }
-        .sidebar-intro {
-            font-size: 0.85rem;
+        .panel-intro {
+            font-size: 0.82rem;
             color: var(--color-text-muted);
-            margin-bottom: 2rem;
-            line-height: 1.6;
+            margin-bottom: 1rem;
+            line-height: 1.55;
         }
+        .panel-intro em { color: var(--color-text); }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 1.5rem;
+        }
+        .panel-col { }
 
         /* Controls */
-        .control-group {
-            margin-bottom: 1.5rem;
-        }
+        .control-group { margin-bottom: 1rem; }
         .control-label {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 0.5rem;
+            margin-bottom: 3px;
         }
-        .control-label span:first-child {
-            font-size: 0.82rem;
-            font-weight: 500;
-        }
-        .control-value {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--color-accent);
-        }
-        .control-hint {
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
-            margin-top: 4px;
-        }
+        .control-label span:first-child { font-size: 0.78rem; font-weight: 500; }
+        .control-value { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); }
+        .control-hint { font-size: 0.68rem; color: #aaa; margin-top: 2px; }
 
         input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 4px;
-            border-radius: 2px;
-            background: var(--color-border);
-            outline: none;
+            -webkit-appearance: none; width: 100%; height: 4px;
+            border-radius: 2px; background: var(--color-border); outline: none;
         }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--color-accent);
-            cursor: pointer;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+            background: var(--color-accent); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
         }
 
+        .btn-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
         .btn-match {
-            width: 100%;
-            padding: 0.8rem;
-            font-family: var(--font-sans);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: white;
-            background: var(--color-accent);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 1.5rem;
+            flex: 1; padding: 0.55rem; font-family: var(--font-sans); font-size: 0.82rem;
+            font-weight: 500; color: white; background: var(--color-accent);
+            border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s;
         }
-        .btn-match:hover { background: #d04e2e; transform: translateY(-1px); }
-        .btn-match:active { transform: translateY(0); }
-        .btn-match:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
+        .btn-match:hover { background: #d04e2e; }
         .btn-reset {
-            width: 100%;
-            padding: 0.6rem;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
-            background: transparent;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 2rem;
+            padding: 0.55rem 0.8rem; font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--color-text-muted); background: transparent;
+            border: 1px solid var(--color-border); border-radius: 6px; cursor: pointer;
         }
         .btn-reset:hover { border-color: var(--color-text-muted); }
 
-        /* Results */
-        .results {
-            border-top: 1px solid var(--color-border);
-            padding-top: 1.5rem;
+        .legend {
+            display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.75rem;
         }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* Results */
         .results-title {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--color-text-muted);
-            margin-bottom: 1rem;
+            font-family: var(--font-mono); font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--color-text-muted); margin-bottom: 0.5rem;
+            padding-top: 0.75rem; border-top: 1px solid var(--color-border);
         }
         .result-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.6rem 0;
-            border-bottom: 1px solid #f5f4f0;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.35rem 0; border-bottom: 1px solid #f5f4f0;
         }
-        .result-label {
-            font-size: 0.82rem;
-        }
-        .result-value {
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .result-value.highlight {
-            color: var(--color-accent);
-            font-size: 1.1rem;
-        }
+        .result-label { font-size: 0.75rem; }
+        .result-value { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; }
+        .result-value.highlight { color: var(--color-accent); font-size: 0.95rem; }
 
         .insight {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #FFF8F6;
-            border-left: 3px solid var(--color-accent);
-            border-radius: 0 6px 6px 0;
-            font-size: 0.82rem;
-            color: var(--color-text);
-            line-height: 1.6;
-            display: none;
+            grid-column: span 2;
+            margin-top: 0.75rem; padding: 0.75rem;
+            background: #FFF8F6; border-left: 3px solid var(--color-accent);
+            border-radius: 0 6px 6px 0; font-size: 0.78rem;
+            line-height: 1.55; display: none;
         }
         .insight strong { color: var(--color-accent); }
 
-        /* Legend */
-        .legend {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.8rem;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        /* Embedded mode */
+        /* Embedded in iframe */
         .embedded .header { display: none; }
-        .embedded .layout { min-height: 100vh; }
 
         /* Mobile */
-        @media (max-width: 900px) {
-            .layout { flex-direction: column; }
-            .sidebar {
-                width: 100%;
-                border-left: none;
-                border-top: 1px solid var(--color-border);
-            }
-            .canvas-area { padding: 1rem; }
+        @media (max-width: 800px) {
+            .sim-layout { flex-direction: column; }
+            .canvas-wrap { padding: 1rem; justify-content: center; }
+            .panel { padding: 0 1rem 1rem; }
+            .panel-grid { grid-template-columns: 1fr; }
+            .insight { grid-column: span 1; }
+            canvas { max-width: 100%; height: auto; }
         }
     </style>
 </head>
@@ -263,86 +172,91 @@
         <a href="../">&larr; Back to site</a>
     </div>
 
-    <div class="layout">
-        <div class="canvas-area">
-            <canvas id="canvas" width="600" height="600"></canvas>
+    <div class="sim-layout">
+        <div class="canvas-wrap">
+            <canvas id="canvas" width="420" height="420"></canvas>
         </div>
-        <div class="sidebar">
-            <h2>Local opportunity & partner choice</h2>
-            <p class="sidebar-intro">
-                Two groups live in a city. When people form partnerships, they tend to choose someone nearby. Adjust how segregated the city is and how strong in-group preference is, then watch matching unfold. The question: how much of the observed sorting is driven by <em>where people live</em> versus <em>who they prefer</em>?
+        <div class="panel">
+            <p class="panel-intro">
+                Two groups live in a city. People form partnerships with those nearby. How much of the observed sorting is driven by <em>where people live</em> versus <em>who they prefer</em>?
             </p>
 
-            <div class="legend">
-                <div class="legend-item"><div class="legend-dot" style="background: var(--group-a);"></div> Group A</div>
-                <div class="legend-item"><div class="legend-dot" style="background: var(--group-b);"></div> Group B</div>
+            <div class="panel-grid">
+                <div class="panel-col">
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-dot" style="background:#E85D3A;"></div> Group A</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#2D5BFF;"></div> Group B</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Segregation</span>
+                            <span class="control-value" id="seg-value">50%</span>
+                        </div>
+                        <input type="range" id="segregation" min="0" max="100" value="50">
+                        <div class="control-hint">Spatial clustering of groups</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>In-group preference</span>
+                            <span class="control-value" id="pref-value">0%</span>
+                        </div>
+                        <input type="range" id="preference" min="0" max="100" value="0">
+                        <div class="control-hint">Bonus for same-group partners</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Population</span>
+                            <span class="control-value" id="pop-value">200</span>
+                        </div>
+                        <input type="range" id="population" min="50" max="400" value="200" step="10">
+                    </div>
+
+                    <div class="btn-row">
+                        <button class="btn-match" id="btn-match">Match</button>
+                        <button class="btn-reset" id="btn-reset">Reset</button>
+                    </div>
+                </div>
+
+                <div class="panel-col">
+                    <div id="results" style="visibility:hidden;">
+                        <div class="results-title">Results</div>
+                        <div class="result-row">
+                            <span class="result-label">Pairs formed</span>
+                            <span class="result-value" id="r-pairs">—</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Same-group pairs</span>
+                            <span class="result-value highlight" id="r-endogamy">—</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Random baseline</span>
+                            <span class="result-value" id="r-random">50%</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Spatial effect</span>
+                            <span class="result-value" id="r-spatial">—</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Preference effect</span>
+                            <span class="result-value" id="r-preference">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight" id="insight"></div>
             </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    <span>Residential segregation</span>
-                    <span class="control-value" id="seg-value">50%</span>
-                </div>
-                <input type="range" id="segregation" min="0" max="100" value="50">
-                <div class="control-hint">How clustered the two groups are spatially</div>
-            </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    <span>In-group preference</span>
-                    <span class="control-value" id="pref-value">0%</span>
-                </div>
-                <input type="range" id="preference" min="0" max="100" value="0">
-                <div class="control-hint">Extra weight given to same-group partners (0 = proximity only)</div>
-            </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    <span>Population</span>
-                    <span class="control-value" id="pop-value">200</span>
-                </div>
-                <input type="range" id="population" min="50" max="400" value="200" step="10">
-            </div>
-
-            <button class="btn-match" id="btn-match">Match</button>
-            <button class="btn-reset" id="btn-reset">Reset positions</button>
-
-            <div class="results" id="results" style="display:none;">
-                <div class="results-title">Results</div>
-                <div class="result-row">
-                    <span class="result-label">Pairs formed</span>
-                    <span class="result-value" id="r-pairs">—</span>
-                </div>
-                <div class="result-row">
-                    <span class="result-label">Same-group pairs (observed)</span>
-                    <span class="result-value highlight" id="r-endogamy">—</span>
-                </div>
-                <div class="result-row">
-                    <span class="result-label">Expected if random (no spatial effect)</span>
-                    <span class="result-value" id="r-random">50%</span>
-                </div>
-                <div class="result-row">
-                    <span class="result-label">Spatial effect</span>
-                    <span class="result-value" id="r-spatial">—</span>
-                </div>
-                <div class="result-row">
-                    <span class="result-label">Preference effect</span>
-                    <span class="result-value" id="r-preference">—</span>
-                </div>
-            </div>
-
-            <div class="insight" id="insight"></div>
         </div>
     </div>
 
     <script>
-    // Detect iframe
     if (window.self !== window.top) document.body.classList.add('embedded');
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const W = canvas.width;
-    const H = canvas.height;
+    const W = canvas.width, H = canvas.height;
 
     const segSlider = document.getElementById('segregation');
     const prefSlider = document.getElementById('preference');
@@ -356,10 +270,16 @@
     let agents = [];
     let pairs = [];
     let matched = false;
-    let animationFrame = null;
+    let animFrame = null;
     let animProgress = 0;
 
-    // --- Generate agents ---
+    function gaussRandom(mean, std) {
+        let u = 0, v = 0;
+        while (!u) u = Math.random();
+        while (!v) v = Math.random();
+        return mean + std * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+
     function generateAgents() {
         const n = parseInt(popSlider.value);
         const seg = segSlider.value / 100;
@@ -367,15 +287,12 @@
         pairs = [];
         matched = false;
         animProgress = 0;
-
         const half = Math.floor(n / 2);
 
         for (let i = 0; i < n; i++) {
             const group = i < half ? 0 : 1;
             let x, y;
-
             if (Math.random() < seg) {
-                // Segregated placement — group 0 left, group 1 right
                 if (group === 0) {
                     x = gaussRandom(W * 0.3, W * 0.12);
                     y = gaussRandom(H * 0.5, H * 0.18);
@@ -384,245 +301,169 @@
                     y = gaussRandom(H * 0.5, H * 0.18);
                 }
             } else {
-                // Random placement
-                x = W * 0.08 + Math.random() * W * 0.84;
-                y = H * 0.08 + Math.random() * H * 0.84;
+                x = W * 0.06 + Math.random() * W * 0.88;
+                y = H * 0.06 + Math.random() * H * 0.88;
             }
-
-            // Clamp
-            x = Math.max(12, Math.min(W - 12, x));
-            y = Math.max(12, Math.min(H - 12, y));
-
+            x = Math.max(10, Math.min(W - 10, x));
+            y = Math.max(10, Math.min(H - 10, y));
             agents.push({ x, y, group, paired: false, partner: null });
         }
     }
 
-    function gaussRandom(mean, std) {
-        let u = 0, v = 0;
-        while (u === 0) u = Math.random();
-        while (v === 0) v = Math.random();
-        return mean + std * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    }
-
-    // --- Matching algorithm ---
-    function runMatching() {
-        const pref = prefSlider.value / 100;
-        const available = agents.map((a, i) => i);
-        pairs = [];
-
-        // Shuffle for fairness
-        for (let i = available.length - 1; i > 0; i--) {
+    // Matching with a given preference strength, returns pairs array
+    function doMatch(prefStrength) {
+        const indices = agents.map((_, i) => i);
+        // Shuffle
+        for (let i = indices.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [available[i], available[j]] = [available[j], available[i]];
+            [indices[i], indices[j]] = [indices[j], indices[i]];
         }
-
         const taken = new Set();
+        const result = [];
 
-        for (const i of available) {
+        for (const i of indices) {
             if (taken.has(i)) continue;
-
             const a = agents[i];
-            let bestJ = -1;
-            let bestScore = -Infinity;
+            let bestJ = -1, bestScore = -Infinity;
 
-            for (const j of available) {
+            for (const j of indices) {
                 if (j === i || taken.has(j)) continue;
                 const b = agents[j];
-
-                const dx = a.x - b.x;
-                const dy = a.y - b.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                // Score: proximity + preference bonus for same group
-                let score = -dist;
-                if (a.group === b.group) {
-                    score += pref * W * 0.5; // preference bonus scaled to canvas
-                }
-
-                // Add small random noise for realism
-                score += (Math.random() - 0.5) * W * 0.05;
-
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestJ = j;
-                }
+                const dx = a.x - b.x, dy = a.y - b.y;
+                let score = -Math.sqrt(dx * dx + dy * dy);
+                if (a.group === b.group) score += prefStrength * W * 0.5;
+                score += (Math.random() - 0.5) * W * 0.04;
+                if (score > bestScore) { bestScore = score; bestJ = j; }
             }
-
             if (bestJ >= 0) {
-                taken.add(i);
-                taken.add(bestJ);
-                agents[i].paired = true;
-                agents[i].partner = bestJ;
-                agents[bestJ].paired = true;
-                agents[bestJ].partner = i;
-                pairs.push([i, bestJ]);
+                taken.add(i); taken.add(bestJ);
+                result.push([i, bestJ]);
             }
         }
+        return result;
     }
 
-    // --- Compute results ---
-    function computeResults() {
-        const sameGroup = pairs.filter(([i, j]) => agents[i].group === agents[j].group).length;
-        const total = pairs.length;
-        const endogamy = total > 0 ? sameGroup / total : 0;
+    function endogamyRate(pairList) {
+        if (!pairList.length) return 0;
+        const same = pairList.filter(([i, j]) => agents[i].group === agents[j].group).length;
+        return same / pairList.length;
+    }
 
-        // Random expectation (50/50 groups → 50% same-group by chance)
+    function runAndShow() {
+        if (animFrame) cancelAnimationFrame(animFrame);
+
+        const pref = prefSlider.value / 100;
+
+        // Run main matching
+        const mainPairs = doMatch(pref);
+        const mainEndogamy = endogamyRate(mainPairs);
+
+        // Run counterfactual (proximity only, no preference)
+        const spatialPairs = doMatch(0);
+        const spatialEndogamy = endogamyRate(spatialPairs);
+
         const randomExpected = 0.5;
-
-        // Run a proximity-only counterfactual (same positions, pref = 0)
-        const savedPref = prefSlider.value;
-        prefSlider.value = 0;
-        // Reset pairing state
-        agents.forEach(a => { a.paired = false; a.partner = null; });
-        runMatching();
-        const spatialPairs = [...pairs];
-        const spatialSame = spatialPairs.filter(([i, j]) => agents[i].group === agents[j].group).length;
-        const spatialEndogamy = spatialPairs.length > 0 ? spatialSame / spatialPairs.length : 0;
-
-        // Restore and re-run with actual preference
-        prefSlider.value = savedPref;
-        agents.forEach(a => { a.paired = false; a.partner = null; });
-        runMatching();
-
         const spatialEffect = spatialEndogamy - randomExpected;
-        const prefEffect = endogamy - spatialEndogamy;
+        const prefEffect = mainEndogamy - spatialEndogamy;
 
-        return { total, sameGroup, endogamy, randomExpected, spatialEndogamy, spatialEffect, prefEffect };
-    }
+        // Apply main pairs to agents for drawing
+        agents.forEach(a => { a.paired = false; a.partner = null; });
+        for (const [i, j] of mainPairs) {
+            agents[i].paired = true; agents[i].partner = j;
+            agents[j].paired = true; agents[j].partner = i;
+        }
+        pairs = mainPairs;
+        matched = true;
+        animProgress = 0;
 
-    // --- Display results ---
-    function showResults(r) {
-        document.getElementById('results').style.display = 'block';
-        document.getElementById('r-pairs').textContent = r.total;
-        document.getElementById('r-endogamy').textContent = Math.round(r.endogamy * 100) + '%';
-        document.getElementById('r-random').textContent = Math.round(r.randomExpected * 100) + '%';
-        document.getElementById('r-spatial').textContent = (r.spatialEffect >= 0 ? '+' : '') + Math.round(r.spatialEffect * 100) + ' pp';
-        document.getElementById('r-preference').textContent = (r.prefEffect >= 0 ? '+' : '') + Math.round(r.prefEffect * 100) + ' pp';
+        // Show results
+        document.getElementById('results').style.visibility = 'visible';
+        document.getElementById('r-pairs').textContent = mainPairs.length;
+        document.getElementById('r-endogamy').textContent = Math.round(mainEndogamy * 100) + '%';
+        document.getElementById('r-random').textContent = Math.round(randomExpected * 100) + '%';
+        document.getElementById('r-spatial').textContent = (spatialEffect >= 0 ? '+' : '') + Math.round(spatialEffect * 100) + ' pp';
+        document.getElementById('r-preference').textContent = (prefEffect >= 0 ? '+' : '') + Math.round(prefEffect * 100) + ' pp';
 
         // Insight
         const insight = document.getElementById('insight');
         const seg = parseInt(segSlider.value);
-        const pref = parseInt(prefSlider.value);
+        const prefVal = parseInt(prefSlider.value);
 
-        if (seg > 40 && pref === 0 && r.endogamy > 0.55) {
-            insight.innerHTML = `<strong>${Math.round(r.endogamy * 100)}% same-group pairs with zero preference.</strong> All of this sorting comes from where people live. Residential segregation alone creates patterns that look like ethnic preference — but aren't. This is why accounting for local opportunity matters.`;
+        if (seg > 40 && prefVal === 0 && mainEndogamy > 0.55) {
+            insight.innerHTML = `<strong>${Math.round(mainEndogamy * 100)}% same-group pairs with zero preference.</strong> All of this sorting comes from where people live — not from whom they prefer.`;
             insight.style.display = 'block';
-        } else if (pref > 0 && seg > 30) {
-            const totalExplained = Math.round(r.spatialEffect / (r.endogamy - r.randomExpected) * 100);
-            if (r.endogamy > r.randomExpected && totalExplained > 20) {
-                insight.innerHTML = `Of the excess same-group pairing, roughly <strong>${Math.min(99, totalExplained)}% is explained by spatial proximity</strong> and the rest by in-group preference. Ignoring where people live would overstate the role of preference.`;
+        } else if (prefVal > 0 && seg > 30 && mainEndogamy > randomExpected) {
+            const pct = Math.min(99, Math.round(spatialEffect / (mainEndogamy - randomExpected) * 100));
+            if (pct > 15) {
+                insight.innerHTML = `Of the excess same-group pairing, roughly <strong>${pct}% is explained by proximity</strong>. Ignoring where people live overstates the role of preference.`;
                 insight.style.display = 'block';
-            } else {
-                insight.style.display = 'none';
-            }
-        } else if (seg <= 10 && pref === 0) {
-            insight.innerHTML = `With no segregation and no preference, same-group pairs hover around <strong>50%</strong> — pure chance. This is the baseline.`;
+            } else { insight.style.display = 'none'; }
+        } else if (seg <= 10 && prefVal === 0) {
+            insight.innerHTML = `No segregation, no preference — same-group pairs hover around <strong>50%</strong>. Pure chance.`;
             insight.style.display = 'block';
-        } else {
-            insight.style.display = 'none';
-        }
+        } else { insight.style.display = 'none'; }
+
+        // Animate
+        animateMatching();
     }
 
-    // --- Drawing ---
     function draw() {
         ctx.clearRect(0, 0, W, H);
 
-        // Draw pair lines
         if (matched && pairs.length > 0) {
-            const progress = Math.min(1, animProgress);
+            const p = Math.min(1, animProgress);
             ctx.lineWidth = 1;
-
             for (const [i, j] of pairs) {
-                const a = agents[i];
-                const b = agents[j];
-                const sameGroup = a.group === b.group;
-
-                const mx = a.x + (b.x - a.x) * progress;
-                const my = a.y + (b.y - a.y) * progress;
-
-                ctx.strokeStyle = sameGroup
-                    ? 'rgba(150, 150, 150, 0.25)'
-                    : 'rgba(100, 200, 100, 0.4)';
-
+                const a = agents[i], b = agents[j];
+                ctx.strokeStyle = a.group === b.group
+                    ? 'rgba(150,150,150,0.22)' : 'rgba(100,200,100,0.35)';
                 ctx.beginPath();
                 ctx.moveTo(a.x, a.y);
-                ctx.lineTo(mx, my);
+                ctx.lineTo(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p);
                 ctx.stroke();
             }
         }
 
-        // Draw agents
-        for (const agent of agents) {
-            const color = agent.group === 0 ? 'var(--group-a)' : 'var(--group-b)';
-            const computedColor = agent.group === 0 ? '#E85D3A' : '#2D5BFF';
-
+        for (const a of agents) {
+            const c = a.group === 0 ? '#E85D3A' : '#2D5BFF';
+            ctx.globalAlpha = matched && !a.paired ? 0.15 : 0.85;
             ctx.beginPath();
-            ctx.arc(agent.x, agent.y, matched && agent.paired ? 5 : 4, 0, Math.PI * 2);
-            ctx.fillStyle = computedColor;
-            ctx.globalAlpha = matched && !agent.paired ? 0.2 : 0.85;
+            ctx.arc(a.x, a.y, matched && a.paired ? 4.5 : 3.5, 0, Math.PI * 2);
+            ctx.fillStyle = c;
             ctx.fill();
+            if (matched && a.paired) { ctx.strokeStyle = c; ctx.lineWidth = 1.2; ctx.stroke(); }
             ctx.globalAlpha = 1;
-
-            if (matched && agent.paired) {
-                ctx.strokeStyle = computedColor;
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-            }
         }
     }
 
     function animateMatching() {
-        animProgress += 0.02;
+        animProgress += 0.025;
         draw();
-        if (animProgress < 1) {
-            animationFrame = requestAnimationFrame(animateMatching);
-        }
+        if (animProgress < 1) animFrame = requestAnimationFrame(animateMatching);
     }
 
-    // --- Event handlers ---
     segSlider.addEventListener('input', () => {
         segValue.textContent = segSlider.value + '%';
-        generateAgents();
-        draw();
-        document.getElementById('results').style.display = 'none';
+        generateAgents(); draw();
+        document.getElementById('results').style.visibility = 'hidden';
         document.getElementById('insight').style.display = 'none';
     });
-
-    prefSlider.addEventListener('input', () => {
-        prefValue.textContent = prefSlider.value + '%';
-    });
-
+    prefSlider.addEventListener('input', () => { prefValue.textContent = prefSlider.value + '%'; });
     popSlider.addEventListener('input', () => {
         popValue.textContent = popSlider.value;
-        generateAgents();
-        draw();
-        document.getElementById('results').style.display = 'none';
+        generateAgents(); draw();
+        document.getElementById('results').style.visibility = 'hidden';
         document.getElementById('insight').style.display = 'none';
     });
 
-    btnMatch.addEventListener('click', () => {
-        if (animationFrame) cancelAnimationFrame(animationFrame);
-        agents.forEach(a => { a.paired = false; a.partner = null; });
-        matched = false;
-        animProgress = 0;
-
-        const results = computeResults();
-        matched = true;
-        showResults(results);
-        animateMatching();
-    });
-
+    btnMatch.addEventListener('click', runAndShow);
     btnReset.addEventListener('click', () => {
-        if (animationFrame) cancelAnimationFrame(animationFrame);
-        generateAgents();
-        matched = false;
-        animProgress = 0;
-        draw();
-        document.getElementById('results').style.display = 'none';
+        if (animFrame) cancelAnimationFrame(animFrame);
+        generateAgents(); matched = false; animProgress = 0; draw();
+        document.getElementById('results').style.visibility = 'hidden';
         document.getElementById('insight').style.display = 'none';
     });
 
-    // --- Init ---
     generateAgents();
     draw();
     </script>
