@@ -468,12 +468,16 @@ img {
     margin-top: var(--space-lg);
 }
 .sim-layout {
-    display: flex;
-    gap: 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "canvas intro"
+        "canvas controls";
     max-width: 1100px;
 }
 .canvas-wrap {
-    flex-shrink: 0;
+    grid-area: canvas;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -489,15 +493,18 @@ img {
     display: block;
 }
 .sim-panel {
-    flex: 1;
+    grid-area: controls;
     min-width: 0;
-    padding: 2rem 0;
+    padding: 0;
 }
 .sim-intro {
+    grid-area: intro;
     font-size: 0.82rem;
     color: var(--color-text-muted);
-    margin-bottom: 1rem;
+    margin: 0;
+    padding: 1.5rem 0 1rem 0;
     line-height: 1.55;
+    align-self: start;
 }
 .sim-intro em { color: var(--color-text); }
 .sim-grid {
@@ -567,11 +574,16 @@ img {
 .sim-insight strong { color: var(--color-accent); }
 
 @media (max-width: 800px) {
-    .sim-layout { flex-direction: column; }
-    .canvas-wrap { padding: 0 0 1rem 0; justify-content: center; }
+    .sim-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "intro"
+            "canvas"
+            "controls";
+    }
+    .sim-intro { padding: 0 0 0.75rem 0; }
+    .canvas-wrap { padding: 0 0 1rem 0; }
     .canvas-wrap canvas { width: 100%; height: auto; aspect-ratio: 1 / 1; }
-    .sim-panel { padding: 0; }
-    .sim-intro { display: none; }
     .sim-grid { grid-template-columns: 1fr; }
     .sim-insight { grid-column: span 1; }
 }

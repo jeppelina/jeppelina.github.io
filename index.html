@@ -125,13 +125,13 @@
 
             <div class="research-simulation-inline">
                 <div class="sim-layout">
+                    <p class="sim-intro">
+                        Two groups live in a city. People form partnerships with those nearby. How much of the observed sorting is driven by <em>where people live</em> versus <em>who they prefer</em>?
+                    </p>
                     <div class="canvas-wrap">
                         <canvas id="sim-canvas" width="520" height="520"></canvas>
                     </div>
                     <div class="sim-panel">
-                        <p class="sim-intro">
-                            Two groups live in a city. People form partnerships with those nearby. How much of the observed sorting is driven by <em>where people live</em> versus <em>who they prefer</em>?
-                        </p>
                         <div class="sim-grid">
                             <div class="sim-col">
                                 <div class="sim-legend">
@@ -162,7 +162,7 @@
                                     <input type="range" id="population" min="50" max="400" value="200" step="10">
                                 </div>
                                 <div class="sim-btn-row">
-                                    <button class="sim-btn-match" id="btn-match">Match</button>
+                                    <button class="sim-btn-match" id="btn-match">Create couples</button>
                                     <button class="sim-btn-reset" id="btn-reset">Reset</button>
                                 </div>
                             </div>
@@ -170,11 +170,11 @@
                                 <div id="sim-results" style="visibility:hidden;">
                                     <div class="sim-results-title">Results</div>
                                     <div class="sim-result-row">
-                                        <span class="sim-result-label">Pairs formed</span>
+                                        <span class="sim-result-label">Couples formed</span>
                                         <span class="sim-result-value" id="r-pairs">—</span>
                                     </div>
                                     <div class="sim-result-row">
-                                        <span class="sim-result-label">Same-group pairs</span>
+                                        <span class="sim-result-label">Same-group couples</span>
                                         <span class="sim-result-value sim-highlight" id="r-endogamy">—</span>
                                     </div>
                                     <div class="sim-result-row">
@@ -607,7 +607,7 @@
             const insight = document.getElementById('sim-insight');
             const seg = parseInt(segSlider.value), prefVal = parseInt(prefSlider.value);
             if (seg > 40 && prefVal === 0 && mainEndogamy > 0.55) {
-                insight.innerHTML = '<strong>' + Math.round(mainEndogamy * 100) + '% same-group pairs with zero preference.</strong> All of this sorting comes from where people live, not from whom they prefer.';
+                insight.innerHTML = '<strong>' + Math.round(mainEndogamy * 100) + '% same-group couples with zero preference.</strong> All of this sorting comes from where people live, not from whom they prefer.';
                 insight.style.display = 'block';
             } else if (prefVal > 0 && seg > 30 && mainEndogamy > randomExpected) {
                 const pct = Math.min(99, Math.round(spatialEffect / (mainEndogamy - randomExpected) * 100));
@@ -616,7 +616,7 @@
                     insight.style.display = 'block';
                 } else { insight.style.display = 'none'; }
             } else if (seg <= 10 && prefVal === 0) {
-                insight.innerHTML = 'No segregation, no preference: same-group pairs hover around <strong>50%</strong>. Pure chance.';
+                insight.innerHTML = 'No segregation, no preference: same-group couples hover around <strong>50%</strong>. Pure chance.';
                 insight.style.display = 'block';
             } else { insight.style.display = 'none'; }
 

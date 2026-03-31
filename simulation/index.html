@@ -215,7 +215,7 @@
                     </div>
 
                     <div class="btn-row">
-                        <button class="btn-match" id="btn-match">Match</button>
+                        <button class="btn-match" id="btn-match">Create couples</button>
                         <button class="btn-reset" id="btn-reset">Reset</button>
                     </div>
                 </div>
@@ -224,11 +224,11 @@
                     <div id="results" style="visibility:hidden;">
                         <div class="results-title">Results</div>
                         <div class="result-row">
-                            <span class="result-label">Pairs formed</span>
+                            <span class="result-label">Couples formed</span>
                             <span class="result-value" id="r-pairs">—</span>
                         </div>
                         <div class="result-row">
-                            <span class="result-label">Same-group pairs</span>
+                            <span class="result-label">Same-group couples</span>
                             <span class="result-value highlight" id="r-endogamy">—</span>
                         </div>
                         <div class="result-row">
@@ -429,7 +429,7 @@
         const prefVal = parseInt(prefSlider.value);
 
         if (seg > 40 && prefVal === 0 && mainEndogamy > 0.55) {
-            insight.innerHTML = `<strong>${Math.round(mainEndogamy * 100)}% same-group pairs with zero preference.</strong> All of this sorting comes from where people live — not from whom they prefer.`;
+            insight.innerHTML = `<strong>${Math.round(mainEndogamy * 100)}% same-group couples with zero preference.</strong> All of this sorting comes from where people live, not from whom they prefer.`;
             insight.style.display = 'block';
         } else if (prefVal > 0 && seg > 30 && mainEndogamy > randomExpected) {
             const pct = Math.min(99, Math.round(spatialEffect / (mainEndogamy - randomExpected) * 100));
@@ -438,7 +438,7 @@
                 insight.style.display = 'block';
             } else { insight.style.display = 'none'; }
         } else if (seg <= 10 && prefVal === 0) {
-            insight.innerHTML = `No segregation, no preference — same-group pairs hover around <strong>50%</strong>. Pure chance.`;
+            insight.innerHTML = `No segregation, no preference — same-group couples hover around <strong>50%</strong>. Pure chance.`;
             insight.style.display = 'block';
         } else { insight.style.display = 'none'; }
 
