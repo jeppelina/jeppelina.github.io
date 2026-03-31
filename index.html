@@ -601,7 +601,6 @@
             pairs = mainPairs; matched = true; animProgress = 0;
 
             document.getElementById('sim-results').style.visibility = 'visible';
-            document.getElementById('sim-research-note').style.display = 'block';
             document.getElementById('r-pairs').textContent = mainPairs.length;
             document.getElementById('r-endogamy').textContent = Math.round(mainEndogamy * 100) + '%';
             document.getElementById('r-random').textContent = Math.round(randomExpected * 100) + '%';
@@ -609,20 +608,24 @@
             document.getElementById('r-preference').textContent = (prefEffect >= 0 ? '+' : '') + Math.round(prefEffect * 100) + ' pp';
 
             const insight = document.getElementById('sim-insight');
+            const researchNote = document.getElementById('sim-research-note');
             const seg = parseInt(segSlider.value), prefVal = parseInt(prefSlider.value);
             if (seg > 40 && prefVal === 0 && mainEndogamy > 0.55) {
                 insight.innerHTML = '<strong>' + Math.round(mainEndogamy * 100) + '% same-group couples with zero preference.</strong> All of this sorting comes from where people live, not from whom they prefer.';
                 insight.style.display = 'block';
+                researchNote.style.display = 'block';
             } else if (prefVal > 0 && seg > 30 && mainEndogamy > randomExpected) {
                 const pct = Math.min(99, Math.round(spatialEffect / (mainEndogamy - randomExpected) * 100));
                 if (pct > 15) {
                     insight.innerHTML = 'Of the excess same-group pairing, roughly <strong>' + pct + '% is explained by proximity</strong>. Ignoring where people live overstates the role of preference.';
                     insight.style.display = 'block';
-                } else { insight.style.display = 'none'; }
+                    researchNote.style.display = 'block';
+                } else { insight.style.display = 'none'; researchNote.style.display = 'none'; }
             } else if (seg <= 10 && prefVal === 0) {
                 insight.innerHTML = 'No segregation, no preference: same-group couples hover around <strong>50%</strong>. Pure chance.';
                 insight.style.display = 'block';
-            } else { insight.style.display = 'none'; }
+                researchNote.style.display = 'block';
+            } else { insight.style.display = 'none'; researchNote.style.display = 'none'; }
 
             animateMatching();
         }
