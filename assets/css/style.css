@@ -1083,6 +1083,8 @@ img {
         gap: var(--space-lg);
     }
     .hero-image { order: -1; max-width: 300px; margin: 0 auto; }
+    .scroll-indicator { display: none; }
+    .hero-cta { display: none; }
 
     .research-grid { grid-template-columns: 1fr; }
     .research-visual { grid-column: 1; }
@@ -1102,6 +1104,5 @@ img {
 }
 
 @media (max-width: 480px) {
-    .hero-cta { flex-direction: column; }
     .btn { text-align: center; justify-content: center; }
 }
