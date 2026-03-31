@@ -577,14 +577,14 @@ img {
     grid-column: span 2;
     margin-top: 0.5rem;
     padding: 0.75rem;
-    background: #F4F7FF;
-    border-left: 3px solid var(--color-accent-2);
+    background: #F2F8F2;
+    border-left: 3px solid #5A9A5A;
     border-radius: 0 6px 6px 0;
     font-size: 0.78rem;
     line-height: 1.55;
     display: none;
 }
-.sim-research-note strong { color: var(--color-accent-2); }
+.sim-research-note strong { color: #3D7A3D; }
 
 @media (max-width: 800px) {
     .sim-layout {
@@ -599,7 +599,7 @@ img {
     .canvas-wrap canvas { width: 100%; height: auto; aspect-ratio: 1 / 1; }
     .sim-grid { grid-template-columns: 1fr; }
     .sim-insight { grid-column: span 1; }
-    .sim-research-note { grid-column: span 1; }
+    .sim-research-note { grid-column: span 1; margin-top: 0.5rem; }
 }
 
 .research-visual {
