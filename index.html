@@ -487,8 +487,8 @@
         const cssW = 520, cssH = 520;
         canvas.width = cssW * dpr;
         canvas.height = cssH * dpr;
-        canvas.style.width = cssW + 'px';
-        canvas.style.height = cssH + 'px';
+        canvas.style.width = '';
+        canvas.style.height = '';
         const ctx = canvas.getContext('2d');
         ctx.scale(dpr, dpr);
         const W = cssW, H = cssH;

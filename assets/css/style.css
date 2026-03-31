@@ -480,6 +480,8 @@ img {
     padding: 1.5rem 2rem 1.5rem 0;
 }
 .canvas-wrap canvas {
+    width: 520px;
+    height: 520px;
     border-radius: 10px;
     background: white;
     box-shadow: 0 2px 16px rgba(0,0,0,0.05);
@@ -567,7 +569,9 @@ img {
 @media (max-width: 800px) {
     .sim-layout { flex-direction: column; }
     .canvas-wrap { padding: 0 0 1rem 0; justify-content: center; }
-    .canvas-wrap canvas { max-width: 100%; aspect-ratio: 1 / 1; height: auto; }
+    .canvas-wrap canvas { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+    .sim-panel { padding: 0; }
+    .sim-intro { display: none; }
     .sim-grid { grid-template-columns: 1fr; }
     .sim-insight { grid-column: span 1; }
 }
