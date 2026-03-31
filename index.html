@@ -192,6 +192,9 @@
                                 </div>
                             </div>
                             <div class="sim-insight" id="sim-insight"></div>
+                            <div class="sim-research-note" id="sim-research-note">
+                                <strong>What this means for research:</strong> This is why studying social boundaries requires knowing who is actually available. In a municipality, a workplace, a school. Without accounting for that, we risk mistaking geography for genuine group preferences.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -598,6 +601,7 @@
             pairs = mainPairs; matched = true; animProgress = 0;
 
             document.getElementById('sim-results').style.visibility = 'visible';
+            document.getElementById('sim-research-note').style.display = 'block';
             document.getElementById('r-pairs').textContent = mainPairs.length;
             document.getElementById('r-endogamy').textContent = Math.round(mainEndogamy * 100) + '%';
             document.getElementById('r-random').textContent = Math.round(randomExpected * 100) + '%';
@@ -660,6 +664,7 @@
                 agents.forEach(a => { a.paired = false; a.partner = null; });
                 document.getElementById('sim-results').style.visibility = 'hidden';
                 document.getElementById('sim-insight').style.display = 'none';
+                document.getElementById('sim-research-note').style.display = 'none';
             }
             startMoveAnimation();
         });
@@ -670,6 +675,7 @@
             generateAgents(); draw();
             document.getElementById('sim-results').style.visibility = 'hidden';
             document.getElementById('sim-insight').style.display = 'none';
+            document.getElementById('sim-research-note').style.display = 'none';
         });
         btnMatch.addEventListener('click', runAndShow);
         btnReset.addEventListener('click', () => {
@@ -677,6 +683,7 @@
             currentSeg = segSlider.value / 100; targetSeg = currentSeg;
             generateAgents(); matched = false; animProgress = 0; draw();
             document.getElementById('sim-results').style.visibility = 'hidden';
+            document.getElementById('sim-research-note').style.display = 'none';
             document.getElementById('sim-insight').style.display = 'none';
         });
 
