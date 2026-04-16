@@ -209,10 +209,10 @@
                     <div class="control-group">
                         <div class="control-label">
                             <span>Distance sensitivity</span>
-                            <span class="control-value" id="dist-value">43% less likely at 2× dist</span>
+                            <span class="control-value" id="dist-value">74% more likely</span>
                         </div>
                         <input type="range" id="distance" min="0" max="100" value="50">
-                        <div class="control-hint">How much less likely to match someone twice as far</div>
+                        <div class="control-hint">How much more likely to match someone half as far</div>
                     </div>
 
                     <div class="btn-row">
@@ -293,6 +293,26 @@
 
     // Each agent has a random position and a segregated position.
     // Current position = lerp between them based on segregation slider.
+    let clusters = [];
+
+    function generateClusters() {
+        const pad = W * 0.15;
+        const minDist = W * 0.25;
+        clusters = [];
+        for (let attempts = 0; clusters.length < 3 && attempts < 200; attempts++) {
+            const cx = pad + Math.random() * (W - 2 * pad);
+            const cy = pad + Math.random() * (H - 2 * pad);
+            const tooClose = clusters.some(c =>
+                Math.sqrt((c.x - cx) ** 2 + (c.y - cy) ** 2) < minDist);
+            if (!tooClose) clusters.push({ x: cx, y: cy });
+        }
+    }
+
+    function nearCluster(x, y, radius) {
+        return clusters.some(c =>
+            Math.sqrt((c.x - x) ** 2 + (c.y - y) ** 2) < radius);
+    }
+
     function generateAgents() {
         const n = 200;
         agents = [];
@@ -301,6 +321,10 @@
         animProgress = 0;
         const half = Math.floor(n / 2);
         const pad = 10;
+        const clusterSpread = W * 0.06;
+        const avoidRadius = W * 0.12;
+
+        generateClusters();
 
         for (let i = 0; i < n; i++) {
             const group = i < half ? 0 : 1;
@@ -309,11 +333,21 @@
             const rx = pad + Math.random() * (W - 2 * pad);
             const ry = pad + Math.random() * (H - 2 * pad);
 
-            // Segregated position — group 0 left, group 1 right
-            const sx = clamp(group === 0
-                ? gaussRandom(W * 0.28, W * 0.1)
-                : gaussRandom(W * 0.72, W * 0.1), pad, W - pad);
-            const sy = clamp(gaussRandom(H * 0.5, H * 0.17), pad, H - pad);
+            let sx, sy;
+            if (group === 0) {
+                // Group A: cluster around one of the enclaves
+                const c = clusters[Math.floor(Math.random() * clusters.length)];
+                sx = clamp(gaussRandom(c.x, clusterSpread), pad, W - pad);
+                sy = clamp(gaussRandom(c.y, clusterSpread), pad, H - pad);
+            } else {
+                // Group B: spread out, avoiding cluster zones
+                sx = pad + Math.random() * (W - 2 * pad);
+                sy = pad + Math.random() * (H - 2 * pad);
+                for (let t = 0; t < 50 && nearCluster(sx, sy, avoidRadius); t++) {
+                    sx = pad + Math.random() * (W - 2 * pad);
+                    sy = pad + Math.random() * (H - 2 * pad);
+                }
+            }
 
             agents.push({
                 rx, ry,     // random position
@@ -511,8 +545,8 @@
 
     distSlider.addEventListener('input', () => {
         const beta = distSlider.value / 100 * 1.6;
-        const pctLess = Math.round((1 - Math.pow(2, -beta)) * 100);
-        distValue.textContent = pctLess === 0 ? 'no effect' : pctLess + '% less likely at 2× dist';
+        const pctMore = Math.round((Math.pow(2, beta) - 1) * 100);
+        distValue.textContent = pctMore === 0 ? 'no effect' : pctMore + '% more likely';
         if (matched) {
             matched = false; pairs = [];
             agents.forEach(a => { a.paired = false; a.partner = null; });
