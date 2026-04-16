@@ -11,17 +11,17 @@
     --font-serif: 'Playfair Display', Georgia, serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    --color-bg: #FAFAF8;
+    --color-bg: #FAF9F7;
     --color-surface: #FFFFFF;
     --color-text: #1a1a1a;
-    --color-text-muted: #6b6b6b;
-    --color-accent: #E85D3A;
-    --color-accent-light: #FFF0EC;
-    --color-accent-2: #2D5BFF;
-    --color-accent-2-light: #EEF1FF;
-    --color-border: #e8e6e1;
-    --color-dark: #111111;
-    --color-dark-surface: #1a1a1a;
+    --color-text-muted: #70706A;
+    --color-accent: #B44A2D;
+    --color-accent-light: #F5EBE7;
+    --color-accent-2: #3B6994;
+    --color-accent-2-light: #E9EFF5;
+    --color-border: #e5e3de;
+    --color-dark: #141414;
+    --color-dark-surface: #1c1c1c;
 
     --space-xs: 0.5rem;
     --space-sm: 1rem;

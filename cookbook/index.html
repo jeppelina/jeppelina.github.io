@@ -19,7 +19,7 @@
             --color-bg: #FAFAF8;
             --color-text: #1a1a1a;
             --color-text-muted: #6b6b6b;
-            --color-accent: #E85D3A;
+            --color-accent: #B44A2D;
             --color-border: #e8e6e1;
         }
 
@@ -441,7 +441,7 @@
 
     // Draw route
     L.polyline(routeCoords, {
-        color: '#E85D3A',
+        color: '#B44A2D',
         weight: 2.5,
         opacity: 0.6,
         dashArray: '8, 6',
@@ -453,7 +453,7 @@
         className: 'custom-marker',
         html: `<div style="
             width: 28px; height: 28px;
-            background: #E85D3A;
+            background: #B44A2D;
             border: 2.5px solid white;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -482,7 +482,7 @@
             <div class="popup-location">${stop.distance} from Stockholm</div>
             <div class="popup-story">${stop.story}</div>
             <div style="margin-top:10px;padding-top:8px;border-top:1px solid #eee;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#E85D3A;margin-bottom:6px;">Recipes</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#B44A2D;margin-bottom:6px;">Recipes</div>
                 ${recipesHtml}
             </div>
         `;
@@ -499,7 +499,7 @@
         el.innerHTML = `
             <div class="country-name">${i + 1}. ${stop.country}</div>
             <div class="country-distance">${stop.distance} from Stockholm</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#E85D3A;margin:8px 0 4px;">Recipes</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#B44A2D;margin:8px 0 4px;">Recipes</div>
             <ul class="recipe-list">
                 ${stop.recipes.map(r => `<li>${r.name} <span class="recipe-location">${r.location}</span></li>`).join('')}
             </ul>

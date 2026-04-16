@@ -18,8 +18,8 @@
             --color-bg: #FAFAF8;
             --color-text: #1a1a1a;
             --color-text-muted: #6b6b6b;
-            --color-accent: #E85D3A;
-            --color-accent-2: #2D5BFF;
+            --color-accent: #B44A2D;
+            --color-accent-2: #3B6994;
             --color-border: #e8e6e1;
         }
 
@@ -184,8 +184,8 @@
             <div class="panel-grid">
                 <div class="panel-col">
                     <div class="legend">
-                        <div class="legend-item"><div class="legend-dot" style="background:#E85D3A;"></div> Group A</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#2D5BFF;"></div> Group B</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#B44A2D;"></div> Group A</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#3B6994;"></div> Group B</div>
                     </div>
 
                     <div class="control-group">
@@ -513,7 +513,7 @@
 
         const pulse = matched ? Math.max(0, 1 - animProgress) * 1.5 : 0;
         for (const a of agents) {
-            const c = a.group === 0 ? '#E85D3A' : '#2D5BFF';
+            const c = a.group === 0 ? '#B44A2D' : '#3B6994';
             ctx.globalAlpha = matched && !a.paired ? 0.15 : 0.85;
             const r = 4.2 + (a.paired ? pulse : 0);
             ctx.beginPath();
