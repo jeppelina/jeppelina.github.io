@@ -157,10 +157,10 @@
                                 <div class="sim-control">
                                     <div class="sim-control-label">
                                         <span>Distance sensitivity</span>
-                                        <span class="sim-control-value" id="dist-value">50%</span>
+                                        <span class="sim-control-value" id="dist-value">43% less likely at 2× dist</span>
                                     </div>
                                     <input type="range" id="distance" min="0" max="100" value="50">
-                                    <div class="sim-control-hint">How much proximity matters for matching</div>
+                                    <div class="sim-control-hint">How much less likely to match someone twice as far</div>
                                 </div>
                                 <div class="sim-btn-row">
                                     <button class="sim-btn-match" id="btn-match">Create couples</button>
@@ -684,7 +684,9 @@
         });
         prefSlider.addEventListener('input', () => { prefValue.textContent = prefSlider.value + '% more likely'; });
         distSlider.addEventListener('input', () => {
-            distValue.textContent = distSlider.value + '%';
+            const beta = distSlider.value / 100 * 1.6;
+            const pctLess = Math.round((1 - Math.pow(2, -beta)) * 100);
+            distValue.textContent = pctLess === 0 ? 'no effect' : pctLess + '% less likely at 2× dist';
             if (matched) {
                 matched = false; pairs = [];
                 agents.forEach(a => { a.paired = false; a.partner = null; });
