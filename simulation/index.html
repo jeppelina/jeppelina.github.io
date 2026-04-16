@@ -184,8 +184,8 @@
             <div class="panel-grid">
                 <div class="panel-col">
                     <div class="legend">
-                        <div class="legend-item"><div class="legend-dot" style="background:#B44A2D;"></div> Group A</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#3B6994;"></div> Group B</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#D9471C;"></div> Group A</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#1E5EA3;"></div> Group B</div>
                     </div>
 
                     <div class="control-group">
@@ -513,7 +513,7 @@
 
         const pulse = matched ? Math.max(0, 1 - animProgress) * 1.5 : 0;
         for (const a of agents) {
-            const c = a.group === 0 ? '#B44A2D' : '#3B6994';
+            const c = a.group === 0 ? '#D9471C' : '#1E5EA3';
             ctx.globalAlpha = matched && !a.paired ? 0.15 : 0.85;
             const r = 4.2 + (a.paired ? pulse : 0);
             ctx.beginPath();
