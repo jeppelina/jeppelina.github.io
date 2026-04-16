@@ -149,10 +149,10 @@
                                 <div class="sim-control">
                                     <div class="sim-control-label">
                                         <span>In-group preference</span>
-                                        <span class="sim-control-value" id="pref-value">0%</span>
+                                        <span class="sim-control-value" id="pref-value">0% more likely</span>
                                     </div>
                                     <input type="range" id="preference" min="0" max="100" value="0">
-                                    <div class="sim-control-hint">Bonus for same-group partners</div>
+                                    <div class="sim-control-hint">How much more likely to pick same group</div>
                                 </div>
                                 <div class="sim-control">
                                     <div class="sim-control-label">
@@ -567,9 +567,13 @@
                     if (j === i || taken.has(j)) continue;
                     const b = agents[j];
                     const dx = a.x - b.x, dy = a.y - b.y;
-                    let score = -Math.sqrt(dx * dx + dy * dy);
-                    if (a.group === b.group) score += prefStrength * W * 0.5;
-                    score += (Math.random() - 0.5) * W * 0.04;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    // Log-distance score (inspired by clogit β ≈ −0.8)
+                    let score = -0.8 * Math.log(Math.max(dist, 1));
+                    // Same-group bonus: slider 100% → 2× more likely = ln(2)
+                    if (a.group === b.group) score += Math.log(1 + prefStrength);
+                    // Stochastic noise (cf. logit error variance)
+                    score += gaussRandom(0, 0.5);
                     if (score > bestScore) { bestScore = score; bestJ = j; }
                 }
                 if (bestJ >= 0) { taken.add(i); taken.add(bestJ); result.push([i, bestJ]); }
@@ -610,13 +614,14 @@
             const insight = document.getElementById('sim-insight');
             const researchNote = document.getElementById('sim-research-note');
             const seg = parseInt(segSlider.value), prefVal = parseInt(prefSlider.value);
-            if (seg > 40 && prefVal === 0 && mainEndogamy > 0.55) {
+            if (seg > 30 && prefVal === 0 && mainEndogamy > 0.52) {
                 insight.innerHTML = '<strong>' + Math.round(mainEndogamy * 100) + '% same-group couples with zero preference.</strong> All of this sorting comes from where people live, not from whom they prefer.';
                 insight.style.display = 'block';
                 researchNote.style.display = 'block';
-            } else if (prefVal > 0 && seg > 30 && mainEndogamy > randomExpected) {
-                const pct = Math.min(99, Math.round(spatialEffect / (mainEndogamy - randomExpected) * 100));
-                if (pct > 15) {
+            } else if (prefVal > 0 && seg > 20 && mainEndogamy > randomExpected) {
+                const excess = mainEndogamy - randomExpected;
+                const pct = excess > 0.005 ? Math.min(99, Math.round(spatialEffect / excess * 100)) : 0;
+                if (pct > 5) {
                     insight.innerHTML = 'Of the excess same-group pairing, roughly <strong>' + pct + '% is explained by proximity</strong>. Ignoring where people live overstates the role of preference.';
                     insight.style.display = 'block';
                     researchNote.style.display = 'block';
@@ -671,7 +676,7 @@
             }
             startMoveAnimation();
         });
-        prefSlider.addEventListener('input', () => { prefValue.textContent = prefSlider.value + '%'; });
+        prefSlider.addEventListener('input', () => { prefValue.textContent = prefSlider.value + '% more likely'; });
         popSlider.addEventListener('input', () => {
             popValue.textContent = popSlider.value;
             currentSeg = segSlider.value / 100; targetSeg = currentSeg;
