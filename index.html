@@ -552,7 +552,10 @@
 
                 let sx, sy;
                 if (group === 0) {
-                    const c = clusters[Math.floor(Math.random() * clusters.length)];
+                    const c = clusters.reduce((best, cl) => {
+                        const d = (cl.x - rx) ** 2 + (cl.y - ry) ** 2;
+                        return d < best.d ? { c: cl, d } : best;
+                    }, { c: clusters[0], d: Infinity }).c;
                     sx = clamp(gaussRandom(c.x, clusterSpread), pad, W - pad);
                     sy = clamp(gaussRandom(c.y, clusterSpread), pad, H - pad);
                 } else {
