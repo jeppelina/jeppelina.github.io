@@ -208,10 +208,11 @@
 
                     <div class="control-group">
                         <div class="control-label">
-                            <span>Population</span>
-                            <span class="control-value" id="pop-value">200</span>
+                            <span>Distance sensitivity</span>
+                            <span class="control-value" id="dist-value">50%</span>
                         </div>
-                        <input type="range" id="population" min="50" max="400" value="200" step="10">
+                        <input type="range" id="distance" min="0" max="100" value="50">
+                        <div class="control-hint">How much proximity matters for matching</div>
                     </div>
 
                     <div class="btn-row">
@@ -267,10 +268,10 @@
 
     const segSlider = document.getElementById('segregation');
     const prefSlider = document.getElementById('preference');
-    const popSlider = document.getElementById('population');
+    const distSlider = document.getElementById('distance');
     const segValue = document.getElementById('seg-value');
     const prefValue = document.getElementById('pref-value');
-    const popValue = document.getElementById('pop-value');
+    const distValue = document.getElementById('dist-value');
     const btnMatch = document.getElementById('btn-match');
     const btnReset = document.getElementById('btn-reset');
 
@@ -293,7 +294,7 @@
     // Each agent has a random position and a segregated position.
     // Current position = lerp between them based on segregation slider.
     function generateAgents() {
-        const n = parseInt(popSlider.value);
+        const n = 200;
         agents = [];
         pairs = [];
         matched = false;
@@ -358,7 +359,7 @@
     }
 
     // --- Matching ---
-    function doMatch(prefStrength) {
+    function doMatch(prefStrength, beta) {
         const indices = agents.map((_, i) => i);
         for (let i = indices.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -377,8 +378,8 @@
                 const b = agents[j];
                 const dx = a.x - b.x, dy = a.y - b.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                // Log-distance score (inspired by clogit β ≈ −0.8)
-                let score = -0.8 * Math.log(Math.max(dist, 1));
+                // Log-distance score (β from slider: 0–1.6)
+                let score = -beta * Math.log(Math.max(dist, 1));
                 // Same-group bonus: slider 100% → 2× more likely = ln(2)
                 if (a.group === b.group) score += Math.log(1 + prefStrength);
                 // Stochastic noise (cf. logit error variance)
@@ -403,9 +404,10 @@
         if (matchAnimFrame) cancelAnimationFrame(matchAnimFrame);
 
         const pref = prefSlider.value / 100;
-        const mainPairs = doMatch(pref);
+        const beta = distSlider.value / 100 * 1.6;
+        const mainPairs = doMatch(pref, beta);
         const mainEndogamy = endogamyRate(mainPairs);
-        const spatialPairs = doMatch(0);
+        const spatialPairs = doMatch(0, beta);
         const spatialEndogamy = endogamyRate(spatialPairs);
 
         const randomExpected = 0.5;
@@ -431,8 +433,12 @@
         const insight = document.getElementById('insight');
         const seg = parseInt(segSlider.value);
         const prefVal = parseInt(prefSlider.value);
+        const distVal = parseInt(distSlider.value);
 
-        if (seg > 30 && prefVal === 0 && mainEndogamy > 0.52) {
+        if (distVal === 0 && prefVal === 0) {
+            insight.innerHTML = `Distance has no effect and no preference is set — same-group couples hover around <strong>50%</strong>. Pure chance.`;
+            insight.style.display = 'block';
+        } else if (seg > 30 && prefVal === 0 && mainEndogamy > 0.52) {
             insight.innerHTML = `<strong>${Math.round(mainEndogamy * 100)}% same-group couples with zero preference.</strong> All of this sorting comes from where people live, not from whom they prefer.`;
             insight.style.display = 'block';
         } else if (prefVal > 0 && seg > 20 && mainEndogamy > randomExpected) {
@@ -503,13 +509,15 @@
 
     prefSlider.addEventListener('input', () => { prefValue.textContent = prefSlider.value + '% more likely'; });
 
-    popSlider.addEventListener('input', () => {
-        popValue.textContent = popSlider.value;
-        currentSeg = segSlider.value / 100;
-        targetSeg = currentSeg;
-        generateAgents(); draw();
-        document.getElementById('results').style.visibility = 'hidden';
-        document.getElementById('insight').style.display = 'none';
+    distSlider.addEventListener('input', () => {
+        distValue.textContent = distSlider.value + '%';
+        if (matched) {
+            matched = false; pairs = [];
+            agents.forEach(a => { a.paired = false; a.partner = null; });
+            document.getElementById('results').style.visibility = 'hidden';
+            document.getElementById('insight').style.display = 'none';
+        }
+        draw();
     });
 
     btnMatch.addEventListener('click', runAndShow);
