@@ -179,7 +179,7 @@
                                         <span class="sim-result-value sim-highlight" id="r-endogamy">—</span>
                                     </div>
                                     <div class="sim-result-row">
-                                        <span class="sim-result-label">Random baseline</span>
+                                        <span class="sim-result-label">Expected if random</span>
                                         <span class="sim-result-value" id="r-random">50%</span>
                                     </div>
                                     <div class="sim-result-row">
@@ -537,7 +537,7 @@
         }
 
         function generateAgents() {
-            const n = 200;
+            const n = 400;
             agents = []; pairs = []; matched = false; animProgress = 0;
             const half = Math.floor(n / 2), pad = 10;
             const clusterSpread = W * 0.06;
