@@ -92,39 +92,46 @@
             gap: 1.5rem;
         }
         .group-decomp { display: flex; flex-direction: column; gap: 0.45rem; }
-        .gd-header {
-            display: flex; align-items: center; gap: 0.45rem;
+        .gd-toprow {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .gd-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
             font-family: var(--font-sans);
-            font-size: 0.78rem;
+            font-size: 0.82rem;
             font-weight: 600;
             color: var(--color-text);
+            padding-right: 0.2rem;
         }
         .gd-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .gd-endos {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.6rem;
-            margin-top: 0.1rem;
-        }
-        .gd-endo {
+        .gd-level {
             background: #f7f5f0;
             border-radius: 6px;
-            padding: 0.4rem 0.55rem;
+            padding: 0.32rem 0.5rem;
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
-        .gd-endo-label {
+        .gd-level-label {
             font-family: var(--font-mono);
-            font-size: 0.58rem;
+            font-size: 0.55rem;
             text-transform: uppercase;
-            letter-spacing: 0.07em;
+            letter-spacing: 0.06em;
             color: var(--color-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .gd-endo-label.t1 { color: var(--color-t1); }
-        .gd-endo-label.t2 { color: var(--color-t2); }
-        .gd-endo-value {
+        .gd-level-label.t1 { color: var(--color-t1); }
+        .gd-level-label.t2 { color: var(--color-t2); }
+        .gd-level-value {
             font-family: var(--font-mono);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             font-weight: 400;
             color: var(--color-text-muted);
             margin-top: 1px;
@@ -303,6 +310,76 @@
         .legend-item { display: flex; align-items: center; gap: 5px; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
+        /* Method explainer — collapsed by default */
+        details.method {
+            margin-top: 1.25rem;
+            padding: 0.55rem 0.95rem;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+        }
+        details.method summary {
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text);
+            user-select: none;
+            padding: 0.2rem 0;
+            list-style: none;
+            position: relative;
+            padding-right: 1.4rem;
+        }
+        details.method summary::-webkit-details-marker { display: none; }
+        details.method summary::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+        }
+        details.method[open] summary::after { content: '−'; }
+        details.method summary:hover { color: var(--color-accent); }
+        details.method[open] summary {
+            margin-bottom: 0.6rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+        details.method p { margin: 0 0 0.65rem 0; }
+        details.method p:last-child { margin-bottom: 0; }
+        details.method em { color: var(--color-text); font-style: italic; }
+        details.method ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0.25rem 0 0.75rem 0;
+        }
+        details.method li {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 0.1rem 0;
+            color: var(--color-text);
+        }
+        details.method pre.formula {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            background: #f7f5f0;
+            padding: 0.55rem 0.75rem;
+            border-radius: 4px;
+            color: var(--color-text);
+            margin: 0.4rem 0 0.75rem 0;
+            overflow-x: auto;
+            line-height: 1.65;
+            white-space: pre;
+        }
+
         .embedded .header { display: none; }
 
         @media (max-width: 800px) {
@@ -328,18 +405,18 @@
             <div class="group-decomps">
                 <!-- Majority -->
                 <div class="group-decomp">
-                    <div class="gd-header">
-                        <span class="gd-dot" style="background: #D9471C"></span>
-                        <span class="gd-name">Majority</span>
-                    </div>
-                    <div class="gd-endos">
-                        <div class="gd-endo">
-                            <div class="gd-endo-label t1">T1</div>
-                            <div class="gd-endo-value" id="maj-t1">—</div>
+                    <div class="gd-toprow">
+                        <div class="gd-name-cell">
+                            <span class="gd-dot" style="background: #D9471C"></span>
+                            <span class="gd-name">Majority</span>
                         </div>
-                        <div class="gd-endo">
-                            <div class="gd-endo-label t2">T2</div>
-                            <div class="gd-endo-value" id="maj-t2">—</div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t1">Endogamy T1</div>
+                            <div class="gd-level-value" id="maj-t1">—</div>
+                        </div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t2">Endogamy T2</div>
+                            <div class="gd-level-value" id="maj-t2">—</div>
                         </div>
                     </div>
                     <div class="gd-section">Δ endogamy, T2 vs T1</div>
@@ -362,18 +439,18 @@
 
                 <!-- Minority -->
                 <div class="group-decomp">
-                    <div class="gd-header">
-                        <span class="gd-dot" style="background: #1E5EA3"></span>
-                        <span class="gd-name">Minority</span>
-                    </div>
-                    <div class="gd-endos">
-                        <div class="gd-endo">
-                            <div class="gd-endo-label t1">T1</div>
-                            <div class="gd-endo-value" id="min-t1">—</div>
+                    <div class="gd-toprow">
+                        <div class="gd-name-cell">
+                            <span class="gd-dot" style="background: #1E5EA3"></span>
+                            <span class="gd-name">Minority</span>
                         </div>
-                        <div class="gd-endo">
-                            <div class="gd-endo-label t2">T2</div>
-                            <div class="gd-endo-value" id="min-t2">—</div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t1">Endogamy T1</div>
+                            <div class="gd-level-value" id="min-t1">—</div>
+                        </div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t2">Endogamy T2</div>
+                            <div class="gd-level-value" id="min-t2">—</div>
                         </div>
                     </div>
                     <div class="gd-section">Δ endogamy, T2 vs T1</div>
@@ -441,6 +518,25 @@
                 <div class="legend-item"><div class="legend-dot" style="background:#1E5EA3"></div>Minority</div>
             </div>
         </div>
+
+        <details class="method">
+            <summary>Method</summary>
+            <p>Endogamy is computed at four scenarios that cross the two snapshots' <em>structures</em> (minority share, m) and <em>behaviours</em> (in-group preference, p):</p>
+            <ul>
+                <li>T1·T1 — observed at T1</li>
+                <li>T1·T2 — T1 behaviour × T2 structure (counterfactual)</li>
+                <li>T2·T1 — T2 behaviour × T1 structure (counterfactual)</li>
+                <li>T2·T2 — observed at T2</li>
+            </ul>
+            <p>Each cell uses a closed-form expression for the compositional matching DGP. With α = 1 + p, a group's endogamy from its own perspective is:</p>
+            <pre class="formula">endogamy = (own share · α²) / (own share · α² + other share)</pre>
+            <p>The matching shown on the canvases is one stochastic realisation of the same DGP — illustrative, not where the displayed numbers come from.</p>
+            <p>A <em>symmetric (Shapley)</em> decomposition averages T1-anchored and T2-anchored estimates of each effect so they sum exactly to the observed change:</p>
+            <pre class="formula">Δ_struct = ½ · [ (T1·T2 − T1·T1) + (T2·T2 − T2·T1) ]
+Δ_behav  = ½ · [ (T2·T1 − T1·T1) + (T2·T2 − T1·T2) ]
+Δ_struct + Δ_behav = Δ_obs</pre>
+            <p>Each group's endogamy is the share of its own paired members whose partner is in the same group. Majority and minority can move very differently — minority endogamy is much more sensitive to composition (Blau structural opportunity), while majority's is dominated by preference.</p>
+        </details>
     </div>
 
     <script>
