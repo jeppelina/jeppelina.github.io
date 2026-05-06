@@ -323,9 +323,11 @@
         .legend-item { display: flex; align-items: center; gap: 5px; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-        /* Method explainer — collapsed by default */
-        details.method {
-            margin-top: 1.25rem;
+        /* Foldouts — Method (technical) and research note (interpretation),
+           styled identically as collapsed-by-default disclosure panels */
+        details.method,
+        details.research-note {
+            margin-top: 1rem;
             padding: 0.55rem 0.95rem;
             background: white;
             border: 1px solid var(--color-border);
@@ -335,7 +337,9 @@
             line-height: 1.6;
             color: var(--color-text-muted);
         }
-        details.method summary {
+        details.research-note { font-size: 0.85rem; }
+        details.method summary,
+        details.research-note summary {
             cursor: pointer;
             font-family: var(--font-mono);
             font-size: 0.65rem;
@@ -348,8 +352,10 @@
             position: relative;
             padding-right: 1.4rem;
         }
-        details.method summary::-webkit-details-marker { display: none; }
-        details.method summary::after {
+        details.method summary::-webkit-details-marker,
+        details.research-note summary::-webkit-details-marker { display: none; }
+        details.method summary::after,
+        details.research-note summary::after {
             content: '+';
             position: absolute;
             right: 0;
@@ -359,16 +365,22 @@
             font-size: 0.95rem;
             color: var(--color-text-muted);
         }
-        details.method[open] summary::after { content: '−'; }
-        details.method summary:hover { color: var(--color-accent); }
-        details.method[open] summary {
+        details.method[open] summary::after,
+        details.research-note[open] summary::after { content: '−'; }
+        details.method summary:hover,
+        details.research-note summary:hover { color: var(--color-accent); }
+        details.method[open] summary,
+        details.research-note[open] summary {
             margin-bottom: 0.6rem;
             border-bottom: 1px solid var(--color-border);
             padding-bottom: 0.5rem;
         }
-        details.method p { margin: 0 0 0.65rem 0; }
-        details.method p:last-child { margin-bottom: 0; }
-        details.method em { color: var(--color-text); font-style: italic; }
+        details.method p,
+        details.research-note p { margin: 0 0 0.65rem 0; }
+        details.method p:last-child,
+        details.research-note p:last-child { margin-bottom: 0; }
+        details.method em,
+        details.research-note em { color: var(--color-text); font-style: italic; }
         details.method ul {
             list-style: none;
             padding-left: 0;
@@ -590,6 +602,11 @@
 Δ_behav  = ½ · [ (T2·T1 − T1·T1) + (T2·T2 − T1·T2) ]
 Δ_struct + Δ_behav = Δ_obs</pre>
             <p>Each group's endogamy is the share of its own paired members whose partner is in the same group. Majority and minority can move very differently — minority endogamy is much more sensitive to composition (Blau structural opportunity), while majority's is dominated by preference.</p>
+        </details>
+
+        <details class="research-note">
+            <summary>What this means for research</summary>
+            <p>Rising inter-ethnic unions in a diversifying society can look like growing openness — but they can also be entirely structural, driven by who the partner market now contains rather than by changing preferences. In Sweden 1991–2017, observed same-ancestry unions among Swedish-origin women fell roughly 12 percentage points; yet holding the partner market constant, in-group preference moved the <em>other</em> way and tightened by ~5 pp. The decline was structural; symbolic boundaries, if anything, became slightly stronger. The logic flips for minorities, whose endogamy is highly sensitive to group size (Blau's structural opportunity): a larger co-ethnic pool can <em>increase</em> their same-group share even at constant preference. We can't read openness directly off observed unions — we have to construct what they would have looked like under a counterfactual market.</p>
         </details>
 
         <div class="paper-ref-card">

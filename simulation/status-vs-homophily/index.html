@@ -263,12 +263,63 @@
 
         .embedded .header { display: none; }
 
+        /* Research note — collapsible substantive interpretation */
+        .research-note-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+        }
+        details.research-note {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            padding: 0.55rem 0.95rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+        }
+        details.research-note summary {
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text);
+            user-select: none;
+            padding: 0.2rem 0;
+            list-style: none;
+            position: relative;
+            padding-right: 1.4rem;
+        }
+        details.research-note summary::-webkit-details-marker { display: none; }
+        details.research-note summary::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+        }
+        details.research-note[open] summary::after { content: '−'; }
+        details.research-note summary:hover { color: var(--color-accent); }
+        details.research-note[open] summary {
+            margin-bottom: 0.6rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+        details.research-note p { margin: 0; }
+        details.research-note em { color: var(--color-text); font-style: italic; }
+
         /* Mobile */
         @media (max-width: 880px) {
             .sim-layout { flex-direction: column; }
             .col-left { padding: 1rem; }
             .panel { padding: 0 1rem 1rem; }
             .matrix { grid-template-columns: 26px repeat(3, 50px); grid-template-rows: 22px repeat(3, 50px); }
+            .research-note-wrap { padding: 0.5rem 1rem 1rem 1rem; }
         }
     </style>
 </head>
@@ -350,6 +401,13 @@
 
             <div class="insight" id="insight"></div>
         </div>
+    </div>
+
+    <div class="research-note-wrap">
+        <details class="research-note">
+            <summary>What this means for research</summary>
+            <p>Endogamy is sometimes read as evidence of in-group preference — people choosing their own. But the same observed pattern can be produced by exclusion: a high-status group closes itself off, and lower-status groups end up matched within their own not because they preferred to but because they were rejected from above. Realised unions are <em>symmetric</em> — a couple is a couple, regardless of who chose whom — while preferences are <em>directed</em>. From observed marriages and cohabitations alone, we cannot tell whether endogamy reflects warmth toward one's own group or coldness toward others. Distinguishing them requires data the partner market rarely provides: stated preferences, dating-app responses, vignette experiments. This is a baseline identification problem in assortative-mating research, not a special case.</p>
+        </details>
     </div>
 
     <script>

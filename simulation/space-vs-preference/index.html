@@ -153,6 +153,54 @@
         .insight strong { color: var(--color-accent); }
 
         /* Paper reference card */
+        .research-note-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+        }
+        details.research-note {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            padding: 0.55rem 0.95rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+        }
+        details.research-note summary {
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text);
+            user-select: none;
+            padding: 0.2rem 0;
+            list-style: none;
+            position: relative;
+            padding-right: 1.4rem;
+        }
+        details.research-note summary::-webkit-details-marker { display: none; }
+        details.research-note summary::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+        }
+        details.research-note[open] summary::after { content: '−'; }
+        details.research-note summary:hover { color: var(--color-accent); }
+        details.research-note[open] summary {
+            margin-bottom: 0.6rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+        details.research-note p { margin: 0; }
+        details.research-note em { color: var(--color-text); font-style: italic; }
         .paper-ref-wrap {
             max-width: 1100px;
             margin: 0 auto;
@@ -207,6 +255,7 @@
             .panel-grid { grid-template-columns: 1fr; }
             .insight { grid-column: span 1; }
             canvas { max-width: 100%; height: auto; }
+            .research-note-wrap { padding: 0.5rem 1rem 0.5rem 1rem; }
             .paper-ref-wrap { padding: 0 1rem 1rem 1rem; }
         }
     </style>
@@ -295,6 +344,13 @@
                 <div class="insight" id="insight"></div>
             </div>
         </div>
+    </div>
+
+    <div class="research-note-wrap">
+        <details class="research-note">
+            <summary>What this means for research</summary>
+            <p>Observed ethnic endogamy doesn't tell you what people prefer — it tells you who they paired with given who was around. In Swedish register data, residential proximity explains 20–40% of same-group partnering for non-Western groups, and ignoring it overstates endogamy for the most segregated groups while understating it for the most integrated. Studying social boundaries requires modelling the partner market itself: <em>who is actually available</em>, in a municipality, a workplace, a school. Without that, we risk reading geography as preference and mistaking opportunity structure for taste.</p>
+        </details>
     </div>
 
     <div class="paper-ref-wrap">
