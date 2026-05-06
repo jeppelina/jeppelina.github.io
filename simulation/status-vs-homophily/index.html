@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hierarchy or homophily? — Jesper Lindmarker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --color-bg: #FAFAF8;
+            --color-text: #1a1a1a;
+            --color-text-muted: #6b6b6b;
+            --color-accent: #B44A2D;
+            --color-accent-2: #3B6994;
+            --color-accent-3: #6B7553;
+            --color-border: #e8e6e1;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.6;
+        }
+
+        /* Header — only shown standalone */
+        .header {
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .header h1 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; }
+        .header h1 em { color: var(--color-accent); }
+        .header a { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); text-decoration: none; }
+        .header a:hover { color: var(--color-accent); }
+
+        /* Layout */
+        .sim-layout {
+            display: flex;
+            gap: 0;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        .col-left {
+            flex: 0 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .panel {
+            flex: 1;
+            min-width: 0;
+            padding: 1.5rem 1.5rem 1.5rem 0;
+        }
+        .panel-intro {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.55;
+        }
+        .panel-intro em { color: var(--color-text); }
+
+        /* Matrix block */
+        .matrix-block { }
+        .matrix-title {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+            margin-bottom: 0.15rem;
+        }
+        .matrix-subtitle {
+            font-size: 0.72rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0.4rem;
+            font-style: italic;
+        }
+        .matrix {
+            display: grid;
+            grid-template-columns: 28px repeat(3, 56px);
+            grid-template-rows: 22px repeat(3, 56px);
+            gap: 3px;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+            width: fit-content;
+        }
+        .m-label {
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+        }
+        .m-cell {
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.12s, box-shadow 0.12s;
+            user-select: none;
+        }
+        .m-cell.editable:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+        .m-cell.selected {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+            z-index: 1;
+        }
+        .m-cell.readonly { cursor: default; }
+
+        /* Cell editor */
+        .cell-editor {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            padding: 0.6rem 0.75rem;
+            font-size: 0.75rem;
+        }
+        .cell-editor-label {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 4px;
+        }
+        .cell-editor-label span:first-child { color: var(--color-text-muted); }
+        .cell-editor-label span:last-child {
+            font-family: var(--font-mono); color: var(--color-accent);
+        }
+        .cell-arrow { color: var(--color-text); }
+
+        input[type="range"] {
+            -webkit-appearance: none; width: 100%; height: 4px;
+            border-radius: 2px; background: var(--color-border); outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+            background: var(--color-accent); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Agents canvas */
+        .canvas-wrap {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+            padding: 6px;
+            width: fit-content;
+        }
+        canvas { display: block; border-radius: 4px; }
+
+        /* Panel — controls and results */
+        .preset-row {
+            display: flex; gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+        .btn-preset {
+            flex: 1;
+            padding: 0.5rem 0.4rem;
+            font-family: var(--font-sans);
+            font-size: 0.74rem;
+            font-weight: 500;
+            color: var(--color-text);
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-preset:hover { border-color: var(--color-accent); color: var(--color-accent); }
+        .btn-preset.active {
+            background: var(--color-accent); color: white; border-color: var(--color-accent);
+        }
+
+        .legend {
+            display: flex; gap: 0.9rem; margin-bottom: 0.8rem; font-size: 0.72rem;
+            color: var(--color-text-muted);
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+        .btn-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .btn-match {
+            flex: 1; padding: 0.55rem; font-family: var(--font-sans); font-size: 0.82rem;
+            font-weight: 500; color: white; background: var(--color-accent);
+            border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-match:hover { background: #d04e2e; }
+        .btn-reset {
+            padding: 0.55rem 0.8rem; font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--color-text-muted); background: transparent;
+            border: 1px solid var(--color-border); border-radius: 6px; cursor: pointer;
+        }
+        .btn-reset:hover { border-color: var(--color-text-muted); }
+
+        .results-title {
+            font-family: var(--font-mono); font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--color-text-muted); margin-bottom: 0.5rem;
+            padding-top: 0.75rem; border-top: 1px solid var(--color-border);
+        }
+        .endo-bar {
+            display: grid;
+            grid-template-columns: 36px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.74rem;
+        }
+        .endo-bar .label {
+            font-family: var(--font-mono);
+            color: var(--color-text-muted);
+        }
+        .endo-bar .track {
+            height: 8px;
+            background: #f1ede5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .endo-bar .fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+        .endo-bar .val {
+            font-family: var(--font-mono); font-weight: 500;
+            text-align: right;
+        }
+        .result-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.35rem 0; border-bottom: 1px solid #f5f4f0;
+            font-size: 0.78rem;
+        }
+        .result-value { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; }
+        .result-value.highlight { color: var(--color-accent); font-size: 0.95rem; }
+
+        .insight {
+            margin-top: 0.85rem; padding: 0.75rem;
+            background: #FFF8F6; border-left: 3px solid var(--color-accent);
+            border-radius: 0 6px 6px 0; font-size: 0.78rem;
+            line-height: 1.55; display: none;
+        }
+        .insight strong { color: var(--color-accent); }
+
+        .embedded .header { display: none; }
+
+        /* Mobile */
+        @media (max-width: 880px) {
+            .sim-layout { flex-direction: column; }
+            .col-left { padding: 1rem; }
+            .panel { padding: 0 1rem 1rem; }
+            .matrix { grid-template-columns: 26px repeat(3, 50px); grid-template-rows: 22px repeat(3, 50px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Hierarchy or homophily? <em>— who matches whom</em></h1>
+        <a href="../../">&larr; Back to site</a>
+    </div>
+
+    <div class="sim-layout">
+        <div class="col-left">
+            <div class="matrix-block">
+                <div class="matrix-title">Group preferences</div>
+                <div class="matrix-subtitle">P(row accepts column) — click a cell to edit</div>
+                <div class="matrix" id="pref-matrix"></div>
+            </div>
+
+            <div class="cell-editor">
+                <div class="cell-editor-label">
+                    <span>Selected: <span id="sel-row" class="cell-arrow">G1</span> &rarr; <span id="sel-col" class="cell-arrow">G1</span></span>
+                    <span id="sel-value">0.70</span>
+                </div>
+                <input type="range" id="cell-slider" min="0" max="100" value="70">
+            </div>
+
+            <div class="matrix-block">
+                <div class="matrix-title">Realized matches</div>
+                <div class="matrix-subtitle">Row-normalised — what an analyst observes</div>
+                <div class="matrix" id="match-matrix"></div>
+            </div>
+
+            <div class="canvas-wrap">
+                <canvas id="canvas" width="488" height="170"></canvas>
+            </div>
+        </div>
+
+        <div class="panel">
+            <p class="panel-intro">
+                Three groups, two regimes. <em>Homophily</em> means each group prefers its own. <em>Status hierarchy</em> means everyone prefers the top group, which is selective and rejects below. The two regimes can produce nearly identical observed pairings — yet the underlying preferences are entirely different.
+            </p>
+
+            <div class="preset-row">
+                <button class="btn-preset" data-preset="homophily">Homophily</button>
+                <button class="btn-preset" data-preset="hierarchy">Hierarchy</button>
+                <button class="btn-preset" data-preset="indifferent">Indifferent</button>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#D9471C;"></div>G1 (top)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#3B6994;"></div>G2 (mid)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#6B7553;"></div>G3 (bottom)</div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn-match" id="btn-match">Run matching</button>
+                <button class="btn-reset" id="btn-reset">Reset</button>
+            </div>
+
+            <div id="results" style="visibility:hidden;">
+                <div class="results-title">Endogamy by group</div>
+                <div id="endo-bars"></div>
+
+                <div class="results-title">Aggregate</div>
+                <div class="result-row">
+                    <span>Same-group share</span>
+                    <span class="result-value highlight" id="r-aggregate">—</span>
+                </div>
+                <div class="result-row">
+                    <span>Couples formed</span>
+                    <span class="result-value" id="r-pairs">—</span>
+                </div>
+                <div class="result-row">
+                    <span>Random expectation</span>
+                    <span class="result-value" id="r-random">33%</span>
+                </div>
+            </div>
+
+            <div class="insight" id="insight"></div>
+        </div>
+    </div>
+
+    <script>
+    if (window.self !== window.top) document.body.classList.add('embedded');
+
+    // -------- Configuration --------
+    const N_GROUPS = 3;
+    const GROUP_NAMES = ['G1', 'G2', 'G3'];
+    const GROUP_COLORS = ['#D9471C', '#3B6994', '#6B7553'];
+    const GROUP_COLORS_LIGHT = ['#FCE5DC', '#DEE6EF', '#E0E4D7'];
+    const N_AGENTS_PER_GROUP = 80;        // 240 total
+    const MATCH_ROUNDS = 12;
+    const CANDIDATES_PER_ROUND = 18;
+
+    // -------- Presets --------
+    // P[i][j] = probability that an ego of group i accepts an alter of group j.
+    //   Homophily — symmetric, diagonal-heavy. Per-group endogamy ~63% (uniform).
+    //   Hierarchy — asymmetric exclusion of G3 by G1 and G2. Per-group endogamy
+    //     71/65/81 (gradient inverted at the bottom — G3 ends up most endogamous
+    //     despite having no in-group preference, simply because it is rejected
+    //     from above). Aggregate ~74%.
+    const PRESETS = {
+        homophily: [
+            // Symmetric: every group equally prefers its own
+            [0.65, 0.35, 0.35],
+            [0.35, 0.65, 0.35],
+            [0.35, 0.35, 0.65],
+        ],
+        hierarchy: [
+            // Asymmetric: G1 and G2 nearly close G3 out; G3 prefers up
+            [0.85, 0.20, 0.05],   // G1 selective; near-total rejection of G3
+            [0.85, 0.60, 0.05],   // G2 prefers G1, accepts G2, rejects G3
+            [0.85, 0.55, 0.55],   // G3 prefers up; accepts G2 and G3 equally
+        ],
+        indifferent: [
+            [0.45, 0.45, 0.45],
+            [0.45, 0.45, 0.45],
+            [0.45, 0.45, 0.45],
+        ],
+    };
+
+    // -------- State --------
+    let P = JSON.parse(JSON.stringify(PRESETS.homophily));
+    let selected = { i: 0, j: 0 };
+    let activePreset = 'homophily';
+
+    let agents = [];
+    let pairs = [];
+    let matched = false;
+    let animProgress = 0;
+    let matchAnimFrame = null;
+
+    // -------- DOM --------
+    const prefEl = document.getElementById('pref-matrix');
+    const matchEl = document.getElementById('match-matrix');
+    const cellSlider = document.getElementById('cell-slider');
+    const selRow = document.getElementById('sel-row');
+    const selCol = document.getElementById('sel-col');
+    const selValue = document.getElementById('sel-value');
+    const btnMatch = document.getElementById('btn-match');
+    const btnReset = document.getElementById('btn-reset');
+    const insightEl = document.getElementById('insight');
+    const resultsEl = document.getElementById('results');
+    const presetButtons = document.querySelectorAll('.btn-preset');
+
+    // -------- Canvas --------
+    const canvas = document.getElementById('canvas');
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = 488, cssH = 170;
+    canvas.width = cssW * dpr;
+    canvas.height = cssH * dpr;
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    const W = cssW, H = cssH;
+
+    // -------- Helpers --------
+    function lerpColor(c1, c2, t) {
+        // Hex strings → blended hex
+        const p1 = parseInt(c1.slice(1), 16);
+        const p2 = parseInt(c2.slice(1), 16);
+        const r = Math.round(((p1 >> 16) & 255) * (1 - t) + ((p2 >> 16) & 255) * t);
+        const g = Math.round(((p1 >> 8) & 255) * (1 - t) + ((p2 >> 8) & 255) * t);
+        const b = Math.round((p1 & 255) * (1 - t) + (p2 & 255) * t);
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // -------- Build matrices --------
+    function buildPrefMatrix() {
+        prefEl.innerHTML = '';
+        // Top-left corner is empty
+        const corner = document.createElement('div');
+        corner.className = 'm-label';
+        corner.textContent = '';
+        prefEl.appendChild(corner);
+        // Column headers
+        for (let j = 0; j < N_GROUPS; j++) {
+            const c = document.createElement('div');
+            c.className = 'm-label';
+            c.textContent = GROUP_NAMES[j];
+            c.style.color = GROUP_COLORS[j];
+            prefEl.appendChild(c);
+        }
+        // Rows
+        for (let i = 0; i < N_GROUPS; i++) {
+            const r = document.createElement('div');
+            r.className = 'm-label';
+            r.textContent = GROUP_NAMES[i];
+            r.style.color = GROUP_COLORS[i];
+            prefEl.appendChild(r);
+            for (let j = 0; j < N_GROUPS; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'm-cell editable';
+                cell.dataset.i = i; cell.dataset.j = j;
+                cell.addEventListener('click', () => selectCell(i, j));
+                prefEl.appendChild(cell);
+            }
+        }
+        renderPrefMatrix();
+    }
+
+    function renderPrefMatrix() {
+        const cells = prefEl.querySelectorAll('.m-cell');
+        cells.forEach(cell => {
+            const i = +cell.dataset.i, j = +cell.dataset.j;
+            const v = P[i][j];
+            cell.textContent = v.toFixed(2);
+            // Heatmap: white → accent (orange)
+            cell.style.background = lerpColor('#FFFFFF', '#B44A2D', v);
+            cell.style.color = v > 0.55 ? 'white' : '#1a1a1a';
+            cell.classList.toggle('selected', i === selected.i && j === selected.j);
+        });
+    }
+
+    function buildMatchMatrix() {
+        matchEl.innerHTML = '';
+        const corner = document.createElement('div');
+        corner.className = 'm-label';
+        matchEl.appendChild(corner);
+        for (let j = 0; j < N_GROUPS; j++) {
+            const c = document.createElement('div');
+            c.className = 'm-label';
+            c.textContent = GROUP_NAMES[j];
+            c.style.color = GROUP_COLORS[j];
+            matchEl.appendChild(c);
+        }
+        for (let i = 0; i < N_GROUPS; i++) {
+            const r = document.createElement('div');
+            r.className = 'm-label';
+            r.textContent = GROUP_NAMES[i];
+            r.style.color = GROUP_COLORS[i];
+            matchEl.appendChild(r);
+            for (let j = 0; j < N_GROUPS; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'm-cell readonly';
+                cell.dataset.i = i; cell.dataset.j = j;
+                cell.textContent = '—';
+                cell.style.background = '#f5f4f0';
+                matchEl.appendChild(cell);
+            }
+        }
+    }
+
+    function renderMatchMatrix(rowShares) {
+        const cells = matchEl.querySelectorAll('.m-cell');
+        cells.forEach(cell => {
+            const i = +cell.dataset.i, j = +cell.dataset.j;
+            const v = rowShares[i][j];
+            cell.textContent = isNaN(v) ? '—' : Math.round(v * 100) + '%';
+            cell.style.background = lerpColor('#FFFFFF', '#3B6994', v);
+            cell.style.color = v > 0.5 ? 'white' : '#1a1a1a';
+        });
+    }
+
+    function selectCell(i, j) {
+        selected = { i, j };
+        selRow.textContent = GROUP_NAMES[i];
+        selRow.style.color = GROUP_COLORS[i];
+        selCol.textContent = GROUP_NAMES[j];
+        selCol.style.color = GROUP_COLORS[j];
+        const v = P[i][j];
+        cellSlider.value = Math.round(v * 100);
+        selValue.textContent = v.toFixed(2);
+        renderPrefMatrix();
+    }
+
+    cellSlider.addEventListener('input', () => {
+        const v = +cellSlider.value / 100;
+        P[selected.i][selected.j] = v;
+        selValue.textContent = v.toFixed(2);
+        renderPrefMatrix();
+        // Editing the matrix means any preset is now custom
+        clearActivePreset();
+        // Clear any prior match results — they no longer reflect the matrix
+        if (matched) clearResults();
+    });
+
+    function clearActivePreset() {
+        activePreset = 'custom';
+        presetButtons.forEach(b => b.classList.remove('active'));
+    }
+
+    function applyPreset(name) {
+        P = JSON.parse(JSON.stringify(PRESETS[name]));
+        activePreset = name;
+        presetButtons.forEach(b => b.classList.toggle('active', b.dataset.preset === name));
+        renderPrefMatrix();
+        // Refresh slider for currently-selected cell
+        cellSlider.value = Math.round(P[selected.i][selected.j] * 100);
+        selValue.textContent = P[selected.i][selected.j].toFixed(2);
+        clearResults();
+    }
+
+    presetButtons.forEach(b => {
+        b.addEventListener('click', () => applyPreset(b.dataset.preset));
+    });
+
+    // -------- Agents --------
+    function generateAgents() {
+        agents = [];
+        for (let g = 0; g < N_GROUPS; g++) {
+            for (let k = 0; k < N_AGENTS_PER_GROUP; k++) {
+                agents.push({
+                    group: g,
+                    // Layout in three horizontal tiers
+                    x: 12 + (W - 24) * (k + 0.5) / N_AGENTS_PER_GROUP,
+                    y: 22 + g * 50,
+                    paired: false,
+                    partner: null,
+                });
+            }
+        }
+        pairs = [];
+        matched = false;
+        animProgress = 0;
+        draw();
+    }
+
+    // -------- Two-sided matching --------
+    // Each round: every unpaired agent samples K candidates and tries
+    // mutual stochastic acceptance with each. P[i,j] × P[j,i] is the
+    // dyad-level probability a couple forms in a single attempt.
+    function runMatch() {
+        agents.forEach(a => { a.paired = false; a.partner = null; });
+        pairs = [];
+
+        for (let r = 0; r < MATCH_ROUNDS; r++) {
+            const queue = shuffle(agents.filter(a => !a.paired));
+            for (const ego of queue) {
+                if (ego.paired) continue;
+                const pool = agents.filter(a => !a.paired && a !== ego);
+                if (pool.length === 0) break;
+                shuffle(pool);
+                const cands = pool.slice(0, Math.min(CANDIDATES_PER_ROUND, pool.length));
+                for (const alter of cands) {
+                    if (alter.paired) continue;
+                    const p = P[ego.group][alter.group] * P[alter.group][ego.group];
+                    if (Math.random() < p) {
+                        ego.paired = true; alter.paired = true;
+                        ego.partner = alter; alter.partner = ego;
+                        pairs.push([ego, alter]);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    function tallyMatches() {
+        // For each ego, count partners by group. Iterating over agents
+        // counts each couple twice — once per endpoint — which is what we
+        // want for row-normalisation ("of group i's unions, X% are with j").
+        const partnerCount = Array(N_GROUPS).fill(0).map(() => Array(N_GROUPS).fill(0));
+        for (const a of agents) {
+            if (a.paired) partnerCount[a.group][a.partner.group] += 1;
+        }
+        const rowShares = partnerCount.map(row => {
+            const sum = row.reduce((s, x) => s + x, 0);
+            return sum === 0 ? row.map(() => NaN) : row.map(x => x / sum);
+        });
+        const endogamyByGroup = rowShares.map((row, i) => row[i]);
+
+        let sameGroup = 0, total = 0;
+        for (const a of agents) {
+            if (!a.paired) continue;
+            total += 1;
+            if (a.group === a.partner.group) sameGroup += 1;
+        }
+        const aggregate = total === 0 ? NaN : sameGroup / total;
+
+        return { rowShares, endogamyByGroup, aggregate, totalPairs: pairs.length };
+    }
+
+    // -------- Run --------
+    function runAndShow() {
+        if (matchAnimFrame) cancelAnimationFrame(matchAnimFrame);
+        runMatch();
+        const stats = tallyMatches();
+        matched = true;
+        animProgress = 0;
+
+        renderMatchMatrix(stats.rowShares);
+        renderEndogamyBars(stats.endogamyByGroup);
+        document.getElementById('r-aggregate').textContent =
+            isNaN(stats.aggregate) ? '—' : Math.round(stats.aggregate * 100) + '%';
+        document.getElementById('r-pairs').textContent = stats.totalPairs;
+        resultsEl.style.visibility = 'visible';
+
+        showInsight(stats);
+        animateMatching();
+    }
+
+    function renderEndogamyBars(values) {
+        const wrap = document.getElementById('endo-bars');
+        wrap.innerHTML = '';
+        for (let i = 0; i < N_GROUPS; i++) {
+            const v = values[i];
+            const row = document.createElement('div');
+            row.className = 'endo-bar';
+            row.innerHTML = `
+                <div class="label" style="color:${GROUP_COLORS[i]}">${GROUP_NAMES[i]}</div>
+                <div class="track"><div class="fill" style="width:${(isNaN(v) ? 0 : v * 100)}%; background:${GROUP_COLORS[i]}"></div></div>
+                <div class="val">${isNaN(v) ? '—' : Math.round(v * 100) + '%'}</div>
+            `;
+            wrap.appendChild(row);
+        }
+    }
+
+    function clearResults() {
+        matched = false;
+        pairs = [];
+        agents.forEach(a => { a.paired = false; a.partner = null; });
+        resultsEl.style.visibility = 'hidden';
+        insightEl.style.display = 'none';
+        // Reset realized matrix to placeholder
+        const cells = matchEl.querySelectorAll('.m-cell');
+        cells.forEach(c => { c.textContent = '—'; c.style.background = '#f5f4f0'; c.style.color = '#1a1a1a'; });
+        draw();
+    }
+
+    function showInsight(stats) {
+        const e = stats.endogamyByGroup;
+        const spread = Math.max(...e) - Math.min(...e);
+        const agg = stats.aggregate;
+        let html = '';
+
+        if (activePreset === 'homophily') {
+            html = `Each group prefers its own — symmetric matrix, similar endogamy across groups (~<strong>${Math.round(agg * 100)}%</strong>). Realized pairings reflect those preferences directly.`;
+        } else if (activePreset === 'hierarchy') {
+            const top = Math.round(e[0] * 100);
+            const bot = Math.round(e[2] * 100);
+            html = `Hierarchical exclusion: G1 and G2 close G3 out, G3 prefers upward. Notice G3's row of preferences has <em>no diagonal weight</em> — yet G3 ends up the most endogamous group at <strong>${bot}%</strong>, ahead of G1 (${top}%). Endogamy here is forced from above, not chosen from within.`;
+        } else if (activePreset === 'indifferent') {
+            html = `No assortative pull. Endogamy hovers near the <strong>${Math.round(100 / N_GROUPS)}%</strong> random baseline — what you'd expect from chance with three equal-sized groups.`;
+        } else {
+            // Custom matrix — describe what we see
+            const sym = matrixIsSymmetric(P);
+            if (sym && spread < 0.07 && agg > 0.45) {
+                html = `Symmetric preferences, uniform endogamy. Looks like <strong>homophily</strong>.`;
+            } else if (!sym && spread > 0.12) {
+                html = `Asymmetric preferences with a gradient across groups — characteristic of <strong>hierarchy</strong>. Different groups end up endogamous for different reasons.`;
+            } else {
+                html = `Custom matrix. Aggregate endogamy <strong>${Math.round(agg * 100)}%</strong>; spread across groups ${Math.round(spread * 100)} pp.`;
+            }
+        }
+        insightEl.innerHTML = html;
+        insightEl.style.display = 'block';
+    }
+
+    function matrixIsSymmetric(M, tol = 0.05) {
+        for (let i = 0; i < M.length; i++) {
+            for (let j = i + 1; j < M.length; j++) {
+                if (Math.abs(M[i][j] - M[j][i]) > tol) return false;
+            }
+        }
+        return true;
+    }
+
+    // -------- Drawing --------
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Tier guide lines
+        ctx.strokeStyle = '#f0eee8';
+        ctx.lineWidth = 1;
+        for (let g = 0; g < N_GROUPS; g++) {
+            const y = 22 + g * 50;
+            ctx.beginPath();
+            ctx.moveTo(8, y); ctx.lineTo(W - 8, y);
+            ctx.stroke();
+        }
+
+        // Pair lines (animated)
+        if (matched && pairs.length > 0) {
+            const p = Math.min(1, animProgress);
+            for (const [a, b] of pairs) {
+                const sameGroup = a.group === b.group;
+                ctx.strokeStyle = sameGroup
+                    ? 'rgba(160,160,160,0.18)'
+                    : 'rgba(180,80,40,0.32)';
+                ctx.lineWidth = sameGroup ? 0.8 : 1.0;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                // Animate from a toward b
+                const tx = a.x + (b.x - a.x) * p;
+                const ty = a.y + (b.y - a.y) * p;
+                // Slight curve for visual interest when across tiers
+                if (!sameGroup) {
+                    const mx = (a.x + tx) / 2;
+                    const my = (a.y + ty) / 2 - 6 * Math.sign(b.y - a.y);
+                    ctx.quadraticCurveTo(mx, my, tx, ty);
+                } else {
+                    ctx.lineTo(tx, ty);
+                }
+                ctx.stroke();
+            }
+        }
+
+        // Agents
+        for (const a of agents) {
+            ctx.globalAlpha = matched && !a.paired ? 0.18 : 0.85;
+            ctx.beginPath();
+            ctx.arc(a.x, a.y, 3.4, 0, Math.PI * 2);
+            ctx.fillStyle = GROUP_COLORS[a.group];
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+    }
+
+    function animateMatching() {
+        animProgress += 0.04;
+        draw();
+        if (animProgress < 1) {
+            matchAnimFrame = requestAnimationFrame(animateMatching);
+        }
+    }
+
+    // -------- Wire up --------
+    btnMatch.addEventListener('click', runAndShow);
+    btnReset.addEventListener('click', () => {
+        if (matchAnimFrame) cancelAnimationFrame(matchAnimFrame);
+        applyPreset('homophily');
+        selectCell(0, 0);
+        generateAgents();
+        clearResults();
+    });
+
+    // -------- Init --------
+    buildPrefMatrix();
+    buildMatchMatrix();
+    selectCell(0, 0);
+    presetButtons.forEach(b => b.classList.toggle('active', b.dataset.preset === 'homophily'));
+    generateAgents();
+    </script>
+    <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0] - 2026-05-06
+
+### Added
+- **Simulations hub at `/simulation/`** — tab-based navigation between toy simulations
+  - Tabs styled as italic Playfair labels with monospace sub-captions; underlined active state in accent color
+  - Hash routing: `/simulation/#space-vs-preference` and `/simulation/#status-vs-homophily` for direct linking
+  - Iframe-based — each sim remains a self-contained standalone page; hub embeds it via iframe
+  - Iframes auto-size to content via `ResizeObserver` on the inner body (same-origin); refits on load + delayed retries to catch font swap, canvas init, and slider layout settling
+  - Per-tab caption above the iframe explaining what the sim shows and how it relates to the dissertation
+  - Inherited fonts and palette from the rest of the site; mobile breakpoint at 720px
+
+### Changed
+- **Relocated Paper 1 sim** from `/simulation/index.html` to `/simulation/space-vs-preference/index.html`
+  - URL `/simulation/` still serves valid content (the hub, with this sim selected by default), so existing inbound links and the sitemap entry remain intact
+  - Updated back link in the relocated file from `../` to `../../` so standalone access still returns to site root
+- `sitemap.xml` — added entries for the two sub-paths; bumped `<lastmod>` on `/simulation/`
+
+## [2.2.0] - 2026-05-06
+
+### Added
+- **New toy simulation: "Hierarchy or homophily?"** at `/simulation/status-vs-homophily/`
+  - Editable 3×3 directed preference matrix; row = ego group, column = alter group; click a cell, slider adjusts
+  - Two-sided stochastic matching (independent Bernoulli acceptance per side; dyad probability = P[i,j] × P[j,i])
+  - Three presets: **Homophily** (symmetric, diagonal-heavy → ~63% endogamy uniform across groups), **Hierarchy** (G1 and G2 nearly close G3 out at P=0.05; G3 prefers upward with no diagonal weight → G3 becomes the *most* endogamous group at ~81%, ahead of G1 at ~77%), **Indifferent** (flat → 33% random baseline)
+  - Side-by-side display of preference matrix (asymmetric, the truth) and realized matches matrix (symmetric, what an analyst sees)
+  - Per-group endogamy bars and aggregate same-group share
+  - Insight box describes the active regime and contrasts homophily vs. hierarchy
+  - 240 agents (3 groups × 80), 12 matching rounds, ~18 candidates per ego per round
+- Sibling `README.md` documenting concept, mechanics, presets, and possible extensions
+- Three-group palette: G1 #D9471C (orange, top), G2 #3B6994 (blue, mid), G3 #6B7553 (sage, bottom)
+
+### Conceptual rationale
+- The Paper 1 sim (already on the site) shows spatial vs. preference mechanisms behind ethnic endogamy. The new sim addresses a different identification problem from the kappa: same observed endogamy can come from in-group preference *or* from out-group exclusion under a hierarchy. Realized unions can't distinguish the two — only directed preferences can.
+
 ## [2.1.0] - 2026-03-11
 
 ### Added
