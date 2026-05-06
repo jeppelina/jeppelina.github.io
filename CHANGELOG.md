@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.5.0] - 2026-05-06
+
+### Changed
+- **Structure-vs-behaviour sim — full rewrite from closed-form to two-canvas spatial.** Replaces the v1 slider-driven analytical version with two side-by-side spatial windows (T1 and T2) showing actual populations and matchings.
+  - 140 agents per snapshot; **two minority clusters (enclaves)** per snapshot with minimum-separation; majority spreads out avoiding the enclave zones
+  - **Smooth group-flip transitions** when minority share slider moves: only the minimum number of agents flip between groups, each over a ~750 ms tween — colour crossfades between majority and minority palette, position glides from old anchor to a newly assigned cluster anchor (composes with segregation interpolation)
+  - **Fixed segregation (no slider)** — held at `FIXED_SEG = 0.65` across both snapshots so the structure × behaviour decomposition stays clean (composition vs. preference, with segregation as a held-constant background)
+  - **Symmetric (Shapley) decomposition** — averages T1-anchored and T2-anchored estimates of each main effect, splitting the bilinear interaction term equally. `Δ_obs ≡ Δ_struct + Δ_behav` exactly, no separate interaction row. Matches the paper's framing.
+  - Per-snapshot stat shows realised same-group share after each run; counterfactual cells (T1·T2, T2·T1) come from silent runs over the existing populations with the other snapshot's preference, averaged across 3 trials for stability
+  - Visible matches are restored after the silent counterfactual runs so canvas and numbers stay in sync
+  - **Continuous auto-run** — removed the "Run matching" button. Slider edits trigger a debounced re-match (~350 ms after the user pauses); initial load runs once on its own; reset triggers a fresh run as well
+  - **Per-group decomposition** — endogamy is computed and decomposed separately for majority and minority (`2·n_AA / (2·n_AA + n_AB)` from each group's perspective), so the Blau structural-opportunity asymmetry is visible: minority endogamy is much more sensitive to group size than majority's
+  - **Layout inverted** — endogamy values + per-group decomposition panel sits at the top; sliders are now above each canvas, canvases at the bottom; 2×2 cell matrix dropped (T1 and T2 endogamy values per group plus the decomposition is enough)
+  - **Distance removed from the DGP** — match probability is now purely `BASE_ACCEPT × (1 + pref)²` for same-group, `BASE_ACCEPT` for cross-group; spatial layout is visual only. Removes a major source of run-to-run variance and makes the decomposition reflect composition × preference cleanly. `BASE_ACCEPT = 0.10` calibrated to keep pairing rate high in 8 rounds × 14 candidates
+  - **Decomposition uses closed-form analytical values, not stochastic matching.** Once distance was removed, the DGP is purely compositional and has an exact solution: majority endogamy = `(1−m)·α² / ((1−m)·α² + m)`, minority endogamy = `m·α² / (m·α² + (1−m))`, where `α = 1 + pref`. Even with averaging, single-pair shifts in a small minority (e.g. 14 agents at m=0.10) move endogamy by ~7 pp per realisation, leaking noise into the Shapley decomposition and producing spurious Δ_struct when T1 and T2 had identical minority shares. The closed-form solution eliminates this entirely — Δ_struct is now exactly 0 at identical structure, Δ_behav exactly 0 at identical preference. The canvases still animate a single stochastic match each as visual illustration; pair counts on the canvas are one realisation while displayed numbers are the analytical expectation
+  - Updated README documents the spatial model (now labelled visual-only), the matching DGP, the symmetric (Shapley) decomposition per group, and the auto-run behaviour
+
 ## [2.4.0] - 2026-05-06
 
 ### Added
