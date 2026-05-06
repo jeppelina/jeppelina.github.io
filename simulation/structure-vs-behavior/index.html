@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structure or behaviour? — Jesper Lindmarker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --color-bg: #FAFAF8;
+            --color-text: #1a1a1a;
+            --color-text-muted: #6b6b6b;
+            --color-accent: #B44A2D;
+            --color-accent-2: #3B6994;
+            --color-border: #e8e6e1;
+            --color-t1: #3B6994;
+            --color-t2: #B44A2D;
+            --color-mix: #6b6b6b;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .header h1 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; }
+        .header h1 em { color: var(--color-accent); }
+        .header a {
+            font-family: var(--font-mono); font-size: 0.8rem;
+            color: var(--color-text-muted); text-decoration: none;
+        }
+        .header a:hover { color: var(--color-accent); }
+
+        /* Layout */
+        .sim-layout {
+            display: flex;
+            gap: 0;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        .col-left {
+            flex: 0 0 auto;
+            padding: 1.5rem;
+            width: 480px;
+        }
+        .panel {
+            flex: 1;
+            min-width: 0;
+            padding: 1.5rem 1.5rem 1.5rem 0;
+        }
+        .panel-intro {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.55;
+        }
+        .panel-intro em { color: var(--color-text); }
+        .panel-intro strong { font-weight: 600; }
+
+        /* Snapshot blocks */
+        .snap {
+            background: white;
+            padding: 0.75rem 0.95rem 0.95rem 0.95rem;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+            margin-bottom: 0.7rem;
+        }
+        .snap.t1 { border-left: 3px solid var(--color-t1); }
+        .snap.t2 { border-left: 3px solid var(--color-t2); }
+        .snap-title {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+            margin-bottom: 0.25rem;
+        }
+        .snap.t1 .snap-title strong { color: var(--color-t1); }
+        .snap.t2 .snap-title strong { color: var(--color-t2); }
+        .snap-title strong { font-weight: 600; }
+
+        .control { margin-top: 0.5rem; }
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+        .control-label .v {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+        }
+        .snap.t1 .control-label .v { color: var(--color-t1); }
+        .snap.t2 .control-label .v { color: var(--color-t2); }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%; height: 4px;
+            border-radius: 2px;
+            background: var(--color-border);
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .snap.t1 input[type="range"]::-webkit-slider-thumb { background: var(--color-t1); }
+        .snap.t2 input[type="range"]::-webkit-slider-thumb { background: var(--color-t2); }
+
+        /* 2x2 matrix */
+        .matrix-title {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+            margin-bottom: 0.4rem;
+        }
+        .matrix-subtitle {
+            font-size: 0.74rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+        .matrix2 {
+            background: white;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+            display: grid;
+            grid-template-columns: 88px 1fr 1fr;
+            grid-template-rows: 26px 1fr 1fr;
+            gap: 6px;
+        }
+        .m2-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            text-align: center;
+        }
+        .m2-label.t1 { color: var(--color-t1); font-weight: 500; }
+        .m2-label.t2 { color: var(--color-t2); font-weight: 500; }
+        .m2-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 0.65rem 0.5rem;
+            min-height: 80px;
+            position: relative;
+            transition: background 0.25s ease;
+        }
+        .m2-cell.observed { box-shadow: inset 0 0 0 2px rgba(0,0,0,0.04); }
+        .m2-cell.counterfactual { box-shadow: inset 0 0 0 1px var(--color-border); }
+        .m2-cell .scenario {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 4px;
+            opacity: 0.85;
+        }
+        .m2-cell .value {
+            font-family: var(--font-mono);
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        /* Decomposition */
+        .decomp { margin-top: 1rem; }
+        .decomp-title {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--color-border);
+        }
+        .decomp-row {
+            display: grid;
+            grid-template-columns: 96px 1fr 70px;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.32rem 0;
+            font-size: 0.78rem;
+        }
+        .decomp-row .swatch {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 500;
+        }
+        .decomp-row .track {
+            height: 6px;
+            background: #f1ede5;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .decomp-row .fill {
+            position: absolute;
+            top: 0; bottom: 0;
+            left: 0;
+            border-radius: 3px;
+            transition: width 0.25s ease, background 0.25s ease;
+        }
+        .decomp-row .delta {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            text-align: right;
+            font-weight: 500;
+        }
+
+        .row-obs   .swatch, .row-obs   .delta { color: var(--color-mix); }
+        .row-obs   .fill { background: var(--color-mix); }
+        .row-struct .swatch, .row-struct .delta { color: var(--color-t2); }
+        .row-struct .fill { background: var(--color-t2); }
+        .row-behav .swatch, .row-behav .delta { color: var(--color-t1); }
+        .row-behav .fill { background: var(--color-t1); }
+        .row-inter .swatch, .row-inter .delta { color: var(--color-text-muted); }
+        .row-inter .fill { background: var(--color-text-muted); opacity: 0.6; }
+
+        /* Insight */
+        .insight {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #FFF8F6;
+            border-left: 3px solid var(--color-accent);
+            border-radius: 0 6px 6px 0;
+            font-size: 0.78rem;
+            line-height: 1.55;
+        }
+        .insight strong { color: var(--color-accent); }
+        .insight em { color: var(--color-text); font-style: italic; }
+
+        /* Buttons */
+        .btn-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+        .btn-reset {
+            padding: 0.55rem 0.8rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .btn-reset:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+        .embedded .header { display: none; }
+
+        @media (max-width: 880px) {
+            .sim-layout { flex-direction: column; }
+            .col-left { width: auto; padding: 1rem; }
+            .panel { padding: 0 1rem 1rem; }
+            .matrix2 { grid-template-columns: 70px 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Structure or behaviour? <em>— decomposing change in endogamy</em></h1>
+        <a href="../../">&larr; Back to site</a>
+    </div>
+
+    <div class="sim-layout">
+        <div class="col-left">
+            <div class="matrix-title">Endogamy under four scenarios</div>
+            <div class="matrix-subtitle">Two are observed; two are counterfactual</div>
+            <div class="matrix2">
+                <div></div>
+                <div class="m2-label t1">T1 structure</div>
+                <div class="m2-label t2">T2 structure</div>
+
+                <div class="m2-label t1">T1 behaviour</div>
+                <div class="m2-cell observed" id="cell-11">
+                    <div class="scenario">Observed at T1</div>
+                    <div class="value">—</div>
+                </div>
+                <div class="m2-cell counterfactual" id="cell-12">
+                    <div class="scenario">Counterfactual</div>
+                    <div class="value">—</div>
+                </div>
+
+                <div class="m2-label t2">T2 behaviour</div>
+                <div class="m2-cell counterfactual" id="cell-21">
+                    <div class="scenario">Counterfactual</div>
+                    <div class="value">—</div>
+                </div>
+                <div class="m2-cell observed" id="cell-22">
+                    <div class="scenario">Observed at T2</div>
+                    <div class="value">—</div>
+                </div>
+            </div>
+
+            <div class="decomp">
+                <div class="decomp-title">Decomposition (anchored at T1)</div>
+                <div class="decomp-row row-obs">
+                    <span class="swatch">Observed</span>
+                    <div class="track"><div class="fill" id="bar-obs"></div></div>
+                    <span class="delta" id="d-obs">—</span>
+                </div>
+                <div class="decomp-row row-struct">
+                    <span class="swatch">Structure</span>
+                    <div class="track"><div class="fill" id="bar-struct"></div></div>
+                    <span class="delta" id="d-struct">—</span>
+                </div>
+                <div class="decomp-row row-behav">
+                    <span class="swatch">Behaviour</span>
+                    <div class="track"><div class="fill" id="bar-behav"></div></div>
+                    <span class="delta" id="d-behav">—</span>
+                </div>
+                <div class="decomp-row row-inter">
+                    <span class="swatch">Interaction</span>
+                    <div class="track"><div class="fill" id="bar-inter"></div></div>
+                    <span class="delta" id="d-inter">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <p class="panel-intro">
+                Two snapshots: an earlier moment (<strong style="color:var(--color-t1)">T1</strong>) and a later one (<strong style="color:var(--color-t2)">T2</strong>). At each, set the population composition — minority share — and the in-group preference. The 2×2 then shows what endogamy looks like under all four combinations of the two structures and the two behaviours: <em>two observed, two counterfactual</em>. The decomposition tells you how much of the observed change is composition versus preference.
+            </p>
+
+            <div class="snap t1">
+                <div class="snap-title"><strong>T1</strong> — earlier</div>
+                <div class="control">
+                    <div class="control-label">
+                        <span>Minority share</span>
+                        <span class="v" id="t1-m-val">10%</span>
+                    </div>
+                    <input type="range" id="t1-m" min="1" max="50" value="10">
+                </div>
+                <div class="control">
+                    <div class="control-label">
+                        <span>In-group preference bonus</span>
+                        <span class="v" id="t1-p-val">+40%</span>
+                    </div>
+                    <input type="range" id="t1-p" min="0" max="200" value="40">
+                </div>
+            </div>
+
+            <div class="snap t2">
+                <div class="snap-title"><strong>T2</strong> — later</div>
+                <div class="control">
+                    <div class="control-label">
+                        <span>Minority share</span>
+                        <span class="v" id="t2-m-val">30%</span>
+                    </div>
+                    <input type="range" id="t2-m" min="1" max="50" value="30">
+                </div>
+                <div class="control">
+                    <div class="control-label">
+                        <span>In-group preference bonus</span>
+                        <span class="v" id="t2-p-val">+80%</span>
+                    </div>
+                    <input type="range" id="t2-p" min="0" max="200" value="80">
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn-reset" id="btn-reset">Reset to defaults</button>
+            </div>
+
+            <div class="insight" id="insight"></div>
+        </div>
+    </div>
+
+    <script>
+    if (window.self !== window.top) document.body.classList.add('embedded');
+
+    // Closed-form endogamy under two-group, in-group preference matching.
+    // m: minority share (0–1). pref: preference bonus (0 = none, 1 = doubled).
+    // Same-group dyad weight = (1+pref)^2; cross-group weight = 1.
+    function endogamy(m, pref) {
+        const a2 = (1 + pref) * (1 + pref);
+        const within  = a2 * (m * m + (1 - m) * (1 - m));
+        const between = 2 * m * (1 - m);
+        return within / (within + between);
+    }
+
+    function lerpColor(c1, c2, t) {
+        const p1 = parseInt(c1.slice(1), 16);
+        const p2 = parseInt(c2.slice(1), 16);
+        const r = Math.round(((p1 >> 16) & 255) * (1 - t) + ((p2 >> 16) & 255) * t);
+        const g = Math.round(((p1 >> 8) & 255) * (1 - t) + ((p2 >> 8) & 255) * t);
+        const b = Math.round((p1 & 255) * (1 - t) + (p2 & 255) * t);
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    const DEFAULTS = { t1m: 10, t1p: 40, t2m: 30, t2p: 80 };
+    const el = id => document.getElementById(id);
+
+    function update() {
+        const t1m = +el('t1-m').value, t1p = +el('t1-p').value;
+        const t2m = +el('t2-m').value, t2p = +el('t2-p').value;
+
+        el('t1-m-val').textContent = t1m + '%';
+        el('t1-p-val').textContent = '+' + t1p + '%';
+        el('t2-m-val').textContent = t2m + '%';
+        el('t2-p-val').textContent = '+' + t2p + '%';
+
+        const m1 = t1m / 100, m2 = t2m / 100;
+        const p1 = t1p / 100, p2 = t2p / 100;
+
+        // Layout: rows = behaviour, cols = structure
+        const e11 = endogamy(m1, p1); // T1 beh, T1 struct  → observed at T1
+        const e12 = endogamy(m2, p1); // T1 beh, T2 struct  → counterfactual
+        const e21 = endogamy(m1, p2); // T2 beh, T1 struct  → counterfactual
+        const e22 = endogamy(m2, p2); // T2 beh, T2 struct  → observed at T2
+
+        const cells = [
+            ['cell-11', e11], ['cell-12', e12],
+            ['cell-21', e21], ['cell-22', e22],
+        ];
+        cells.forEach(([id, v]) => {
+            const node = el(id);
+            node.querySelector('.value').textContent = (v * 100).toFixed(1) + '%';
+            node.style.background = lerpColor('#FFFFFF', '#B44A2D', v);
+            node.style.color = v > 0.55 ? 'white' : '#1a1a1a';
+        });
+
+        // T1·T1-anchored decomposition
+        const dObs    = e22 - e11;
+        const dStruct = e12 - e11;
+        const dBehav  = e21 - e11;
+        const dInter  = dObs - dStruct - dBehav;
+
+        const ppFmt = d => (d >= 0 ? '+' : '−') + Math.abs(d * 100).toFixed(1) + ' pp';
+        el('d-obs').textContent    = ppFmt(dObs);
+        el('d-struct').textContent = ppFmt(dStruct);
+        el('d-behav').textContent  = ppFmt(dBehav);
+        el('d-inter').textContent  = ppFmt(dInter);
+
+        // Bars on a shared scale (max |Δ| = full width)
+        const maxAbs = Math.max(0.001, ...[dObs, dStruct, dBehav, dInter].map(Math.abs));
+        const setBar = (id, v) => {
+            el(id).style.width = ((Math.abs(v) / maxAbs) * 100) + '%';
+        };
+        setBar('bar-obs', dObs);
+        setBar('bar-struct', dStruct);
+        setBar('bar-behav', dBehav);
+        setBar('bar-inter', dInter);
+
+        renderInsight(dObs, dStruct, dBehav, dInter, ppFmt);
+    }
+
+    function renderInsight(dObs, dStruct, dBehav, dInter, ppFmt) {
+        const insight = el('insight');
+        let html;
+        const SMALL = 0.01;
+
+        if (Math.abs(dObs) < SMALL && Math.abs(dStruct) < SMALL && Math.abs(dBehav) < SMALL) {
+            html = `T1 and T2 are essentially the same. Move the sliders apart to see how composition and preference shifts decompose.`;
+        } else if (dStruct < -SMALL && dBehav > SMALL) {
+            html = `<strong>The observed change masks opposing forces.</strong> Diversification pulls endogamy down by <em>${ppFmt(dStruct).replace('+','')}</em>, while in-group preference <em>tightens</em> by <em>${ppFmt(dBehav)}</em>. The observed move (${ppFmt(dObs)}) reads as decline — but ignores that behaviour intensified.`;
+        } else if (dStruct > SMALL && dBehav < -SMALL) {
+            html = `Composition concentrates while preference loosens. Structure adds ${ppFmt(dStruct)}; behaviour removes ${ppFmt(dBehav).replace('−','')}. Observed move ${ppFmt(dObs)}.`;
+        } else if (dStruct < -SMALL && dBehav < -SMALL) {
+            html = `Structure and behaviour move <em>together</em>. Diversification (${ppFmt(dStruct)}) and weaker in-group preference (${ppFmt(dBehav)}) both pull endogamy down. Observed ${ppFmt(dObs)}.`;
+        } else if (dStruct > SMALL && dBehav > SMALL) {
+            html = `Structure and behaviour reinforce. Concentration (${ppFmt(dStruct)}) and stronger preference (${ppFmt(dBehav)}) both push endogamy up. Observed ${ppFmt(dObs)}.`;
+        } else if (Math.abs(dStruct) > Math.abs(dBehav) * 2.5) {
+            html = `Most of the observed change (${ppFmt(dObs)}) is <strong>structural</strong> — composition shifts dominate.`;
+        } else if (Math.abs(dBehav) > Math.abs(dStruct) * 2.5) {
+            html = `Most of the observed change (${ppFmt(dObs)}) is <strong>behavioural</strong> — preference shifts dominate.`;
+        } else {
+            html = `Structure (${ppFmt(dStruct)}) and behaviour (${ppFmt(dBehav)}) each contribute. Observed ${ppFmt(dObs)}.`;
+        }
+        insight.innerHTML = html;
+    }
+
+    ['t1-m', 't1-p', 't2-m', 't2-p'].forEach(id => {
+        el(id).addEventListener('input', update);
+    });
+
+    el('btn-reset').addEventListener('click', () => {
+        el('t1-m').value = DEFAULTS.t1m;
+        el('t1-p').value = DEFAULTS.t1p;
+        el('t2-m').value = DEFAULTS.t2m;
+        el('t2-p').value = DEFAULTS.t2p;
+        update();
+    });
+
+    update();
+    </script>
+    <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

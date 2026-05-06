@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0] - 2026-05-06
+
+### Added
+- **New toy simulation: "Structure or behaviour?"** at `/simulation/structure-vs-behavior/` — Paper 3 decomposition
+  - Two snapshots (T1 and T2) with two sliders each: minority share (structure) and in-group preference bonus (behaviour)
+  - 2×2 matrix shows endogamy under all four combinations of structure × behaviour: two observed corners, two counterfactual
+  - Decomposition rows below: Observed, Structure-only, Behaviour-only, Interaction (T1·T1-anchored; sums identically to observed)
+  - Closed-form math (no stochastic matching) — same-group dyad weight `α² · (m² + (1−m)²)`, cross-group `2m(1−m)`, where `α = 1 + pref`
+  - Live updates as sliders move; Reset to defaults button
+  - Default settings reproduce the kappa's headline finding: observed −8.2 pp, structure −16.9 pp, behaviour +3.7 pp, interaction +5.0 pp — i.e. observed decline is purely structural while behaviour intensifies
+  - Adaptive insight box describes the regime (opposing forces / both opening / both tightening / structure-dominated / behaviour-dominated)
+  - Sibling `README.md` documenting math, decomposition identity, and a v2 plan with two visual grids of agents (group size + segregation per snapshot, fixed distance sensitivity)
+
+### Changed
+- **Hub** (`/simulation/index.html`) — added third tab for the new sim; removed "Paper 1 — " prefix from the space-vs-preference caption
+- **Status-vs-homophily layout** — preference matrix and realized-matches matrix now sit **side by side** in the left column (previously stacked). Cell editor moved below the matrix pair, agent strip stays at the bottom. Net: ~200 px less vertical height; the input/output juxtaposition is now the visual hero
+
 ## [2.3.0] - 2026-05-06
 
 ### Added
