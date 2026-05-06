@@ -152,6 +152,50 @@
         }
         .insight strong { color: var(--color-accent); }
 
+        /* Paper reference card */
+        .paper-ref-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+        }
+        .paper-ref-card {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            padding: 0.7rem 0.95rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .paper-ref-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+        }
+        .paper-ref-title {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--color-text);
+            font-size: 0.95rem;
+            line-height: 1.35;
+        }
+        .paper-ref-meta {
+            font-size: 0.74rem;
+            color: var(--color-text-muted);
+            margin-top: 0.15rem;
+            line-height: 1.55;
+        }
+        .paper-ref-meta a {
+            color: var(--color-accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s;
+        }
+        .paper-ref-meta a:hover { border-bottom-color: var(--color-accent); }
+
         /* Embedded in iframe */
         .embedded .header { display: none; }
 
@@ -163,6 +207,7 @@
             .panel-grid { grid-template-columns: 1fr; }
             .insight { grid-column: span 1; }
             canvas { max-width: 100%; height: auto; }
+            .paper-ref-wrap { padding: 0 1rem 1rem 1rem; }
         }
     </style>
 </head>
@@ -249,6 +294,14 @@
 
                 <div class="insight" id="insight"></div>
             </div>
+        </div>
+    </div>
+
+    <div class="paper-ref-wrap">
+        <div class="paper-ref-card">
+            <div class="paper-ref-label">Based on</div>
+            <div class="paper-ref-title">However Far Away? The Spatial Contingencies of Assortative Mating</div>
+            <div class="paper-ref-meta">Jesper Lindmarker &amp; Benjamin F. Jarvis · Preprint, SocArXiv. <a href="https://doi.org/10.31235/osf.io/4tq8z_v1" target="_blank" rel="noopener">View preprint &rarr;</a></div>
         </div>
     </div>
 

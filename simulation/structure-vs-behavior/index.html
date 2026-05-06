@@ -393,6 +393,46 @@
             white-space: pre;
         }
 
+        /* Paper reference card */
+        .paper-ref-card {
+            margin-top: 1.25rem;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            padding: 0.7rem 0.95rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .paper-ref-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+        }
+        .paper-ref-title {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--color-text);
+            font-size: 0.95rem;
+            line-height: 1.35;
+        }
+        .paper-ref-meta {
+            font-size: 0.74rem;
+            color: var(--color-text-muted);
+            margin-top: 0.15rem;
+            line-height: 1.55;
+        }
+        .paper-ref-meta a {
+            color: var(--color-accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s;
+        }
+        .paper-ref-meta a:hover { border-bottom-color: var(--color-accent); }
+
         .embedded .header { display: none; }
 
         @media (max-width: 800px) {
@@ -551,6 +591,12 @@
 Δ_struct + Δ_behav = Δ_obs</pre>
             <p>Each group's endogamy is the share of its own paired members whose partner is in the same group. Majority and minority can move very differently — minority endogamy is much more sensitive to composition (Blau structural opportunity), while majority's is dominated by preference.</p>
         </details>
+
+        <div class="paper-ref-card">
+            <div class="paper-ref-label">Based on</div>
+            <div class="paper-ref-title">Three Decades of Ethnic Assortative Mating in Sweden</div>
+            <div class="paper-ref-meta">Jesper Lindmarker · Working paper. <a href="/#paper-trends" target="_top">Read more on the home page &rarr;</a></div>
+        </div>
     </div>
 
     <script>
