@@ -289,6 +289,19 @@
             margin-top: 1rem;
             flex-wrap: wrap;
         }
+        .btn-match {
+            padding: 0.55rem 1.1rem;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: white;
+            background: var(--color-accent);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .btn-match:hover { background: #d04e2e; }
         .btn-reset {
             padding: 0.55rem 0.85rem;
             font-family: var(--font-mono);
@@ -512,6 +525,7 @@
         </div>
 
         <div class="action-row">
+            <button class="btn-match" id="btn-match">Run matching</button>
             <button class="btn-reset" id="btn-reset">Reset to defaults</button>
             <div class="legend">
                 <div class="legend-item"><div class="legend-dot" style="background:#D9471C"></div>Majority</div>
@@ -1056,6 +1070,11 @@
         scheduleRun();
     }));
 
+    $('btn-match').addEventListener('click', () => {
+        if (_runDebounce) { clearTimeout(_runDebounce); _runDebounce = null; }
+        runAll();
+    });
+
     $('btn-reset').addEventListener('click', () => {
         if (_runDebounce) { clearTimeout(_runDebounce); _runDebounce = null; }
         Object.entries(DEFAULTS).forEach(([k, v]) => {
@@ -1084,8 +1103,7 @@
         pickMinorityClusters(T1); generateAgents(T1, T1._lastM);
         pickMinorityClusters(T2); generateAgents(T2, T2._lastM);
         drawT1(); drawT2();
-        // Initial run — let the browser paint the layout first
-        setTimeout(runAll, 60);
+        // Empty results on load — user clicks "Run matching" or moves a slider to populate.
     }
     </script>
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
