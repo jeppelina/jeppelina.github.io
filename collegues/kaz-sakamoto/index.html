@@ -188,100 +188,106 @@
   .hero-coords span { white-space: nowrap; }
   .hero-coords .v { color: var(--text-dim); }
 
-  /* ---------- Satellite tile ---------- */
-  .tile-module {
+  /* ---------- Deconfounding demo ---------- */
+  .deconf-module {
     border: 1px solid var(--line);
     background: var(--panel);
     border-radius: 3px;
     overflow: hidden;
   }
-  .tile-head {
+  .deconf-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: var(--s-2);
     padding: var(--s-2) var(--s-3);
     border-bottom: 1px solid var(--line);
     background: var(--panel-2);
     font-family: var(--mono);
     font-size: 0.68rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-dim);
   }
-  .tile-head .dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--teal);
-    display: inline-block;
-    margin-right: 6px;
-    box-shadow: 0 0 6px var(--teal);
+  .deconf-status {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
   }
-  .tile-body {
-    display: grid;
-    grid-template-columns: 1fr;
+  .deconf-status.confounded { color: var(--amber); }
+  .deconf-status.balanced { color: var(--teal); }
+  .deconf-canvas-wrap {
+    background: var(--panel-2);
   }
-  @media (min-width: 520px) {
-    .tile-body { grid-template-columns: 1.5fr 1fr; }
-  }
-  .canvas-cell {
-    position: relative;
-    border-bottom: 1px solid var(--line);
-  }
-  @media (min-width: 520px) {
-    .canvas-cell { border-bottom: none; border-right: 1px solid var(--line); }
-  }
-  #tile-canvas {
+  #deconf-canvas {
     display: block;
     width: 100%;
     height: auto;
-    image-rendering: pixelated;
-    cursor: crosshair;
   }
-  .corner {
-    position: absolute;
-    width: 12px; height: 12px;
-    border-color: var(--teal);
-    pointer-events: none;
-    opacity: 0.7;
-  }
-  .corner.tl { top: 6px; left: 6px; border-top: 1px solid; border-left: 1px solid; }
-  .corner.tr { top: 6px; right: 6px; border-top: 1px solid; border-right: 1px solid; }
-  .corner.bl { bottom: 6px; left: 6px; border-bottom: 1px solid; border-left: 1px solid; }
-  .corner.br { bottom: 6px; right: 6px; border-bottom: 1px solid; border-right: 1px solid; }
-
-  .tile-meta {
+  .deconf-controls {
     padding: var(--s-3);
-    font-family: var(--mono);
-    font-size: 0.7rem;
+    border-top: 1px solid var(--line);
     display: flex;
     flex-direction: column;
-    gap: var(--s-2);
+    gap: 9px;
   }
-  .meta-row {
+  .deconf-controls .row {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     gap: var(--s-3);
-    border-bottom: 1px dotted var(--line);
-    padding-bottom: var(--s-1);
-  }
-  .meta-row:last-child { border-bottom: none; }
-  .meta-row .k {
-    color: var(--text-faint);
-    letter-spacing: 0.08em;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
-    font-size: 0.64rem;
+    color: var(--text-dim);
   }
-  .meta-row .val { color: var(--text); text-align: right; }
-  .meta-row .val.live { color: var(--teal); }
-  .meta-row .val.amber { color: var(--amber); }
-  .tile-foot {
-    padding: var(--s-2) var(--s-3);
+  .deconf-controls .pct { color: var(--teal); }
+  #deconf-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    outline: none;
+    cursor: pointer;
+  }
+  #deconf-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--teal);
+    border: 3px solid var(--bg);
+    cursor: pointer;
+  }
+  #deconf-slider::-moz-range-thumb {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--teal);
+    border: 3px solid var(--bg);
+    cursor: pointer;
+  }
+  .deconf-foot {
+    padding: var(--s-3);
     border-top: 1px solid var(--line);
     background: var(--panel-2);
     font-family: var(--mono);
-    font-size: 0.62rem;
+    font-size: 0.63rem;
+    line-height: 1.65;
+    letter-spacing: 0.02em;
+  }
+  .deconf-foot .note {
+    color: var(--text-dim);
+    margin-bottom: 7px;
+  }
+  .deconf-foot .src {
     color: var(--text-faint);
-    letter-spacing: 0.06em;
   }
 
   /* ---------- Generic section ---------- */
@@ -564,8 +570,9 @@
             Linköping University <span class="accent">·</span> Campus Norrköping, Sweden
           </p>
           <p class="hero-intro">
-            Studying how satellite imagery and machine learning can be combined with
-            causal inference to measure and understand poverty across places.
+            Studying how satellite imagery, read with machine learning, can supply the
+            evidence a survey never recorded, so that places a programme reached can be
+            compared fairly with the places it did not.
           </p>
           <div class="hero-coords" aria-hidden="true">
             <span>FIELD <span class="v">Computational social science</span></span>
@@ -574,51 +581,27 @@
           </div>
         </div>
 
-        <!-- Satellite tile module -->
-        <div class="tile-module" role="group" aria-labelledby="tile-caption">
-          <div class="tile-head">
-            <span><span class="dot"></span>Satellite tile</span>
-            <span id="tile-status">SCANNING</span>
+        <!-- Image-based deconfounding demo -->
+        <div class="deconf-module" role="group" aria-label="Image-based deconfounding, interactive demonstration">
+          <div class="deconf-head">
+            <span>// Image-based deconfounding</span>
+            <span class="deconf-status confounded" id="deconf-status">Confounded</span>
           </div>
-          <div class="tile-body">
-            <div class="canvas-cell">
-              <canvas id="tile-canvas" width="320" height="320"
-                aria-label="Illustrative generative satellite raster tile with a sweeping scan line. Decorative interactive element."
-                role="img" tabindex="0"></canvas>
-              <span class="corner tl"></span>
-              <span class="corner tr"></span>
-              <span class="corner bl"></span>
-              <span class="corner br"></span>
-            </div>
-            <div class="tile-meta" id="tile-meta">
-              <div class="meta-row">
-                <span class="k">Tile ID</span>
-                <span class="val">EO-NRK-0427</span>
-              </div>
-              <div class="meta-row">
-                <span class="k">Resolution</span>
-                <span class="val">10 m / px</span>
-              </div>
-              <div class="meta-row">
-                <span class="k">Band</span>
-                <span class="val amber" id="meta-band">B08 · NIR</span>
-              </div>
-              <div class="meta-row">
-                <span class="k">Scan row</span>
-                <span class="val live" id="meta-row">000</span>
-              </div>
-              <div class="meta-row">
-                <span class="k">Index value</span>
-                <span class="val live" id="meta-value">0.000</span>
-              </div>
-              <div class="meta-row">
-                <span class="k">Cell</span>
-                <span class="val" id="meta-cell">—</span>
-              </div>
-            </div>
+          <div class="deconf-canvas-wrap">
+            <canvas id="deconf-canvas" width="468" height="270" role="img"
+              aria-label="Interactive chart. Treated areas and untreated areas are plotted on a pre-treatment index read from satellite imagery; treated areas start systematically higher. The slider adjusts for what the imagery sees, and the two groups' averages move into alignment, closing the pre-treatment gap."></canvas>
           </div>
-          <div class="tile-foot" id="tile-caption">
-            Illustrative readout. Generative raster, not real imagery.
+          <div class="deconf-controls">
+            <div class="row">
+              <label for="deconf-slider">Adjust for satellite imagery</label>
+              <span class="pct" id="deconf-pct">0%</span>
+            </div>
+            <input type="range" id="deconf-slider" min="0" max="100" value="0" step="1"
+              aria-valuetext="0 percent adjustment. Pre-treatment gap confounded.">
+          </div>
+          <div class="deconf-foot">
+            <p class="note" id="deconf-note" aria-live="polite">Treated areas sit higher on the index than untreated ones. A raw comparison would mistake this pre-existing gap for an effect.</p>
+            <p class="src">Illustrative schematic, not real data. Image-based deconfounding is one of the five approaches surveyed in Kaz's review.</p>
           </div>
         </div>
       </div>
@@ -648,10 +631,13 @@
             image shows to what would change if a policy or intervention were applied.
           </p>
           <p>
-            His research brings these pieces together to study the
-            <strong>geography of poverty</strong>: how deprivation is distributed across
-            places, and how image-based measurement can support causal questions about global
-            development.
+            One idea his review examines closely is <strong>image-based deconfounding</strong>.
+            Programmes are rarely placed at random: the areas that receive them tend to differ
+            from the areas that do not, in terrain, infrastructure, settlement boundaries, or how
+            built-up they are. A satellite image captures many of those differences even when no
+            survey recorded them. Adjusting for what the image sees can bring treated and
+            untreated areas into balance, so the two can be compared as if the programme had been
+            spread evenly.
           </p>
         </div>
         <div>
@@ -797,7 +783,7 @@
 <footer class="site">
   <div class="wrap">
     <div class="footer-inner">
-      <span class="scan">// END OF TILE — KAZUKI SAKAMOTO</span>
+      <span class="scan">// END OF FILE — KAZUKI SAKAMOTO</span>
       <span>This is a draft personal page, built by a colleague, Jesper Lindmarker, 2026.</span>
       <span><a href="mailto:kazuki.sakamoto@liu.se">kazuki.sakamoto@liu.se</a></span>
     </div>
@@ -808,229 +794,230 @@
 (function () {
   "use strict";
 
-  var canvas = document.getElementById("tile-canvas");
-  if (!canvas) return;
+  var canvas = document.getElementById("deconf-canvas");
+  if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext("2d");
 
-  var GRID = 32;                       // 32x32 raster cells
-  var SIZE = canvas.width;             // 320 logical px
-  var CELL = SIZE / GRID;              // 10 px per cell
+  var slider = document.getElementById("deconf-slider");
+  var pctEl = document.getElementById("deconf-pct");
+  var statusEl = document.getElementById("deconf-status");
+  var noteEl = document.getElementById("deconf-note");
 
-  var reduceMotion = window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var TEAL = "#36D9C8";
+  var AMBER = "#F2A93B";
+  var INK = "#0A0E14";
+  var DIM = "#5C6878";
+  var MONO = "'IBM Plex Mono', ui-monospace, monospace";
 
-  // ---- generate a terrain-like value field ----
-  var field = new Array(GRID * GRID);
-  function buildField(seed) {
-    // smooth-ish pseudo terrain via summed sine layers
-    for (var y = 0; y < GRID; y++) {
-      for (var x = 0; x < GRID; x++) {
-        var v =
-          0.55 + 0.30 * Math.sin((x * 0.42) + seed) * Math.cos((y * 0.36) - seed * 0.7) +
-          0.18 * Math.sin((x + y) * 0.21 + seed * 1.3) +
-          0.10 * Math.cos((x * 0.9 - y * 0.5) + seed);
-        // light deterministic grain
-        v += (((x * 73 + y * 149 + 31) % 17) / 17 - 0.5) * 0.16;
-        if (v < 0) v = 0; if (v > 1) v = 1;
-        field[y * GRID + x] = v;
-      }
-    }
+  var CW = 468, CH = 270;
+
+  // ---- seeded RNG, so the scene is identical on every load ----
+  var seed = 20240602;
+  function rand() {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return seed / 4294967296;
   }
-  buildField(Math.PI * 0.6);
+  function gauss(m, sd) {
+    var u = 0, v = 0;
+    while (u === 0) u = rand();
+    while (v === 0) v = rand();
+    return m + sd * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
 
-  // false-colour ramp: deep navy -> teal -> amber highlights
-  function colorFor(v, lit) {
-    var r, g, b;
-    if (v < 0.5) {
-      var t = v / 0.5;
-      r = Math.round(14 + t * (22 - 14));
-      g = Math.round(26 + t * (150 - 26));
-      b = Math.round(46 + t * (140 - 46));
-    } else {
-      var u = (v - 0.5) / 0.5;
-      r = Math.round(22 + u * (242 - 22));
-      g = Math.round(150 + u * (169 - 150));
-      b = Math.round(140 - u * (140 - 59));
-    }
-    if (lit) {
-      r = Math.min(255, r + 70);
-      g = Math.min(255, g + 70);
-      b = Math.min(255, b + 70);
-    }
-    return "rgb(" + r + "," + g + "," + b + ")";
+  // ---- areas, placed on a pre-treatment index in [0,1] read from imagery ----
+  var treated = [], control = [], i;
+  for (i = 0; i < 24; i++) {
+    treated.push({ x: clamp(gauss(0.62, 0.12), 0.30, 0.96), jy: rand() });
+  }
+  for (i = 0; i < 30; i++) {
+    control.push({ x: clamp(gauss(0.40, 0.21), 0.05, 0.95), jy: rand() });
   }
 
-  // ---- DOM readouts ----
-  var elRow = document.getElementById("meta-row");
-  var elValue = document.getElementById("meta-value");
-  var elCell = document.getElementById("meta-cell");
-  var elBand = document.getElementById("meta-band");
-  var elStatus = document.getElementById("tile-status");
+  function meanOf(arr) {
+    var s = 0, k;
+    for (k = 0; k < arr.length; k++) s += arr[k].x;
+    return s / arr.length;
+  }
+  var treatedMean = meanOf(treated);
+  var rawControlMean = meanOf(control);
 
-  var bands = ["B08 · NIR", "B04 · RED", "B03 · GRN", "B11 · SWIR"];
-  var bandIdx = 0;
+  // ---- illustrative inverse-probability weights ----
+  // Untreated areas that resemble treated ones, on imagery, carry more weight,
+  // so the comparison leans on the areas that are genuinely alike.
+  var BETA = 5.4;
+  var maxW = 0, sumW = 0, sumWX = 0;
+  for (i = 0; i < control.length; i++) {
+    var w = Math.exp(BETA * (control[i].x - 0.5));
+    control[i].w = w;
+    if (w > maxW) maxW = w;
+    sumW += w;
+    sumWX += w * control[i].x;
+  }
+  // the fully-adjusted control mean: an honest weighted mean, nudged the last
+  // short step onto the treated mean so the balanced state reads cleanly.
+  var weightedControlMean = lerp(sumWX / sumW, treatedMean, 0.45);
 
-  var scanY = 0;             // current scan row in cell units (float)
-  var hoverX = -1, hoverY = -1;
+  // ---- geometry, in logical coordinates ----
+  var PLOT_L = 48, PLOT_R = 444, PLOTW = PLOT_R - PLOT_L;
+  var AXIS_Y = 140;
+  var TBAND_TOP = 32, TBAND_H = 70;
+  var CBAND_TOP = 170, CBAND_H = 70;
+  function cx(v) { return PLOT_L + v * PLOTW; }
 
-  function pad3(n) { return ("000" + n).slice(-3); }
-
-  function drawRaster() {
-    var scanRow = Math.floor(scanY);
-    for (var y = 0; y < GRID; y++) {
-      for (var x = 0; x < GRID; x++) {
-        var v = field[y * GRID + x];
-        var lit = (y === scanRow);
-        ctx.fillStyle = colorFor(v, lit);
-        ctx.fillRect(x * CELL, y * CELL, CELL + 0.6, CELL + 0.6);
-      }
-    }
+  function setup() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cssW = canvas.clientWidth || CW;
+    var cssH = cssW * (CH / CW);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    var sc = (cssW * dpr) / CW;
+    ctx.setTransform(sc, 0, 0, sc, 0, 0);
   }
 
-  function drawGridLines() {
-    ctx.strokeStyle = "rgba(10,14,20,0.55)";
-    ctx.lineWidth = 1;
-    for (var i = 0; i <= GRID; i += 4) {
-      ctx.beginPath();
-      ctx.moveTo(i * CELL + 0.5, 0);
-      ctx.lineTo(i * CELL + 0.5, SIZE);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, i * CELL + 0.5);
-      ctx.lineTo(SIZE, i * CELL + 0.5);
-      ctx.stroke();
-    }
+  function tile(x, y, color, op, sizeMul) {
+    var sz = 7 * sizeMul;
+    ctx.globalAlpha = op;
+    ctx.fillStyle = color;
+    ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
+    ctx.globalAlpha = op * 0.4;
+    ctx.fillStyle = INK;
+    ctx.fillRect(x - sz / 2, y - sz / 2, sz / 2, sz / 2);
+    ctx.globalAlpha = 1;
   }
 
-  function drawScanLine() {
-    var yPix = scanY * CELL;
-    // soft glow band
-    var grad = ctx.createLinearGradient(0, yPix - 22, 0, yPix + 4);
-    grad.addColorStop(0, "rgba(54,217,200,0)");
-    grad.addColorStop(1, "rgba(54,217,200,0.30)");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, yPix - 22, SIZE, 26);
-    // crisp line
-    ctx.fillStyle = "rgba(54,217,200,0.95)";
-    ctx.fillRect(0, yPix, SIZE, 1.5);
-  }
-
-  function drawHover() {
-    if (hoverX < 0) return;
-    ctx.strokeStyle = "rgba(242,169,59,0.95)";
+  function axisDot(x, color) {
+    ctx.beginPath();
+    ctx.arc(x, AXIS_Y, 4.4, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
     ctx.lineWidth = 1.5;
-    ctx.strokeRect(hoverX * CELL + 0.75, hoverY * CELL + 0.75, CELL - 1.5, CELL - 1.5);
+    ctx.strokeStyle = INK;
+    ctx.stroke();
   }
 
-  function render() {
-    drawRaster();
-    drawGridLines();
-    drawScanLine();
-    drawHover();
-  }
+  function draw(s) {
+    ctx.clearRect(0, 0, CW, CH);
 
-  function updateReadout() {
-    var scanRow = Math.max(0, Math.min(GRID - 1, Math.floor(scanY)));
-    elRow.textContent = pad3(scanRow);
-    // mean value of current scan row -> "index value"
-    var sum = 0;
-    for (var x = 0; x < GRID; x++) sum += field[scanRow * GRID + x];
-    elValue.textContent = (sum / GRID).toFixed(3);
-  }
-
-  var lastT = 0;
-  function loop(t) {
-    if (!lastT) lastT = t;
-    var dt = (t - lastT) / 1000;
-    lastT = t;
-
-    scanY += dt * 7.5;          // ~7.5 cells per second
-    if (scanY >= GRID) {
-      scanY = 0;
-      bandIdx = (bandIdx + 1) % bands.length;
-      elBand.textContent = bands[bandIdx];
+    // faint vertical grid
+    ctx.strokeStyle = "rgba(54,217,200,0.07)";
+    ctx.lineWidth = 1;
+    for (var g = 0; g <= 1.0001; g += 0.25) {
+      ctx.beginPath();
+      ctx.moveTo(cx(g), 26);
+      ctx.lineTo(cx(g), 246);
+      ctx.stroke();
     }
 
-    render();
-    updateReadout();
-    requestAnimationFrame(loop);
+    // axis
+    ctx.strokeStyle = "#2C3A50";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(PLOT_L, AXIS_Y);
+    ctx.lineTo(PLOT_R, AXIS_Y);
+    ctx.stroke();
+
+    var ctrlMean = lerp(rawControlMean, weightedControlMean, s);
+    var gap = treatedMean - ctrlMean;
+    var balanced = Math.abs(gap) <= 0.10;
+    var hot = balanced ? TEAL : AMBER;
+
+    // group labels
+    ctx.font = "600 9.5px " + MONO;
+    ctx.textAlign = "left";
+    ctx.fillStyle = AMBER;
+    ctx.fillText("TREATED  ·  " + treated.length + " AREAS", PLOT_L, 18);
+    ctx.fillStyle = TEAL;
+    ctx.fillText("UNTREATED  ·  " + control.length + " AREAS", PLOT_L, CBAND_TOP - 12);
+
+    // treated tiles
+    var t, c;
+    for (t = 0; t < treated.length; t++) {
+      tile(cx(treated[t].x), TBAND_TOP + treated[t].jy * TBAND_H, AMBER, 0.92, 1);
+    }
+    // control tiles: opacity and size reflect weight as the adjustment rises
+    for (c = 0; c < control.length; c++) {
+      var wf = Math.pow(control[c].w / maxW, 0.55);
+      var op = lerp(0.82, 0.12 + 0.86 * wf, s);
+      var szm = lerp(1, 0.62 + 0.85 * wf, s);
+      tile(cx(control[c].x), CBAND_TOP + control[c].jy * CBAND_H, TEAL, op, szm);
+    }
+
+    // mean lines
+    ctx.strokeStyle = AMBER;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx(treatedMean), TBAND_TOP - 9);
+    ctx.lineTo(cx(treatedMean), AXIS_Y);
+    ctx.stroke();
+
+    ctx.strokeStyle = TEAL;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx(ctrlMean), AXIS_Y);
+    ctx.lineTo(cx(ctrlMean), CBAND_TOP + CBAND_H + 9);
+    ctx.stroke();
+
+    // gap segment on the axis
+    var gx1 = cx(Math.min(treatedMean, ctrlMean));
+    var gx2 = cx(Math.max(treatedMean, ctrlMean));
+    ctx.strokeStyle = hot;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(gx1, AXIS_Y);
+    ctx.lineTo(gx2, AXIS_Y);
+    ctx.stroke();
+
+    axisDot(cx(treatedMean), AMBER);
+    axisDot(cx(ctrlMean), TEAL);
+
+    // gap label
+    ctx.font = "600 10.5px " + MONO;
+    ctx.textAlign = "center";
+    ctx.fillStyle = hot;
+    ctx.fillText("PRE-TREATMENT GAP  " + Math.abs(gap).toFixed(2),
+      clamp((gx1 + gx2) / 2, PLOT_L + 78, PLOT_R - 78), AXIS_Y - 13);
+
+    // axis caption
+    ctx.font = "9px " + MONO;
+    ctx.fillStyle = DIM;
+    ctx.fillText("PRE-TREATMENT INDEX  ·  READ FROM SATELLITE IMAGERY", CW / 2, 262);
   }
 
-  // ---- hover / move to reveal a cell value ----
-  function pointToCell(clientX, clientY) {
-    var rect = canvas.getBoundingClientRect();
-    var x = Math.floor(((clientX - rect.left) / rect.width) * GRID);
-    var y = Math.floor(((clientY - rect.top) / rect.height) * GRID);
-    if (x < 0 || x >= GRID || y < 0 || y >= GRID) return null;
-    return { x: x, y: y };
+  function update() {
+    var s = parseInt(slider.value, 10) / 100;
+    draw(s);
+    pctEl.textContent = slider.value + "%";
+    var ctrlMean = lerp(rawControlMean, weightedControlMean, s);
+    var gap = Math.abs(treatedMean - ctrlMean);
+    var balanced = gap <= 0.10;
+    statusEl.textContent = balanced ? "Balanced" : "Confounded";
+    statusEl.className = "deconf-status " + (balanced ? "balanced" : "confounded");
+    slider.setAttribute("aria-valuetext",
+      slider.value + " percent adjustment. Pre-treatment gap " + gap.toFixed(2) +
+      (balanced ? ", balanced." : ", confounded."));
+    if (balanced) {
+      noteEl.textContent = "Adjusted for what the imagery sees, treated and untreated areas overlap on pre-treatment conditions — a fair basis for measuring the effect.";
+    } else if (s > 0.05) {
+      noteEl.textContent = "Weighting untreated areas by how closely they resemble treated ones, on imagery, pulls the two groups together.";
+    } else {
+      noteEl.textContent = "Treated areas sit higher on the index than untreated ones. A raw comparison would mistake this pre-existing gap for an effect.";
+    }
   }
 
-  function setHover(c) {
-    if (!c) {
-      hoverX = hoverY = -1;
-      elCell.textContent = "—";
-      return;
-    }
-    hoverX = c.x; hoverY = c.y;
-    var v = field[c.y * GRID + c.x];
-    elCell.textContent = "[" + pad3(c.x) + "," + pad3(c.y) + "] " + v.toFixed(3);
-  }
+  slider.addEventListener("input", update);
 
-  canvas.addEventListener("mousemove", function (e) {
-    setHover(pointToCell(e.clientX, e.clientY));
-  });
-  canvas.addEventListener("mouseleave", function () {
-    setHover(null);
-    if (!reduceMotion && elStatus) elStatus.textContent = "SCANNING";
-  });
-  canvas.addEventListener("mouseenter", function () {
-    if (elStatus) elStatus.textContent = "INSPECT";
-  });
-  canvas.addEventListener("touchstart", function (e) {
-    if (e.touches && e.touches[0]) {
-      setHover(pointToCell(e.touches[0].clientX, e.touches[0].clientY));
-    }
-  }, { passive: true });
-  canvas.addEventListener("touchmove", function (e) {
-    if (e.touches && e.touches[0]) {
-      setHover(pointToCell(e.touches[0].clientX, e.touches[0].clientY));
-    }
-  }, { passive: true });
-
-  // keyboard: move an inspection cursor across the raster
-  var kx = 16, ky = 16, keyActive = false;
-  canvas.addEventListener("keydown", function (e) {
-    var handled = true;
-    if (e.key === "ArrowLeft") kx = Math.max(0, kx - 1);
-    else if (e.key === "ArrowRight") kx = Math.min(GRID - 1, kx + 1);
-    else if (e.key === "ArrowUp") ky = Math.max(0, ky - 1);
-    else if (e.key === "ArrowDown") ky = Math.min(GRID - 1, ky + 1);
-    else handled = false;
-    if (handled) {
-      e.preventDefault();
-      keyActive = true;
-      setHover({ x: kx, y: ky });
-      if (elStatus) elStatus.textContent = "INSPECT";
-    }
-  });
-  canvas.addEventListener("focus", function () {
-    if (elStatus) elStatus.textContent = "INSPECT";
-  });
-  canvas.addEventListener("blur", function () {
-    if (!keyActive) return;
-    setHover(null);
-    if (elStatus) elStatus.textContent = "SCANNING";
+  var rt = null;
+  window.addEventListener("resize", function () {
+    if (rt) clearTimeout(rt);
+    rt = setTimeout(function () { setup(); update(); }, 150);
   });
 
-  // ---- start ----
-  if (reduceMotion) {
-    // static frame: place scan line mid-tile, no animation
-    scanY = GRID * 0.5;
-    if (elStatus) elStatus.textContent = "STATIC";
-    render();
-    updateReadout();
-  } else {
-    requestAnimationFrame(loop);
+  setup();
+  update();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { update(); });
   }
 })();
 </script>
