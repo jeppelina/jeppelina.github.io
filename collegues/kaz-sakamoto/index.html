@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kaz Sakamoto</title>
+<meta name="description" content="Kazuki (Kaz) Sakamoto — PhD student at the Institute for Analytical Sociology, Linköping University. Earth observation, machine learning and causal inference for the geography of poverty." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0A0E14;
+    --panel: #10151F;
+    --panel-2: #141B28;
+    --line: #1F2A3A;
+    --line-soft: #18222F;
+    --text: #DCE3EC;
+    --text-dim: #8A97A8;
+    --text-faint: #5C6878;
+    --teal: #36D9C8;
+    --amber: #F2A93B;
+    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 16px;
+    --s-4: 24px;
+    --s-5: 40px;
+    --s-6: 64px;
+    --s-7: 96px;
+    --maxw: 1080px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 48px 48px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a { color: var(--teal); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  ::selection { background: rgba(54, 217, 200, 0.28); color: #fff; }
+
+  :focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--teal);
+    color: var(--bg);
+    padding: var(--s-2) var(--s-3);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    z-index: 100;
+  }
+  .skip-link:focus { left: var(--s-3); top: var(--s-3); }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 var(--s-4);
+  }
+
+  /* ---------- Monospace section label ---------- */
+  .label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .label .idx { color: var(--text-faint); }
+
+  /* ---------- Header ---------- */
+  header.site {
+    border-bottom: 1px solid var(--line);
+    background: rgba(10, 14, 20, 0.82);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .site-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-3) var(--s-4);
+    max-width: var(--maxw);
+    margin: 0 auto;
+    gap: var(--s-3);
+  }
+  .brand {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .brand .dim { color: var(--text-faint); }
+  nav.site-nav ul {
+    list-style: none;
+    display: flex;
+    gap: var(--s-4);
+  }
+  nav.site-nav a {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  nav.site-nav a:hover { color: var(--teal); text-decoration: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: var(--s-7) 0 var(--s-6);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+  @media (min-width: 880px) {
+    .hero-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: var(--s-6);
+    }
+  }
+  .hero-name {
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: var(--s-3) 0 var(--s-2);
+  }
+  .hero-name .alias {
+    color: var(--amber);
+  }
+  .hero-role {
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+    margin-bottom: var(--s-4);
+    line-height: 1.55;
+  }
+  .hero-role .accent { color: var(--teal); }
+  .hero-intro {
+    font-size: 1.06rem;
+    color: var(--text);
+    max-width: 38ch;
+    margin-bottom: var(--s-4);
+  }
+  .hero-coords {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+  }
+  .hero-coords span { white-space: nowrap; }
+  .hero-coords .v { color: var(--text-dim); }
+
+  /* ---------- Satellite tile ---------- */
+  .tile-module {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .tile-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .tile-head .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--teal);
+    display: inline-block;
+    margin-right: 6px;
+    box-shadow: 0 0 6px var(--teal);
+  }
+  .tile-body {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 520px) {
+    .tile-body { grid-template-columns: 1.5fr 1fr; }
+  }
+  .canvas-cell {
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 520px) {
+    .canvas-cell { border-bottom: none; border-right: 1px solid var(--line); }
+  }
+  #tile-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    cursor: crosshair;
+  }
+  .corner {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-color: var(--teal);
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .corner.tl { top: 6px; left: 6px; border-top: 1px solid; border-left: 1px solid; }
+  .corner.tr { top: 6px; right: 6px; border-top: 1px solid; border-right: 1px solid; }
+  .corner.bl { bottom: 6px; left: 6px; border-bottom: 1px solid; border-left: 1px solid; }
+  .corner.br { bottom: 6px; right: 6px; border-bottom: 1px solid; border-right: 1px solid; }
+
+  .tile-meta {
+    padding: var(--s-3);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    border-bottom: 1px dotted var(--line);
+    padding-bottom: var(--s-1);
+  }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-row .k {
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.64rem;
+  }
+  .meta-row .val { color: var(--text); text-align: right; }
+  .meta-row .val.live { color: var(--teal); }
+  .meta-row .val.amber { color: var(--amber); }
+  .tile-foot {
+    padding: var(--s-2) var(--s-3);
+    border-top: 1px solid var(--line);
+    background: var(--panel-2);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+  }
+
+  /* ---------- Generic section ---------- */
+  section.block {
+    padding: var(--s-7) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .block-head {
+    margin-bottom: var(--s-5);
+  }
+  .block-title {
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin-top: var(--s-3);
+  }
+
+  .prose p { margin-bottom: var(--s-3); max-width: 64ch; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- Research two-column ---------- */
+  .research-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+  @media (min-width: 760px) {
+    .research-grid { grid-template-columns: 1.4fr 1fr; gap: var(--s-6); }
+  }
+  .focus-list {
+    list-style: none;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 3px;
+  }
+  .focus-list li {
+    padding: var(--s-3);
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    gap: var(--s-3);
+    align-items: baseline;
+  }
+  .focus-list li:last-child { border-bottom: none; }
+  .focus-list .tag {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--amber);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    min-width: 2.4ch;
+  }
+  .focus-list .desc { font-size: 0.92rem; color: var(--text-dim); }
+  .focus-list .desc b { color: var(--text); font-weight: 600; }
+
+  /* ---------- Lab panel ---------- */
+  .lab-panel {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 3px;
+    padding: var(--s-5);
+    position: relative;
+  }
+  .lab-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(135deg, rgba(54,217,200,0.04), transparent 60%);
+    pointer-events: none;
+  }
+  .lab-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--s-2);
+  }
+  .lab-meta {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    margin-bottom: var(--s-3);
+  }
+  .lab-meta .accent { color: var(--teal); }
+
+  /* ---------- Paper card ---------- */
+  .paper-card {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .paper-top {
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .paper-top .status { color: var(--amber); }
+  .paper-body { padding: var(--s-5); }
+  .paper-title {
+    font-size: 1.18rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: var(--s-3);
+    letter-spacing: -0.01em;
+  }
+  .paper-authors {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    margin-bottom: var(--s-3);
+  }
+  .paper-authors .me { color: var(--teal); }
+  .paper-abstract {
+    font-size: 0.96rem;
+    color: var(--text-dim);
+    max-width: 62ch;
+    margin-bottom: var(--s-4);
+  }
+  .approach-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: var(--s-4);
+  }
+  @media (min-width: 560px) {
+    .approach-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .approach {
+    background: var(--panel-2);
+    padding: var(--s-3);
+  }
+  .approach .num {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+  }
+  .approach .nm {
+    font-weight: 600;
+    font-size: 0.92rem;
+    margin: var(--s-1) 0 2px;
+  }
+  .approach .ex {
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    line-height: 1.5;
+  }
+  .paper-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    padding: var(--s-2) var(--s-3);
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover {
+    background: var(--teal);
+    color: var(--bg);
+    text-decoration: none;
+  }
+  .btn .arrow { font-size: 0.9em; }
+
+  /* ---------- Contact ---------- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  @media (min-width: 560px) {
+    .contact-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .contact-cell {
+    background: var(--panel);
+    padding: var(--s-5);
+  }
+  .contact-cell .k {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: var(--s-2);
+  }
+  .contact-cell .v {
+    font-size: 1.02rem;
+    word-break: break-word;
+  }
+  .contact-cell .sub {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    margin-top: var(--s-1);
+  }
+
+  /* ---------- Footer ---------- */
+  footer.site {
+    padding: var(--s-5) 0 var(--s-6);
+  }
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+  .footer-inner .scan {
+    color: var(--text-dim);
+  }
+  .footer-inner a { color: var(--text-dim); }
+  .footer-inner a:hover { color: var(--teal); }
+
+  @media (max-width: 620px) {
+    nav.site-nav { display: none; }
+    .hero { padding: var(--s-6) 0 var(--s-5); }
+    section.block { padding: var(--s-6) 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site">
+  <div class="site-bar">
+    <div class="brand">K. SAKAMOTO <span class="dim">/ IAS · LiU</span></div>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#lab">Lab</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" aria-labelledby="hero-name">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="label"><span class="idx">// 00</span> Profile</p>
+          <h1 class="hero-name" id="hero-name">Kazuki <span class="alias">"Kaz"</span><br />Sakamoto</h1>
+          <p class="hero-role">
+            PhD student <span class="accent">·</span> Institute for Analytical Sociology<br />
+            Linköping University <span class="accent">·</span> Campus Norrköping, Sweden
+          </p>
+          <p class="hero-intro">
+            Studying how satellite imagery and machine learning can be combined with
+            causal inference to measure and understand poverty across places.
+          </p>
+          <div class="hero-coords" aria-hidden="true">
+            <span>FIELD <span class="v">Computational social science</span></span>
+            <span>SENSOR <span class="v">Earth observation</span></span>
+            <span>FOCUS <span class="v">Geography of poverty</span></span>
+          </div>
+        </div>
+
+        <!-- Satellite tile module -->
+        <div class="tile-module" role="group" aria-labelledby="tile-caption">
+          <div class="tile-head">
+            <span><span class="dot"></span>Satellite tile</span>
+            <span id="tile-status">SCANNING</span>
+          </div>
+          <div class="tile-body">
+            <div class="canvas-cell">
+              <canvas id="tile-canvas" width="320" height="320"
+                aria-label="Illustrative generative satellite raster tile with a sweeping scan line. Decorative interactive element."
+                role="img" tabindex="0"></canvas>
+              <span class="corner tl"></span>
+              <span class="corner tr"></span>
+              <span class="corner bl"></span>
+              <span class="corner br"></span>
+            </div>
+            <div class="tile-meta" id="tile-meta">
+              <div class="meta-row">
+                <span class="k">Tile ID</span>
+                <span class="val">EO-NRK-0427</span>
+              </div>
+              <div class="meta-row">
+                <span class="k">Resolution</span>
+                <span class="val">10 m / px</span>
+              </div>
+              <div class="meta-row">
+                <span class="k">Band</span>
+                <span class="val amber" id="meta-band">B08 · NIR</span>
+              </div>
+              <div class="meta-row">
+                <span class="k">Scan row</span>
+                <span class="val live" id="meta-row">000</span>
+              </div>
+              <div class="meta-row">
+                <span class="k">Index value</span>
+                <span class="val live" id="meta-value">0.000</span>
+              </div>
+              <div class="meta-row">
+                <span class="k">Cell</span>
+                <span class="val" id="meta-cell">—</span>
+              </div>
+            </div>
+          </div>
+          <div class="tile-foot" id="tile-caption">
+            Illustrative readout. Generative raster, not real imagery.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESEARCH ===================== -->
+  <section class="block" id="research" aria-labelledby="research-title">
+    <div class="wrap">
+      <div class="block-head">
+        <p class="label"><span class="idx">// 01</span> Research</p>
+        <h2 class="block-title" id="research-title">Measuring poverty from above</h2>
+      </div>
+      <div class="research-grid">
+        <div class="prose">
+          <p>
+            Kaz works in <strong>computational social science</strong>, at the point where
+            causal inference, machine learning and computer vision, and Earth observation meet.
+            His central question is practical: how can satellite imagery be turned into
+            credible evidence about poverty and development?
+          </p>
+          <p>
+            Reliable data on living standards is scarce in many parts of the world, while
+            satellites image the planet continuously. Machine learning can read structure out
+            of those images, such as settlement patterns, land cover, or built density. The
+            harder step is making that reading <strong>causal</strong>: moving from what an
+            image shows to what would change if a policy or intervention were applied.
+          </p>
+          <p>
+            His research brings these pieces together to study the
+            <strong>geography of poverty</strong>: how deprivation is distributed across
+            places, and how image-based measurement can support causal questions about global
+            development.
+          </p>
+        </div>
+        <div>
+          <p class="label" style="margin-bottom: var(--s-3);"><span class="idx">[ ]</span> Working components</p>
+          <ul class="focus-list">
+            <li>
+              <span class="tag">01</span>
+              <span class="desc"><b>Causal inference</b> — estimating effects, not just correlations, in observational settings.</span>
+            </li>
+            <li>
+              <span class="tag">02</span>
+              <span class="desc"><b>Machine learning &amp; computer vision</b> — extracting signal from raw imagery.</span>
+            </li>
+            <li>
+              <span class="tag">03</span>
+              <span class="desc"><b>Earth observation</b> — satellite imagery as a global, repeatable data source.</span>
+            </li>
+            <li>
+              <span class="tag">04</span>
+              <span class="desc"><b>Geography of poverty</b> — the applied target of the work, in global development.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LAB ===================== -->
+  <section class="block" id="lab" aria-labelledby="lab-title">
+    <div class="wrap">
+      <div class="block-head">
+        <p class="label"><span class="idx">// 02</span> Affiliation</p>
+        <h2 class="block-title" id="lab-title">Where the work happens</h2>
+      </div>
+      <div class="lab-panel">
+        <div class="lab-name">AI &amp; Global Development Lab</div>
+        <p class="lab-meta">
+          Led by <span class="accent">Adel Daoud</span> · Institute for Analytical Sociology,
+          Linköping University
+        </p>
+        <p class="prose" style="margin:0;">
+          Kaz is associated with the AI &amp; Global Development Lab at IAS Linköping. The lab
+          studies how artificial intelligence and large-scale data can be brought to bear on
+          questions of global development, and it is the home base for his work on Earth
+          observation and the geography of poverty.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WORK ===================== -->
+  <section class="block" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="block-head">
+        <p class="label"><span class="idx">// 03</span> Selected work</p>
+        <h2 class="block-title" id="work-title">Scoping review</h2>
+      </div>
+      <article class="paper-card">
+        <div class="paper-top">
+          <span>Lead author · arXiv:2406.02584</span>
+          <span class="status">Forthcoming book chapter</span>
+        </div>
+        <div class="paper-body">
+          <h3 class="paper-title">
+            A Scoping Review of Earth Observation and Machine Learning for Causal
+            Inference: Implications for the Geography of Poverty
+          </h3>
+          <p class="paper-authors">
+            <span class="me">Kazuki Sakamoto</span>, Connor T. Jerzak, Adel Daoud
+          </p>
+          <p class="paper-abstract">
+            The review maps how Earth observation data and machine learning can be combined
+            with causal analysis, and what that means for studying poverty across places. It
+            synthesises five distinct approaches for connecting satellite imagery to causal
+            questions.
+          </p>
+          <div class="approach-grid">
+            <div class="approach">
+              <span class="num">01</span>
+              <div class="nm">Outcome imputation</div>
+              <div class="ex">Using imagery to estimate outcomes that are otherwise unmeasured.</div>
+            </div>
+            <div class="approach">
+              <span class="num">02</span>
+              <div class="nm">Image-based deconfounding</div>
+              <div class="ex">Using imagery to adjust for confounders not captured in survey data.</div>
+            </div>
+            <div class="approach">
+              <span class="num">03</span>
+              <div class="nm">Treatment-effect heterogeneity</div>
+              <div class="ex">Using imagery to study how effects vary across places.</div>
+            </div>
+            <div class="approach">
+              <span class="num">04</span>
+              <div class="nm">Transportability</div>
+              <div class="ex">Carrying causal estimates from one setting to another.</div>
+            </div>
+            <div class="approach">
+              <span class="num">05</span>
+              <div class="nm">Image-informed causal discovery</div>
+              <div class="ex">Using imagery to inform the structure of causal relationships.</div>
+            </div>
+          </div>
+          <p class="paper-abstract" style="margin-bottom: var(--s-4);">
+            The review is forthcoming as a chapter in the book
+            <strong style="color:var(--text);">Geography of Poverty</strong>
+            (Edward Elgar Publishing).
+          </p>
+          <div class="paper-links">
+            <a class="btn" href="https://arxiv.org/abs/2406.02584" target="_blank" rel="noopener">
+              Read on arXiv <span class="arrow">&#8599;</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="block" id="contact" aria-labelledby="contact-title" style="border-bottom:none;">
+    <div class="wrap">
+      <div class="block-head">
+        <p class="label"><span class="idx">// 04</span> Contact</p>
+        <h2 class="block-title" id="contact-title">Get in touch</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-cell">
+          <div class="k">Email</div>
+          <div class="v"><a href="mailto:kazuki.sakamoto@liu.se">kazuki.sakamoto@liu.se</a></div>
+          <div class="sub">Institute for Analytical Sociology, LiU</div>
+        </div>
+        <div class="contact-cell">
+          <div class="k">Preprint</div>
+          <div class="v"><a href="https://arxiv.org/abs/2406.02584" target="_blank" rel="noopener">arXiv:2406.02584</a></div>
+          <div class="sub">Earth observation &amp; ML for causal inference</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="scan">// END OF TILE — KAZUKI SAKAMOTO</span>
+      <span>This is a draft personal page, built by a colleague, Jesper Lindmarker, 2026.</span>
+      <span><a href="mailto:kazuki.sakamoto@liu.se">kazuki.sakamoto@liu.se</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var canvas = document.getElementById("tile-canvas");
+  if (!canvas) return;
+  var ctx = canvas.getContext("2d");
+
+  var GRID = 32;                       // 32x32 raster cells
+  var SIZE = canvas.width;             // 320 logical px
+  var CELL = SIZE / GRID;              // 10 px per cell
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---- generate a terrain-like value field ----
+  var field = new Array(GRID * GRID);
+  function buildField(seed) {
+    // smooth-ish pseudo terrain via summed sine layers
+    for (var y = 0; y < GRID; y++) {
+      for (var x = 0; x < GRID; x++) {
+        var v =
+          0.55 + 0.30 * Math.sin((x * 0.42) + seed) * Math.cos((y * 0.36) - seed * 0.7) +
+          0.18 * Math.sin((x + y) * 0.21 + seed * 1.3) +
+          0.10 * Math.cos((x * 0.9 - y * 0.5) + seed);
+        // light deterministic grain
+        v += (((x * 73 + y * 149 + 31) % 17) / 17 - 0.5) * 0.16;
+        if (v < 0) v = 0; if (v > 1) v = 1;
+        field[y * GRID + x] = v;
+      }
+    }
+  }
+  buildField(Math.PI * 0.6);
+
+  // false-colour ramp: deep navy -> teal -> amber highlights
+  function colorFor(v, lit) {
+    var r, g, b;
+    if (v < 0.5) {
+      var t = v / 0.5;
+      r = Math.round(14 + t * (22 - 14));
+      g = Math.round(26 + t * (150 - 26));
+      b = Math.round(46 + t * (140 - 46));
+    } else {
+      var u = (v - 0.5) / 0.5;
+      r = Math.round(22 + u * (242 - 22));
+      g = Math.round(150 + u * (169 - 150));
+      b = Math.round(140 - u * (140 - 59));
+    }
+    if (lit) {
+      r = Math.min(255, r + 70);
+      g = Math.min(255, g + 70);
+      b = Math.min(255, b + 70);
+    }
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
+
+  // ---- DOM readouts ----
+  var elRow = document.getElementById("meta-row");
+  var elValue = document.getElementById("meta-value");
+  var elCell = document.getElementById("meta-cell");
+  var elBand = document.getElementById("meta-band");
+  var elStatus = document.getElementById("tile-status");
+
+  var bands = ["B08 · NIR", "B04 · RED", "B03 · GRN", "B11 · SWIR"];
+  var bandIdx = 0;
+
+  var scanY = 0;             // current scan row in cell units (float)
+  var hoverX = -1, hoverY = -1;
+
+  function pad3(n) { return ("000" + n).slice(-3); }
+
+  function drawRaster() {
+    var scanRow = Math.floor(scanY);
+    for (var y = 0; y < GRID; y++) {
+      for (var x = 0; x < GRID; x++) {
+        var v = field[y * GRID + x];
+        var lit = (y === scanRow);
+        ctx.fillStyle = colorFor(v, lit);
+        ctx.fillRect(x * CELL, y * CELL, CELL + 0.6, CELL + 0.6);
+      }
+    }
+  }
+
+  function drawGridLines() {
+    ctx.strokeStyle = "rgba(10,14,20,0.55)";
+    ctx.lineWidth = 1;
+    for (var i = 0; i <= GRID; i += 4) {
+      ctx.beginPath();
+      ctx.moveTo(i * CELL + 0.5, 0);
+      ctx.lineTo(i * CELL + 0.5, SIZE);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i * CELL + 0.5);
+      ctx.lineTo(SIZE, i * CELL + 0.5);
+      ctx.stroke();
+    }
+  }
+
+  function drawScanLine() {
+    var yPix = scanY * CELL;
+    // soft glow band
+    var grad = ctx.createLinearGradient(0, yPix - 22, 0, yPix + 4);
+    grad.addColorStop(0, "rgba(54,217,200,0)");
+    grad.addColorStop(1, "rgba(54,217,200,0.30)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, yPix - 22, SIZE, 26);
+    // crisp line
+    ctx.fillStyle = "rgba(54,217,200,0.95)";
+    ctx.fillRect(0, yPix, SIZE, 1.5);
+  }
+
+  function drawHover() {
+    if (hoverX < 0) return;
+    ctx.strokeStyle = "rgba(242,169,59,0.95)";
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(hoverX * CELL + 0.75, hoverY * CELL + 0.75, CELL - 1.5, CELL - 1.5);
+  }
+
+  function render() {
+    drawRaster();
+    drawGridLines();
+    drawScanLine();
+    drawHover();
+  }
+
+  function updateReadout() {
+    var scanRow = Math.max(0, Math.min(GRID - 1, Math.floor(scanY)));
+    elRow.textContent = pad3(scanRow);
+    // mean value of current scan row -> "index value"
+    var sum = 0;
+    for (var x = 0; x < GRID; x++) sum += field[scanRow * GRID + x];
+    elValue.textContent = (sum / GRID).toFixed(3);
+  }
+
+  var lastT = 0;
+  function loop(t) {
+    if (!lastT) lastT = t;
+    var dt = (t - lastT) / 1000;
+    lastT = t;
+
+    scanY += dt * 7.5;          // ~7.5 cells per second
+    if (scanY >= GRID) {
+      scanY = 0;
+      bandIdx = (bandIdx + 1) % bands.length;
+      elBand.textContent = bands[bandIdx];
+    }
+
+    render();
+    updateReadout();
+    requestAnimationFrame(loop);
+  }
+
+  // ---- hover / move to reveal a cell value ----
+  function pointToCell(clientX, clientY) {
+    var rect = canvas.getBoundingClientRect();
+    var x = Math.floor(((clientX - rect.left) / rect.width) * GRID);
+    var y = Math.floor(((clientY - rect.top) / rect.height) * GRID);
+    if (x < 0 || x >= GRID || y < 0 || y >= GRID) return null;
+    return { x: x, y: y };
+  }
+
+  function setHover(c) {
+    if (!c) {
+      hoverX = hoverY = -1;
+      elCell.textContent = "—";
+      return;
+    }
+    hoverX = c.x; hoverY = c.y;
+    var v = field[c.y * GRID + c.x];
+    elCell.textContent = "[" + pad3(c.x) + "," + pad3(c.y) + "] " + v.toFixed(3);
+  }
+
+  canvas.addEventListener("mousemove", function (e) {
+    setHover(pointToCell(e.clientX, e.clientY));
+  });
+  canvas.addEventListener("mouseleave", function () {
+    setHover(null);
+    if (!reduceMotion && elStatus) elStatus.textContent = "SCANNING";
+  });
+  canvas.addEventListener("mouseenter", function () {
+    if (elStatus) elStatus.textContent = "INSPECT";
+  });
+  canvas.addEventListener("touchstart", function (e) {
+    if (e.touches && e.touches[0]) {
+      setHover(pointToCell(e.touches[0].clientX, e.touches[0].clientY));
+    }
+  }, { passive: true });
+  canvas.addEventListener("touchmove", function (e) {
+    if (e.touches && e.touches[0]) {
+      setHover(pointToCell(e.touches[0].clientX, e.touches[0].clientY));
+    }
+  }, { passive: true });
+
+  // keyboard: move an inspection cursor across the raster
+  var kx = 16, ky = 16, keyActive = false;
+  canvas.addEventListener("keydown", function (e) {
+    var handled = true;
+    if (e.key === "ArrowLeft") kx = Math.max(0, kx - 1);
+    else if (e.key === "ArrowRight") kx = Math.min(GRID - 1, kx + 1);
+    else if (e.key === "ArrowUp") ky = Math.max(0, ky - 1);
+    else if (e.key === "ArrowDown") ky = Math.min(GRID - 1, ky + 1);
+    else handled = false;
+    if (handled) {
+      e.preventDefault();
+      keyActive = true;
+      setHover({ x: kx, y: ky });
+      if (elStatus) elStatus.textContent = "INSPECT";
+    }
+  });
+  canvas.addEventListener("focus", function () {
+    if (elStatus) elStatus.textContent = "INSPECT";
+  });
+  canvas.addEventListener("blur", function () {
+    if (!keyActive) return;
+    setHover(null);
+    if (elStatus) elStatus.textContent = "SCANNING";
+  });
+
+  // ---- start ----
+  if (reduceMotion) {
+    // static frame: place scan line mid-tile, no animation
+    scanY = GRID * 0.5;
+    if (elStatus) elStatus.textContent = "STATIC";
+    render();
+    updateReadout();
+  } else {
+    requestAnimationFrame(loop);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Axel Norgren</title>
+<meta name="description" content="Axel Norgren — PhD student in economics, Linköping University. Research on the economics of education: school choice, segregation, accountability and school turnaround.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Archivo:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F2EA;
+    --paper-deep: #EFEBDF;
+    --ink: #1A1A1A;
+    --ink-soft: #4A463E;
+    --rule: #1A1A1A;
+    --hair: #C9C2AF;
+    --accent: #A8231C;
+    --accent-deep: #84190F;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.62;
+    font-feature-settings: "onum" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(168, 35, 28, 0.32);
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  }
+  a:hover {
+    color: var(--accent-deep);
+    border-bottom-color: var(--accent-deep);
+  }
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 16px;
+    z-index: 50;
+    font-family: var(--sans);
+    font-size: 14px;
+    border: 0;
+  }
+  .skip-link:focus {
+    left: 12px;
+    top: 12px;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    border-bottom: 3px double var(--rule);
+    padding-top: 26px;
+  }
+  .masthead-top {
+    border-top: 4px solid var(--accent);
+    border-bottom: 1px solid var(--rule);
+    padding: 7px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px 18px;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .masthead-top span { white-space: nowrap; }
+  .masthead-top .edition { color: var(--accent); font-weight: 700; }
+
+  .masthead-name {
+    font-weight: 600;
+    text-align: center;
+    line-height: 0.98;
+    letter-spacing: -0.012em;
+    margin: 22px 0 16px;
+    font-size: clamp(3.1rem, 12vw, 7.2rem);
+  }
+
+  .dateline-rule {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 14px;
+    text-align: center;
+  }
+  .dateline-rule .desc {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .dateline-rule .dot {
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  /* ---------- Generic section frame ---------- */
+  main { padding-bottom: 10px; }
+
+  .section { padding: 44px 0; }
+  .section + .section { border-top: 1px solid var(--hair); }
+
+  .kicker {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 18px;
+  }
+  .kicker::after {
+    content: "";
+    flex: 1;
+    height: 0;
+    border-top: 1px solid var(--hair);
+  }
+  .kicker .num {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft);
+    border: 1px solid var(--hair);
+    padding: 2px 6px;
+    letter-spacing: 0.08em;
+  }
+
+  h2.head {
+    font-size: clamp(1.8rem, 4.3vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .standfirst {
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    max-width: 40ch;
+    margin: 0 0 26px;
+  }
+
+  /* ---------- Lead article ---------- */
+  .lead-grid {
+    display: grid;
+    grid-template-columns: 1.62fr 1fr;
+    gap: 40px;
+  }
+  .lead-body {
+    column-count: 2;
+    column-gap: 34px;
+    column-rule: 1px solid var(--hair);
+    text-align: justify;
+    hyphens: auto;
+  }
+  .lead-body p { margin: 0 0 1.05em; }
+  .lead-body p:last-child { margin-bottom: 0; }
+
+  .dropcap::first-letter {
+    initial-letter: 3;
+    -webkit-initial-letter: 3;
+    font-weight: 700;
+    color: var(--accent);
+    margin-right: 0.07em;
+    padding-right: 0.04em;
+  }
+  /* Fallback for browsers without initial-letter */
+  @supports not (initial-letter: 3) {
+    .dropcap::first-letter {
+      font-size: 3.6em;
+      line-height: 0.82;
+      float: left;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0.04em 0.08em 0 0;
+    }
+  }
+
+  aside.lead-card {
+    border-top: 3px solid var(--ink);
+    padding-top: 14px;
+    font-family: var(--sans);
+  }
+  aside.lead-card h3 {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  .fact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fact-list li {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .fact-list li:first-child { padding-top: 0; }
+  .fact-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .fact-list .label {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3px;
+    font-weight: 700;
+  }
+  .fact-list .val { color: var(--ink); font-weight: 500; }
+
+  .monogram {
+    margin: 0 auto 16px;
+    width: 78px;
+    height: 78px;
+    border: 1.5px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    position: relative;
+  }
+  .monogram::before,
+  .monogram::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    height: 0;
+    border-top: 1px solid var(--accent);
+  }
+  .monogram::before { top: 5px; }
+  .monogram::after { bottom: 5px; }
+
+  /* ---------- Research focus ---------- */
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--hair);
+  }
+  .research-item {
+    padding: 24px 28px 24px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .research-item:nth-child(odd) {
+    border-right: 1px solid var(--hair);
+  }
+  .research-item:nth-child(even) {
+    padding-left: 28px;
+  }
+  .research-item .ri-num {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .research-item h3 {
+    font-size: 1.32rem;
+    font-weight: 600;
+    margin: 4px 0 7px;
+    line-height: 1.18;
+  }
+  .research-item p {
+    margin: 0;
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.52;
+  }
+
+  /* ---------- Figure ---------- */
+  .figure-block {
+    border: 1px solid var(--rule);
+    background: var(--paper-deep);
+  }
+  .figure-head {
+    border-bottom: 1px solid var(--rule);
+    padding: 13px 22px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px 16px;
+    font-family: var(--sans);
+  }
+  .figure-head .fig-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .figure-head .fig-title {
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .figure-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+  }
+  .figure-chart-side {
+    padding: 24px 22px;
+    border-right: 1px solid var(--hair);
+  }
+  .figure-control-side {
+    padding: 24px 22px;
+  }
+
+  .chart-frame {
+    position: relative;
+  }
+  .chart svg { display: block; width: 100%; height: auto; }
+  .chart text { font-family: var(--sans); }
+
+  .readout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 16px;
+    border-top: 1px solid var(--hair);
+    padding-top: 14px;
+  }
+  .readout .metric { flex: 1 1 110px; }
+  .readout .metric .m-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .readout .metric .m-value {
+    font-size: 1.7rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .readout .metric .m-value .unit {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .readout .metric.accent .m-value { color: var(--accent); }
+
+  .control-label {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .control-label .cl-value {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0;
+    text-transform: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    margin: 0;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: var(--ink);
+  }
+  input[type="range"]::-moz-range-track {
+    height: 4px;
+    background: var(--ink);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 26px;
+    margin-top: -11px;
+    background: var(--accent);
+    border: 1px solid var(--accent-deep);
+    border-radius: 0;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 26px;
+    background: var(--accent);
+    border: 1px solid var(--accent-deep);
+    border-radius: 0;
+  }
+  input[type="range"]:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  input[type="range"]:focus-visible::-moz-range-thumb {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .ticks {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  .scenario-buttons {
+    display: flex;
+    gap: 8px;
+    margin: 20px 0 0;
+    flex-wrap: wrap;
+  }
+  .scenario-buttons button {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 7px 11px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    transition: background-color 0.14s ease, color 0.14s ease;
+  }
+  .scenario-buttons button:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .scenario-buttons button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent-deep);
+  }
+
+  .fig-note {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-top: 16px;
+  }
+  .figure-caption {
+    border-top: 1px solid var(--rule);
+    padding: 12px 22px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .figure-caption strong {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* ---------- Selected writing (contents list) ---------- */
+  .pub {
+    display: block;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .pub:first-of-type { border-top: 1px solid var(--rule); }
+  .pub-top {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .pub-no {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    flex: 0 0 auto;
+    font-variant-numeric: tabular-nums;
+    width: 2.2ch;
+  }
+  .pub-title {
+    font-size: 1.24rem;
+    font-weight: 600;
+    line-height: 1.24;
+    flex: 1;
+  }
+  .pub-leader {
+    flex: 1;
+    border-bottom: 1.5px dotted var(--hair);
+    margin: 0 2px 5px;
+    min-width: 18px;
+  }
+  .pub-year {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    flex: 0 0 auto;
+  }
+  .pub-meta {
+    margin: 7px 0 0;
+    padding-left: calc(2.2ch + 14px);
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .pub-journal { font-style: italic; color: var(--ink); }
+  .pub-lang {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--hair);
+    padding: 1px 5px;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
+  /* ---------- Affiliations ---------- */
+  .affil-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hair);
+    border: 1px solid var(--hair);
+  }
+  .affil {
+    background: var(--paper);
+    padding: 22px 20px;
+  }
+  .affil .affil-tag {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .affil h3 {
+    font-size: 1.12rem;
+    font-weight: 600;
+    margin: 6px 0 6px;
+    line-height: 1.22;
+  }
+  .affil p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.48;
+  }
+  .affil .affil-place {
+    display: block;
+    margin-top: 8px;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+
+  /* ---------- Contact ---------- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .contact-lede {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  .contact-lede .pull {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .contact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 3px solid var(--ink);
+  }
+  .contact-list li {
+    border-bottom: 1px solid var(--hair);
+    padding: 14px 0;
+  }
+  .contact-list li:last-child { border-bottom: 0; }
+  .contact-list .ct-label {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .contact-list .ct-value {
+    font-size: 1.06rem;
+    word-break: break-word;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 3px double var(--rule);
+    margin-top: 8px;
+    padding: 26px 0 40px;
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px 24px;
+  }
+  .colophon {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    max-width: 56ch;
+  }
+  .colophon .imprint {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .footer-mark {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px) {
+    body { font-size: 18px; }
+    .wrap { padding: 0 24px; }
+    .lead-grid { grid-template-columns: 1fr; gap: 30px; }
+    .figure-inner { grid-template-columns: 1fr; }
+    .figure-chart-side { border-right: 0; border-bottom: 1px solid var(--hair); }
+    .contact-grid { grid-template-columns: 1fr; gap: 26px; }
+    .affil-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17px; }
+    .wrap { padding: 0 18px; }
+    .section { padding: 36px 0; }
+    .masthead-top {
+      letter-spacing: 0.1em;
+      font-size: 10px;
+      justify-content: center;
+    }
+    .lead-body {
+      column-count: 1;
+      column-rule: 0;
+      text-align: left;
+    }
+    .research-grid { grid-template-columns: 1fr; }
+    .research-item,
+    .research-item:nth-child(odd) {
+      padding: 20px 0;
+      border-right: 0;
+    }
+    .research-item:nth-child(even) { padding-left: 0; }
+    .pub-meta { padding-left: 0; }
+    .pub-top { flex-wrap: wrap; }
+    .pub-leader { display: none; }
+    .pub-year { margin-left: calc(2.2ch + 14px); }
+    .readout .metric { flex: 1 1 100%; }
+    .footer-inner { flex-direction: column; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    .bar-rect, .seg-line { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead-top">
+      <span class="edition">Working Paper Edition</span>
+      <span>Institute for Analytical Sociology</span>
+      <span>Norrk&ouml;ping &middot; Sweden</span>
+    </div>
+    <h1 class="masthead-name">Axel Norgren</h1>
+    <div class="dateline-rule">
+      <span class="desc">Economics of Education</span>
+      <span class="dot" aria-hidden="true">&#9670;</span>
+      <span class="desc">Link&ouml;ping University</span>
+      <span class="dot" aria-hidden="true">&#9670;</span>
+      <span class="desc">PhD Candidate</span>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+  <!-- ===== Lead article ===== -->
+  <section class="section" aria-labelledby="about-head">
+    <p class="kicker"><span class="num">No. 01</span> The Profile</p>
+    <h2 class="head" id="about-head">An economist reading the Swedish school system</h2>
+    <p class="standfirst">How families choose schools, how the state holds them to account, and how struggling schools recover.</p>
+
+    <div class="lead-grid">
+      <article class="lead-body">
+        <p class="dropcap">Axel Norgren is a PhD student in economics at Link&ouml;ping University, based at the Institute for Analytical Sociology on the Norrk&ouml;ping campus. His work sits in the economics of education, and it takes the Swedish school system as both its subject and its laboratory: a setting where school choice is widespread, where an inspectorate audits quality, and where the consequences of both reach well beyond the classroom.</p>
+        <p>The questions he pursues are practical ones. When parents are free to pick a school, what are they actually choosing, and what does the sum of those choices do to segregation between schools and to how effective schools become? When the state inspects and holds schools accountable, does that scrutiny raise quality, or simply move it around? And when a school is failing, what does a credible recovery look like?</p>
+        <p>Norgren also studies the loop that ties housing to schooling. A family's choice of where to live shapes the schools within easy reach, and the schools within reach shape where families want to live. Treating residential choice and school choice as one connected decision, rather than two separate ones, changes how the resulting patterns of sorting should be read.</p>
+        <p>He holds an MSc in Economics from Link&ouml;ping University and works across the boundary between economics and analytical sociology, publishing in both Swedish and English.</p>
+      </article>
+
+      <aside class="lead-card" aria-label="At a glance">
+        <div class="monogram" aria-hidden="true">AN</div>
+        <h3>At a glance</h3>
+        <ul class="fact-list">
+          <li>
+            <span class="label">Position</span>
+            <span class="val">PhD student in economics</span>
+          </li>
+          <li>
+            <span class="label">Base</span>
+            <span class="val">Institute for Analytical Sociology, Link&ouml;ping University &mdash; Campus Norrk&ouml;ping</span>
+          </li>
+          <li>
+            <span class="label">Field</span>
+            <span class="val">Economics of education</span>
+          </li>
+          <li>
+            <span class="label">Education</span>
+            <span class="val">MSc in Economics, Link&ouml;ping University</span>
+          </li>
+          <li>
+            <span class="label">Correspondence</span>
+            <span class="val"><a href="mailto:axel.norgren@liu.se">axel.norgren@liu.se</a></span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== Research focus ===== -->
+  <section class="section" aria-labelledby="research-head">
+    <p class="kicker"><span class="num">No. 02</span> Lines of Inquiry</p>
+    <h2 class="head" id="research-head">Research focus</h2>
+    <p class="standfirst">Four threads running through the economics of education in Sweden.</p>
+
+    <div class="research-grid">
+      <article class="research-item">
+        <span class="ri-num">I.</span>
+        <h3>School choice</h3>
+        <p>Examining what families weigh when they select a school, and how a system built on choice distributes pupils and resources across schools.</p>
+      </article>
+      <article class="research-item">
+        <span class="ri-num">II.</span>
+        <h3>Segregation &amp; effectiveness</h3>
+        <p>Tracing how the aggregate of individual choices feeds into segregation between schools and into measured differences in school effectiveness.</p>
+      </article>
+      <article class="research-item">
+        <span class="ri-num">III.</span>
+        <h3>Accountability</h3>
+        <p>Assessing accountability systems and the role of the Swedish Schools Inspectorate in supervising and lifting the quality of schooling.</p>
+      </article>
+      <article class="research-item">
+        <span class="ri-num">IV.</span>
+        <h3>School turnaround</h3>
+        <p>Studying how underperforming schools recover, and why turnaround tends to follow several pathways rather than a single fix.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Interactive figure ===== -->
+  <section class="section" aria-labelledby="figure-head">
+    <p class="kicker"><span class="num">No. 03</span> Schematic</p>
+    <h2 class="head" id="figure-head">A school-choice thought experiment</h2>
+    <p class="standfirst">Move the slider to see how non-local school choice can reshape sorting between schools.</p>
+
+    <div class="figure-block">
+      <div class="figure-head">
+        <span class="fig-label">Figure 1</span>
+        <span class="fig-title">Non-local choice and between-school sorting</span>
+      </div>
+      <div class="figure-inner">
+        <div class="figure-chart-side">
+          <div class="chart-frame">
+            <div class="chart" role="img" id="chartImg"
+                 aria-label="Schematic bar chart of the socio-economic mix in a local and a non-local school. As the share of families choosing a non-local school rises, the two schools' compositions move further apart.">
+              <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- baseline -->
+                <line x1="46" y1="190" x2="344" y2="190" stroke="#1A1A1A" stroke-width="1.4"/>
+                <!-- y gridlines + labels -->
+                <g id="gridGroup"></g>
+                <!-- y axis caption -->
+                <text x="14" y="118" transform="rotate(-90 14 118)" font-size="9.5"
+                      letter-spacing="0.5" fill="#4A463E" text-anchor="middle">SHARE HIGHER-SES PUPILS</text>
+                <!-- bars -->
+                <rect id="barLocal" class="bar-rect" x="86" y="120" width="78" height="70"
+                      fill="#1A1A1A"></rect>
+                <rect id="barNon" class="bar-rect" x="206" y="90" width="78" height="100"
+                      fill="#A8231C"></rect>
+                <!-- value labels -->
+                <text id="valLocal" x="125" y="112" font-size="12" font-weight="700"
+                      fill="#1A1A1A" text-anchor="middle">50%</text>
+                <text id="valNon" x="245" y="82" font-size="12" font-weight="700"
+                      fill="#A8231C" text-anchor="middle">50%</text>
+                <!-- category labels -->
+                <text x="125" y="207" font-size="10" letter-spacing="0.6"
+                      fill="#1A1A1A" text-anchor="middle">LOCAL SCHOOL</text>
+                <text x="245" y="207" font-size="10" letter-spacing="0.6"
+                      fill="#1A1A1A" text-anchor="middle">NON-LOCAL SCHOOL</text>
+                <text x="125" y="222" font-size="9" fill="#4A463E" text-anchor="middle">catchment intake</text>
+                <text x="245" y="222" font-size="9" fill="#4A463E" text-anchor="middle">choice intake</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="readout" aria-hidden="false">
+            <div class="metric accent">
+              <span class="m-label">Sorting gap</span>
+              <span class="m-value"><span id="gapVal">0</span><span class="unit"> pts</span></span>
+            </div>
+            <div class="metric">
+              <span class="m-label">Local school</span>
+              <span class="m-value"><span id="localVal">50</span><span class="unit">%</span></span>
+            </div>
+            <div class="metric">
+              <span class="m-label">Non-local school</span>
+              <span class="m-value"><span id="nonVal">50</span><span class="unit">%</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="figure-control-side">
+          <label class="control-label" for="choiceSlider">
+            <span>Families choosing<br>a non-local school</span>
+            <span class="cl-value"><span id="sliderOut">20</span>%</span>
+          </label>
+          <input type="range" id="choiceSlider" min="0" max="80" step="5" value="20"
+                 aria-describedby="figNote"
+                 aria-valuetext="20 percent of families choosing a non-local school">
+          <div class="ticks" aria-hidden="true">
+            <span>0%</span><span>40%</span><span>80%</span>
+          </div>
+
+          <div class="scenario-buttons" role="group" aria-label="Preset scenarios">
+            <button type="button" data-val="5" aria-pressed="false">Mostly local</button>
+            <button type="button" data-val="35" aria-pressed="false">Mixed</button>
+            <button type="button" data-val="70" aria-pressed="false">Choice-heavy</button>
+          </div>
+
+          <p class="fig-note" id="figNote">
+            In this schematic, families who opt out of the local school are assumed to be drawn
+            disproportionately from higher socio-economic backgrounds. As more of them exercise
+            choice, the two schools' intakes drift apart and the <strong style="font-family:var(--serif);font-size:inherit;letter-spacing:0;text-transform:none;color:var(--accent);">sorting gap</strong>
+            widens. The relationship shown is a stylised illustration of one mechanism, not an estimate.
+          </p>
+        </div>
+      </div>
+      <p class="figure-caption">
+        <strong>Figure 1.</strong> Schematic illustration only. The numbers are generated by a simple
+        rule for the purpose of this page and do not represent measured data, any particular school,
+        municipality, or published result.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Selected writing ===== -->
+  <section class="section" aria-labelledby="writing-head">
+    <p class="kicker"><span class="num">No. 04</span> Bibliography</p>
+    <h2 class="head" id="writing-head">Selected writing</h2>
+    <p class="standfirst">Peer-reviewed articles and policy writing, most recent first.</p>
+
+    <div class="contents-list">
+      <article class="pub">
+        <div class="pub-top">
+          <span class="pub-no">01</span>
+          <span class="pub-title">Seeking opportunity or socio-economic status? Housing and school choice in Sweden</span>
+          <span class="pub-leader" aria-hidden="true"></span>
+          <span class="pub-year">2025</span>
+        </div>
+        <p class="pub-meta">
+          <span class="pub-journal">Urban Studies</span> &nbsp;&middot;&nbsp;
+          with F. W. Andersson, S. Mutgan and K. Wennberg
+        </p>
+      </article>
+
+      <article class="pub">
+        <div class="pub-top">
+          <span class="pub-no">02</span>
+          <span class="pub-title">Beyond the silver bullet: unveiling multiple pathways to school turnaround</span>
+          <span class="pub-leader" aria-hidden="true"></span>
+          <span class="pub-year">2024</span>
+        </div>
+        <p class="pub-meta">
+          <span class="pub-journal">School Effectiveness and School Improvement</span> &nbsp;&middot;&nbsp;
+          with S. Arora-Jonsson, E. K. Demir and K. Wennberg
+        </p>
+      </article>
+
+      <article class="pub">
+        <div class="pub-top">
+          <span class="pub-no">03</span>
+          <span class="pub-title">Dynamics of founding team diversity and venture outcomes: a simulation approach</span>
+          <span class="pub-leader" aria-hidden="true"></span>
+          <span class="pub-year">2024</span>
+        </div>
+        <p class="pub-meta">
+          <span class="pub-journal">Strategic Entrepreneurship Journal</span> &nbsp;&middot;&nbsp;
+          with Sundriyal, L&eacute;vesque and Wennberg
+        </p>
+      </article>
+
+      <article class="pub">
+        <div class="pub-top">
+          <span class="pub-no">04</span>
+          <span class="pub-title">St&auml;rker Skolinspektionen kvaliteten i svensk skola?<span class="pub-lang">In Swedish</span></span>
+          <span class="pub-leader" aria-hidden="true"></span>
+          <span class="pub-year">2022</span>
+        </div>
+        <p class="pub-meta">
+          <span class="pub-journal">Ekonomisk debatt</span>
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Affiliations ===== -->
+  <section class="section" aria-labelledby="affil-head">
+    <p class="kicker"><span class="num">No. 05</span> Appointments</p>
+    <h2 class="head" id="affil-head">Affiliations</h2>
+    <p class="standfirst">Three research homes across Swedish economics and education policy.</p>
+
+    <div class="affil-grid">
+      <article class="affil">
+        <span class="affil-tag">Home institute</span>
+        <h3>Institute for Analytical Sociology</h3>
+        <p>PhD student in economics, working at the intersection of economics and analytical sociology.</p>
+        <span class="affil-place">Link&ouml;ping University &middot; Campus Norrk&ouml;ping</span>
+      </article>
+      <article class="affil">
+        <span class="affil-tag">Affiliated researcher</span>
+        <h3>Center for Educational Leadership and Excellence (CELE)</h3>
+        <p>Affiliated researcher within a centre devoted to the study of educational leadership and quality.</p>
+        <span class="affil-place">Stockholm School of Economics</span>
+      </article>
+      <article class="affil">
+        <span class="affil-tag">Affiliated PhD student</span>
+        <h3>IFAU</h3>
+        <p>Affiliated PhD student at the Institute for Evaluation of Labour Market and Education Policy.</p>
+        <span class="affil-place">Uppsala</span>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section class="section" aria-labelledby="contact-head">
+    <p class="kicker"><span class="num">No. 06</span> Correspondence</p>
+    <h2 class="head" id="contact-head">Contact</h2>
+
+    <div class="contact-grid">
+      <p class="contact-lede">
+        Inquiries about research on school choice, accountability and school turnaround are
+        welcome. <span class="pull">Email is the most reliable way to reach me</span>, and a
+        current list of work is kept on Google Scholar.
+      </p>
+      <ul class="contact-list">
+        <li>
+          <span class="ct-label">Email</span>
+          <span class="ct-value"><a href="mailto:axel.norgren@liu.se">axel.norgren@liu.se</a></span>
+        </li>
+        <li>
+          <span class="ct-label">Publications</span>
+          <span class="ct-value"><a href="https://scholar.google.com/citations?user=K-YEsKsAAAAJ" rel="noopener">Google Scholar profile</a></span>
+        </li>
+        <li>
+          <span class="ct-label">Institution</span>
+          <span class="ct-value">Institute for Analytical Sociology, Link&ouml;ping University</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <p class="colophon">
+      <span class="imprint">Colophon</span>
+      Set in Source Serif 4 and Archivo. This is a draft personal page, built by a colleague,
+      Jesper Lindmarker, 2026. Correspondence: <a href="mailto:axel.norgren@liu.se">axel.norgren@liu.se</a>.
+    </p>
+    <span class="footer-mark">Axel Norgren &middot; Norrk&ouml;ping</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var slider   = document.getElementById("choiceSlider");
+  var sliderOut= document.getElementById("sliderOut");
+  var barLocal = document.getElementById("barLocal");
+  var barNon   = document.getElementById("barNon");
+  var valLocal = document.getElementById("valLocal");
+  var valNon   = document.getElementById("valNon");
+  var localVal = document.getElementById("localVal");
+  var nonVal   = document.getElementById("nonVal");
+  var gapVal   = document.getElementById("gapVal");
+  var gridGroup= document.getElementById("gridGroup");
+  var buttons  = document.querySelectorAll(".scenario-buttons button");
+
+  // SVG plot geometry
+  var BASE_Y   = 190;   // y of baseline (0%)
+  var TOP_Y    = 60;    // y of 100%
+  var PLOT_H   = BASE_Y - TOP_Y;
+
+  // Draw horizontal gridlines at 0/25/50/75/100%
+  (function drawGrid() {
+    var svgNS = "http://www.w3.org/2000/svg";
+    [0, 25, 50, 75, 100].forEach(function (pct) {
+      var y = BASE_Y - (pct / 100) * PLOT_H;
+      if (pct !== 0) {
+        var ln = document.createElementNS(svgNS, "line");
+        ln.setAttribute("x1", 46);
+        ln.setAttribute("x2", 344);
+        ln.setAttribute("y1", y);
+        ln.setAttribute("y2", y);
+        ln.setAttribute("stroke", "#C9C2AF");
+        ln.setAttribute("stroke-width", "0.7");
+        ln.setAttribute("stroke-dasharray", "2 3");
+        gridGroup.appendChild(ln);
+      }
+      var tx = document.createElementNS(svgNS, "text");
+      tx.setAttribute("x", 41);
+      tx.setAttribute("y", y + 3.2);
+      tx.setAttribute("font-size", "8.5");
+      tx.setAttribute("fill", "#4A463E");
+      tx.setAttribute("text-anchor", "end");
+      tx.textContent = pct;
+      gridGroup.appendChild(tx);
+    });
+  })();
+
+  function render(rawShare) {
+    var share = Math.max(0, Math.min(80, rawShare)); // percent choosing non-local
+
+    // Schematic rule: opt-outs skew higher-SES. The non-local school's
+    // higher-SES share rises with the choosing share; the local school's falls.
+    // Both anchored at 50% when nobody chooses; spread scales gently.
+    var spread = 0.55 * share;                 // max ~44 pts of total spread
+    var nonHi   = Math.round(50 + spread / 2); // higher-SES share, non-local
+    var localHi = Math.round(50 - spread / 2); // higher-SES share, local
+    nonHi   = Math.max(0, Math.min(100, nonHi));
+    localHi = Math.max(0, Math.min(100, localHi));
+    var gap = nonHi - localHi;
+
+    // Update bars
+    var hLocal = (localHi / 100) * PLOT_H;
+    var hNon   = (nonHi / 100) * PLOT_H;
+    barLocal.setAttribute("y", BASE_Y - hLocal);
+    barLocal.setAttribute("height", hLocal);
+    barNon.setAttribute("y", BASE_Y - hNon);
+    barNon.setAttribute("height", hNon);
+
+    valLocal.setAttribute("y", BASE_Y - hLocal - 8);
+    valLocal.textContent = localHi + "%";
+    valNon.setAttribute("y", BASE_Y - hNon - 8);
+    valNon.textContent = nonHi + "%";
+
+    // Update readouts
+    sliderOut.textContent = share;
+    localVal.textContent  = localHi;
+    nonVal.textContent    = nonHi;
+    gapVal.textContent    = gap;
+
+    slider.setAttribute("aria-valuetext",
+      share + " percent of families choosing a non-local school; " +
+      "sorting gap " + gap + " points");
+
+    // Sync preset button states
+    buttons.forEach(function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.val) === share));
+    });
+  }
+
+  slider.addEventListener("input", function () {
+    render(Number(slider.value));
+  });
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      slider.value = btn.dataset.val;
+      render(Number(btn.dataset.val));
+    });
+  });
+
+  render(Number(slider.value));
+})();
+</script>
+</body>
+</html>

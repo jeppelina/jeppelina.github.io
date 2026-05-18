@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tangbin Chen</title>
+<meta name="description" content="Tangbin Chen is a PhD student in computational and analytical sociology, studying how health behaviours and health inequalities spread through social networks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBFCFD;
+    --panel: #FFFFFF;
+    --ink: #1B2230;
+    --ink-soft: #4A5363;
+    --muted: #8A94A6;
+    --line: #E6EAF0;
+    --coral: #FF6B5B;
+    --red: #D6204A;
+    --grad: linear-gradient(135deg, #FF6B5B 0%, #D6204A 100%);
+    --shadow-sm: 0 1px 2px rgba(27,34,48,.05), 0 2px 8px rgba(27,34,48,.05);
+    --shadow-md: 0 4px 14px rgba(27,34,48,.07), 0 10px 32px rgba(27,34,48,.07);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --maxw: 1080px;
+    --s1: 8px;  --s2: 16px;  --s3: 24px;  --s4: 40px;  --s5: 64px;  --s6: 96px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, .mono-label {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
+
+  a { color: var(--red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Focus states */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 3px solid rgba(214,32,74,.45);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 8px;
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    z-index: 100;
+  }
+  .skip-link:focus { left: 16px; }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 var(--s3);
+  }
+
+  /* ---------- Header ---------- */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(251,252,253,.86);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    padding: 14px 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 1.02rem;
+  }
+  .brand:hover { text-decoration: none; }
+  .monogram {
+    width: 38px; height: 38px;
+    border-radius: 11px;
+    background: var(--grad);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: .92rem;
+    letter-spacing: .02em;
+    box-shadow: 0 4px 12px rgba(214,32,74,.28);
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    gap: var(--s3);
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--ink-soft);
+    font-size: .94rem;
+    font-weight: 500;
+    padding: 4px 2px;
+  }
+  .nav-links a:hover { color: var(--red); text-decoration: none; }
+
+  /* ---------- Section scaffolding ---------- */
+  section { padding: var(--s6) 0; }
+  section + section { padding-top: 0; }
+
+  .eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 22px; height: 2px;
+    background: var(--grad);
+    border-radius: 2px;
+  }
+
+  h2.section-title {
+    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -.015em;
+    margin: var(--s2) 0 var(--s3);
+    max-width: 22ch;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: var(--s5) 0 var(--s6); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s5);
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 5.4vw, 3.7rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -.025em;
+    margin: var(--s3) 0 var(--s2);
+  }
+  .hero .role {
+    font-size: 1.06rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-bottom: var(--s3);
+  }
+  .hero .intro {
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin-bottom: var(--s3);
+  }
+  .affil-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 15px 7px 11px;
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    box-shadow: var(--shadow-sm);
+  }
+  .tag .dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--grad);
+    flex-shrink: 0;
+  }
+  .tag .dot.slate { background: var(--muted); }
+
+  /* ---------- Simulation panel ---------- */
+  .sim-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .sim-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .sim-head .mono-label {
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .readout {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .readout .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-variant-numeric: tabular-nums;
+  }
+  .readout .lbl {
+    font-size: .74rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .canvas-shell {
+    position: relative;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,107,91,.05), transparent 60%),
+      #FCFDFE;
+  }
+  canvas#net {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .sim-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-top: 1px solid var(--line);
+  }
+  .btn {
+    font-family: 'Inter', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-primary {
+    background: var(--grad);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(214,32,74,.26);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(214,32,74,.32); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled {
+    background: var(--muted);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: .65;
+  }
+  .btn-ghost {
+    background: var(--bg);
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { background: #fff; color: var(--red); border-color: #DCC; }
+
+  .slider-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .slider-group label {
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .slider-group .val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: .82rem;
+    color: var(--red);
+    font-variant-numeric: tabular-nums;
+    min-width: 2.6em;
+    text-align: right;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 116px;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--coral), var(--red));
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--red);
+    box-shadow: 0 1px 4px rgba(27,34,48,.25);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--red);
+    box-shadow: 0 1px 4px rgba(27,34,48,.25);
+  }
+  .sim-caption {
+    padding: 0 18px 16px;
+    font-size: .8rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .legend {
+    display: flex;
+    gap: 16px;
+    padding: 0 18px 14px;
+    flex-wrap: wrap;
+  }
+  .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: .78rem;
+    color: var(--ink-soft);
+  }
+  .legend .swatch {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+  .legend .sw-neutral { background: #8A94A6; }
+  .legend .sw-active  { background: #FF6B5B; }
+  .legend .sw-rec     { background: #D6204A; }
+
+  /* ---------- About / research ---------- */
+  .lead {
+    font-size: clamp(1.05rem, 2vw, 1.22rem);
+    color: var(--ink-soft);
+    max-width: 60ch;
+    line-height: 1.62;
+  }
+  .lead strong { color: var(--ink); font-weight: 600; }
+  .prose p { margin-top: var(--s2); color: var(--ink-soft); max-width: 64ch; }
+
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s3);
+    margin-top: var(--s4);
+  }
+  .focus-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--s3);
+    box-shadow: var(--shadow-sm);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .focus-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .focus-card .ico {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255,107,91,.14), rgba(214,32,74,.14));
+    display: grid;
+    place-items: center;
+    margin-bottom: var(--s2);
+  }
+  .focus-card .ico svg { display: block; }
+  .focus-card h3 {
+    font-size: 1.06rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -.01em;
+  }
+  .focus-card p { font-size: .92rem; color: var(--ink-soft); }
+
+  /* ---------- Affiliations ---------- */
+  .affil-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s3);
+    margin-top: var(--s4);
+  }
+  .affil-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--s3);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    gap: var(--s2);
+  }
+  .affil-card .bar {
+    width: 4px;
+    border-radius: 999px;
+    background: var(--grad);
+    flex-shrink: 0;
+  }
+  .affil-card h3 {
+    font-size: 1.04rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .affil-card .place {
+    font-size: .86rem;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .affil-card p { font-size: .92rem; color: var(--ink-soft); }
+
+  /* ---------- Project ---------- */
+  .project {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    margin-top: var(--s4);
+  }
+  .project-top {
+    padding: var(--s4);
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 92% 8%, rgba(255,107,91,.08), transparent 55%);
+  }
+  .project-top h3 {
+    font-size: clamp(1.25rem, 2.6vw, 1.62rem);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -.015em;
+    max-width: 24ch;
+    margin-bottom: var(--s2);
+  }
+  .project-top p { color: var(--ink-soft); max-width: 62ch; }
+  .project-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--line);
+  }
+  .meta-cell {
+    padding: 20px var(--s3);
+    border-right: 1px solid var(--line);
+  }
+  .meta-cell:last-child { border-right: none; }
+  .meta-cell .k {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .meta-cell .v {
+    font-size: .98rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .meta-cell .v small {
+    display: block;
+    font-size: .82rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .project-team {
+    padding: var(--s3) var(--s4) var(--s4);
+  }
+  .project-team .k {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--s2);
+  }
+  .team-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .person {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 14px 6px 6px;
+    font-size: .88rem;
+    color: var(--ink-soft);
+  }
+  .person .av {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .68rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--muted);
+    flex-shrink: 0;
+  }
+  .person.lead .av { background: var(--grad); }
+  .person.lead { border-color: rgba(214,32,74,.25); }
+  .person .role-mini { color: var(--muted); font-size: .78rem; }
+
+  /* ---------- SICSS note ---------- */
+  .sicss {
+    display: flex;
+    gap: var(--s3);
+    align-items: flex-start;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--s3) var(--s4);
+    box-shadow: var(--shadow-sm);
+    margin-top: var(--s4);
+  }
+  .sicss .badge {
+    flex-shrink: 0;
+    width: 64px; height: 64px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255,107,91,.12), rgba(214,32,74,.12));
+    border: 1px solid var(--line);
+    display: grid;
+    place-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: .78rem;
+    color: var(--red);
+    letter-spacing: .02em;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .sicss h3 { font-size: 1.08rem; font-weight: 600; margin-bottom: 6px; }
+  .sicss p { font-size: .94rem; color: var(--ink-soft); max-width: 64ch; }
+
+  /* ---------- Contact ---------- */
+  .contact {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: var(--s5) var(--s4);
+    text-align: center;
+    margin-top: var(--s4);
+    position: relative;
+    overflow: hidden;
+  }
+  .contact::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--grad);
+  }
+  .contact h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -.015em;
+    margin-bottom: var(--s1);
+  }
+  .contact p {
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 auto var(--s3);
+  }
+  .email-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+  }
+  .email-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 20px;
+    font-size: .96rem;
+    font-weight: 500;
+    color: var(--ink);
+    transition: transform .12s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .email-btn:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(214,32,74,.3);
+  }
+  .email-btn svg { flex-shrink: 0; }
+
+  /* ---------- Footer ---------- */
+  footer.site {
+    border-top: 1px solid var(--line);
+    padding: var(--s4) 0 var(--s5);
+    margin-top: var(--s6);
+  }
+  .footer-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s3);
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .footer-left .monogram { width: 34px; height: 34px; font-size: .82rem; }
+  .footer-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: .96rem;
+  }
+  .footer-note {
+    font-size: .82rem;
+    color: var(--muted);
+    max-width: 52ch;
+    line-height: 1.6;
+  }
+  .footer-note a { color: var(--ink-soft); }
+  .footer-emails {
+    font-size: .84rem;
+    color: var(--ink-soft);
+  }
+  .footer-emails a { font-weight: 500; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; gap: var(--s4); }
+    .focus-grid { grid-template-columns: 1fr; }
+    .affil-grid { grid-template-columns: 1fr; }
+    .project-meta { grid-template-columns: 1fr; }
+    .meta-cell { border-right: none; border-bottom: 1px solid var(--line); }
+    .meta-cell:last-child { border-bottom: none; }
+    .nav-links { display: none; }
+    section { padding: var(--s5) 0; }
+  }
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 var(--s2); }
+    .sicss { flex-direction: column; gap: var(--s2); }
+    .slider-group { margin-left: 0; width: 100%; }
+    .sim-controls { gap: 10px; }
+    .btn { flex: 1 1 auto; }
+    .project-top, .contact { padding-left: var(--s3); padding-right: var(--s3); }
+    .project-team { padding-left: var(--s3); padding-right: var(--s3); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .focus-card:hover, .email-btn:hover, .btn-primary:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site">
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#top">
+        <span class="monogram" aria-hidden="true">TC</span>
+        <span>Tangbin Chen</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#research">Research</a></li>
+        <li><a href="#affiliations">Affiliations</a></li>
+        <li><a href="#project">Project</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <span class="eyebrow">Computational &amp; analytical sociology</span>
+          <h1>Tangbin Chen</h1>
+          <p class="role">PhD student in computational and analytical sociology</p>
+          <p class="intro">
+            I study how health-related behaviours and health inequalities spread
+            through social networks, using social network analysis to trace the
+            ties along which influence travels.
+          </p>
+          <div class="affil-tags">
+            <span class="tag"><span class="dot" aria-hidden="true"></span>Institute for Analytical Sociology, Linköping University</span>
+            <span class="tag"><span class="dot" aria-hidden="true"></span>MEB, Karolinska Institutet</span>
+          </div>
+        </div>
+
+        <!-- Contagion simulation -->
+        <div class="sim-panel" aria-labelledby="sim-title">
+          <div class="sim-head">
+            <span class="mono-label" id="sim-title">Contagion model</span>
+            <div class="readout" aria-hidden="true">
+              <span class="num" id="pctNum">0%</span>
+              <span class="lbl">adopted</span>
+            </div>
+          </div>
+          <div class="canvas-shell">
+            <canvas id="net" width="520" height="380"
+              role="img"
+              aria-label="An illustrative network of 60 nodes connected by edges. Nodes begin grey and turn coral, then deep red, as a simulated behaviour spreads from a seed node along network ties.">
+            </canvas>
+          </div>
+          <div class="legend" aria-hidden="true">
+            <span><span class="swatch sw-neutral"></span>Not yet affected</span>
+            <span><span class="swatch sw-active"></span>Adopting</span>
+            <span><span class="swatch sw-rec"></span>Established</span>
+          </div>
+          <div class="sim-controls">
+            <button class="btn btn-primary" id="startBtn" type="button">Start spread</button>
+            <button class="btn btn-ghost" id="resetBtn" type="button">Reset</button>
+            <div class="slider-group">
+              <label for="rateSlider">Transmission rate</label>
+              <input type="range" id="rateSlider" min="5" max="80" value="45" step="5"
+                aria-valuetext="45 percent">
+              <span class="val" id="rateVal">45%</span>
+            </div>
+          </div>
+          <p class="sim-caption">
+            An illustrative SIR-style model of how a behaviour can move through a
+            network, not real data. A behaviour starts at one node and spreads
+            along social ties; the live counter tracks the share of nodes affected.
+            <span id="liveStatus" role="status" aria-live="polite" style="display:block;margin-top:4px;"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESEARCH ============ -->
+  <section id="research">
+    <div class="wrap">
+      <span class="eyebrow">About the research</span>
+      <h2 class="section-title">Tracing how behaviour and health inequality travel through networks</h2>
+      <p class="lead">
+        My research treats health behaviour as something that moves between people.
+        Rather than studying individuals in isolation, I look at the
+        <strong>social ties</strong> that connect them, and ask how habits, norms
+        and inequalities in health are passed along those connections.
+      </p>
+      <div class="prose">
+        <p>
+          A central strand of this work examines how nicotine products, including
+          cigarettes, e-cigarettes and snus, diffuse among Swedish adolescents,
+          both online and offline. Social network analysis makes it possible to see
+          which connections carry influence, and how an adopted behaviour can ripple
+          outward from a small starting point to reshape a wider group.
+        </p>
+        <p>
+          Alongside the work on nicotine use, I also study social influence on
+          fertility: how decisions and norms around having children are shaped by
+          the people around us.
+        </p>
+      </div>
+
+      <div class="focus-grid">
+        <article class="focus-card">
+          <div class="ico" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D6204A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5" cy="6" r="2.4"/><circle cx="19" cy="6" r="2.4"/>
+              <circle cx="12" cy="18" r="2.4"/>
+              <path d="M7.2 7.2 16.8 16.8M16.8 7.2 7.2 16.8M7 6h10"/>
+            </svg>
+          </div>
+          <h3>Social network analysis</h3>
+          <p>
+            Mapping the structure of ties between people to understand which
+            connections carry influence and how behaviours travel along them.
+          </p>
+        </article>
+        <article class="focus-card">
+          <div class="ico" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D6204A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17l5-6 4 3 5-7 4 5"/>
+              <path d="M3 21h18"/>
+            </svg>
+          </div>
+          <h3>Behaviour diffusion</h3>
+          <p>
+            How nicotine products spread among Swedish adolescents, online and
+            offline, as a behaviour adopted through peers.
+          </p>
+        </article>
+        <article class="focus-card">
+          <div class="ico" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D6204A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s-7-4.3-9-9.2C1.7 8 3.8 4.5 7.2 4.5c2 0 3.6 1.1 4.8 3 1.2-1.9 2.8-3 4.8-3 3.4 0 5.5 3.5 4.2 7.3-2 4.9-9 9.2-9 9.2z"/>
+            </svg>
+          </div>
+          <h3>Health inequality</h3>
+          <p>
+            How differences in health outcomes are reproduced through social
+            connections, including social influence on fertility.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AFFILIATIONS ============ -->
+  <section id="affiliations">
+    <div class="wrap">
+      <span class="eyebrow">Where I work</span>
+      <h2 class="section-title">A dual affiliation across two research environments</h2>
+      <p class="lead">
+        My PhD sits between analytical sociology and psychiatric epidemiology,
+        bringing network methods together with register-based health research.
+      </p>
+      <div class="affil-grid">
+        <article class="affil-card">
+          <div class="bar" aria-hidden="true"></div>
+          <div>
+            <h3>Institute for Analytical Sociology</h3>
+            <p class="place">Linköping University, Campus Norrköping</p>
+            <p>
+              A research environment focused on explaining social processes through
+              theory, data and computational methods, the home base for the
+              network analysis at the centre of my work.
+            </p>
+          </div>
+        </article>
+        <article class="affil-card">
+          <div class="bar" aria-hidden="true"></div>
+          <div>
+            <h3>Dept. of Medical Epidemiology and Biostatistics</h3>
+            <p class="place">Karolinska Institutet &middot; Professor Paul Lichtenstein's psychiatric epidemiology group</p>
+            <p>
+              Part of a psychiatric epidemiology group that links large-scale
+              Swedish health and register data, grounding the social network
+              questions in epidemiological evidence.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECT ============ -->
+  <section id="project">
+    <div class="wrap">
+      <span class="eyebrow">Current project</span>
+      <h2 class="section-title">Studying the spread of nicotine products in teenage networks</h2>
+
+      <div class="project">
+        <div class="project-top">
+          <h3>Tackling the spread of cigarettes and alternative nicotine products in social networks</h3>
+          <p>
+            This project follows how cigarettes, e-cigarettes and snus move through
+            the social networks of Swedish teenagers. It collects social network
+            data from around 1,000 adolescents and links it to Swedish
+            administrative registers, combining a close view of peer connections
+            with population-level health and background information.
+          </p>
+        </div>
+        <div class="project-meta">
+          <div class="meta-cell">
+            <div class="k">Funder</div>
+            <div class="v">Forte<small>Swedish Research Council for Health, Working Life and Welfare</small></div>
+          </div>
+          <div class="meta-cell">
+            <div class="k">Period</div>
+            <div class="v">Oct 2024 &ndash; Dec 2027<small>Three-year research project</small></div>
+          </div>
+          <div class="meta-cell">
+            <div class="k">Data</div>
+            <div class="v">~1,000 teenagers<small>Network survey linked to Swedish registers</small></div>
+          </div>
+        </div>
+        <div class="project-team">
+          <div class="k">Project team</div>
+          <div class="team-list">
+            <span class="person lead">
+              <span class="av" aria-hidden="true">MR</span>
+              Marta Rado <span class="role-mini">&middot; project lead</span>
+            </span>
+            <span class="person">
+              <span class="av" aria-hidden="true">KT</span>
+              Prof. Károly Takács
+            </span>
+            <span class="person">
+              <span class="av" aria-hidden="true">PL</span>
+              Prof. Paul Lichtenstein
+            </span>
+            <span class="person">
+              <span class="av" aria-hidden="true">DK</span>
+              Dorottya Kisfalusi
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SICSS ============ -->
+  <section id="sicss">
+    <div class="wrap">
+      <span class="eyebrow">Training</span>
+      <h2 class="section-title">Computational social science, in practice</h2>
+      <div class="sicss">
+        <div class="badge" aria-hidden="true">SICSS<br>2025</div>
+        <div>
+          <h3>SICSS-IAS 2025</h3>
+          <p>
+            I took part in SICSS-IAS 2025, the Summer Institute in Computational
+            Social Science hosted at the Institute for Analytical Sociology. The
+            programme brings researchers together to work with data and
+            computational methods for studying social behaviour.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <h2>Get in touch</h2>
+        <p>
+          I am happy to hear from researchers and students interested in social
+          networks, health behaviour and diffusion.
+        </p>
+        <div class="email-row">
+          <a class="email-btn" href="mailto:tangbin.chen@liu.se">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6204A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="m3 7 9 6 9-6"/>
+            </svg>
+            tangbin.chen@liu.se
+          </a>
+          <a class="email-btn" href="mailto:tangbin.chen@ki.se">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6204A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="m3 7 9 6 9-6"/>
+            </svg>
+            tangbin.chen@ki.se
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-left">
+        <span class="monogram" aria-hidden="true">TC</span>
+        <div>
+          <div class="footer-name">Tangbin Chen</div>
+          <div class="footer-emails">
+            <a href="mailto:tangbin.chen@liu.se">tangbin.chen@liu.se</a>
+            &nbsp;&middot;&nbsp;
+            <a href="mailto:tangbin.chen@ki.se">tangbin.chen@ki.se</a>
+          </div>
+        </div>
+      </div>
+      <p class="footer-note">
+        This is a draft personal page, built by a colleague, Jesper Lindmarker, 2026.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var canvas = document.getElementById("net");
+  var ctx = canvas.getContext("2d");
+  var startBtn = document.getElementById("startBtn");
+  var resetBtn = document.getElementById("resetBtn");
+  var slider = document.getElementById("rateSlider");
+  var rateVal = document.getElementById("rateVal");
+  var pctNum = document.getElementById("pctNum");
+  var liveStatus = document.getElementById("liveStatus");
+
+  var reducedMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Logical drawing size (matches canvas attributes); we scale for DPR.
+  var W = 520, H = 380;
+
+  // Colours
+  var C_NEUTRAL = "#8A94A6";
+  var C_ACTIVE  = "#FF6B5B";
+  var C_REC     = "#D6204A";
+  var C_EDGE    = "#D9DEE6";
+  var C_EDGE_HOT = "rgba(214,32,74,0.45)";
+
+  // States: 0 = susceptible, 1 = infectious (adopting), 2 = recovered (established)
+  var nodes = [];
+  var edges = [];
+  var running = false;
+  var rafId = null;
+  var lastStep = 0;
+  var stepInterval = 620; // ms between diffusion steps
+
+  // ---- DPR-aware sizing ----
+  function fitCanvas() {
+    var dpr = window.devicePixelRatio || 1;
+    var cssW = canvas.clientWidth || W;
+    var cssH = cssW * (H / W);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    W = cssW;
+    H = cssH;
+  }
+
+  // ---- Build a network (clustered, organic) ----
+  function buildNetwork() {
+    nodes = [];
+    edges = [];
+    var N = 60;
+    var clusters = 5;
+    var centers = [];
+    for (var c = 0; c < clusters; c++) {
+      var ang = (c / clusters) * Math.PI * 2 - Math.PI / 2;
+      centers.push({
+        x: W / 2 + Math.cos(ang) * W * 0.27,
+        y: H / 2 + Math.sin(ang) * H * 0.28
+      });
+    }
+    for (var i = 0; i < N; i++) {
+      var cl = i % clusters;
+      var ctr = centers[cl];
+      var r = (0.4 + Math.random() * 0.95) * Math.min(W, H) * 0.13;
+      var a = Math.random() * Math.PI * 2;
+      var x = ctr.x + Math.cos(a) * r;
+      var y = ctr.y + Math.sin(a) * r;
+      x = Math.max(22, Math.min(W - 22, x));
+      y = Math.max(22, Math.min(H - 22, y));
+      nodes.push({ x: x, y: y, cluster: cl, state: 0, t: 0, pulse: 0, inf: 0 });
+    }
+    // Connect within clusters (k nearest), plus a few bridges.
+    for (var n = 0; n < N; n++) {
+      var dists = [];
+      for (var m = 0; m < N; m++) {
+        if (m === n) continue;
+        var dx = nodes[n].x - nodes[m].x;
+        var dy = nodes[n].y - nodes[m].y;
+        dists.push({ idx: m, d: dx * dx + dy * dy, sameCl: nodes[m].cluster === nodes[n].cluster });
+      }
+      dists.sort(function (p, q) { return p.d - q.d; });
+      var made = 0;
+      for (var k = 0; k < dists.length && made < 4; k++) {
+        if (dists[k].sameCl) { addEdge(n, dists[k].idx); made++; }
+      }
+    }
+    // Bridges between clusters.
+    for (var b = 0; b < 16; b++) {
+      var u = Math.floor(Math.random() * N);
+      var v = Math.floor(Math.random() * N);
+      if (u !== v && nodes[u].cluster !== nodes[v].cluster) addEdge(u, v);
+    }
+    // Adjacency list.
+    for (var z = 0; z < N; z++) nodes[z].adj = [];
+    for (var e = 0; e < edges.length; e++) {
+      nodes[edges[e][0]].adj.push(edges[e][1]);
+      nodes[edges[e][1]].adj.push(edges[e][0]);
+    }
+  }
+
+  function addEdge(a, b) {
+    for (var i = 0; i < edges.length; i++) {
+      if ((edges[i][0] === a && edges[i][1] === b) ||
+          (edges[i][0] === b && edges[i][1] === a)) return;
+    }
+    edges.push([a, b]);
+  }
+
+  function seedNode() {
+    // Pick the node with the most connections as the seed.
+    var best = 0, bestDeg = -1;
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].adj.length > bestDeg) { bestDeg = nodes[i].adj.length; best = i; }
+    }
+    return best;
+  }
+
+  function reset() {
+    cancelAnimationFrame(rafId);
+    running = false;
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].state = 0;
+      nodes[i].t = 0;
+      nodes[i].pulse = 0;
+      nodes[i].inf = 0;
+    }
+    startBtn.disabled = false;
+    startBtn.textContent = "Start spread";
+    updateReadout();
+    liveStatus.textContent = "";
+    draw();
+  }
+
+  function lerpColor(c1, c2, t) {
+    function hex(c) {
+      return [parseInt(c.substr(1, 2), 16),
+              parseInt(c.substr(3, 2), 16),
+              parseInt(c.substr(5, 2), 16)];
+    }
+    var a = hex(c1), b = hex(c2);
+    return "rgb(" +
+      Math.round(a[0] + (b[0] - a[0]) * t) + "," +
+      Math.round(a[1] + (b[1] - a[1]) * t) + "," +
+      Math.round(a[2] + (b[2] - a[2]) * t) + ")";
+  }
+
+  function nodeColor(node) {
+    if (node.state === 0) return C_NEUTRAL;
+    if (node.state === 1) {
+      // ramp from neutral toward coral as it appears
+      return lerpColor(C_NEUTRAL, C_ACTIVE, Math.min(1, node.t));
+    }
+    return lerpColor(C_ACTIVE, C_REC, Math.min(1, node.t));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Edges
+    for (var e = 0; e < edges.length; e++) {
+      var na = nodes[edges[e][0]];
+      var nb = nodes[edges[e][1]];
+      var hot = (na.state > 0 && nb.state > 0);
+      ctx.beginPath();
+      ctx.moveTo(na.x, na.y);
+      ctx.lineTo(nb.x, nb.y);
+      ctx.strokeStyle = hot ? C_EDGE_HOT : C_EDGE;
+      ctx.lineWidth = hot ? 1.6 : 1;
+      ctx.stroke();
+    }
+
+    // Nodes
+    for (var i = 0; i < nodes.length; i++) {
+      var nd = nodes[i];
+      var baseR = 4.4 + nd.adj.length * 0.45;
+
+      // Pulse halo for adopting nodes
+      if (nd.pulse > 0) {
+        ctx.beginPath();
+        ctx.arc(nd.x, nd.y, baseR + nd.pulse * 12, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,107,91," + (0.22 * (1 - nd.pulse)) + ")";
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(nd.x, nd.y, baseR, 0, Math.PI * 2);
+      ctx.fillStyle = nodeColor(nd);
+      ctx.fill();
+      if (nd.state > 0) {
+        ctx.lineWidth = 1.4;
+        ctx.strokeStyle = "rgba(255,255,255,0.85)";
+        ctx.stroke();
+      }
+    }
+  }
+
+  function affectedCount() {
+    var n = 0;
+    for (var i = 0; i < nodes.length; i++) if (nodes[i].state > 0) n++;
+    return n;
+  }
+
+  function updateReadout() {
+    var pct = Math.round((affectedCount() / nodes.length) * 100);
+    pctNum.textContent = pct + "%";
+  }
+
+  // One discrete diffusion step (SIR-style).
+  function diffusionStep() {
+    var rate = parseInt(slider.value, 10) / 100;
+    var toInfect = [];
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].state === 1) {
+        for (var j = 0; j < nodes[i].adj.length; j++) {
+          var nb = nodes[i].adj[j];
+          if (nodes[nb].state === 0 && Math.random() < rate) {
+            toInfect.push(nb);
+          }
+        }
+      }
+    }
+    // Nodes stay infectious for two steps, then become established.
+    for (var k = 0; k < nodes.length; k++) {
+      if (nodes[k].state === 1) {
+        nodes[k].inf += 1;
+        if (nodes[k].inf >= 2) {
+          nodes[k].state = 2;
+          nodes[k].t = 0;
+        }
+      }
+    }
+    for (var t = 0; t < toInfect.length; t++) {
+      if (nodes[toInfect[t]].state === 0) {
+        nodes[toInfect[t]].state = 1;
+        nodes[toInfect[t]].t = 0;
+        nodes[toInfect[t]].inf = 0;
+        nodes[toInfect[t]].pulse = 0.001;
+      }
+    }
+    updateReadout();
+
+    // Stop if no infectious nodes remain.
+    var stillActive = false;
+    for (var s = 0; s < nodes.length; s++) {
+      if (nodes[s].state === 1) { stillActive = true; break; }
+    }
+    if (!stillActive) finish();
+  }
+
+  function finish() {
+    running = false;
+    cancelAnimationFrame(rafId);
+    startBtn.disabled = false;
+    startBtn.textContent = "Start spread";
+    var pct = Math.round((affectedCount() / nodes.length) * 100);
+    liveStatus.textContent = "Simulation complete: " + pct +
+      "% of nodes affected. Press Reset to run again.";
+    draw();
+  }
+
+  function loop(ts) {
+    if (!running) return;
+    if (!lastStep) lastStep = ts;
+
+    // Smoothly animate node transition values and pulses.
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].state > 0 && nodes[i].t < 1) {
+        nodes[i].t = Math.min(1, nodes[i].t + 0.045);
+      }
+      if (nodes[i].pulse > 0) {
+        nodes[i].pulse = Math.min(1, nodes[i].pulse + 0.04);
+        if (nodes[i].pulse >= 1) nodes[i].pulse = 0;
+      }
+    }
+
+    if (ts - lastStep >= stepInterval) {
+      diffusionStep();
+      lastStep = ts;
+    }
+
+    draw();
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function start() {
+    if (running) return;
+    // Fresh run each time Start is pressed.
+    reset();
+    var seed = seedNode();
+    nodes[seed].state = 1;
+    nodes[seed].t = 0;
+    nodes[seed].inf = 0;
+    nodes[seed].pulse = 0.001;
+    updateReadout();
+    startBtn.disabled = true;
+    startBtn.textContent = "Spreading...";
+
+    if (reducedMotion) {
+      // Instant, non-animated fallback: run steps to completion at once.
+      runInstant(seed);
+      return;
+    }
+
+    running = true;
+    lastStep = 0;
+    liveStatus.textContent = "Spread in progress.";
+    rafId = requestAnimationFrame(loop);
+  }
+
+  // Reduced-motion fallback: resolve the whole diffusion without animation.
+  function runInstant(seed) {
+    var rate = parseInt(slider.value, 10) / 100;
+    var guard = 0;
+    var active = true;
+    while (active && guard < 200) {
+      guard++;
+      var toInfect = [];
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].state === 1) {
+          for (var j = 0; j < nodes[i].adj.length; j++) {
+            var nb = nodes[i].adj[j];
+            if (nodes[nb].state === 0 && Math.random() < rate) toInfect.push(nb);
+          }
+        }
+      }
+      for (var k = 0; k < nodes.length; k++) {
+        if (nodes[k].state === 1) {
+          nodes[k].inf += 1;
+          if (nodes[k].inf >= 2) nodes[k].state = 2;
+        }
+      }
+      for (var t = 0; t < toInfect.length; t++) {
+        if (nodes[toInfect[t]].state === 0) {
+          nodes[toInfect[t]].state = 1;
+          nodes[toInfect[t]].inf = 0;
+        }
+      }
+      active = false;
+      for (var s = 0; s < nodes.length; s++) {
+        if (nodes[s].state === 1) { active = true; break; }
+      }
+    }
+    // Finalise: mark all completed and set transition values for full colour.
+    for (var f = 0; f < nodes.length; f++) {
+      if (nodes[f].state > 0) nodes[f].t = 1;
+    }
+    updateReadout();
+    var pct = Math.round((affectedCount() / nodes.length) * 100);
+    liveStatus.textContent = "Result shown instantly (reduced motion): " +
+      pct + "% of nodes affected. Press Reset to run again.";
+    startBtn.disabled = false;
+    startBtn.textContent = "Start spread";
+    draw();
+  }
+
+  // ---- Events ----
+  startBtn.addEventListener("click", start);
+  resetBtn.addEventListener("click", reset);
+  slider.addEventListener("input", function () {
+    rateVal.textContent = slider.value + "%";
+    slider.setAttribute("aria-valuetext", slider.value + " percent");
+  });
+
+  var resizeTimer = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      var wasRunning = running;
+      running = false;
+      cancelAnimationFrame(rafId);
+      fitCanvas();
+      buildNetwork();
+      reset();
+      if (wasRunning) start();
+    }, 180);
+  });
+
+  // ---- Init ----
+  fitCanvas();
+  buildNetwork();
+  reset();
+})();
+</script>
+</body>
+</html>

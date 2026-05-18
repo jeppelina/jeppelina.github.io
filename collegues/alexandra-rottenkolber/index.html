@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexandra Rottenkolber</title>
+<meta name="description" content="Alexandra Rottenkolber — PhD candidate in Analytical Sociology and Computational Social Science at the Institute for Analytical Sociology, Linköping University.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #111111;
+    --paper: #ffffff;
+    --red: #E3120B;
+    --rule: #d3d3d3;
+    --rule-strong: #111111;
+    --grey: #6a6a6a;
+    --u: 8px;
+    --maxw: 1320px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a { color: var(--ink); }
+
+  ::selection { background: var(--red); color: var(--paper); }
+
+  /* ---- skip link ---- */
+  .skip {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 18px;
+    z-index: 200;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .skip:focus { left: 8px; top: 8px; }
+
+  :focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 2px;
+  }
+
+  /* ---- layout shell ---- */
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 calc(var(--u) * 4);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: calc(var(--u) * 4);
+  }
+
+  /* ---- hairline rules ---- */
+  .rule       { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+  .rule-thick { border: 0; border-top: 2px solid var(--rule-strong); margin: 0; }
+
+  /* =================================================================
+     MASTHEAD
+     ================================================================= */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+  }
+  .masthead-inner {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 1.75);
+    padding: calc(var(--u) * 2) 0;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .monogram {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+  }
+  .brand-text {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+  }
+  .brand-text span {
+    display: block;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .mainnav {
+    display: flex;
+    align-items: stretch;
+  }
+  .mainnav a {
+    display: flex;
+    align-items: center;
+    padding: 0 calc(var(--u) * 2.25);
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-left: 1px solid var(--rule);
+    transition: background-color 0.12s linear, color 0.12s linear;
+  }
+  .mainnav a:hover { background: var(--ink); color: var(--paper); }
+  .mainnav a:last-child {
+    background: var(--red);
+    color: var(--paper);
+  }
+  .mainnav a:last-child:hover { background: var(--ink); }
+
+  /* =================================================================
+     HERO
+     ================================================================= */
+  .hero { border-bottom: 2px solid var(--ink); }
+  .hero-grid {
+    grid-template-rows: auto;
+  }
+  .hero-left {
+    grid-column: 1 / 7;
+    padding: calc(var(--u) * 6) 0 calc(var(--u) * 5);
+    border-right: 1px solid var(--rule);
+    padding-right: calc(var(--u) * 4);
+  }
+  .hero-right {
+    grid-column: 7 / 13;
+    padding: calc(var(--u) * 3) 0 calc(var(--u) * 3) calc(var(--u) * 4);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--u) * 1.5);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: calc(var(--u) * 3);
+  }
+  .kicker .tick { color: var(--red); font-size: 16px; line-height: 1; }
+
+  h1.display {
+    font-weight: 900;
+    font-size: clamp(2.9rem, 8.2vw, 6.2rem);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    margin: 0;
+  }
+  h1.display .ln { display: block; }
+  h1.display .red { color: var(--red); }
+
+  .hero-role {
+    margin-top: calc(var(--u) * 3.5);
+    font-weight: 700;
+    font-size: clamp(1rem, 1.6vw, 1.18rem);
+    line-height: 1.35;
+    max-width: 30ch;
+  }
+  .hero-intro {
+    margin-top: calc(var(--u) * 2.5);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 42ch;
+    color: var(--ink);
+  }
+  .hero-meta {
+    margin-top: calc(var(--u) * 4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--u) * 3.5);
+  }
+  .hero-meta div {
+    border-top: 2px solid var(--ink);
+    padding-top: calc(var(--u) * 1);
+  }
+  .hero-meta dt {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .hero-meta dd {
+    margin: 2px 0 0;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .hero-meta dd a { text-decoration: none; }
+  .hero-meta dd a:hover { color: var(--red); }
+
+  /* ---- network graph panel ---- */
+  .graph-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--u);
+    margin-bottom: calc(var(--u) * 1.5);
+  }
+  .graph-head h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .graph-head .fig {
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .graph-frame {
+    position: relative;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    flex: 1 1 auto;
+    min-height: 420px;
+  }
+  #network {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .graph-status {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--u);
+    padding: calc(var(--u) * 1) calc(var(--u) * 1.5);
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--grey);
+    pointer-events: none;
+  }
+  .graph-status strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .graph-legend {
+    display: flex;
+    gap: calc(var(--u) * 2);
+    margin-top: calc(var(--u) * 1.5);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .graph-legend span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .swatch {
+    width: 12px;
+    height: 12px;
+    flex: 0 0 12px;
+    border: 1px solid var(--ink);
+  }
+  .swatch.a { background: var(--ink); }
+  .swatch.b { background: var(--paper); }
+  .swatch.c { background: var(--red); border-color: var(--red); }
+
+  /* =================================================================
+     SECTION SCAFFOLD
+     ================================================================= */
+  section { border-bottom: 2px solid var(--ink); }
+
+  .section-head {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(var(--u) * 3);
+    padding: calc(var(--u) * 2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-no {
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 0.8;
+    color: var(--red);
+    letter-spacing: -0.04em;
+    flex: 0 0 auto;
+  }
+  .section-title {
+    align-self: center;
+    font-weight: 800;
+    font-size: clamp(1.3rem, 2.6vw, 2rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .section-title span {
+    display: block;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-top: 5px;
+  }
+
+  /* margin label rotated 90deg */
+  .section-body {
+    position: relative;
+  }
+  .margin-label {
+    position: absolute;
+    top: calc(var(--u) * 4);
+    right: -1px;
+    transform: rotate(90deg);
+    transform-origin: top right;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--grey);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* =================================================================
+     ABOUT / RESEARCH
+     ================================================================= */
+  .about-grid { padding: calc(var(--u) * 5) 0; }
+  .about-lead {
+    grid-column: 1 / 7;
+    padding-right: calc(var(--u) * 4);
+  }
+  .about-lead p {
+    font-weight: 600;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.4;
+    margin: 0 0 calc(var(--u) * 2.5);
+    letter-spacing: -0.01em;
+  }
+  .about-lead p:last-child { margin-bottom: 0; }
+  .about-lead .red { color: var(--red); }
+
+  .about-detail {
+    grid-column: 7 / 13;
+    padding-left: calc(var(--u) * 4);
+    border-left: 1px solid var(--rule);
+  }
+  .about-detail p {
+    margin: 0 0 calc(var(--u) * 2);
+    line-height: 1.62;
+  }
+  .about-detail p:last-child { margin-bottom: 0; }
+
+  .pull-facts {
+    list-style: none;
+    margin: calc(var(--u) * 3) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .pull-facts li {
+    background: var(--paper);
+    padding: calc(var(--u) * 2);
+  }
+  .pull-facts dt {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+  .pull-facts dd {
+    margin: 0;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  /* =================================================================
+     METHODS
+     ================================================================= */
+  .methods-intro {
+    padding: calc(var(--u) * 4) 0 calc(var(--u) * 2.5);
+  }
+  .methods-intro .col {
+    grid-column: 1 / 8;
+  }
+  .methods-intro p {
+    margin: 0;
+    font-weight: 600;
+    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    line-height: 1.45;
+  }
+  .methods-tools {
+    grid-column: 9 / 13;
+    align-self: end;
+  }
+  .methods-tools dt {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    border-top: 2px solid var(--ink);
+    padding-top: 6px;
+  }
+  .methods-tools dd {
+    margin: 0;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .methods-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .methods-list li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .methods-list li:last-child { border-bottom: 0; }
+  .method-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: baseline;
+    padding: calc(var(--u) * 2.5) 0;
+    transition: background-color 0.12s linear, padding-left 0.12s linear, padding-right 0.12s linear;
+  }
+  .methods-list li:hover .method-row {
+    background: #f4f4f4;
+    padding-left: var(--u);
+    padding-right: var(--u);
+  }
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: calc(var(--u) * 4);
+    align-items: baseline;
+  }
+  .method-mark {
+    grid-column: 1 / 2;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--red);
+  }
+  .method-name {
+    grid-column: 2 / 6;
+    font-weight: 800;
+    font-size: clamp(1.1rem, 1.9vw, 1.45rem);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  .method-desc {
+    grid-column: 6 / 13;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  /* =================================================================
+     SELECTED WORK
+     ================================================================= */
+  .works {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .works > li { border-bottom: 1px solid var(--rule); }
+  .works > li:last-child { border-bottom: 0; }
+
+  .work {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: calc(var(--u) * 4);
+    padding: calc(var(--u) * 3.5) 0;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background-color 0.12s linear;
+  }
+  .work:hover, .work:focus-visible { background: #f4f4f4; }
+
+  .work-year {
+    grid-column: 1 / 3;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--red);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .work-year span {
+    display: block;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-top: 6px;
+  }
+  .work-main {
+    grid-column: 3 / 10;
+  }
+  .work-title {
+    font-weight: 800;
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    margin: 0;
+  }
+  .work:hover .work-title, .work:focus-visible .work-title { color: var(--red); }
+  .work-note {
+    margin: calc(var(--u) * 1.25) 0 0;
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: 62ch;
+  }
+  .work-tag {
+    grid-column: 10 / 13;
+    text-align: right;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .work-tag .arrow {
+    display: inline-block;
+    margin-left: 6px;
+    color: var(--ink);
+    transition: transform 0.14s ease;
+  }
+  .work:hover .work-tag .arrow,
+  .work:focus-visible .work-tag .arrow {
+    transform: translateX(5px);
+    color: var(--red);
+  }
+
+  /* =================================================================
+     ELSEWHERE
+     ================================================================= */
+  .elsewhere-grid { padding: calc(var(--u) * 5) 0; }
+  .elsewhere-main {
+    grid-column: 1 / 8;
+    padding-right: calc(var(--u) * 4);
+  }
+  .elsewhere-main p {
+    font-weight: 600;
+    font-size: clamp(1.1rem, 1.9vw, 1.4rem);
+    line-height: 1.45;
+    margin: 0 0 calc(var(--u) * 2.5);
+    letter-spacing: -0.01em;
+  }
+  .elsewhere-main p:last-child { margin-bottom: 0; }
+  .elsewhere-main .red { color: var(--red); }
+  .visiting {
+    grid-column: 9 / 13;
+  }
+  .visiting-card {
+    border: 2px solid var(--ink);
+    padding: calc(var(--u) * 2.5);
+  }
+  .visiting-card .tag {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .visiting-card h3 {
+    margin: calc(var(--u) * 1) 0 calc(var(--u) * 1);
+    font-weight: 800;
+    font-size: 1.35rem;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+  .visiting-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .visiting-card .when {
+    margin-top: calc(var(--u) * 1.5);
+    padding-top: calc(var(--u) * 1.25);
+    border-top: 1px solid var(--rule);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* =================================================================
+     CONTACT
+     ================================================================= */
+  .contact-grid { padding: calc(var(--u) * 5) 0; }
+  .contact-lead {
+    grid-column: 1 / 6;
+    padding-right: calc(var(--u) * 4);
+  }
+  .contact-lead h3 {
+    margin: 0 0 calc(var(--u) * 2);
+    font-weight: 900;
+    font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+  .contact-lead .email-big {
+    display: inline-block;
+    font-weight: 700;
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 2px solid var(--red);
+    padding-bottom: 2px;
+    word-break: break-all;
+  }
+  .contact-lead .email-big:hover { color: var(--red); }
+
+  .links {
+    grid-column: 6 / 13;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .links li { border-bottom: 1px solid var(--rule); }
+  .link-row {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr auto;
+    align-items: center;
+    column-gap: calc(var(--u) * 2);
+    padding: calc(var(--u) * 2) var(--u);
+    text-decoration: none;
+    color: var(--ink);
+    transition: background-color 0.12s linear, color 0.12s linear;
+  }
+  .link-row:hover, .link-row:focus-visible {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .link-row:hover .link-host,
+  .link-row:focus-visible .link-host { color: #c9c9c9; }
+  .link-no {
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--red);
+  }
+  .link-name {
+    font-weight: 800;
+    font-size: clamp(1rem, 1.7vw, 1.25rem);
+    letter-spacing: -0.012em;
+  }
+  .link-host {
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--grey);
+    text-align: right;
+  }
+
+  /* =================================================================
+     FOOTER
+     ================================================================= */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .footer-grid {
+    padding: calc(var(--u) * 4) 0;
+    align-items: end;
+  }
+  .footer-mark {
+    grid-column: 1 / 4;
+  }
+  .footer-mono {
+    width: 40px;
+    height: 40px;
+    background: var(--red);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+  }
+  .footer-name {
+    margin-top: calc(var(--u) * 1.5);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .footer-name span {
+    display: block;
+    font-weight: 500;
+    font-size: 12px;
+    color: #a8a8a8;
+    margin-top: 2px;
+  }
+  .footer-meta {
+    grid-column: 5 / 10;
+  }
+  .footer-meta p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c9c9c9;
+  }
+  .footer-meta a {
+    color: var(--paper);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid var(--red);
+  }
+  .footer-meta a:hover { color: var(--red); }
+  .footer-disc {
+    margin-top: calc(var(--u) * 1.25) !important;
+    color: #8c8c8c !important;
+    font-size: 12px !important;
+  }
+  .footer-top {
+    grid-column: 11 / 13;
+    text-align: right;
+  }
+  .footer-top a {
+    text-decoration: none;
+    color: var(--paper);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .footer-top a:hover { color: var(--red); }
+  .footer-top .up {
+    display: block;
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  /* =================================================================
+     RESPONSIVE
+     ================================================================= */
+  @media (max-width: 1024px) {
+    body { font-size: 16px; }
+    .hero-left {
+      grid-column: 1 / 13;
+      border-right: 0;
+      border-bottom: 1px solid var(--rule);
+      padding: calc(var(--u) * 4) 0 calc(var(--u) * 3.5);
+    }
+    .hero-right {
+      grid-column: 1 / 13;
+      padding: calc(var(--u) * 3.5) 0 calc(var(--u) * 3);
+    }
+    .about-lead { grid-column: 1 / 6; }
+    .about-detail { grid-column: 6 / 13; }
+    .methods-intro .col { grid-column: 1 / 9; }
+    .methods-tools { grid-column: 9 / 13; }
+    .method-name { grid-column: 2 / 7; }
+    .method-desc { grid-column: 7 / 13; }
+    .work-main { grid-column: 3 / 11; }
+    .work-tag { grid-column: 1 / 13; text-align: left; margin-top: var(--u); }
+    .elsewhere-main { grid-column: 1 / 8; }
+    .visiting { grid-column: 8 / 13; }
+    .contact-lead { grid-column: 1 / 6; }
+    .links { grid-column: 6 / 13; }
+    .footer-meta { grid-column: 5 / 11; }
+  }
+
+  @media (max-width: 760px) {
+    .wrap { padding: 0 calc(var(--u) * 2.5); }
+    .grid { column-gap: calc(var(--u) * 2.5); }
+
+    .masthead-inner { flex-direction: column; }
+    .brand { padding: calc(var(--u) * 1.75) 0; }
+    .mainnav {
+      width: 100%;
+      border-top: 1px solid var(--rule);
+    }
+    .mainnav a {
+      flex: 1 1 0;
+      justify-content: center;
+      padding: calc(var(--u) * 1.5) var(--u);
+      border-left: 1px solid var(--rule);
+      font-size: 11px;
+    }
+    .mainnav a:first-child { border-left: 0; }
+
+    .hero-left,
+    .hero-right,
+    .about-lead,
+    .about-detail,
+    .methods-intro .col,
+    .methods-tools,
+    .elsewhere-main,
+    .visiting,
+    .contact-lead,
+    .links,
+    .footer-mark,
+    .footer-meta,
+    .footer-top {
+      grid-column: 1 / 13;
+    }
+    .hero-left {
+      border-right: 0;
+      border-bottom: 1px solid var(--rule);
+      padding: calc(var(--u) * 4) 0 calc(var(--u) * 3.5);
+    }
+    .hero-right {
+      padding: calc(var(--u) * 3.5) 0 calc(var(--u) * 3);
+    }
+    .about-detail {
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+      padding-left: 0;
+      padding-top: calc(var(--u) * 3);
+      margin-top: calc(var(--u) * 3);
+    }
+    .about-lead { padding-right: 0; }
+    .methods-tools {
+      margin-top: calc(var(--u) * 3);
+    }
+    .method-grid {
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 4px;
+    }
+    .method-mark { grid-column: 1 / 13; }
+    .method-name { grid-column: 1 / 13; }
+    .method-desc { grid-column: 1 / 13; margin-top: 4px; }
+    .work {
+      row-gap: 4px;
+    }
+    .work-year { grid-column: 1 / 13; }
+    .work-main { grid-column: 1 / 13; margin-top: 4px; }
+    .work-tag { grid-column: 1 / 13; }
+    .elsewhere-main { padding-right: 0; }
+    .visiting { margin-top: calc(var(--u) * 3); }
+    .contact-lead { padding-right: 0; margin-bottom: calc(var(--u) * 3); }
+    .pull-facts { grid-template-columns: 1fr; }
+    .section-head { gap: calc(var(--u) * 2); }
+    .margin-label { display: none; }
+    .graph-frame { min-height: 340px; }
+    .footer-meta { margin-top: calc(var(--u) * 3); }
+    .footer-top { text-align: left; margin-top: calc(var(--u) * 2); }
+    .link-row { grid-template-columns: 2rem 1fr; }
+    .link-host {
+      grid-column: 2 / 3;
+      text-align: left;
+      margin-top: 2px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    body { font-size: 15px; }
+    .mainnav a { padding: calc(var(--u) * 1.25) 4px; letter-spacing: 0.02em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-tag .arrow { transition: none; }
+    * { scroll-behavior: auto !important; }
+  }
+
+  html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ===================== MASTHEAD ===================== -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead-inner">
+      <a class="brand" href="#top" aria-label="Alexandra Rottenkolber, home">
+        <span class="monogram" aria-hidden="true">AR</span>
+        <span class="brand-text">
+          Alexandra Rottenkolber
+          <span>Analytical Sociology</span>
+        </span>
+      </a>
+      <nav class="mainnav" aria-label="Primary">
+        <a href="#research">Research</a>
+        <a href="#methods">Methods</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<a id="top"></a>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-labelledby="hero-name">
+  <div class="wrap">
+    <div class="grid hero-grid">
+
+      <div class="hero-left">
+        <p class="kicker">
+          <span class="tick" aria-hidden="true">&#9646;</span>
+          PhD Candidate &nbsp;/&nbsp; IAS, Linköping University
+        </p>
+        <h1 class="display" id="hero-name">
+          <span class="ln">Alexandra</span>
+          <span class="ln red">Rottenkolber</span>
+        </h1>
+        <p class="hero-role">
+          Computational social scientist studying how workers sort into
+          occupations, and why that sorting stays gendered.
+        </p>
+        <p class="hero-intro">
+          A doctoral researcher in analytical sociology, she uses
+          full-population register data, social networks and text to trace
+          the human structures behind occupational gender segregation.
+        </p>
+        <dl class="hero-meta">
+          <div>
+            <dt>Based in</dt>
+            <dd>Campus Norrköping, Sweden</dd>
+          </div>
+          <div>
+            <dt>Field</dt>
+            <dd>Computational Social Science</dd>
+          </div>
+          <div>
+            <dt>Contact</dt>
+            <dd><a href="mailto:alexandra.rottenkolber@liu.se">alexandra.rottenkolber@liu.se</a></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="hero-right">
+        <div class="graph-head">
+          <h2>Network Model</h2>
+          <span class="fig">Fig. 01</span>
+        </div>
+        <div class="graph-frame">
+          <canvas id="network" width="640" height="460"
+            role="img"
+            aria-label="An interactive force-directed network graph. Two colours of nodes, connected by edges, repel and attract until they settle into two loose clusters, illustrating how personal networks form gendered boundaries. Hovering a node highlights the people it connects to.">
+          </canvas>
+          <div class="graph-status" aria-hidden="true">
+            <span>Force-directed&nbsp;&middot;&nbsp;<strong id="graph-nodes">0</strong> nodes</span>
+            <span><strong id="graph-hint">Hover a node</strong></span>
+          </div>
+        </div>
+        <div class="graph-legend" aria-hidden="true">
+          <span><span class="swatch a"></span> Cluster A</span>
+          <span><span class="swatch b"></span> Cluster B</span>
+          <span><span class="swatch c"></span> Highlighted</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 01 — RESEARCH ===================== -->
+<section id="research" aria-labelledby="research-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-no" aria-hidden="true">01</span>
+      <h2 class="section-title" id="research-title">
+        Research
+        <span>Occupational gender segregation</span>
+      </h2>
+    </div>
+    <div class="section-body">
+      <span class="margin-label" aria-hidden="true">About the work</span>
+      <div class="grid about-grid">
+
+        <div class="about-lead">
+          <p>
+            Her dissertation asks how occupational gender segregation
+            <span class="red">emerges</span> and how it
+            <span class="red">reproduces</span> itself, the slow,
+            structural process by which workers end up sorted into
+            different kinds of jobs.
+          </p>
+          <p>
+            The starting point is simple: the careers people imagine for
+            themselves are shaped by the people they already know.
+          </p>
+        </div>
+
+        <div class="about-detail">
+          <p>
+            Working at the Institute for Analytical Sociology, Alexandra
+            combines Swedish full-population register data with social
+            network analysis and text analysis. That pairing lets her
+            follow whole cohorts of workers and the connections between
+            them, rather than relying on survey snapshots.
+          </p>
+          <p>
+            She studies how personal networks, exposure to peers and
+            family, and the boundaries that networks draw around groups
+            shape gendered occupational mobility, the routes by which a
+            person moves into, out of, or between occupations over a
+            working life.
+          </p>
+          <p>
+            The aim is an account of segregation grounded in mechanism:
+            not only measuring the gap between fields, but explaining the
+            everyday social processes that keep producing it.
+          </p>
+
+          <dl class="pull-facts">
+            <li>
+              <dt>Evidence base</dt>
+              <dd>Swedish full-population register data</dd>
+            </li>
+            <li>
+              <dt>Lens</dt>
+              <dd>Personal networks &amp; their boundaries</dd>
+            </li>
+            <li>
+              <dt>Outcome</dt>
+              <dd>Gendered occupational mobility</dd>
+            </li>
+            <li>
+              <dt>Setting</dt>
+              <dd>Institute for Analytical Sociology</dd>
+            </li>
+          </dl>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 — METHODS ===================== -->
+<section id="methods" aria-labelledby="methods-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-no" aria-hidden="true">02</span>
+      <h2 class="section-title" id="methods-title">
+        Methods
+        <span>How the questions get answered</span>
+      </h2>
+    </div>
+    <div class="section-body">
+      <span class="margin-label" aria-hidden="true">Toolkit</span>
+      <div class="grid methods-intro">
+        <div class="col">
+          <p>
+            Alexandra works across computational methods, picking the
+            tool that fits the mechanism rather than the other way
+            around. Most of her analysis runs in two languages.
+          </p>
+        </div>
+        <dl class="methods-tools">
+          <dt>Languages</dt>
+          <dd>Python &amp; R</dd>
+        </dl>
+      </div>
+
+      <ul class="methods-list">
+        <li>
+          <div class="method-row">
+            <div class="wrap-inner method-grid">
+              <span class="method-mark" aria-hidden="true">/01</span>
+              <span class="method-name">Social network analysis</span>
+              <span class="method-desc">
+                Mapping the ties between people, and the boundaries those
+                ties draw, to see how exposure to peers and family steers
+                occupational choices.
+              </span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="method-row">
+            <div class="wrap-inner method-grid">
+              <span class="method-mark" aria-hidden="true">/02</span>
+              <span class="method-name">Natural language processing</span>
+              <span class="method-desc">
+                Reading large text collections at scale to surface
+                patterns of language, attention and openness that
+                numbers alone would miss.
+              </span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="method-row">
+            <div class="wrap-inner method-grid">
+              <span class="method-mark" aria-hidden="true">/03</span>
+              <span class="method-name">Machine learning</span>
+              <span class="method-desc">
+                Detecting structure and prediction signals in
+                high-dimensional register and network data.
+              </span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="method-row">
+            <div class="wrap-inner method-grid">
+              <span class="method-mark" aria-hidden="true">/04</span>
+              <span class="method-name">Agent-based modelling</span>
+              <span class="method-desc">
+                Simulating how individual decisions add up to large-scale
+                segregation, a way to test which mechanisms can actually
+                produce the patterns observed in the data.
+              </span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="method-row">
+            <div class="wrap-inner method-grid">
+              <span class="method-mark" aria-hidden="true">/05</span>
+              <span class="method-name">Statistics</span>
+              <span class="method-desc">
+                The common ground beneath it all: careful estimation and
+                inference on population-scale data.
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 — SELECTED WORK ===================== -->
+<section id="work" aria-labelledby="work-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-no" aria-hidden="true">03</span>
+      <h2 class="section-title" id="work-title">
+        Selected Work
+        <span>Papers &amp; projects</span>
+      </h2>
+    </div>
+    <div class="section-body">
+      <span class="margin-label" aria-hidden="true">Publications</span>
+      <ul class="works">
+        <li>
+          <a class="work" href="https://scholar.google.com/citations?user=8QxX-gwAAAAJ"
+             target="_blank" rel="noopener noreferrer">
+            <span class="work-year">2025<span>Year</span></span>
+            <div class="work-main">
+              <h3 class="work-title">
+                It&rsquo;s Who You Know &mdash; Unless You&rsquo;re Famous:
+                Professional Networks and Prestige in Scholarly Mobility
+              </h3>
+              <p class="work-note">
+                A co-authored study of how academic careers move:
+                professional networks open doors, except for the most
+                prominent scholars, for whom prestige does the work
+                instead.
+              </p>
+            </div>
+            <span class="work-tag">Co-authored paper<span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="work" href="https://scholar.google.com/citations?user=8QxX-gwAAAAJ"
+             target="_blank" rel="noopener noreferrer">
+            <span class="work-year">2022<span>Year</span></span>
+            <div class="work-main">
+              <h3 class="work-title">
+                Patterns of Heteroglossia as an Indicator for the
+                Participatory Openness of Parliamentary Debates
+              </h3>
+              <p class="work-note">
+                Using the diversity of voices and language in debate
+                transcripts as a measurable sign of how open a parliament
+                is to genuine participation.
+              </p>
+            </div>
+            <span class="work-tag">Text analysis<span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="work" href="https://github.com/AlexandraRoko"
+             target="_blank" rel="noopener noreferrer">
+            <span class="work-year">Earlier<span>Projects</span></span>
+            <div class="work-main">
+              <h3 class="work-title">
+                Parliamentary attention, the digital development of
+                nations, and gendered collaboration on GitHub
+              </h3>
+              <p class="work-note">
+                A set of earlier projects: how political attention shifts
+                over time, how nations develop along digital lines, and
+                how gender shapes the way people collaborate in open-source
+                software.
+              </p>
+            </div>
+            <span class="work-tag">Selected projects<span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 04 — ELSEWHERE ===================== -->
+<section id="elsewhere" aria-labelledby="elsewhere-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-no" aria-hidden="true">04</span>
+      <h2 class="section-title" id="elsewhere-title">
+        Elsewhere
+        <span>Travels &amp; pastimes</span>
+      </h2>
+    </div>
+    <div class="section-body">
+      <span class="margin-label" aria-hidden="true">Off the page</span>
+      <div class="grid elsewhere-grid">
+        <div class="elsewhere-main">
+          <p>
+            In <span class="red">2025</span> Alexandra was a visiting
+            scholar at Cornell University, working with Professor Michael
+            Macy on the social dynamics that connect her PhD research to a
+            wider community.
+          </p>
+          <p>
+            Away from the data, she hikes the lakeshore trails of Sweden
+            and keeps a steady habit of cultivating plants, two slow,
+            attentive pursuits that suit a researcher of slow,
+            structural change.
+          </p>
+        </div>
+        <div class="visiting">
+          <div class="visiting-card">
+            <span class="tag">Visiting Scholar</span>
+            <h3>Cornell University</h3>
+            <p>Hosted by Professor Michael Macy.</p>
+            <p class="when">August &ndash; December 2025</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 — CONTACT ===================== -->
+<section id="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-no" aria-hidden="true">05</span>
+      <h2 class="section-title" id="contact-title">
+        Contact
+        <span>Reach out &amp; read more</span>
+      </h2>
+    </div>
+    <div class="section-body">
+      <span class="margin-label" aria-hidden="true">Get in touch</span>
+      <div class="grid contact-grid">
+        <div class="contact-lead">
+          <h3>Open to questions, collaboration and a good trail recommendation.</h3>
+          <a class="email-big" href="mailto:alexandra.rottenkolber@liu.se">
+            alexandra.rottenkolber@liu.se
+          </a>
+        </div>
+        <ul class="links">
+          <li>
+            <a class="link-row" href="https://alexandraroko.github.io/"
+               target="_blank" rel="noopener noreferrer">
+              <span class="link-no" aria-hidden="true">01</span>
+              <span class="link-name">Personal Site</span>
+              <span class="link-host">alexandraroko.github.io</span>
+            </a>
+          </li>
+          <li>
+            <a class="link-row" href="https://github.com/AlexandraRoko"
+               target="_blank" rel="noopener noreferrer">
+              <span class="link-no" aria-hidden="true">02</span>
+              <span class="link-name">GitHub</span>
+              <span class="link-host">github.com/AlexandraRoko</span>
+            </a>
+          </li>
+          <li>
+            <a class="link-row" href="https://scholar.google.com/citations?user=8QxX-gwAAAAJ"
+               target="_blank" rel="noopener noreferrer">
+              <span class="link-no" aria-hidden="true">03</span>
+              <span class="link-name">Google Scholar</span>
+              <span class="link-host">scholar.google.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="link-row" href="https://linkedin.com/in/alexandra-r-222538188/"
+               target="_blank" rel="noopener noreferrer">
+              <span class="link-no" aria-hidden="true">04</span>
+              <span class="link-name">LinkedIn</span>
+              <span class="link-host">linkedin.com/in/alexandra-r</span>
+            </a>
+          </li>
+          <li>
+            <a class="link-row" href="https://x.com/Alexandra_Rtnk"
+               target="_blank" rel="noopener noreferrer">
+              <span class="link-no" aria-hidden="true">05</span>
+              <span class="link-name">X</span>
+              <span class="link-host">x.com/Alexandra_Rtnk</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="grid footer-grid">
+      <div class="footer-mark">
+        <span class="footer-mono" aria-hidden="true">AR</span>
+        <p class="footer-name">
+          Alexandra Rottenkolber
+          <span>Institute for Analytical Sociology</span>
+        </p>
+      </div>
+      <div class="footer-meta">
+        <p>
+          Education: BSc in Physics and Geography, Heidelberg University
+          &middot; MSc in Social Data Science, University of Oxford
+          &middot; Master of Public Policy, Hertie School, Berlin.
+        </p>
+        <p>
+          Write to <a href="mailto:alexandra.rottenkolber@liu.se">alexandra.rottenkolber@liu.se</a>
+        </p>
+        <p class="footer-disc">
+          This is a draft personal page, built by a colleague, Jesper
+          Lindmarker, 2026.
+        </p>
+      </div>
+      <div class="footer-top">
+        <a href="#top">
+          <span class="up" aria-hidden="true">&uarr;</span>
+          Top
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== NETWORK GRAPH ===================== -->
+<script>
+(function () {
+  "use strict";
+
+  var canvas = document.getElementById("network");
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext("2d");
+
+  var INK = "#111111";
+  var RED = "#E3120B";
+  var PAPER = "#ffffff";
+  var GREY = "#bdbdbd";
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var nodes = [];
+  var edges = [];
+  var hovered = -1;
+  var width = 0, height = 0, dpr = 1;
+  var running = false;
+  var rafId = null;
+  var settleFrames = 0;
+
+  // ---- build a two-cluster graph ---------------------------------
+  function buildGraph() {
+    nodes = [];
+    edges = [];
+    var perCluster = 13;
+    var groups = [0, 1];
+
+    groups.forEach(function (g) {
+      for (var i = 0; i < perCluster; i++) {
+        nodes.push({
+          x: 0, y: 0, vx: 0, vy: 0,
+          group: g,
+          r: 4.2 + Math.random() * 3.2,
+          neighbors: []
+        });
+      }
+    });
+
+    function connect(a, b) {
+      if (a === b) return;
+      for (var k = 0; k < edges.length; k++) {
+        if ((edges[k].a === a && edges[k].b === b) ||
+            (edges[k].a === b && edges[k].b === a)) return;
+      }
+      edges.push({ a: a, b: b });
+      nodes[a].neighbors.push(b);
+      nodes[b].neighbors.push(a);
+    }
+
+    // dense ties inside each cluster
+    groups.forEach(function (g) {
+      var start = g * perCluster;
+      var end = start + perCluster;
+      for (var i = start; i < end; i++) {
+        var links = 2 + Math.floor(Math.random() * 2);
+        for (var l = 0; l < links; l++) {
+          var t = start + Math.floor(Math.random() * perCluster);
+          connect(i, t);
+        }
+      }
+    });
+
+    // a few bridges crossing the network boundary
+    var bridges = 3;
+    for (var b = 0; b < bridges; b++) {
+      var a = Math.floor(Math.random() * perCluster);
+      var c = perCluster + Math.floor(Math.random() * perCluster);
+      connect(a, c);
+    }
+
+    // guarantee no isolated node
+    for (var n = 0; n < nodes.length; n++) {
+      if (nodes[n].neighbors.length === 0) {
+        var base = (n < perCluster ? 0 : perCluster);
+        var pick = base + Math.floor(Math.random() * perCluster);
+        connect(n, pick);
+      }
+    }
+
+    var hint = document.getElementById("graph-nodes");
+    if (hint) hint.textContent = String(nodes.length);
+  }
+
+  // ---- size to the frame -----------------------------------------
+  function resize() {
+    var rect = canvas.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = Math.max(rect.width, 1);
+    height = Math.max(rect.height, 1);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function seedPositions() {
+    var cx = width / 2, cy = height / 2;
+    nodes.forEach(function (nd) {
+      var side = nd.group === 0 ? -1 : 1;
+      nd.x = cx + side * (width * 0.16) + (Math.random() - 0.5) * width * 0.28;
+      nd.y = cy + (Math.random() - 0.5) * height * 0.55;
+      nd.vx = 0;
+      nd.vy = 0;
+    });
+  }
+
+  // ---- physics step ----------------------------------------------
+  function step() {
+    var i, j, a, b, dx, dy, dist, force;
+    var cx = width / 2, cy = height / 2;
+    var repel = 1750;
+    var spring = 0.012;
+    var restLen = 70;
+    var damping = 0.86;
+    var gravity = 0.0016;
+
+    for (i = 0; i < nodes.length; i++) {
+      a = nodes[i];
+
+      // repulsion
+      for (j = i + 1; j < nodes.length; j++) {
+        b = nodes[j];
+        dx = a.x - b.x;
+        dy = a.y - b.y;
+        dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+        if (dist < 220) {
+          force = repel / (dist * dist);
+          var ux = dx / dist, uy = dy / dist;
+          a.vx += ux * force;
+          a.vy += uy * force;
+          b.vx -= ux * force;
+          b.vy -= uy * force;
+        }
+      }
+
+      // gentle pull to centre
+      a.vx += (cx - a.x) * gravity;
+      a.vy += (cy - a.y) * gravity;
+    }
+
+    // springs along edges
+    for (i = 0; i < edges.length; i++) {
+      a = nodes[edges[i].a];
+      b = nodes[edges[i].b];
+      dx = b.x - a.x;
+      dy = b.y - a.y;
+      dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+      force = (dist - restLen) * spring;
+      var fx = (dx / dist) * force;
+      var fy = (dy / dist) * force;
+      a.vx += fx; a.vy += fy;
+      b.vx -= fx; b.vy -= fy;
+    }
+
+    // integrate + walls
+    var pad = 16;
+    var energy = 0;
+    for (i = 0; i < nodes.length; i++) {
+      a = nodes[i];
+      a.vx *= damping;
+      a.vy *= damping;
+      a.x += a.vx;
+      a.y += a.vy;
+      if (a.x < pad) { a.x = pad; a.vx *= -0.4; }
+      if (a.x > width - pad) { a.x = width - pad; a.vx *= -0.4; }
+      if (a.y < pad) { a.y = pad; a.vy *= -0.4; }
+      if (a.y > height - pad) { a.y = height - pad; a.vy *= -0.4; }
+      energy += Math.abs(a.vx) + Math.abs(a.vy);
+    }
+    return energy;
+  }
+
+  // ---- render -----------------------------------------------------
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    var highlight = [];
+    if (hovered >= 0) {
+      highlight = nodes[hovered].neighbors.slice();
+      highlight.push(hovered);
+    }
+    function isLit(idx) { return highlight.indexOf(idx) !== -1; }
+
+    // edges
+    for (var i = 0; i < edges.length; i++) {
+      var a = nodes[edges[i].a];
+      var b = nodes[edges[i].b];
+      var lit = hovered >= 0 &&
+        (edges[i].a === hovered || edges[i].b === hovered);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      if (lit) {
+        ctx.strokeStyle = RED;
+        ctx.lineWidth = 1.6;
+        ctx.globalAlpha = 1;
+      } else {
+        ctx.strokeStyle = GREY;
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = hovered >= 0 ? 0.32 : 0.8;
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // nodes
+    for (var n = 0; n < nodes.length; n++) {
+      var nd = nodes[n];
+      var lit = isLit(n);
+      var dim = hovered >= 0 && !lit;
+      var r = nd.r + (n === hovered ? 2.4 : 0);
+
+      ctx.beginPath();
+      ctx.arc(nd.x, nd.y, r, 0, Math.PI * 2);
+
+      if (n === hovered) {
+        ctx.fillStyle = RED;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = INK;
+        ctx.stroke();
+      } else if (lit) {
+        // neighbour of hovered node
+        ctx.fillStyle = nd.group === 0 ? INK : PAPER;
+        ctx.globalAlpha = 1;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = RED;
+        ctx.stroke();
+      } else {
+        ctx.globalAlpha = dim ? 0.28 : 1;
+        ctx.fillStyle = nd.group === 0 ? INK : PAPER;
+        ctx.fill();
+        ctx.lineWidth = 1.4;
+        ctx.strokeStyle = INK;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  // ---- loop -------------------------------------------------------
+  function frame() {
+    var energy = step();
+    draw();
+    if (energy < 1.4 && hovered < 0) {
+      settleFrames++;
+    } else {
+      settleFrames = 0;
+    }
+    // keep ticking; stop the costly loop once fully at rest
+    if (settleFrames > 90) {
+      running = false;
+      rafId = null;
+      draw();
+      return;
+    }
+    rafId = window.requestAnimationFrame(frame);
+  }
+
+  function ensureRunning() {
+    if (running || reduceMotion) return;
+    running = true;
+    settleFrames = 0;
+    rafId = window.requestAnimationFrame(frame);
+  }
+
+  // ---- pointer interaction ---------------------------------------
+  function nodeAt(px, py) {
+    for (var i = nodes.length - 1; i >= 0; i--) {
+      var nd = nodes[i];
+      var dx = px - nd.x, dy = py - nd.y;
+      var hitR = nd.r + 8;
+      if (dx * dx + dy * dy <= hitR * hitR) return i;
+    }
+    return -1;
+  }
+
+  function setHint(text) {
+    var el = document.getElementById("graph-hint");
+    if (el) el.textContent = text;
+  }
+
+  function pointerMove(ev) {
+    var rect = canvas.getBoundingClientRect();
+    var px = ev.clientX - rect.left;
+    var py = ev.clientY - rect.top;
+    var found = nodeAt(px, py);
+    if (found !== hovered) {
+      hovered = found;
+      canvas.style.cursor = found >= 0 ? "pointer" : "default";
+      if (found >= 0) {
+        var deg = nodes[found].neighbors.length;
+        setHint(deg + (deg === 1 ? " connection" : " connections"));
+        ensureRunning();
+      } else {
+        setHint("Hover a node");
+      }
+      if (!running) draw();
+    }
+  }
+
+  function pointerLeave() {
+    if (hovered !== -1) {
+      hovered = -1;
+      setHint("Hover a node");
+      canvas.style.cursor = "default";
+      if (!running) draw();
+    }
+  }
+
+  canvas.addEventListener("mousemove", pointerMove);
+  canvas.addEventListener("mouseleave", pointerLeave);
+
+  // touch: tap to highlight, tap empty space to clear
+  canvas.addEventListener("touchstart", function (ev) {
+    if (!ev.touches.length) return;
+    var rect = canvas.getBoundingClientRect();
+    var t = ev.touches[0];
+    var found = nodeAt(t.clientX - rect.left, t.clientY - rect.top);
+    hovered = found;
+    if (found >= 0) {
+      var deg = nodes[found].neighbors.length;
+      setHint(deg + (deg === 1 ? " connection" : " connections"));
+      ensureRunning();
+    } else {
+      setHint("Hover a node");
+    }
+    if (!running) draw();
+  }, { passive: true });
+
+  // keyboard: step through nodes for accessibility
+  var kbIndex = -1;
+  canvas.setAttribute("tabindex", "0");
+  canvas.addEventListener("keydown", function (ev) {
+    if (ev.key === "ArrowRight" || ev.key === "ArrowDown" ||
+        ev.key === "ArrowLeft" || ev.key === "ArrowUp" ||
+        ev.key === " " || ev.key === "Enter") {
+      ev.preventDefault();
+      var dir = (ev.key === "ArrowRight" || ev.key === "ArrowDown") ? 1 :
+                (ev.key === "ArrowLeft" || ev.key === "ArrowUp") ? -1 : 1;
+      kbIndex = (kbIndex + dir + nodes.length) % nodes.length;
+      hovered = kbIndex;
+      var deg = nodes[hovered].neighbors.length;
+      setHint("Node " + (kbIndex + 1) + " / " + deg +
+        (deg === 1 ? " connection" : " connections"));
+      ensureRunning();
+      if (!running) draw();
+    } else if (ev.key === "Escape") {
+      hovered = -1;
+      kbIndex = -1;
+      setHint("Hover a node");
+      if (!running) draw();
+    }
+  });
+  canvas.addEventListener("blur", function () {
+    hovered = -1;
+    kbIndex = -1;
+    setHint("Hover a node");
+    if (!running) draw();
+  });
+
+  // ---- init -------------------------------------------------------
+  function init() {
+    resize();
+    buildGraph();
+    seedPositions();
+    if (reduceMotion) {
+      // settle silently, then paint a static frame
+      for (var s = 0; s < 320; s++) step();
+      draw();
+    } else {
+      ensureRunning();
+    }
+  }
+
+  var resizeTimer = null;
+  window.addEventListener("resize", function () {
+    if (resizeTimer) window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(function () {
+      resize();
+      if (reduceMotion) {
+        draw();
+      } else {
+        ensureRunning();
+      }
+    }, 160);
+  });
+
+  // restart the sim when the section scrolls back into view
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) ensureRunning();
+      });
+    }, { threshold: 0.05 });
+    io.observe(canvas);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</body>
+</html>
