@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colleagues</title>
+<meta name="description" content="A small collection of personal pages, each built in its own style, for colleagues at the Institute for Analytical Sociology, Linköping University.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>C</text></svg>">
+<style>
+  :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --bg: #FAF9F7;
+    --surface: #FFFFFF;
+    --text: #1a1a1a;
+    --muted: #6c6c66;
+    --border: #e5e3de;
+    --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+
+  .skip {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--text);
+    color: #fff;
+    padding: 10px 16px;
+    z-index: 50;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  .skip:focus { left: 8px; top: 8px; }
+
+  .wrap {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- Header ---------- */
+  header.intro {
+    padding: clamp(4rem, 11vw, 8rem) 0 clamp(2.5rem, 6vw, 4rem);
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.4rem;
+  }
+  .kicker::before {
+    content: "";
+    width: 26px;
+    height: 1.5px;
+    background: var(--text);
+  }
+  header.intro h1 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+  header.intro h1 em {
+    font-style: italic;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  header.intro p.lede {
+    margin-top: 1.4rem;
+    max-width: 54ch;
+    font-size: 1.06rem;
+    color: var(--muted);
+  }
+
+  /* ---------- Grid ---------- */
+  main { flex: 1; }
+  .roster {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 30px 30px 26px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition);
+  }
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.09);
+    border-color: var(--accent);
+  }
+  .card:hover::before,
+  .card:focus-visible::before { transform: scaleX(1); }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .mono {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 1.05rem;
+    background: var(--accent);
+    color: var(--mono-fg, #fff);
+  }
+  .style-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    background: var(--accent-tint);
+    border-radius: 999px;
+    padding: 5px 11px;
+  }
+
+  .card h2 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .card .role {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .card .desc {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 22px;
+  }
+  .card .go {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--accent-ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card .go .arrow { transition: transform var(--transition); }
+  .card:hover .go .arrow,
+  .card:focus-visible .go .arrow { transform: translateX(5px); }
+
+  /* per-card accents */
+  .c-alexandra { --accent: #E3120B; --accent-ink: #B70F09; --accent-tint: #fbe7e6; --mono-fg: #fff; }
+  .c-kaz       { --accent: #0A0E14; --accent-ink: #0c5b53; --accent-tint: #dff3f1; --mono-fg: #36D9C8; }
+  .c-jose      { --accent: #F4632E; --accent-ink: #c8410f; --accent-tint: #fde7dc; --mono-fg: #241f33; }
+  .c-axel      { --accent: #A8231C; --accent-ink: #8d1c16; --accent-tint: #f3e3e1; --mono-fg: #fff; }
+  .c-tangbin   { --accent: #D6204A; --accent-ink: #b51b3f; --accent-tint: #fbe2e8; --mono-fg: #fff; }
+  .c-jose .mono { background: #FFD23F; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 0 36px;
+  }
+  footer p {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  footer a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+  footer a:hover { border-bottom-color: var(--text); }
+
+  @media (max-width: 680px) {
+    .roster { grid-template-columns: 1fr; }
+    .wrap { padding: 0 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+    .card::before { transform: scaleX(1); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#roster">Skip to the list</a>
+
+<header class="intro">
+  <div class="wrap">
+    <p class="kicker">Institute for Analytical Sociology</p>
+    <h1>Colleagues, <em>and their pages</em></h1>
+    <p class="lede">
+      A small collection of personal pages I built for colleagues at Linköping University. Each one is made in its own visual style, and each is a draft, a starting point rather than a finished site.
+    </p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <ul class="roster" id="roster">
+
+      <li>
+        <a class="card c-alexandra" href="./alexandra-rottenkolber/">
+          <div class="card-top">
+            <span class="mono" aria-hidden="true">AR</span>
+            <span class="style-tag">Swiss typographic</span>
+          </div>
+          <h2>Alexandra Rottenkolber</h2>
+          <p class="role">PhD candidate, Analytical Sociology &middot; IAS, Linköping University</p>
+          <p class="desc">How workers sort into occupations, and why that sorting stays gendered, traced through social networks and register data.</p>
+          <span class="go">Visit page <span class="arrow" aria-hidden="true">&rarr;</span></span>
+        </a>
+      </li>
+
+      <li>
+        <a class="card c-kaz" href="./kaz-sakamoto/">
+          <div class="card-top">
+            <span class="mono" aria-hidden="true">KS</span>
+            <span class="style-tag">Remote-sensing terminal</span>
+          </div>
+          <h2>Kaz Sakamoto</h2>
+          <p class="role">PhD student &middot; IAS, Linköping University</p>
+          <p class="desc">Satellite imagery, machine learning and causal inference brought together to measure the geography of poverty.</p>
+          <span class="go">Visit page <span class="arrow" aria-hidden="true">&rarr;</span></span>
+        </a>
+      </li>
+
+      <li>
+        <a class="card c-jose" href="./jose-bener/">
+          <div class="card-top">
+            <span class="mono" aria-hidden="true">JB</span>
+            <span class="style-tag">Playful neo-Memphis</span>
+          </div>
+          <h2>José Bener</h2>
+          <p class="role">PhD student, Visualization &amp; Interaction Design &middot; Linköping University</p>
+          <p class="desc">Information visualization and interaction design from a designer who builds digital playgrounds.</p>
+          <span class="go">Visit page <span class="arrow" aria-hidden="true">&rarr;</span></span>
+        </a>
+      </li>
+
+      <li>
+        <a class="card c-axel" href="./axel-norgren/">
+          <div class="card-top">
+            <span class="mono" aria-hidden="true">AN</span>
+            <span class="style-tag">Editorial broadsheet</span>
+          </div>
+          <h2>Axel Norgren</h2>
+          <p class="role">PhD student in economics &middot; IAS, Linköping University</p>
+          <p class="desc">The economics of education: school choice, segregation, accountability, and how struggling schools recover.</p>
+          <span class="go">Visit page <span class="arrow" aria-hidden="true">&rarr;</span></span>
+        </a>
+      </li>
+
+      <li>
+        <a class="card c-tangbin" href="./tangbin-chen/">
+          <div class="card-top">
+            <span class="mono" aria-hidden="true">TC</span>
+            <span class="style-tag">Contagion dashboard</span>
+          </div>
+          <h2>Tangbin Chen</h2>
+          <p class="role">PhD student &middot; IAS, Linköping University &amp; Karolinska Institutet</p>
+          <p class="desc">How health behaviours and health inequalities spread through social networks.</p>
+          <span class="go">Visit page <span class="arrow" aria-hidden="true">&rarr;</span></span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      Draft personal pages, built by a colleague, <a href="https://www.jesperlindmarker.com" target="_blank" rel="noopener">Jesper Lindmarker</a>, 2026. Built only from publicly available professional information.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
