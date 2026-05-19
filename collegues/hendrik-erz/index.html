@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hendrik Erz</title>
+<meta name="description" content="Hendrik Erz — computational social scientist at the Institute for Analytical Sociology, Linköping University. Political sociology, computational text analysis, and the creator of Zettlr.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-raised: #fcfaf4;
+    --ink: #25282b;
+    --ink-soft: #4c5258;
+    --ink-faint: #7d8489;
+    --rule: #e2ddd0;
+    --rule-strong: #cfc8b6;
+    --accent: #1f9d6b;
+    --accent-deep: #167a52;
+    --accent-wash: #e5f1ea;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sp-1: 0.5rem;
+    --sp-2: 1rem;
+    --sp-3: 1.5rem;
+    --sp-4: 2.5rem;
+    --sp-5: 4rem;
+    --sp-6: 6rem;
+    --col: 42rem;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 1.075rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a {
+    color: var(--accent-deep);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  }
+  a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  h1, h2, h3 {
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--accent-deep);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border: 0;
+    z-index: 50;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+  }
+  .skip-link:focus { left: 0.75rem; top: 0.75rem; }
+
+  /* ---- layout shell ---- */
+  .wrap {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0 1.4rem;
+  }
+
+  /* ---- top bar ---- */
+  .topbar {
+    border-bottom: 1px solid var(--rule);
+    background: rgba(246,243,236,0.92);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .topbar-inner {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0.7rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .brand {
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    font-weight: 500;
+    border: 0;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .brand:hover { color: var(--accent); }
+  .brand .hash { color: var(--accent); }
+  .nav {
+    display: flex;
+    gap: 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+  .nav a {
+    color: var(--ink-soft);
+    border: 0;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ---- hero ---- */
+  .hero { padding: var(--sp-5) 0 var(--sp-4); }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+    margin: 0 0 var(--sp-2);
+  }
+  .eyebrow .hash { color: var(--accent); }
+
+  .monogram {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--sp-3);
+  }
+
+  h1.name {
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.015em;
+  }
+  .role {
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    color: var(--accent-deep);
+    margin: 0 0 var(--sp-3);
+    font-weight: 500;
+  }
+  .lede {
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    margin: 0 0 var(--sp-4);
+    max-width: 36rem;
+  }
+
+  /* ---- editor centerpiece ---- */
+  .editor {
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: var(--paper-raised);
+    box-shadow: 0 1px 2px rgba(37,40,43,0.04), 0 12px 30px -22px rgba(37,40,43,0.4);
+    overflow: hidden;
+  }
+  .editor-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--rule-strong);
+  }
+  .editor-title {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    margin-left: 0.35rem;
+  }
+  .pane-toggle {
+    margin-left: auto;
+    display: none;
+    gap: 0;
+    border: 1px solid var(--rule-strong);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .pane-toggle button {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.3rem 0.7rem;
+    border: 0;
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .pane-toggle button[aria-pressed="true"] {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .editor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .pane { min-width: 0; }
+  .pane-source { border-right: 1px solid var(--rule); }
+  .pane-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    padding: 0.55rem 0.95rem 0.2rem;
+    display: block;
+  }
+  textarea#md-source {
+    display: block;
+    width: 100%;
+    min-height: 21rem;
+    border: 0;
+    resize: vertical;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 0.84rem;
+    line-height: 1.7;
+    padding: 0.3rem 0.95rem 1rem;
+    tab-size: 2;
+  }
+  textarea#md-source:focus { outline: 0; box-shadow: inset 0 0 0 2px var(--accent-wash); }
+
+  .preview {
+    padding: 0.3rem 1.05rem 1rem;
+    min-height: 21rem;
+    font-size: 0.97rem;
+  }
+  .preview h1, .preview h2, .preview h3 { margin: 1.1rem 0 0.5rem; }
+  .preview h1 { font-size: 1.4rem; }
+  .preview h2 { font-size: 1.15rem; }
+  .preview h3 { font-size: 1rem; }
+  .preview h1:first-child, .preview h2:first-child, .preview h3:first-child,
+  .preview p:first-child { margin-top: 0.4rem; }
+  .preview p { margin: 0.55rem 0; }
+  .preview ul { margin: 0.55rem 0; padding-left: 1.3rem; }
+  .preview li { margin: 0.2rem 0; }
+  .preview code {
+    font-family: var(--mono);
+    font-size: 0.84em;
+    background: var(--accent-wash);
+    padding: 0.1rem 0.32rem;
+    border-radius: 3px;
+    color: var(--accent-deep);
+  }
+  .preview blockquote {
+    margin: 0.7rem 0;
+    padding: 0.15rem 0 0.15rem 0.95rem;
+    border-left: 3px solid var(--accent);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .preview hr {
+    border: 0;
+    border-top: 1px solid var(--rule-strong);
+    margin: 1rem 0;
+  }
+  .editor-foot {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    padding: 0.5rem 0.95rem;
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+  }
+
+  /* ---- generic section ---- */
+  section { padding: var(--sp-5) 0; }
+  section + section { border-top: 1px solid var(--rule); }
+
+  .h-marker {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.62em;
+    margin-right: 0.55rem;
+    vertical-align: 0.18em;
+    user-select: none;
+  }
+  h2.section-title {
+    font-size: clamp(1.5rem, 3.4vw, 1.9rem);
+    margin: 0 0 var(--sp-3);
+    letter-spacing: -0.01em;
+  }
+  h3.sub-title {
+    font-size: 1.15rem;
+    margin: var(--sp-3) 0 var(--sp-1);
+  }
+  h3.sub-title .h-marker { font-size: 0.7em; }
+
+  p { margin: 0 0 var(--sp-2); }
+  .prose p:last-child { margin-bottom: 0; }
+
+  blockquote.callout {
+    margin: var(--sp-3) 0;
+    padding: 0.4rem 0 0.4rem 1.1rem;
+    border-left: 3px solid var(--accent);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  blockquote.callout .gt {
+    font-family: var(--mono);
+    font-style: normal;
+    color: var(--accent);
+    margin-left: -1.1rem;
+    padding-right: 0.45rem;
+  }
+
+  /* ---- project / focus list ---- */
+  .focus-list {
+    list-style: none;
+    margin: var(--sp-2) 0 0;
+    padding: 0;
+  }
+  .focus-list li {
+    padding: 0.65rem 0 0.65rem 1.5rem;
+    border-bottom: 1px dashed var(--rule);
+    position: relative;
+  }
+  .focus-list li:last-child { border-bottom: 0; }
+  .focus-list li::before {
+    content: "-";
+    position: absolute;
+    left: 0;
+    font-family: var(--mono);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .focus-list strong { font-weight: 600; }
+
+  /* ---- zettlr card ---- */
+  .software-card {
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: var(--paper-raised);
+    padding: var(--sp-3);
+    margin-top: var(--sp-2);
+  }
+  .software-card .stars {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: var(--sp-1);
+  }
+  .software-card .stars .pip { color: var(--accent); }
+  .software-card h3 { margin: 0 0 0.35rem; font-size: 1.2rem; }
+  .software-card p:last-child { margin-bottom: 0; }
+  .tag-row {
+    margin-top: var(--sp-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+  }
+  .more-software {
+    margin-top: var(--sp-2);
+    font-size: 1rem;
+  }
+
+  /* ---- publications ---- */
+  .pub-list {
+    list-style: none;
+    margin: var(--sp-2) 0 0;
+    padding: 0;
+  }
+  .pub-list li {
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 0.4rem 0.9rem;
+  }
+  .pub-list li:last-child { border-bottom: 0; }
+  .pub-year {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--accent-deep);
+    padding-top: 0.18rem;
+  }
+  .pub-title { font-weight: 600; }
+  .pub-meta {
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+  }
+  .pub-venue { font-style: italic; }
+
+  /* ---- contact ---- */
+  .links {
+    list-style: none;
+    margin: var(--sp-2) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .links a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+    background: var(--paper-raised);
+  }
+  .links a:hover {
+    border-color: var(--accent);
+    background: var(--accent-wash);
+  }
+  .links .lk-name {
+    font-family: var(--mono);
+    font-size: 0.83rem;
+    color: var(--ink);
+  }
+  .links .lk-name .arrow { color: var(--accent); }
+  .links .lk-handle {
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+  }
+
+  /* ---- footer ---- */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: var(--sp-4) 0 var(--sp-5);
+  }
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+  .footer-note .gt { color: var(--accent); }
+  .footer-note a { color: var(--ink-soft); }
+
+  /* ---- responsive ---- */
+  @media (max-width: 640px) {
+    .nav { display: none; }
+    .pane-toggle { display: flex; }
+    .editor-grid { grid-template-columns: 1fr; }
+    .pane-source { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .editor-grid[data-view="source"] .pane-preview { display: none; }
+    .editor-grid[data-view="preview"] .pane-source { display: none; }
+    .pub-list li { grid-template-columns: 1fr; gap: 0.15rem; }
+    .pub-year { padding-top: 0; }
+    .links { grid-template-columns: 1fr; }
+    section { padding: var(--sp-4) 0; }
+    .hero { padding: var(--sp-4) 0 var(--sp-3); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top"><span class="hash">#</span> Hendrik Erz</a>
+    <nav class="nav" aria-label="Section navigation">
+      <a href="#about">about</a>
+      <a href="#software">zettlr</a>
+      <a href="#publications">publications</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <a id="top"></a>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-name">
+    <div class="wrap">
+      <p class="eyebrow"><span class="hash">#</span> computational social science · linkoping</p>
+
+      <svg class="monogram" viewBox="0 0 64 64" role="img" aria-label="Monogram of Hendrik Erz">
+        <rect x="1" y="1" width="62" height="62" rx="9" fill="none" stroke="#cfc8b6" stroke-width="1.5"/>
+        <text x="32" y="42" font-family="JetBrains Mono, monospace" font-size="26"
+              font-weight="600" text-anchor="middle" fill="#1f9d6b">HE</text>
+      </svg>
+
+      <h1 class="name" id="hero-name">Hendrik Erz</h1>
+      <p class="role">Computational social scientist &middot; Institute for Analytical Sociology</p>
+      <p class="lede">
+        I study how political texts, from a century of legislative debate to
+        present-day parliamentary speech, reveal the mechanisms behind
+        policymaking and political change. I also build writing software.
+      </p>
+
+      <!-- live markdown editor -->
+      <div class="editor" aria-labelledby="editor-heading">
+        <h2 id="editor-heading" style="position:absolute;left:-9999px;">Live Markdown editor</h2>
+        <div class="editor-chrome">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="editor-title">intro.md</span>
+          <div class="pane-toggle" role="group" aria-label="Switch editor view">
+            <button type="button" id="btn-source" aria-pressed="true">Source</button>
+            <button type="button" id="btn-preview" aria-pressed="false">Preview</button>
+          </div>
+        </div>
+        <div class="editor-grid" id="editor-grid" data-view="source">
+          <div class="pane pane-source">
+            <label class="pane-label" for="md-source">Markdown source &mdash; edit me</label>
+            <textarea id="md-source" spellcheck="false" aria-describedby="editor-foot">## Hello, I am Hendrik
+
+A *computational social scientist* at the **Institute for
+Analytical Sociology** in Norrkoping, Sweden.
+
+I work where political sociology meets text analysis:
+
+- legislative debates and political language
+- the mechanisms of **policy change**
+- network science and the science of science
+
+I also build [Zettlr](https://www.zettlr.com), an open-source
+Markdown workbench for researchers and writers.
+
+> This panel is a working Markdown editor. Type on the
+> left, watch it render on the right.
+
+---
+
+Use `#`, `##`, `**bold**`, `*italic*` and `- lists`.</textarea>
+          </div>
+          <div class="pane pane-preview">
+            <span class="pane-label">Rendered preview</span>
+            <div class="preview" id="md-preview" aria-live="polite" aria-label="Rendered Markdown preview"></div>
+          </div>
+        </div>
+        <div class="editor-foot" id="editor-foot">
+          A small Markdown parser, written for this page. Headings, bold, italic, code, links, lists, quotes, rules.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT / RESEARCH ============ -->
+  <section id="about" aria-labelledby="about-title">
+    <div class="wrap prose">
+      <h2 class="section-title" id="about-title"><span class="h-marker">##</span>About &amp; research</h2>
+      <p>
+        Hendrik Erz is a computational social scientist at the Institute for
+        Analytical Sociology (IAS), Linkoping University, on the Campus
+        Norrkoping in Sweden. He defended his PhD in analytical sociology in
+        2025. His work sits at the meeting point of political sociology and
+        computational social science: he reads political texts at scale to
+        understand how policy is made and how political regimes change.
+      </p>
+      <p>
+        Method and question are tightly bound in his research. He uses
+        computational text analysis and natural language processing,
+        alongside network science, to study legislative debates and other
+        political language. He is also drawn to the science of science, the
+        study of how research itself is produced, and to the ethics of doing
+        computational and AI research responsibly.
+      </p>
+
+      <h3 class="sub-title"><span class="h-marker">###</span>The dissertation</h3>
+      <p>
+        His 2025 dissertation, <em>On the Record: Understanding a Century of
+        Congressional Lawmaking Through Speech and Vote Behavior</em>, asks
+        what a hundred years of US Congressional debate and voting can tell us
+        about how laws are actually made. By treating speeches and votes
+        together as a long historical record, it traces the mechanisms of
+        lawmaking across generations rather than across a single session.
+      </p>
+
+      <blockquote class="callout">
+        <span class="gt">&gt;</span> Political texts are not just records of
+        decisions. Read carefully and at scale, they are evidence of the
+        processes that produced those decisions.
+      </blockquote>
+
+      <h3 class="sub-title"><span class="h-marker">###</span>Current projects</h3>
+      <ul class="focus-list">
+        <li>
+          <strong>Discursive polarization</strong> in German and Swedish
+          parliamentary debates, tracing how political language pulls apart
+          over time.
+        </li>
+        <li>
+          <strong>Ethical behaviour in computer-science security research</strong>,
+          examining the norms and incentives that shape how researchers
+          handle vulnerabilities.
+        </li>
+        <li>
+          <strong>Swedish folk high schools</strong> (folkhogskolan), studied
+          as institutional responses to social change.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ SOFTWARE / ZETTLR ============ -->
+  <section id="software" aria-labelledby="software-title">
+    <div class="wrap prose">
+      <h2 class="section-title" id="software-title"><span class="h-marker">##</span>Open-source work</h2>
+      <p>
+        Hendrik is a long-time advocate for open-source software, and much of
+        what he builds is for the people who do research and writing for a
+        living, including himself.
+      </p>
+
+      <div class="software-card">
+        <span class="stars"><span class="pip" aria-hidden="true">&#9733;</span> ~13,000 stars on GitHub</span>
+        <h3>Zettlr</h3>
+        <p>
+          Zettlr is an open-source, Markdown-based publication workbench for
+          researchers and writers. Hendrik created it in 2017 and continues to
+          maintain it. It brings drafting, citation, and note-taking into one
+          calm writing environment, the same paper-like, distraction-light
+          feeling this page borrows.
+        </p>
+        <div class="tag-row">
+          <span class="tag">TypeScript</span>
+          <span class="tag">Electron</span>
+          <span class="tag">Markdown</span>
+          <span class="tag">open source</span>
+        </div>
+      </div>
+
+      <p class="more-software">
+        He has also built <strong>Citr</strong>, a citation-parsing library,
+        and <strong>Academics on Mastodon</strong>, a directory that helps
+        scholars find one another. His code lives on GitHub under the handle
+        <a href="https://github.com/nathanlesage">nathanlesage</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PUBLICATIONS ============ -->
+  <section id="publications" aria-labelledby="pub-title">
+    <div class="wrap prose">
+      <h2 class="section-title" id="pub-title"><span class="h-marker">##</span>Selected publications</h2>
+      <ul class="pub-list">
+        <li>
+          <span class="pub-year">2025</span>
+          <div>
+            <span class="pub-title">On the Record: Understanding a Century of
+            Congressional Lawmaking Through Speech and Vote Behavior</span>
+            <div class="pub-meta">Doctoral dissertation, <span class="pub-venue">Linkoping University</span>.</div>
+          </div>
+        </li>
+        <li>
+          <span class="pub-year">2025</span>
+          <div>
+            <span class="pub-title">Thanking the World: Gender Differences in
+            Thesis Acknowledgments</span>
+            <div class="pub-meta">Lamba &amp; Erz. <span class="pub-venue">Data and Information Management</span>.</div>
+          </div>
+        </li>
+        <li>
+          <span class="pub-year">2024</span>
+          <div>
+            <span class="pub-title">Don&rsquo;t Patch the Researcher, Patch the Game</span>
+            <div class="pub-meta">With Dirksen, Giessler, Johns &amp; Fiebig. <span class="pub-venue">New Security Paradigms Workshop</span>.</div>
+          </div>
+        </li>
+      </ul>
+      <p style="margin-top:1.5rem;color:var(--ink-soft);font-size:0.97rem;">
+        He has also edited and written for the German journal
+        <em>Soziologiemagazin</em>. A fuller list is on his
+        <a href="https://scholar.google.com/citations?user=L8y-sWQAAAAJ">Google Scholar profile</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ COMMUNITY / BACKGROUND ============ -->
+  <section id="community" aria-labelledby="community-title">
+    <div class="wrap prose">
+      <h2 class="section-title" id="community-title"><span class="h-marker">##</span>Community &amp; background</h2>
+      <p>
+        Hendrik grew up and studied in Germany. He holds a BA in History,
+        with a minor in Political Science, and an MA in Sociology, both from
+        the University of Bonn, before completing his PhD at Linkoping
+        University. He works in German and English.
+      </p>
+      <p>
+        He gives a good deal of time to the research community. He is a
+        co-organizer of the Swedish Interdisciplinary Research School in
+        Computational Social Science (SIRCSS), and has helped organise
+        conferences including the New Security Paradigms Workshop 2024,
+        IC2S2 2025, and EUSN 2026. He is also an editor of
+        <em>Soziologiemagazin</em>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="wrap prose">
+      <h2 class="section-title" id="contact-title"><span class="h-marker">##</span>Elsewhere</h2>
+      <p>
+        The best place to reach Hendrik, and to find his blog and current
+        contact details, is his personal website.
+      </p>
+      <ul class="links">
+        <li>
+          <a href="https://www.hendrik-erz.de">
+            <span class="lk-name">personal site <span class="arrow">&#8599;</span></span>
+            <span class="lk-handle">hendrik-erz.de</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/nathanlesage">
+            <span class="lk-name">github <span class="arrow">&#8599;</span></span>
+            <span class="lk-handle">@nathanlesage</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://scholar.google.com/citations?user=L8y-sWQAAAAJ">
+            <span class="lk-name">google scholar <span class="arrow">&#8599;</span></span>
+            <span class="lk-handle">publications &amp; citations</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://fosstodon.org/@hendrikerz" rel="me">
+            <span class="lk-name">mastodon <span class="arrow">&#8599;</span></span>
+            <span class="lk-handle">@hendrikerz@fosstodon.org</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/hendrik-erz/">
+            <span class="lk-name">linkedin <span class="arrow">&#8599;</span></span>
+            <span class="lk-handle">in/hendrik-erz</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://orcid.org/0000-0003-0775-5919">
+            <span class="lk-name">orcid <span class="arrow">&#8599;</span></span>
+            <span class="lk-handle">0000-0003-0775-5919</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="footer-note">
+      <span class="gt">&gt;</span> This is a draft personal page, built by a colleague, Jesper Lindmarker, 2026.<br>
+      <span class="gt">&gt;</span> Find Hendrik&rsquo;s own site at <a href="https://www.hendrik-erz.de">www.hendrik-erz.de</a>.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Markdown parser. Security: escape &, <, >, " FIRST, then apply the
+     Markdown transforms, so raw HTML typed into the textarea can never
+     reach the preview as live markup. Links accept http/https only. */
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function safeUrl(url) {
+    var trimmed = url.trim();
+    return /^https?:\/\//i.test(trimmed) ? trimmed : null;
+  }
+
+  // Inline formatting, applied to ALREADY-ESCAPED text. The text is split
+  // on backtick code spans (the capturing group keeps them in the array);
+  // only the non-code segments are formatted. No placeholders are used, so
+  // an ordinary number in the prose can never be mistaken for code.
+  function inline(text) {
+    var parts = text.split(/(`[^`]+`)/);
+    for (var k = 0; k < parts.length; k++) {
+      var seg = parts[k];
+      if (seg.length >= 2 && seg.charAt(0) === "`" && seg.charAt(seg.length - 1) === "`") {
+        parts[k] = "<code>" + seg.slice(1, -1) + "</code>";
+        continue;
+      }
+      seg = seg.replace(/\[([^\]]+)\]\(([^()\s]+)\)/g, function (whole, label, url) {
+        var clean = safeUrl(url);
+        if (!clean) { return whole; }
+        return '<a href="' + clean + '" rel="noopener noreferrer" target="_blank">' + label + "</a>";
+      });
+      seg = seg.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      seg = seg.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+      parts[k] = seg;
+    }
+    return parts.join("");
+  }
+
+  // The text is HTML-escaped first, so a Markdown ">" appears as "&gt;".
+  var QUOTE_RE = /^\s*&gt;\s?/;
+  var HEADING_RE = /^(#{1,3})\s+/;
+  var BULLET_RE = /^\s*-\s+/;
+  var RULE_RE = /^\s*---\s*$/;
+
+  function render(src) {
+    var lines = escapeHtml(src).split(/\r?\n/);
+    var html = [];
+    var i = 0;
+
+    while (i < lines.length) {
+      var line = lines[i];
+
+      if (/^\s*$/.test(line)) { i++; continue; }
+
+      if (RULE_RE.test(line)) { html.push("<hr>"); i++; continue; }
+
+      var h = /^(#{1,3})\s+(.*)$/.exec(line);
+      if (h) {
+        var level = h[1].length;
+        html.push("<h" + level + ">" + inline(h[2].trim()) + "</h" + level + ">");
+        i++;
+        continue;
+      }
+
+      if (BULLET_RE.test(line)) {
+        var items = [];
+        while (i < lines.length && BULLET_RE.test(lines[i])) {
+          items.push("<li>" + inline(lines[i].replace(BULLET_RE, "")) + "</li>");
+          i++;
+        }
+        html.push("<ul>" + items.join("") + "</ul>");
+        continue;
+      }
+
+      if (QUOTE_RE.test(line)) {
+        var quote = [];
+        while (i < lines.length && QUOTE_RE.test(lines[i])) {
+          quote.push(lines[i].replace(QUOTE_RE, ""));
+          i++;
+        }
+        html.push("<blockquote>" + inline(quote.join(" ")) + "</blockquote>");
+        continue;
+      }
+
+      var para = [];
+      while (i < lines.length &&
+             !/^\s*$/.test(lines[i]) &&
+             !RULE_RE.test(lines[i]) &&
+             !HEADING_RE.test(lines[i]) &&
+             !BULLET_RE.test(lines[i]) &&
+             !QUOTE_RE.test(lines[i])) {
+        para.push(lines[i].trim());
+        i++;
+      }
+      html.push("<p>" + inline(para.join(" ")) + "</p>");
+    }
+
+    return html.join("\n");
+  }
+
+  var source = document.getElementById("md-source");
+  var preview = document.getElementById("md-preview");
+
+  function update() {
+    preview.innerHTML = render(source.value);
+  }
+  source.addEventListener("input", update);
+  update();
+
+  /* source / preview toggle (narrow screens) */
+  var grid = document.getElementById("editor-grid");
+  var btnSource = document.getElementById("btn-source");
+  var btnPreview = document.getElementById("btn-preview");
+
+  function setView(view) {
+    grid.setAttribute("data-view", view);
+    var isSource = view === "source";
+    btnSource.setAttribute("aria-pressed", String(isSource));
+    btnPreview.setAttribute("aria-pressed", String(!isSource));
+  }
+  btnSource.addEventListener("click", function () { setView("source"); });
+  btnPreview.addEventListener("click", function () { setView("preview"); });
+})();
+</script>
+</body>
+</html>

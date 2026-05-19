@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simon Walo</title>
+<meta name="description" content="Simon Walo — postdoctoral researcher at SweCSS and the Institute for Analytical Sociology, Linköping University. Computational social science at the intersection of natural language processing and network analysis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo: #5B4BDA;
+    --indigo-deep: #3C2FA8;
+    --indigo-soft: #ECEAFB;
+    --secondary: #6FB3C9;
+    --secondary-soft: #E3F0F4;
+    --ink: #1A1A24;
+    --ink-soft: #4A4A5C;
+    --ink-faint: #8A8A9A;
+    --bg: #FFFFFF;
+    --bg-tint: #FAFAFC;
+    --line: #E6E6EE;
+    --s1: 0.5rem;
+    --s2: 1rem;
+    --s3: 1.5rem;
+    --s4: 2.5rem;
+    --s5: 4rem;
+    --s6: 6rem;
+    --radius: 14px;
+    --maxw: 1080px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  a { color: var(--indigo); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--indigo);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 var(--s3);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--indigo);
+    color: #fff;
+    padding: var(--s1) var(--s2);
+    z-index: 100;
+    border-radius: 0 0 var(--radius) 0;
+  }
+  .skip-link:focus { left: 0; }
+
+  /* ---- Section label motif: a word as a point ---- */
+  .seclabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    margin-bottom: var(--s2);
+  }
+  .seclabel::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--indigo);
+    box-shadow: 0 0 0 5px var(--indigo-soft);
+    flex: none;
+  }
+
+  /* ---- Header / nav ---- */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s2) var(--s3);
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+  .brand:hover { text-decoration: none; }
+  .monogram {
+    width: 34px;
+    height: 34px;
+    flex: none;
+  }
+  nav.main ul {
+    display: flex;
+    gap: var(--s3);
+    list-style: none;
+  }
+  nav.main a {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+  nav.main a:hover { color: var(--indigo); text-decoration: none; }
+  @media (max-width: 720px) {
+    nav.main { display: none; }
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    padding: var(--s5) 0 var(--s4);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s4);
+  }
+  @media (min-width: 880px) {
+    .hero-grid {
+      grid-template-columns: 0.92fr 1.08fr;
+      align-items: center;
+      gap: var(--s5);
+    }
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin-bottom: var(--s2);
+  }
+  .hero .role {
+    font-size: 1.05rem;
+    color: var(--indigo-deep);
+    font-weight: 500;
+    margin-bottom: var(--s3);
+  }
+  .hero .intro {
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    max-width: 34ch;
+    margin-bottom: var(--s3);
+  }
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s1);
+  }
+  .pill {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: var(--bg-tint);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+
+  /* ---- Semantic space visualization ---- */
+  .viz-card {
+    background: var(--bg-tint);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--s3);
+    box-shadow: 0 18px 48px -28px rgba(60, 47, 168, 0.4);
+  }
+  .viz-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s2);
+    margin-bottom: var(--s2);
+    flex-wrap: wrap;
+  }
+  .viz-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--indigo);
+  }
+  .viz-shell {
+    position: relative;
+    width: 100%;
+  }
+  #space {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(91,75,218,0.05), transparent 60%),
+      radial-gradient(circle at 75% 80%, rgba(111,179,201,0.07), transparent 55%),
+      #FCFCFE;
+    touch-action: manipulation;
+    cursor: crosshair;
+  }
+  .viz-controls {
+    margin-top: var(--s2);
+  }
+  .timerow {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+  }
+  .timerow label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--indigo) 0%, var(--secondary) 100%);
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--indigo);
+    box-shadow: 0 2px 6px rgba(60,47,168,0.4);
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--indigo);
+    box-shadow: 0 2px 6px rgba(60,47,168,0.4);
+    cursor: pointer;
+  }
+  .era-ends {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.35rem;
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.04em;
+  }
+  .toggle-row {
+    display: flex;
+    gap: var(--s1);
+    margin-top: var(--s2);
+  }
+  .era-btn {
+    flex: 1;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.5rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .era-btn:hover { border-color: var(--indigo); color: var(--indigo); }
+  .era-btn[aria-pressed="true"] {
+    background: var(--indigo);
+    color: #fff;
+    border-color: var(--indigo);
+  }
+  .viz-readout {
+    margin-top: var(--s2);
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    min-height: 1.5em;
+  }
+  .viz-readout strong { color: var(--indigo-deep); }
+  .viz-caption {
+    margin-top: var(--s2);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--ink-faint);
+    border-top: 1px dashed var(--line);
+    padding-top: var(--s2);
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    margin-top: var(--s1);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .legend .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+  }
+
+  /* ---- Generic section ---- */
+  section { padding: var(--s5) 0; }
+  section + section { border-top: 1px solid var(--line); }
+  .section-tint { background: var(--bg-tint); }
+
+  h2 {
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    margin-bottom: var(--s2);
+  }
+  .lead {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin-bottom: var(--s3);
+  }
+
+  /* ---- Research cards ---- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s2);
+  }
+  @media (min-width: 720px) {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .rcard {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--s3);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .rcard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px -24px rgba(60,47,168,0.45);
+    border-color: var(--indigo-soft);
+  }
+  .rcard .pt {
+    display: flex;
+    gap: 4px;
+    margin-bottom: var(--s2);
+  }
+  .rcard .pt i {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--indigo);
+    display: block;
+  }
+  .rcard .pt i:nth-child(2) { background: var(--secondary); }
+  .rcard .pt i:nth-child(3) { background: var(--indigo-soft); }
+  .rcard h3 {
+    font-size: 1.12rem;
+    margin-bottom: var(--s1);
+  }
+  .rcard p {
+    font-size: 0.94rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---- Featured study ---- */
+  .feature {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s4);
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .feature { grid-template-columns: 1.05fr 0.95fr; }
+  }
+  .feature-art {
+    background: linear-gradient(150deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius: var(--radius);
+    padding: var(--s4);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-art .quote {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.2;
+    position: relative;
+    z-index: 2;
+  }
+  .feature-art .quote em {
+    font-style: normal;
+    color: #C9C2FF;
+  }
+  .feature-art .src {
+    margin-top: var(--s3);
+    font-size: 0.85rem;
+    color: #C9C2FF;
+    position: relative;
+    z-index: 2;
+  }
+  .feature-art .stat {
+    margin-top: var(--s3);
+    display: flex;
+    gap: var(--s3);
+    position: relative;
+    z-index: 2;
+    flex-wrap: wrap;
+  }
+  .feature-art .stat div {
+    border-left: 2px solid rgba(255,255,255,0.3);
+    padding-left: var(--s2);
+  }
+  .feature-art .stat .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    display: block;
+  }
+  .feature-art .stat .lbl {
+    font-size: 0.76rem;
+    color: #C9C2FF;
+  }
+  .feature-art .scatter {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.5;
+  }
+  .feature-body h3 {
+    font-size: 1.4rem;
+    margin-bottom: var(--s2);
+  }
+  .feature-body p {
+    color: var(--ink-soft);
+    margin-bottom: var(--s2);
+  }
+  .feature-body p:last-child { margin-bottom: 0; }
+
+  /* ---- Publications ---- */
+  .publist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s1);
+  }
+  .pub {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--s3);
+    padding: var(--s3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .pub:last-child { border-bottom: none; }
+  .pub .year {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--indigo);
+    padding-top: 0.1rem;
+  }
+  .pub .pub-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 1.04rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .pub .venue {
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+  }
+  .pub .venue .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    background: var(--secondary-soft);
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+
+  /* ---- Personal note ---- */
+  .note-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s3);
+  }
+  @media (min-width: 760px) {
+    .note-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .note-text p { color: var(--ink-soft); margin-bottom: var(--s2); }
+  .note-text p:last-child { margin-bottom: 0; }
+  .note-aside {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--s3);
+    align-self: start;
+  }
+  .note-aside .seclabel { margin-bottom: var(--s2); }
+  .note-aside ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s1);
+  }
+  .note-aside li {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+  .note-aside li::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--secondary);
+    flex: none;
+    transform: translateY(-1px);
+  }
+
+  /* ---- Contact ---- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s2);
+  }
+  @media (min-width: 560px) {
+    .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 880px) {
+    .contact-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .clink {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: var(--s3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+  .clink:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+    border-color: var(--indigo);
+    box-shadow: 0 14px 32px -22px rgba(60,47,168,0.5);
+  }
+  .clink .ctype {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--indigo);
+  }
+  .clink .cval {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 1.02rem;
+  }
+  .clink .cnote {
+    font-size: 0.83rem;
+    color: var(--ink-faint);
+  }
+
+  /* ---- Footer ---- */
+  footer.site {
+    border-top: 1px solid var(--line);
+    padding: var(--s4) 0 var(--s5);
+    background: var(--bg-tint);
+  }
+  .foot-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--s3);
+  }
+  .foot-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--ink);
+  }
+  .foot-draft {
+    font-size: 0.84rem;
+    color: var(--ink-faint);
+    max-width: 42ch;
+    margin-top: var(--s1);
+  }
+  .foot-draft a { color: var(--indigo); }
+  .foot-links {
+    display: flex;
+    gap: var(--s2);
+    flex-wrap: wrap;
+    font-size: 0.88rem;
+  }
+  .foot-links a { color: var(--ink-soft); }
+  .foot-links a:hover { color: var(--indigo); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rcard, .clink { transition: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site">
+  <div class="navbar">
+    <a class="brand" href="#top" aria-label="Simon Walo — home">
+      <svg class="monogram" viewBox="0 0 34 34" aria-hidden="true">
+        <rect width="34" height="34" rx="8" fill="#5B4BDA"/>
+        <circle cx="11" cy="12" r="3" fill="#fff"/>
+        <circle cx="23" cy="11" r="2.4" fill="#C9C2FF"/>
+        <circle cx="22" cy="23" r="3" fill="#fff"/>
+        <line x1="11" y1="12" x2="23" y2="11" stroke="#fff" stroke-width="1" stroke-opacity="0.6"/>
+        <line x1="11" y1="12" x2="22" y2="23" stroke="#fff" stroke-width="1" stroke-opacity="0.6"/>
+      </svg>
+      Simon Walo
+    </a>
+    <nav class="main" aria-label="Primary">
+      <ul>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#study">Bullshit jobs</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#personal">Personal</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<a id="top"></a>
+
+<!-- ============ HERO ============ -->
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="seclabel">Computational social science</p>
+        <h1 id="hero-h">Simon Walo</h1>
+        <p class="role">Postdoctoral researcher, SweCSS &amp; the Institute for Analytical Sociology, Linköping University</p>
+        <p class="intro">I study work, culture and science by reading large bodies of text the way a network sees them: as words placed by meaning.</p>
+        <div class="pill-row">
+          <span class="pill">Sociology of work</span>
+          <span class="pill">Sociology of culture</span>
+          <span class="pill">Sociology of science</span>
+          <span class="pill">NLP &amp; networks</span>
+        </div>
+      </div>
+
+      <div class="viz-card" aria-labelledby="viz-h">
+        <div class="viz-head">
+          <span class="viz-title" id="viz-h">Semantic space</span>
+          <span style="font-size:0.78rem;color:var(--ink-faint);">words placed by meaning</span>
+        </div>
+        <div class="viz-shell">
+          <canvas id="space" width="640" height="460"
+            role="img"
+            aria-label="A schematic semantic space. Around twenty words appear as labelled points grouped into three clusters: work, culture, and science. Use the time control below to move the focus words and watch their nearest-neighbour links update.">
+          </canvas>
+        </div>
+
+        <div class="viz-controls">
+          <div class="timerow">
+            <label for="era">Era</label>
+            <input type="range" id="era" min="0" max="100" value="0" step="1"
+              aria-valuetext="Earlier period, around the 1960s"
+              aria-describedby="viz-readout viz-caption">
+          </div>
+          <div class="era-ends" aria-hidden="true">
+            <span>earlier · ~1960s</span>
+            <span>later · ~2020s</span>
+          </div>
+          <div class="toggle-row" role="group" aria-label="Jump between eras">
+            <button type="button" class="era-btn" id="btn-early" aria-pressed="true">Earlier</button>
+            <button type="button" class="era-btn" id="btn-late" aria-pressed="false">Later</button>
+          </div>
+        </div>
+
+        <p class="viz-readout" id="viz-readout" aria-live="polite">
+          Drag the slider, or hover and select a word to see its nearest neighbours.
+        </p>
+
+        <div class="legend" aria-hidden="true">
+          <span><span class="dot" style="background:#5B4BDA"></span> Work</span>
+          <span><span class="dot" style="background:#6FB3C9"></span> Culture</span>
+          <span><span class="dot" style="background:#9B8AE6"></span> Science</span>
+          <span><span class="dot" style="background:#E8A33D"></span> Focus word (moves over time)</span>
+        </div>
+
+        <p class="viz-caption" id="viz-caption">
+          A schematic illustration, not real data. It shows how word-embedding methods
+          place words as points by meaning, with related words sitting close together,
+          and how a word's meaning can drift over time. The positions here are
+          hand-authored for illustration. This reflects Simon's research using word
+          embeddings to measure historical changes in meaning, such as his work on
+          capitalist ideology.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section id="research" class="section-tint" aria-labelledby="research-h">
+  <div class="wrap">
+    <p class="seclabel">About &amp; research</p>
+    <h2 id="research-h">A sociologist who works with text at scale</h2>
+    <p class="lead">
+      Simon Walo is a postdoctoral researcher at the Swedish Excellence Centre for
+      Computational Social Science (SweCSS) and the Institute for Analytical Sociology
+      (IAS) at Linköping University, which he joined through the SweCSS Visiting Fellows
+      Program. He completed his PhD in sociology at the University of Zurich, in the
+      Department of Sociology at the chair of Professor Jörg Rössel. Originally from
+      Switzerland, he describes the Linköping postdoc as completing his transition into
+      computational social science.
+    </p>
+
+    <div class="card-grid">
+      <article class="rcard">
+        <div class="pt" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h3>Three sociologies</h3>
+        <p>
+          His work spans the sociology of work, the sociology of culture, and the
+          sociology of science: how people judge their own jobs, how cultural meanings
+          differ across Europe, and how scientific knowledge takes shape.
+        </p>
+      </article>
+      <article class="rcard">
+        <div class="pt" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h3>NLP meets networks</h3>
+        <p>
+          He does computational social science at the intersection of natural language
+          processing and network analysis, treating large text collections as data and
+          turning the relationships inside them into structure that can be measured.
+        </p>
+      </article>
+      <article class="rcard">
+        <div class="pt" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h3>A network of causal claims</h3>
+        <p>
+          His current project extracts causal claims from a large corpus of scientific
+          abstracts to build a network of causal relationships, examining patterns of
+          scientific innovation and how academic knowledge spreads.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED STUDY ============ -->
+<section id="study" aria-labelledby="study-h">
+  <div class="wrap">
+    <p class="seclabel">Featured study</p>
+    <h2 id="study-h">Testing the &ldquo;bullshit jobs&rdquo; theory</h2>
+    <div class="feature">
+      <div class="feature-art">
+        <svg class="scatter" viewBox="0 0 400 320" aria-hidden="true" preserveAspectRatio="none">
+          <g fill="#fff" fill-opacity="0.55">
+            <circle cx="40" cy="60" r="3"/><circle cx="95" cy="40" r="2"/>
+            <circle cx="150" cy="90" r="2.6"/><circle cx="210" cy="55" r="2"/>
+            <circle cx="280" cy="100" r="3"/><circle cx="340" cy="70" r="2"/>
+            <circle cx="60" cy="160" r="2.4"/><circle cx="130" cy="200" r="3"/>
+            <circle cx="200" cy="170" r="2"/><circle cx="265" cy="220" r="2.6"/>
+            <circle cx="330" cy="180" r="2"/><circle cx="370" cy="240" r="3"/>
+            <circle cx="50" cy="270" r="2"/><circle cx="115" cy="290" r="2.4"/>
+            <circle cx="190" cy="255" r="2"/><circle cx="250" cy="295" r="3"/>
+          </g>
+        </svg>
+        <p class="quote">&ldquo;Bullshit&rdquo; <em>after all?</em> Why people consider their jobs socially useless.</p>
+        <p class="src">Work, Employment and Society, 2023</p>
+        <div class="stat">
+          <div>
+            <span class="num">1,811</span>
+            <span class="lbl">US workers analysed</span>
+          </div>
+          <div>
+            <span class="num">2&times;</span>
+            <span class="lbl">higher odds in finance &amp; sales</span>
+          </div>
+        </div>
+      </div>
+      <div class="feature-body">
+        <h3>The first quantitative test of a popular theory</h3>
+        <p>
+          The anthropologist David Graeber argued that a large share of modern jobs are,
+          in the workers' own eyes, socially useless. The idea spread widely, but it had
+          never been tested with data. Simon's study was the first quantitative test of
+          the &ldquo;bullshit jobs&rdquo; theory.
+        </p>
+        <p>
+          Analysing 1,811 US workers, the study found that people working in finance and
+          sales were more than twice as likely to consider their own jobs socially
+          useless. The paper drew wide media coverage and brought careful evidence to a
+          debate that had run mostly on anecdote.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUBLICATIONS ============ -->
+<section id="publications" class="section-tint" aria-labelledby="pub-h">
+  <div class="wrap">
+    <p class="seclabel">Selected publications</p>
+    <h2 id="pub-h">Recent work</h2>
+    <ul class="publist">
+      <li class="pub">
+        <span class="year">2023</span>
+        <div>
+          <p class="pub-title">&ldquo;Bullshit&rdquo; After All? Why People Consider Their Jobs Socially Useless</p>
+          <p class="venue">Work, Employment and Society<span class="tag">Featured</span></p>
+        </div>
+      </li>
+      <li class="pub">
+        <span class="year">2023</span>
+        <div>
+          <p class="pub-title">The link between routine tasks and job polarization: A task measurement problem?</p>
+          <p class="venue">Labour</p>
+        </div>
+      </li>
+      <li class="pub">
+        <span class="year">2024</span>
+        <div>
+          <p class="pub-title">Understandings of Culture: A European Bottom-up Study Using Structural Topic Modeling</p>
+          <p class="venue">Socius</p>
+        </div>
+      </li>
+      <li class="pub">
+        <span class="year">2024</span>
+        <div>
+          <p class="pub-title">Geographical and aesthetic inclusiveness</p>
+          <p class="venue">International Journal of Intercultural Relations</p>
+        </div>
+      </li>
+      <li class="pub">
+        <span class="year">2025</span>
+        <div>
+          <p class="pub-title">Perceptions of a shared European culture increase support for the EU</p>
+          <p class="venue">Journal of Common Market Studies</p>
+        </div>
+      </li>
+      <li class="pub">
+        <span class="year">Preprint</span>
+        <div>
+          <p class="pub-title">Measuring Historical Changes in Capitalist Ideology with Word Embeddings</p>
+          <p class="venue">SocArXiv<span class="tag">Working paper</span></p>
+        </div>
+      </li>
+    </ul>
+    <p class="lead" style="margin-top:var(--s3);margin-bottom:0;">
+      A full and current list of Simon's work is on his
+      <a href="https://scholar.google.com/citations?user=6AZcT4EAAAAJ">Google Scholar profile</a>.
+    </p>
+  </div>
+</section>
+
+<!-- ============ PERSONAL ============ -->
+<section id="personal" aria-labelledby="personal-h">
+  <div class="wrap">
+    <p class="seclabel">A short personal note</p>
+    <h2 id="personal-h">Beyond the research</h2>
+    <div class="note-grid">
+      <div class="note-text">
+        <p>
+          Simon has a soft spot for music. He has co-organised a music festival and
+          still goes to concerts whenever he can, which is a good reminder that the
+          patterns he studies in text also play out in the rooms where people gather.
+        </p>
+        <p>
+          Alongside research, he has taught university seminars on Utopian Societies,
+          Social Movements, and the Sociology of Work, and he built an interactive web
+          app, hosted as a Hugging Face Space, that visualises semantic change in word
+          embeddings, the same idea that runs through the schematic above.
+        </p>
+      </div>
+      <aside class="note-aside" aria-label="A few things about Simon">
+        <p class="seclabel">A few things</p>
+        <ul>
+          <li>Co-organiser of a music festival, and a regular at concerts</li>
+          <li>Has taught seminars on Utopian Societies and Social Movements</li>
+          <li>Built a Hugging Face Space visualising semantic change</li>
+          <li>Originally from Switzerland</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="section-tint" aria-labelledby="contact-h">
+  <div class="wrap">
+    <p class="seclabel">Contact &amp; links</p>
+    <h2 id="contact-h">Find Simon online</h2>
+    <p class="lead">
+      The best place to reach him, and to find current contact details, is his personal
+      website. His research and code are also linked below.
+    </p>
+    <div class="contact-grid">
+      <a class="clink" href="https://www.simonwalo.com">
+        <span class="ctype">Personal website</span>
+        <span class="cval">simonwalo.com</span>
+        <span class="cnote">Bio, contact and updates</span>
+      </a>
+      <a class="clink" href="https://scholar.google.com/citations?user=6AZcT4EAAAAJ">
+        <span class="ctype">Google Scholar</span>
+        <span class="cval">Publications</span>
+        <span class="cnote">Citations and full list of work</span>
+      </a>
+      <a class="clink" href="https://orcid.org/0000-0003-4251-001X">
+        <span class="ctype">ORCID</span>
+        <span class="cval">0000-0003-4251-001X</span>
+        <span class="cnote">Verified research identity</span>
+      </a>
+      <a class="clink" href="https://www.linkedin.com/in/simon-walo-69528314b/">
+        <span class="ctype">LinkedIn</span>
+        <span class="cval">Simon Walo</span>
+        <span class="cnote">Professional profile</span>
+      </a>
+      <a class="clink" href="https://huggingface.co/simonwalo">
+        <span class="ctype">Hugging Face</span>
+        <span class="cval">simonwalo</span>
+        <span class="cnote">Apps and the semantic-change Space</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <p class="foot-name">Simon Walo</p>
+        <p class="foot-draft">
+          This is a draft personal page, built by a colleague, Jesper Lindmarker, 2026.
+          See Simon's own site at <a href="https://www.simonwalo.com">simonwalo.com</a>.
+        </p>
+      </div>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="https://www.simonwalo.com">Website</a>
+        <a href="https://scholar.google.com/citations?user=6AZcT4EAAAAJ">Scholar</a>
+        <a href="https://orcid.org/0000-0003-4251-001X">ORCID</a>
+        <a href="https://www.linkedin.com/in/simon-walo-69528314b/">LinkedIn</a>
+        <a href="https://huggingface.co/simonwalo">Hugging Face</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var canvas = document.getElementById("space");
+  var ctx = canvas.getContext("2d");
+  var slider = document.getElementById("era");
+  var btnEarly = document.getElementById("btn-early");
+  var btnLate = document.getElementById("btn-late");
+  var readout = document.getElementById("viz-readout");
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Logical coordinate space: 0..1 in both axes.
+  // Three thematic clusters: work (indigo), culture (teal), science (violet).
+  // Focus words have two positions: era 0 (earlier) and era 1 (later).
+  // Positions are hand-authored and illustrative only.
+  var COLORS = {
+    work: "#5B4BDA",
+    culture: "#6FB3C9",
+    science: "#9B8AE6",
+    focus: "#E8A33D"
+  };
+
+  var words = [
+    // ----- work cluster -----
+    { t: "labour",     c: "work",    x: 0.16, y: 0.30 },
+    { t: "jobs",       c: "work",    x: 0.24, y: 0.42 },
+    { t: "wages",      c: "work",    x: 0.12, y: 0.52 },
+    { t: "tasks",      c: "work",    x: 0.28, y: 0.24 },
+    { t: "polarization", c: "work",  x: 0.34, y: 0.55 },
+    // ----- culture cluster -----
+    { t: "identity",   c: "culture", x: 0.74, y: 0.24 },
+    { t: "values",     c: "culture", x: 0.84, y: 0.36 },
+    { t: "taste",      c: "culture", x: 0.66, y: 0.34 },
+    { t: "belonging",  c: "culture", x: 0.80, y: 0.16 },
+    { t: "europe",     c: "culture", x: 0.88, y: 0.50 },
+    // ----- science cluster -----
+    { t: "knowledge",  c: "science", x: 0.40, y: 0.80 },
+    { t: "abstracts",  c: "science", x: 0.52, y: 0.88 },
+    { t: "citation",   c: "science", x: 0.30, y: 0.86 },
+    { t: "innovation", c: "science", x: 0.58, y: 0.74 },
+    { t: "network",    c: "science", x: 0.46, y: 0.68 },
+    // ----- focus words: move between eras -----
+    { t: "capital",  c: "focus", x: 0.50, y: 0.45, x2: 0.22, y2: 0.66, focus: true },
+    { t: "value",    c: "focus", x: 0.52, y: 0.24, x2: 0.52, y2: 0.52, focus: true },
+    { t: "culture",  c: "focus", x: 0.66, y: 0.56, x2: 0.46, y2: 0.30, focus: true },
+    { t: "model",    c: "focus", x: 0.22, y: 0.66, x2: 0.68, y2: 0.58, focus: true }
+  ];
+
+  var DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+  var W = 640, H = 460, pad = 38;
+
+  function resize() {
+    var cssW = canvas.clientWidth || W;
+    var cssH = cssW * (H / W);
+    canvas.width = Math.round(cssW * DPR);
+    canvas.height = Math.round(cssH * DPR);
+    canvas.style.height = cssH + "px";
+    draw();
+  }
+
+  function px(x) { return pad + x * (canvas.width - 2 * pad); }
+  function py(y) { return pad + y * (canvas.height - 2 * pad); }
+
+  // current era 0..1, animated
+  var eraTarget = 0;
+  var eraCurrent = 0;
+  var hovered = -1;
+  var selected = -1;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function wordPos(w, era) {
+    if (w.focus) {
+      return {
+        x: lerp(w.x, w.x2, era),
+        y: lerp(w.y, w.y2, era)
+      };
+    }
+    return { x: w.x, y: w.y };
+  }
+
+  // nearest neighbours of word index i at a given era
+  function neighbours(i, era, k) {
+    var pi = wordPos(words[i], era);
+    var dists = [];
+    for (var j = 0; j < words.length; j++) {
+      if (j === i) continue;
+      var pj = wordPos(words[j], era);
+      var dx = pi.x - pj.x, dy = pi.y - pj.y;
+      dists.push({ j: j, d: dx * dx + dy * dy });
+    }
+    dists.sort(function (a, b) { return a.d - b.d; });
+    return dists.slice(0, k).map(function (o) { return o.j; });
+  }
+
+  function draw() {
+    var era = eraCurrent;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var active = selected >= 0 ? selected : hovered;
+    var nbrs = active >= 0 ? neighbours(active, era, 3) : [];
+    var nbrSet = {};
+    nbrs.forEach(function (j) { nbrSet[j] = true; });
+
+    // faint background lattice of connecting lines (constellation feel)
+    ctx.strokeStyle = "rgba(91,75,218,0.07)";
+    ctx.lineWidth = 1 * DPR;
+    for (var i = 0; i < words.length; i++) {
+      var near = neighbours(i, era, 2);
+      var pi = wordPos(words[i], era);
+      for (var n = 0; n < near.length; n++) {
+        var pj = wordPos(words[near[n]], era);
+        ctx.beginPath();
+        ctx.moveTo(px(pi.x), py(pi.y));
+        ctx.lineTo(px(pj.x), py(pj.y));
+        ctx.stroke();
+      }
+    }
+
+    // highlighted neighbour links for the active word
+    if (active >= 0) {
+      var pa = wordPos(words[active], era);
+      ctx.strokeStyle = "rgba(232,163,61,0.85)";
+      ctx.lineWidth = 2 * DPR;
+      nbrs.forEach(function (j) {
+        var pj = wordPos(words[j], era);
+        ctx.beginPath();
+        ctx.moveTo(px(pa.x), py(pa.y));
+        ctx.lineTo(px(pj.x), py(pj.y));
+        ctx.stroke();
+      });
+    }
+
+    // points + labels
+    ctx.textBaseline = "middle";
+    for (var w = 0; w < words.length; w++) {
+      var word = words[w];
+      var p = wordPos(word, era);
+      var cx = px(p.x), cy = py(p.y);
+      var isActive = w === active;
+      var isNbr = nbrSet[w];
+      var col = COLORS[word.c];
+
+      var r = (word.focus ? 6 : 4.5) * DPR;
+      if (isActive) r = 8 * DPR;
+      else if (isNbr) r = 6.5 * DPR;
+
+      // halo
+      if (isActive || isNbr || word.focus) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, r + 5 * DPR, 0, Math.PI * 2);
+        ctx.fillStyle = (word.focus ? "rgba(232,163,61,0.16)" : "rgba(91,75,218,0.12)");
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = col;
+      ctx.globalAlpha = (active >= 0 && !isActive && !isNbr) ? 0.4 : 1;
+      ctx.fill();
+      if (word.focus) {
+        ctx.lineWidth = 2 * DPR;
+        ctx.strokeStyle = "#fff";
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      // label
+      var fontSize = (isActive ? 14 : word.focus ? 13 : 12) * DPR;
+      var weight = (isActive || word.focus) ? "600" : "500";
+      ctx.font = weight + " " + fontSize + "px 'Space Grotesk', sans-serif";
+      ctx.fillStyle = (active >= 0 && !isActive && !isNbr) ? "rgba(74,74,92,0.45)" : "#1A1A24";
+      var label = word.t;
+      var tw = ctx.measureText(label).width;
+      var lx = cx + (r + 6 * DPR);
+      // keep label inside canvas
+      if (lx + tw > canvas.width - 4) {
+        lx = cx - (r + 6 * DPR) - tw;
+      }
+      ctx.fillText(label, lx, cy);
+    }
+  }
+
+  // ---- animation loop ----
+  var rafId = null;
+  function animate() {
+    var diff = eraTarget - eraCurrent;
+    if (Math.abs(diff) < 0.002) {
+      eraCurrent = eraTarget;
+      draw();
+      rafId = null;
+      return;
+    }
+    eraCurrent += diff * 0.16;
+    draw();
+    rafId = requestAnimationFrame(animate);
+  }
+  function requestAnim() {
+    if (reduceMotion) {
+      eraCurrent = eraTarget;
+      draw();
+      return;
+    }
+    if (rafId === null) rafId = requestAnimationFrame(animate);
+  }
+
+  // ---- pointer interaction ----
+  function pointToWord(clientX, clientY) {
+    var rect = canvas.getBoundingClientRect();
+    var x = (clientX - rect.left) * (canvas.width / rect.width);
+    var y = (clientY - rect.top) * (canvas.height / rect.height);
+    var best = -1, bestD = Infinity;
+    for (var i = 0; i < words.length; i++) {
+      var p = wordPos(words[i], eraCurrent);
+      var dx = px(p.x) - x, dy = py(p.y) - y;
+      var d = dx * dx + dy * dy;
+      if (d < bestD) { bestD = d; best = i; }
+    }
+    var hitR = 22 * DPR;
+    return bestD <= hitR * hitR ? best : -1;
+  }
+
+  function describe(i) {
+    if (i < 0) {
+      readout.innerHTML = "Drag the slider, or hover and select a word to see its nearest neighbours.";
+      return;
+    }
+    var w = words[i];
+    var nbrs = neighbours(i, eraCurrent, 3).map(function (j) { return words[j].t; });
+    var era = eraCurrent < 0.5 ? "earlier" : "later";
+    var prefix = w.focus
+      ? "Focus word <strong>" + w.t + "</strong> (" + era + " era). Nearest neighbours: "
+      : "<strong>" + w.t + "</strong>. Nearest neighbours: ";
+    readout.innerHTML = prefix + nbrs.join(", ") + ".";
+  }
+
+  canvas.addEventListener("mousemove", function (e) {
+    var i = pointToWord(e.clientX, e.clientY);
+    if (i !== hovered) {
+      hovered = i;
+      canvas.style.cursor = i >= 0 ? "pointer" : "crosshair";
+      if (selected < 0) describe(i);
+      draw();
+    }
+  });
+  canvas.addEventListener("mouseleave", function () {
+    hovered = -1;
+    if (selected < 0) describe(-1);
+    draw();
+  });
+  canvas.addEventListener("click", function (e) {
+    var i = pointToWord(e.clientX, e.clientY);
+    selected = (i === selected) ? -1 : i;
+    describe(selected >= 0 ? selected : hovered);
+    draw();
+  });
+
+  // touch: tap selects nearest word
+  canvas.addEventListener("touchstart", function (e) {
+    if (e.touches.length) {
+      var t = e.touches[0];
+      var i = pointToWord(t.clientX, t.clientY);
+      selected = (i === selected) ? -1 : i;
+      describe(selected);
+      draw();
+      if (i >= 0) e.preventDefault();
+    }
+  }, { passive: false });
+
+  // keyboard: arrow keys cycle through words; Enter/Space selects
+  canvas.setAttribute("tabindex", "0");
+  var kbIndex = -1;
+  canvas.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      kbIndex = (kbIndex + 1) % words.length;
+      selected = kbIndex;
+      describe(selected);
+      draw();
+      e.preventDefault();
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      kbIndex = (kbIndex - 1 + words.length) % words.length;
+      selected = kbIndex;
+      describe(selected);
+      draw();
+      e.preventDefault();
+    } else if (e.key === "Enter" || e.key === " ") {
+      if (kbIndex >= 0) {
+        selected = (selected === kbIndex) ? -1 : kbIndex;
+        describe(selected);
+        draw();
+      }
+      e.preventDefault();
+    } else if (e.key === "Escape") {
+      selected = -1; kbIndex = -1;
+      describe(-1);
+      draw();
+    }
+  });
+
+  // ---- era controls ----
+  function setEra(value, fromSlider) {
+    eraTarget = Math.max(0, Math.min(1, value));
+    if (!fromSlider) {
+      slider.value = String(Math.round(eraTarget * 100));
+    }
+    slider.setAttribute("aria-valuetext",
+      eraTarget < 0.5
+        ? "Earlier period, around the 1960s"
+        : "Later period, around the 2020s");
+    var early = eraTarget < 0.5;
+    btnEarly.setAttribute("aria-pressed", early ? "true" : "false");
+    btnLate.setAttribute("aria-pressed", early ? "false" : "true");
+    requestAnim();
+    // refresh readout if a word is active
+    var active = selected >= 0 ? selected : hovered;
+    if (active >= 0) {
+      // describe after a tick so neighbours reflect the new era
+      setTimeout(function () { describe(active); }, reduceMotion ? 0 : 250);
+    }
+  }
+
+  slider.addEventListener("input", function () {
+    setEra(parseInt(slider.value, 10) / 100, true);
+    btnEarly.setAttribute("aria-pressed", eraTarget < 0.5 ? "true" : "false");
+    btnLate.setAttribute("aria-pressed", eraTarget < 0.5 ? "false" : "true");
+  });
+  btnEarly.addEventListener("click", function () { setEra(0, false); });
+  btnLate.addEventListener("click", function () { setEra(1, false); });
+
+  // ---- init ----
+  window.addEventListener("resize", resize);
+  resize();
+  draw();
+})();
+</script>
+</body>
+</html>
