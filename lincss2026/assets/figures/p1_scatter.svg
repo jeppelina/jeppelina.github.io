@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" font-family="'IBM Plex Sans', system-ui, sans-serif">
+  <!-- background -->
+  <rect width="720" height="460" fill="#EFEAE0"/>
+
+  <!-- plot frame: x 80→680, y 60→380 -->
+  <rect x="80" y="60" width="600" height="320" fill="none" stroke="#1B1B1B" stroke-width="0.5"/>
+
+  <!-- zero line (y=0) -->
+  <line x1="80" y1="323.5" x2="680" y2="323.5" stroke="#6F6A5C" stroke-width="0.5" stroke-dasharray="2 3"/>
+
+  <!-- regression line: slope 1.24, intercept -0.22 -->
+  <line x1="80" y1="359.7" x2="680" y2="102.9" stroke="#C7572B" stroke-width="1.5"/>
+
+  <!-- y-axis ticks at -0.0, 0.2, 0.4, 0.6 -->
+  <g font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6F6A5C">
+    <line x1="76" y1="323.5" x2="80" y2="323.5" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="72" y="328" text-anchor="end">0.0</text>
+    <line x1="76" y1="248.2" x2="80" y2="248.2" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="72" y="252" text-anchor="end">0.2</text>
+    <line x1="76" y1="172.9" x2="80" y2="172.9" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="72" y="177" text-anchor="end">0.4</text>
+    <line x1="76" y1="97.6" x2="80" y2="97.6" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="72" y="101" text-anchor="end">0.6</text>
+  </g>
+
+  <!-- y-axis title -->
+  <text x="34" y="220" text-anchor="middle" font-size="13" fill="#1B1B1B" transform="rotate(-90, 34, 220)">
+    spatial mediation of endogamy
+  </text>
+
+  <!-- x-axis ticks at .15, .25, .35, .45, .55 -->
+  <g font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6F6A5C">
+    <line x1="134.5" y1="380" x2="134.5" y2="384" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="134.5" y="398" text-anchor="middle">.15</text>
+    <line x1="243.6" y1="380" x2="243.6" y2="384" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="243.6" y="398" text-anchor="middle">.25</text>
+    <line x1="352.7" y1="380" x2="352.7" y2="384" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="352.7" y="398" text-anchor="middle">.35</text>
+    <line x1="461.8" y1="380" x2="461.8" y2="384" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="461.8" y="398" text-anchor="middle">.45</text>
+    <line x1="570.9" y1="380" x2="570.9" y2="384" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="570.9" y="398" text-anchor="middle">.55</text>
+  </g>
+
+  <!-- x-axis title -->
+  <text x="380" y="422" text-anchor="middle" font-size="13" fill="#1B1B1B">
+    residential segregation (dissimilarity index)
+  </text>
+
+  <!-- title -->
+  <text x="80" y="36" font-family="Fraunces, Georgia, serif" font-size="20" fill="#1B1B1B">
+    Geography does some of the work
+  </text>
+  <text x="80" y="54" font-size="12" fill="#6F6A5C">
+    34 ancestry groups · Stockholm county · women 1991–2017 (N ≥ 500 per group)
+  </text>
+
+  <!-- R² annotation -->
+  <g>
+    <rect x="540" y="64" width="135" height="28" fill="#EFEAE0" stroke="#C7572B" stroke-width="0.75"/>
+    <text x="552" y="83" font-family="'IBM Plex Mono', monospace" font-size="14" fill="#C7572B">R² = 0.79</text>
+  </g>
+
+  <!-- DATA POINTS (34, Stockholm, women, N>500) -->
+  <g>
+    <circle cx="140.0" cy="352.1" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="148" y="356" font-size="11" fill="#1B1B1B">Finland</text>
+
+    <circle cx="171.6" cy="310.0" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="174.9" cy="342.0" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="202.2" cy="336.3" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="228.4" cy="299.1" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="229.5" cy="285.5" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="229.5" cy="268.2" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="230.5" cy="262.5" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="230.5" cy="301.7" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="243.6" cy="279.1" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="248.0" cy="291.5" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="248.0" cy="287.4" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="254.5" cy="306.2" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="256.7" cy="302.1" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="262.2" cy="285.1" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="266.5" cy="254.3" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="266.5" cy="256.5" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="273.1" cy="277.2" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="281.8" cy="284.4" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+
+    <circle cx="290.5" cy="334.1" r="4.5" fill="#C7572B" stroke="#1B1B1B" stroke-width="0.75"/>
+    <text x="298" y="338" font-size="11" fill="#1B1B1B">Sweden</text>
+
+    <circle cx="313.5" cy="275.3" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="317.8" cy="268.2" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="318.9" cy="286.6" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="327.6" cy="205.3" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="330.9" cy="221.1" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="335.3" cy="256.5" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="341.8" cy="269.7" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="405.1" cy="239.2" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="405.1" cy="185.4" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="445.5" cy="227.5" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="481.5" cy="181.2" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <circle cx="488.0" cy="214.0" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+
+    <circle cx="505.5" cy="244.1" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="498" y="237" font-size="11" fill="#1B1B1B" text-anchor="end">Iraq</text>
+
+    <circle cx="527.3" cy="165.0" r="3.5" fill="#2F4858" fill-opacity="0.78" stroke="#1B1B1B" stroke-width="0.5"/>
+
+    <circle cx="623.3" cy="80.0" r="4.5" fill="#C7572B" stroke="#1B1B1B" stroke-width="0.75"/>
+    <text x="615" y="84" font-size="11" fill="#1B1B1B" text-anchor="end">Somalia</text>
+  </g>
+
+  <!-- footer caption -->
+  <text x="80" y="448" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6F6A5C">
+    SOURCE · LINDMARKER · PROPINQUITY AS A MEDIATOR OF ETHNIC ENDOGAMY
+  </text>
+</svg>

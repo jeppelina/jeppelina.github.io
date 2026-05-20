@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" font-family="'IBM Plex Sans', system-ui, sans-serif">
+  <!-- background -->
+  <rect width="720" height="400" fill="#EFEAE0"/>
+
+  <!-- plot area: x 80→680, y 60→320 (260 high). y-axis 0→60% -->
+  <!-- y_px = 320 - val/60 * 260 -->
+
+  <!-- baseline -->
+  <line x1="80" y1="320" x2="680" y2="320" stroke="#1B1B1B" stroke-width="0.75"/>
+
+  <!-- y-axis ticks at 0, 20, 40, 60 -->
+  <g font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6F6A5C">
+    <line x1="76" y1="320" x2="80" y2="320" stroke="#1B1B1B" stroke-width="0.5"/>
+    <text x="72" y="324" text-anchor="end">0</text>
+    <line x1="76" y1="233" x2="80" y2="233" stroke="#1B1B1B" stroke-width="0.5"/>
+    <line x1="80" y1="233" x2="680" y2="233" stroke="#1B1B1B" stroke-width="0.25" stroke-dasharray="2 4" opacity="0.4"/>
+    <text x="72" y="237" text-anchor="end">20</text>
+    <line x1="76" y1="147" x2="80" y2="147" stroke="#1B1B1B" stroke-width="0.5"/>
+    <line x1="80" y1="147" x2="680" y2="147" stroke="#1B1B1B" stroke-width="0.25" stroke-dasharray="2 4" opacity="0.4"/>
+    <text x="72" y="151" text-anchor="end">40</text>
+    <line x1="76" y1="60" x2="80" y2="60" stroke="#1B1B1B" stroke-width="0.5"/>
+    <line x1="80" y1="60" x2="680" y2="60" stroke="#1B1B1B" stroke-width="0.25" stroke-dasharray="2 4" opacity="0.4"/>
+    <text x="72" y="64" text-anchor="end">60</text>
+  </g>
+
+  <!-- y-axis label -->
+  <text x="34" y="190" text-anchor="middle" font-size="12" fill="#1B1B1B" transform="rotate(-90, 34, 190)">
+    homogamy mediated by workplace + university (%)
+  </text>
+
+  <!-- title -->
+  <text x="80" y="36" font-family="Fraunces, Georgia, serif" font-size="20" fill="#1B1B1B">
+    Workplaces matter more than where you sleep
+  </text>
+  <text x="80" y="54" font-size="12" fill="#6F6A5C">
+    educational homogamy, Sweden · share of effect explained by shared workplace + university
+  </text>
+
+  <!-- legend top-right -->
+  <g font-size="12" fill="#1B1B1B">
+    <rect x="540" y="62" width="14" height="14" fill="#2F4858" fill-opacity="0.85"/>
+    <text x="560" y="74">women</text>
+    <rect x="610" y="62" width="14" height="14" fill="#C7572B" fill-opacity="0.85"/>
+    <text x="630" y="74">men</text>
+  </g>
+
+  <!-- ========== Group 1: post-sec long (W:53, M:30) center x=155 ========== -->
+  <!-- W bar: 53% → y=90 (height 230) -->
+  <rect x="120" y="90" width="35" height="230" fill="#2F4858" fill-opacity="0.85"/>
+  <text x="137.5" y="82" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">53%</text>
+  <!-- M bar: 30% → y=190 -->
+  <rect x="155" y="190" width="35" height="130" fill="#C7572B" fill-opacity="0.85"/>
+  <text x="172.5" y="182" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">30%</text>
+  <!-- group label -->
+  <text x="155" y="343" text-anchor="middle" font-size="12" fill="#1B1B1B">both</text>
+  <text x="155" y="358" text-anchor="middle" font-size="12" fill="#1B1B1B">post-sec long</text>
+
+  <!-- ========== Group 2: post-sec short (W:29, M:35) center x=305 ========== -->
+  <!-- W bar: 29% → y=194 -->
+  <rect x="270" y="194" width="35" height="126" fill="#2F4858" fill-opacity="0.85"/>
+  <text x="287.5" y="186" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">29%</text>
+  <!-- M bar: 35% → y=168 -->
+  <rect x="305" y="168" width="35" height="152" fill="#C7572B" fill-opacity="0.85"/>
+  <text x="322.5" y="160" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">35%</text>
+  <text x="305" y="343" text-anchor="middle" font-size="12" fill="#1B1B1B">both</text>
+  <text x="305" y="358" text-anchor="middle" font-size="12" fill="#1B1B1B">post-sec short</text>
+
+  <!-- ========== Group 3: gymnasium (W:6, M:17) center x=455 ========== -->
+  <!-- W bar: 6% → y=294 -->
+  <rect x="420" y="294" width="35" height="26" fill="#2F4858" fill-opacity="0.85"/>
+  <text x="437.5" y="286" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">6%</text>
+  <!-- M bar: 17% → y=246 -->
+  <rect x="455" y="246" width="35" height="74" fill="#C7572B" fill-opacity="0.85"/>
+  <text x="472.5" y="238" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">17%</text>
+  <text x="455" y="343" text-anchor="middle" font-size="12" fill="#1B1B1B">both</text>
+  <text x="455" y="358" text-anchor="middle" font-size="12" fill="#1B1B1B">gymnasium</text>
+
+  <!-- ========== Group 4: no gymnasium (W:0, M:14) center x=605 ========== -->
+  <!-- W bar: 0% → no bar; draw a thin tick mark on the baseline instead -->
+  <line x1="570" y1="320" x2="605" y2="320" stroke="#2F4858" stroke-width="3"/>
+  <text x="587.5" y="312" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">0%</text>
+  <!-- M bar: 14% → y=259 -->
+  <rect x="605" y="259" width="35" height="61" fill="#C7572B" fill-opacity="0.85"/>
+  <text x="622.5" y="251" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1B1B1B" font-weight="500">14%</text>
+  <text x="605" y="343" text-anchor="middle" font-size="12" fill="#1B1B1B">both</text>
+  <text x="605" y="358" text-anchor="middle" font-size="12" fill="#1B1B1B">no gymnasium</text>
+
+  <!-- footer -->
+  <text x="80" y="386" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6F6A5C" letter-spacing="0.05em">
+    SOURCE · LINDMARKER · WORKPLACE PROPINQUITY &amp; EDUCATIONAL ASSORTATIVE MATING · IN PROGRESS
+  </text>
+</svg>

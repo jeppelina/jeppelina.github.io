@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 540" font-family="'IBM Plex Sans', system-ui, sans-serif">
+  <rect width="1020" height="540" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#13386B"/>
+    </marker>
+  </defs>
+
+  <!-- column headers: assortativity (the coefficients) -->
+  <text x="555" y="40" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#6E6E6E" letter-spacing="0.1em">ASSORTATIVITY</text>
+  <text x="385" y="70" text-anchor="middle" font-size="16" fill="#141414">1990s level</text>
+  <text x="725" y="70" text-anchor="middle" font-size="16" fill="#141414">2010s level</text>
+
+  <!-- row headers: partner market (the structure) -->
+  <text x="40" y="295" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#6E6E6E" letter-spacing="0.1em" transform="rotate(-90, 40, 295)">PARTNER MARKET</text>
+  <text x="92" y="200" text-anchor="middle" font-size="16" fill="#141414">1990s</text>
+  <text x="92" y="375" text-anchor="middle" font-size="16" fill="#141414">2010s</text>
+
+  <!-- cells: cols 215-555, 595-935 ; rows 90-265, 305-480 -->
+
+  <!-- TOP-LEFT: observed 1990s -->
+  <rect x="215" y="90" width="340" height="175" fill="#13386B" fill-opacity="0.9"/>
+  <text x="385" y="170" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="24" fill="#FFFFFF">Observed</text>
+  <text x="385" y="200" text-anchor="middle" font-size="15" fill="#FFFFFF" font-style="italic">the 1990s</text>
+
+  <!-- TOP-RIGHT: counterfactual, only assortativity changed -->
+  <rect x="595" y="90" width="340" height="175" fill="#FFFFFF" stroke="#141414" stroke-width="0.75" stroke-dasharray="5 4"/>
+  <text x="765" y="162" text-anchor="middle" font-size="15" fill="#6E6E6E" font-style="italic">Counterfactual</text>
+  <text x="765" y="188" text-anchor="middle" font-size="16" fill="#141414">only assortativity</text>
+  <text x="765" y="210" text-anchor="middle" font-size="16" fill="#141414">changed</text>
+
+  <!-- BOTTOM-LEFT: counterfactual, only the market changed -->
+  <rect x="215" y="305" width="340" height="175" fill="#FFFFFF" stroke="#141414" stroke-width="0.75" stroke-dasharray="5 4"/>
+  <text x="385" y="377" text-anchor="middle" font-size="15" fill="#6E6E6E" font-style="italic">Counterfactual</text>
+  <text x="385" y="403" text-anchor="middle" font-size="16" fill="#141414">only the market</text>
+  <text x="385" y="425" text-anchor="middle" font-size="16" fill="#141414">changed</text>
+
+  <!-- BOTTOM-RIGHT: observed 2010s -->
+  <rect x="595" y="305" width="340" height="175" fill="#13386B" fill-opacity="0.9"/>
+  <text x="765" y="385" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="24" fill="#FFFFFF">Observed</text>
+  <text x="765" y="415" text-anchor="middle" font-size="15" fill="#FFFFFF" font-style="italic">the 2010s</text>
+
+  <!-- arrow: down the left column = structure -->
+  <line x1="170" y1="265" x2="170" y2="305" stroke="#13386B" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="158" y="290" text-anchor="end" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#13386B" transform="rotate(-90, 158, 290)" letter-spacing="0.04em">STRUCTURE EFFECT</text>
+
+  <!-- arrow: along the bottom row = assortativity -->
+  <line x1="555" y1="510" x2="595" y2="510" stroke="#13386B" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="500" y="514" text-anchor="end" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#13386B" letter-spacing="0.04em">ASSORTATIVITY EFFECT</text>
+
+  <!-- footer -->
+  <text x="1010" y="514" text-anchor="end" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6E6E6E" letter-spacing="0.03em">OBSERVED CHANGE = STRUCTURE EFFECT + ASSORTATIVITY EFFECT</text>
+</svg>

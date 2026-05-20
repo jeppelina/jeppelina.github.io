@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 300" font-family="'IBM Plex Sans', system-ui, sans-serif">
+  <rect width="1120" height="300" fill="#FFFFFF"/>
+
+  <!-- axis label -->
+  <text x="100" y="58" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#6E6E6E" letter-spacing="0.12em">THE SOCIAL DISTANCE SCALE (BOGARDUS, 1925)</text>
+
+  <!-- the scale line -->
+  <line x1="100" y1="150" x2="1010" y2="150" stroke="#141414" stroke-width="1"/>
+  <!-- arrowhead toward the intimate end -->
+  <path d="M 1010 150 L 998 144 L 998 156 Z" fill="#141414"/>
+
+  <!-- direction caption -->
+  <text x="100" y="250" font-size="14" fill="#6E6E6E" font-style="italic">furthest away</text>
+  <text x="1010" y="250" font-size="14" fill="#13386B" font-style="italic" text-anchor="end">closest in</text>
+
+  <!-- rungs: x at 100, 327, 555, 782, 1010 -->
+  <!-- rung 1 -->
+  <circle cx="100" cy="150" r="6" fill="#FFFFFF" stroke="#141414" stroke-width="1.5"/>
+  <text x="100" y="186" text-anchor="middle" font-size="15" fill="#141414">exclude from</text>
+  <text x="100" y="205" text-anchor="middle" font-size="15" fill="#141414">the country</text>
+
+  <!-- rung 2 -->
+  <circle cx="327" cy="150" r="6" fill="#FFFFFF" stroke="#141414" stroke-width="1.5"/>
+  <text x="327" y="186" text-anchor="middle" font-size="15" fill="#141414">accept as</text>
+  <text x="327" y="205" text-anchor="middle" font-size="15" fill="#141414">fellow citizens</text>
+
+  <!-- rung 3 -->
+  <circle cx="555" cy="150" r="6" fill="#FFFFFF" stroke="#141414" stroke-width="1.5"/>
+  <text x="555" y="186" text-anchor="middle" font-size="15" fill="#141414">accept as</text>
+  <text x="555" y="205" text-anchor="middle" font-size="15" fill="#141414">neighbours</text>
+
+  <!-- rung 4 -->
+  <circle cx="782" cy="150" r="6" fill="#FFFFFF" stroke="#141414" stroke-width="1.5"/>
+  <text x="782" y="186" text-anchor="middle" font-size="15" fill="#141414">accept as</text>
+  <text x="782" y="205" text-anchor="middle" font-size="15" fill="#141414">close friends</text>
+
+  <!-- rung 5: the intimate extreme, emphasised -->
+  <circle cx="1010" cy="150" r="12" fill="#13386B" stroke="#141414" stroke-width="1.25"/>
+  <text x="1010" y="190" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="20" fill="#141414" font-style="italic">partner with</text>
+  <text x="1010" y="213" text-anchor="middle" font-size="14" fill="#6E6E6E">marry, have children</text>
+</svg>

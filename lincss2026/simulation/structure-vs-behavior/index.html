@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structure or behaviour? — Jesper Lindmarker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --color-bg: #FAFAF8;
+            --color-text: #1a1a1a;
+            --color-text-muted: #6b6b6b;
+            --color-accent: #B44A2D;
+            --color-accent-2: #3B6994;
+            --color-border: #e8e6e1;
+            --color-t1: #3B6994;
+            --color-t2: #B44A2D;
+            --color-mix: #6b6b6b;
+            --color-grpA: #D9471C;
+            --color-grpB: #1E5EA3;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .header h1 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; }
+        .header h1 em { color: var(--color-accent); }
+        .header a {
+            font-family: var(--font-mono); font-size: 0.8rem;
+            color: var(--color-text-muted); text-decoration: none;
+        }
+        .header a:hover { color: var(--color-accent); }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        /* Results panel — sits at the top */
+        .results {
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            padding: 1rem 1.1rem 1.1rem 1.1rem;
+            margin-bottom: 1.4rem;
+        }
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.55rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .results-title {
+            font-family: var(--font-serif);
+            font-size: 1.08rem;
+            font-style: italic;
+        }
+        .results-sub {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--color-text-muted);
+        }
+        .group-decomps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .group-decomp { display: flex; flex-direction: column; gap: 0.45rem; }
+        .gd-toprow {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .gd-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--color-text);
+            padding-right: 0.2rem;
+        }
+        .gd-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .gd-level {
+            background: #f7f5f0;
+            border-radius: 6px;
+            padding: 0.32rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .gd-level-label {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .gd-level-label.t1 { color: var(--color-t1); }
+        .gd-level-label.t2 { color: var(--color-t2); }
+        .gd-level-value {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--color-text-muted);
+            margin-top: 1px;
+        }
+        .gd-section {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--color-text-muted);
+            margin-top: 0.45rem;
+        }
+
+        /* Decomposition bars */
+        .decomp-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 70px;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.22rem 0;
+            font-size: 0.76rem;
+        }
+        .decomp-row .swatch {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .decomp-row .track {
+            height: 6px;
+            background: #f1ede5;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Centerline tick — anchors the zero point for diverging bars */
+        .decomp-row .track::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -2px; bottom: -2px;
+            width: 1px;
+            background: rgba(0,0,0,0.18);
+            transform: translateX(-0.5px);
+            z-index: 1;
+        }
+        .decomp-row .fill {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 0;
+            transition: width 0.25s ease, left 0.25s ease, right 0.25s ease, background 0.25s ease;
+            z-index: 2;
+        }
+        .decomp-row .delta {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            text-align: right;
+            font-weight: 500;
+        }
+        .row-obs   .swatch, .row-obs   .delta { color: var(--color-mix); }
+        .row-obs   .fill { background: var(--color-mix); }
+        .row-struct .swatch, .row-struct .delta { color: var(--color-t2); }
+        .row-struct .fill { background: var(--color-t2); }
+        .row-behav .swatch, .row-behav .delta { color: var(--color-t1); }
+        .row-behav .fill { background: var(--color-t1); }
+
+        /* Snapshot panels */
+        .snapshots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .snap {
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            padding: 0.85rem 0.95rem 1rem 0.95rem;
+            position: relative;
+        }
+        .snap.t1 { border-top: 3px solid var(--color-t1); }
+        .snap.t2 { border-top: 3px solid var(--color-t2); }
+
+        .snap-header {
+            margin-bottom: 0.55rem;
+        }
+        .snap-title {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            font-style: italic;
+        }
+        .snap.t1 .snap-title { color: var(--color-t1); }
+        .snap.t2 .snap-title { color: var(--color-t2); }
+
+        .controls { margin-bottom: 1rem; }
+        .control { margin-top: 0.7rem; }
+        .control:first-child { margin-top: 0; }
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .control-label span:first-child { color: var(--color-text); }
+        .control-label .v {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+        .snap.t1 .control-label .v { color: var(--color-t1); }
+        .snap.t2 .control-label .v { color: var(--color-t2); }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%; height: 7px;
+            border-radius: 4px;
+            background: var(--color-border);
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+            border: 2px solid white;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+            border: 2px solid white;
+        }
+        .snap.t1 input[type="range"]::-webkit-slider-thumb { background: var(--color-t1); }
+        .snap.t2 input[type="range"]::-webkit-slider-thumb { background: var(--color-t2); }
+        .snap.t1 input[type="range"]::-moz-range-thumb { background: var(--color-t1); }
+        .snap.t2 input[type="range"]::-moz-range-thumb { background: var(--color-t2); }
+
+        canvas {
+            display: block;
+            background: #FAFAF8;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            margin: 0 auto;
+        }
+
+        /* Action row */
+        .action-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn-match {
+            padding: 0.55rem 1.1rem;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: white;
+            background: var(--color-accent);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .btn-match:hover { background: #d04e2e; }
+        .btn-reset {
+            padding: 0.55rem 0.85rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .btn-reset:hover { border-color: var(--color-accent); color: var(--color-accent); }
+        .legend {
+            margin-left: auto;
+            display: flex;
+            gap: 0.9rem;
+            font-size: 0.72rem;
+            color: var(--color-text-muted);
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* Foldouts — Method (technical) and research note (interpretation),
+           styled identically as collapsed-by-default disclosure panels */
+        details.method,
+        details.research-note {
+            margin-top: 1rem;
+            padding: 0.55rem 0.95rem;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+        }
+        details.research-note { font-size: 0.85rem; }
+        details.method summary,
+        details.research-note summary {
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text);
+            user-select: none;
+            padding: 0.2rem 0;
+            list-style: none;
+            position: relative;
+            padding-right: 1.4rem;
+        }
+        details.method summary::-webkit-details-marker,
+        details.research-note summary::-webkit-details-marker { display: none; }
+        details.method summary::after,
+        details.research-note summary::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+        }
+        details.method[open] summary::after,
+        details.research-note[open] summary::after { content: '−'; }
+        details.method summary:hover,
+        details.research-note summary:hover { color: var(--color-accent); }
+        details.method[open] summary,
+        details.research-note[open] summary {
+            margin-bottom: 0.6rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+        details.method p,
+        details.research-note p { margin: 0 0 0.65rem 0; }
+        details.method p:last-child,
+        details.research-note p:last-child { margin-bottom: 0; }
+        details.method em,
+        details.research-note em { color: var(--color-text); font-style: italic; }
+        details.method ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0.25rem 0 0.75rem 0;
+        }
+        details.method li {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 0.1rem 0;
+            color: var(--color-text);
+        }
+        details.method pre.formula {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            background: #f7f5f0;
+            padding: 0.55rem 0.75rem;
+            border-radius: 4px;
+            color: var(--color-text);
+            margin: 0.4rem 0 0.75rem 0;
+            overflow-x: auto;
+            line-height: 1.65;
+            white-space: pre;
+        }
+
+        /* Paper reference card */
+        .paper-ref-card {
+            margin-top: 1.25rem;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            padding: 0.7rem 0.95rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .paper-ref-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+        }
+        .paper-ref-title {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--color-text);
+            font-size: 0.95rem;
+            line-height: 1.35;
+        }
+        .paper-ref-meta {
+            font-size: 0.74rem;
+            color: var(--color-text-muted);
+            margin-top: 0.15rem;
+            line-height: 1.55;
+        }
+        .paper-ref-meta a {
+            color: var(--color-accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s;
+        }
+        .paper-ref-meta a:hover { border-bottom-color: var(--color-accent); }
+
+        .embedded .header { display: none; }
+
+        @media (max-width: 800px) {
+            .snapshots, .group-decomps { grid-template-columns: 1fr; }
+            canvas { width: 100%; height: auto; aspect-ratio: 1 / 1; max-width: 320px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Structure or behaviour? <em>— decomposing change in endogamy</em></h1>
+        <a href="../../">&larr; Back to site</a>
+    </div>
+
+    <div class="container">
+        <!-- RESULTS — at the top -->
+        <div class="results">
+            <div class="results-header">
+                <div class="results-title">Endogamy &amp; decomposition</div>
+                <div class="results-sub">Per group</div>
+            </div>
+
+            <div class="group-decomps">
+                <!-- Majority -->
+                <div class="group-decomp">
+                    <div class="gd-toprow">
+                        <div class="gd-name-cell">
+                            <span class="gd-dot" style="background: #D9471C"></span>
+                            <span class="gd-name">Majority</span>
+                        </div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t1">Endogamy T1</div>
+                            <div class="gd-level-value" id="maj-t1">—</div>
+                        </div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t2">Endogamy T2</div>
+                            <div class="gd-level-value" id="maj-t2">—</div>
+                        </div>
+                    </div>
+                    <div class="gd-section">Δ endogamy, T2 vs T1</div>
+                    <div class="decomp-row row-obs">
+                        <span class="swatch">Observed</span>
+                        <div class="track"><div class="fill" id="bar-maj-obs"></div></div>
+                        <span class="delta" id="maj-d-obs">—</span>
+                    </div>
+                    <div class="decomp-row row-struct">
+                        <span class="swatch">Structure</span>
+                        <div class="track"><div class="fill" id="bar-maj-struct"></div></div>
+                        <span class="delta" id="maj-d-struct">—</span>
+                    </div>
+                    <div class="decomp-row row-behav">
+                        <span class="swatch">Behaviour</span>
+                        <div class="track"><div class="fill" id="bar-maj-behav"></div></div>
+                        <span class="delta" id="maj-d-behav">—</span>
+                    </div>
+                </div>
+
+                <!-- Minority -->
+                <div class="group-decomp">
+                    <div class="gd-toprow">
+                        <div class="gd-name-cell">
+                            <span class="gd-dot" style="background: #1E5EA3"></span>
+                            <span class="gd-name">Minority</span>
+                        </div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t1">Endogamy T1</div>
+                            <div class="gd-level-value" id="min-t1">—</div>
+                        </div>
+                        <div class="gd-level">
+                            <div class="gd-level-label t2">Endogamy T2</div>
+                            <div class="gd-level-value" id="min-t2">—</div>
+                        </div>
+                    </div>
+                    <div class="gd-section">Δ endogamy, T2 vs T1</div>
+                    <div class="decomp-row row-obs">
+                        <span class="swatch">Observed</span>
+                        <div class="track"><div class="fill" id="bar-min-obs"></div></div>
+                        <span class="delta" id="min-d-obs">—</span>
+                    </div>
+                    <div class="decomp-row row-struct">
+                        <span class="swatch">Structure</span>
+                        <div class="track"><div class="fill" id="bar-min-struct"></div></div>
+                        <span class="delta" id="min-d-struct">—</span>
+                    </div>
+                    <div class="decomp-row row-behav">
+                        <span class="swatch">Behaviour</span>
+                        <div class="track"><div class="fill" id="bar-min-behav"></div></div>
+                        <span class="delta" id="min-d-behav">—</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Snapshot panels — sliders above canvases -->
+        <div class="snapshots">
+            <div class="snap t1">
+                <div class="snap-header">
+                    <div class="snap-title">T1 — earlier</div>
+                </div>
+                <div class="controls">
+                    <div class="control">
+                        <div class="control-label"><span>Minority share</span><span class="v" id="t1-m-val">10%</span></div>
+                        <input type="range" id="t1-m" min="2" max="50" value="10">
+                    </div>
+                    <div class="control">
+                        <div class="control-label"><span>In-group preference</span><span class="v" id="t1-p-val">+0%</span></div>
+                        <input type="range" id="t1-p" min="0" max="200" value="0">
+                    </div>
+                </div>
+                <canvas id="canvas-t1" width="320" height="320"></canvas>
+            </div>
+
+            <div class="snap t2">
+                <div class="snap-header">
+                    <div class="snap-title">T2 — later</div>
+                </div>
+                <div class="controls">
+                    <div class="control">
+                        <div class="control-label"><span>Minority share</span><span class="v" id="t2-m-val">10%</span></div>
+                        <input type="range" id="t2-m" min="2" max="50" value="10">
+                    </div>
+                    <div class="control">
+                        <div class="control-label"><span>In-group preference</span><span class="v" id="t2-p-val">+0%</span></div>
+                        <input type="range" id="t2-p" min="0" max="200" value="0">
+                    </div>
+                </div>
+                <canvas id="canvas-t2" width="320" height="320"></canvas>
+            </div>
+        </div>
+
+        <div class="action-row">
+            <button class="btn-match" id="btn-match">Run matching</button>
+            <button class="btn-reset" id="btn-reset">Reset to defaults</button>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#D9471C"></div>Majority</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#1E5EA3"></div>Minority</div>
+            </div>
+        </div>
+
+        <details class="method">
+            <summary>Method</summary>
+            <p>Endogamy is computed at four scenarios that cross the two snapshots' <em>structures</em> (minority share, m) and <em>behaviours</em> (in-group preference, p):</p>
+            <ul>
+                <li>T1·T1 — observed at T1</li>
+                <li>T1·T2 — T1 behaviour × T2 structure (counterfactual)</li>
+                <li>T2·T1 — T2 behaviour × T1 structure (counterfactual)</li>
+                <li>T2·T2 — observed at T2</li>
+            </ul>
+            <p>Each cell uses a closed-form expression for the compositional matching DGP. With α = 1 + p, a group's endogamy from its own perspective is:</p>
+            <pre class="formula">endogamy = (own share · α²) / (own share · α² + other share)</pre>
+            <p>The matching shown on the canvases is one stochastic realisation of the same DGP — illustrative, not where the displayed numbers come from.</p>
+            <p>The decomposition averages T1-anchored and T2-anchored estimates of each effect so they sum exactly to the observed change:</p>
+            <pre class="formula">Δ_struct = ½ · [ (T1·T2 − T1·T1) + (T2·T2 − T2·T1) ]
+Δ_behav  = ½ · [ (T2·T1 − T1·T1) + (T2·T2 − T1·T2) ]
+Δ_struct + Δ_behav = Δ_obs</pre>
+            <p>Each group's endogamy is the share of its own paired members whose partner is in the same group. Majority and minority can move very differently — minority endogamy is much more sensitive to composition (Blau structural opportunity), while majority's is dominated by preference.</p>
+        </details>
+
+        <details class="research-note">
+            <summary>What this means for research</summary>
+            <p>Rising inter-ethnic unions in a diversifying society can look like growing openness — but they can also be entirely structural, driven by who the partner market now contains rather than by changing preferences. In Sweden 1991–2017, observed same-ancestry unions among Swedish-origin women fell roughly 12 percentage points; yet holding the partner market constant, in-group preference moved the <em>other</em> way and tightened by ~5 pp. The decline was structural; symbolic boundaries, if anything, became slightly stronger. The logic flips for minorities, whose endogamy is highly sensitive to group size (Blau's structural opportunity): a larger co-ethnic pool can <em>increase</em> their same-group share even at constant preference. We can't read openness directly off observed unions — we have to construct what they would have looked like under a counterfactual market.</p>
+        </details>
+
+        <div class="paper-ref-card">
+            <div class="paper-ref-label">Based on</div>
+            <div class="paper-ref-title">Three Decades of Ethnic Assortative Mating in Sweden</div>
+            <div class="paper-ref-meta">Jesper Lindmarker · Working paper. <a href="/#paper-trends" target="_top">Read more on the home page &rarr;</a></div>
+        </div>
+    </div>
+
+    <script>
+    if (window.self !== window.top) document.body.classList.add('embedded');
+
+    // -------- Configuration --------
+    // The data-generating process for matching is purely compositional:
+    // dyad acceptance = BASE × (1 + pref)² for same-group, BASE for cross-group.
+    // Spatial layout (clusters, segregation) is visual only — positions do not
+    // enter the match probability. This removes a major source of run-to-run
+    // variance and makes the decomposition reflect composition × preference cleanly.
+    const N_AGENTS = 240;          // total per snapshot
+    const W = 320, H = 320;        // canvas dimensions (CSS px)
+    const PAD = 10;
+    const BASE_ACCEPT = 0.10;      // baseline dyad acceptance (no distance term)
+    const MATCH_ROUNDS = 8;
+    const CANDIDATES_PER = 14;
+    const NUM_MIN_CLUSTERS = 2;    // minority enclaves
+    const TRANSITION_MS = 750;     // group-flip fade / glide duration
+    const FIXED_SEG = 0.65;        // segregation level — held constant across snapshots (visual only)
+
+    const COLOR_GRPA = '#D9471C';  // majority (group 0)
+    const COLOR_GRPB = '#1E5EA3';  // minority (group 1)
+    const GROUP_COLORS = [COLOR_GRPA, COLOR_GRPB];
+
+    // Neutral starting point: both snapshots identical (10% minority, 0 preference),
+    // so every decomposition delta opens at zero. The user moves the T2 sliders to
+    // build up a structure/behaviour story from a blank slate.
+    const DEFAULTS = { t1m: 10, t1p: 0, t2m: 10, t2p: 0 };
+
+    // -------- DOM helpers --------
+    const $ = id => document.getElementById(id);
+
+    // -------- Canvases --------
+    function setupCanvas(id) {
+        const canvas = $(id);
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        return ctx;
+    }
+    const ctx1 = setupCanvas('canvas-t1');
+    const ctx2 = setupCanvas('canvas-t2');
+
+    // -------- Snapshot state --------
+    function newSnap() {
+        return {
+            agents: [],
+            pairs: [],
+            matched: false,
+            animProgress: 0,
+            currentSeg: FIXED_SEG,
+            targetSeg: FIXED_SEG,
+            moveAnimFrame: null,
+            matchAnimFrame: null,
+            minorityClusters: [{ x: W * 0.35, y: H * 0.35 }, { x: W * 0.65, y: H * 0.65 }],
+        };
+    }
+    const T1 = newSnap();
+    const T2 = newSnap();
+
+    // -------- RNG / math helpers --------
+    function gaussRandom(mean, std) {
+        let u = 0, v = 0;
+        while (!u) u = Math.random();
+        while (!v) v = Math.random();
+        return mean + std * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+    function lerpColor(c1, c2, t) {
+        const p1 = parseInt(c1.slice(1), 16);
+        const p2 = parseInt(c2.slice(1), 16);
+        const r = Math.round(((p1 >> 16) & 255) * (1 - t) + ((p2 >> 16) & 255) * t);
+        const g = Math.round(((p1 >> 8) & 255) * (1 - t) + ((p2 >> 8) & 255) * t);
+        const b = Math.round((p1 & 255) * (1 - t) + (p2 & 255) * t);
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+    function easeOut(t) { return 1 - (1 - t) * (1 - t); }
+
+    // -------- Population generation --------
+    // Cluster placement borrowed from the Paper 1 sim — a smaller inset and
+    // separation lets clusters use the corners and fills the canvas better.
+    function pickMinorityClusters(snap) {
+        const inset = W * 0.15;
+        const minSep = W * 0.25;
+        const centres = [];
+        for (let attempts = 0; centres.length < NUM_MIN_CLUSTERS && attempts < 200; attempts++) {
+            const cx = inset + Math.random() * (W - 2 * inset);
+            const cy = inset + Math.random() * (H - 2 * inset);
+            const ok = centres.every(c => Math.hypot(c.x - cx, c.y - cy) >= minSep);
+            if (ok) centres.push({ x: cx, y: cy });
+        }
+        while (centres.length < NUM_MIN_CLUSTERS) {
+            centres.push({ x: W / 2, y: H / 2 });
+        }
+        snap.minorityClusters = centres;
+    }
+
+    // Minority agents go to the cluster nearest their random anchor (Paper 1
+    // heuristic). Keeps segregation transitions short and distributes agents
+    // across clusters by where they already are. Majority avoids cluster zones
+    // with a smaller radius (W * 0.12) so the canvas fills more uniformly.
+    function assignSegregatedAnchor(snap, a) {
+        if (a.group === 1) {
+            let bestIdx = 0, bestD = Infinity;
+            for (let i = 0; i < snap.minorityClusters.length; i++) {
+                const cl = snap.minorityClusters[i];
+                const d = (cl.x - a.rx) ** 2 + (cl.y - a.ry) ** 2;
+                if (d < bestD) { bestD = d; bestIdx = i; }
+            }
+            a._clusterIdx = bestIdx;
+            const c = snap.minorityClusters[bestIdx];
+            const spread = W * 0.06;
+            a.sx = clamp(gaussRandom(c.x, spread), PAD, W - PAD);
+            a.sy = clamp(gaussRandom(c.y, spread), PAD, H - PAD);
+        } else {
+            const avoidR = W * 0.12;
+            let sx, sy, attempts = 0;
+            do {
+                sx = PAD + Math.random() * (W - 2 * PAD);
+                sy = PAD + Math.random() * (H - 2 * PAD);
+                attempts++;
+            } while (attempts < 50 &&
+                     snap.minorityClusters.some(c => Math.hypot(sx - c.x, sy - c.y) < avoidR));
+            a.sx = sx; a.sy = sy;
+            a._clusterIdx = undefined;
+        }
+    }
+
+    function newAgent() {
+        return {
+            rx: 0, ry: 0,
+            sx: 0, sy: 0,
+            sxOld: null, syOld: null,
+            x: 0, y: 0,
+            group: 0, groupOld: null,
+            transitionStart: 0,
+            _clusterIdx: undefined,
+            paired: false, partner: null,
+        };
+    }
+
+    function generateAgents(snap, minorityShare) {
+        snap.agents = [];
+        const nMin = Math.max(2, Math.round(N_AGENTS * minorityShare));
+        const nMaj = N_AGENTS - nMin;
+        for (let i = 0; i < N_AGENTS; i++) {
+            const a = newAgent();
+            a.group = i < nMaj ? 0 : 1;
+            a.rx = PAD + Math.random() * (W - 2 * PAD);
+            a.ry = PAD + Math.random() * (H - 2 * PAD);
+            assignSegregatedAnchor(snap, a);
+            snap.agents.push(a);
+        }
+        applyPositions(snap);
+    }
+
+    function effectiveAnchor(a) {
+        if (a.transitionStart > 0 && a.sxOld != null) {
+            const t = clamp((performance.now() - a.transitionStart) / TRANSITION_MS, 0, 1);
+            return {
+                x: a.sxOld + (a.sx - a.sxOld) * easeOut(t),
+                y: a.syOld + (a.sy - a.syOld) * easeOut(t),
+            };
+        }
+        return { x: a.sx, y: a.sy };
+    }
+
+    function applyPositions(snap) {
+        for (const a of snap.agents) {
+            const eff = effectiveAnchor(a);
+            a.x = a.rx + (eff.x - a.rx) * snap.currentSeg;
+            a.y = a.ry + (eff.y - a.ry) * snap.currentSeg;
+        }
+    }
+
+    function adjustMinorityShare(snap, minorityShare) {
+        if (!snap.agents.length) {
+            generateAgents(snap, minorityShare);
+            return true;
+        }
+        const targetMin = Math.max(2, Math.round(N_AGENTS * minorityShare));
+        const currentMin = snap.agents.filter(a => a.group === 1).length;
+        const delta = targetMin - currentMin;
+        if (delta === 0) return false;
+
+        const fromGroup = delta > 0 ? 0 : 1;
+        const toGroup   = delta > 0 ? 1 : 0;
+        const candidates = snap.agents.filter(a => a.group === fromGroup);
+        shuffle(candidates);
+        const flippers = candidates.slice(0, Math.abs(delta));
+
+        const now = performance.now();
+        for (const a of flippers) {
+            const start = effectiveAnchor(a);
+            a.sxOld = start.x; a.syOld = start.y;
+            a.groupOld = a.group;
+            a.group = toGroup;
+            a._clusterIdx = undefined;
+            assignSegregatedAnchor(snap, a);
+            a.transitionStart = now;
+        }
+        return true;
+    }
+
+    function tickAnimation(snap, draw) {
+        function step() {
+            const segDiff = snap.targetSeg - snap.currentSeg;
+            const segMoving = Math.abs(segDiff) > 0.002;
+            if (segMoving) snap.currentSeg += segDiff * 0.12;
+            else snap.currentSeg = snap.targetSeg;
+
+            const now = performance.now();
+            let flipsMoving = false;
+            for (const a of snap.agents) {
+                if (a.transitionStart > 0) {
+                    if (now - a.transitionStart >= TRANSITION_MS) {
+                        a.transitionStart = 0;
+                        a.sxOld = null; a.syOld = null;
+                        a.groupOld = null;
+                    } else {
+                        flipsMoving = true;
+                    }
+                }
+            }
+            applyPositions(snap);
+            draw();
+
+            if (segMoving || flipsMoving) {
+                snap.moveAnimFrame = requestAnimationFrame(step);
+            } else {
+                snap.moveAnimFrame = null;
+            }
+        }
+        if (!snap.moveAnimFrame) snap.moveAnimFrame = requestAnimationFrame(step);
+    }
+
+    // -------- Two-sided spatial matching --------
+    function runMatchInPlace(snap, prefBonus) {
+        const alpha = 1 + prefBonus;
+        const same2 = alpha * alpha;
+        snap.agents.forEach(a => { a.paired = false; a.partner = null; });
+        const pairs = [];
+
+        for (let r = 0; r < MATCH_ROUNDS; r++) {
+            const queue = shuffle(snap.agents.filter(a => !a.paired));
+            for (const ego of queue) {
+                if (ego.paired) continue;
+                const pool = snap.agents.filter(a => !a.paired && a !== ego);
+                if (pool.length === 0) break;
+                shuffle(pool);
+                const cands = pool.slice(0, Math.min(CANDIDATES_PER, pool.length));
+                for (const alter of cands) {
+                    if (alter.paired) continue;
+                    const groupFactor = (ego.group === alter.group) ? same2 : 1;
+                    const p = BASE_ACCEPT * groupFactor;
+                    if (Math.random() < Math.min(1, p)) {
+                        ego.paired = true; alter.paired = true;
+                        ego.partner = alter; alter.partner = ego;
+                        pairs.push([ego, alter]);
+                        break;
+                    }
+                }
+            }
+        }
+        snap.pairs = pairs;
+        return endogamiesByGroup(pairs);
+    }
+
+    // Per-group endogamy from the perspective of each group's own paired agents.
+    //   maj endogamy = share of majority's partners that are themselves majority
+    //                = 2·n_AA / (2·n_AA + n_AB)
+    //   min endogamy = analogously
+    // Combined returned for completeness — average isn't shown in the UI.
+    function endogamiesByGroup(pairs) {
+        let aa = 0, bb = 0, ab = 0;
+        for (const [a, b] of pairs) {
+            if (a.group === 0 && b.group === 0) aa++;
+            else if (a.group === 1 && b.group === 1) bb++;
+            else ab++;
+        }
+        const majDenom = 2 * aa + ab;
+        const minDenom = 2 * bb + ab;
+        return {
+            maj: majDenom > 0 ? (2 * aa) / majDenom : NaN,
+            min: minDenom > 0 ? (2 * bb) / minDenom : NaN,
+            combined: pairs.length > 0 ? (aa + bb) / pairs.length : NaN,
+        };
+    }
+
+    // Closed-form per-group endogamy under the compositional DGP.
+    // Same-group dyad weight = (1 + pref)² = α²; cross-group weight = 1.
+    // For an ego sampling alters in proportion to group share, conditional on
+    // accepting an alter the probability that alter is same-group is:
+    //   maj endogamy = (1−m)α² / ((1−m)α² + m)
+    //   min endogamy =     m·α² / (    m·α² + (1−m))
+    // These are the analytical limits the stochastic matching converges toward;
+    // using them directly removes all stochastic noise from the decomposition.
+    function analyticalEndogamy(m, prefBonus) {
+        const a2 = (1 + prefBonus) * (1 + prefBonus);
+        const majShare = 1 - m;
+        const minShare = m;
+        return {
+            maj: (majShare * a2) / (majShare * a2 + minShare),
+            min: (minShare * a2) / (minShare * a2 + majShare),
+        };
+    }
+
+    // -------- Drawing --------
+    function draw(snap, ctx) {
+        ctx.clearRect(0, 0, W, H);
+
+        if (snap.matched && snap.pairs.length > 0) {
+            const p = Math.min(1, snap.animProgress);
+            ctx.lineWidth = 0.9;
+            for (const [a, b] of snap.pairs) {
+                const sameGroup = a.group === b.group;
+                ctx.strokeStyle = sameGroup
+                    ? 'rgba(150,150,150,0.22)'
+                    : 'rgba(100,180,100,0.4)';
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p);
+                ctx.stroke();
+            }
+        }
+
+        const pulse = snap.matched ? Math.max(0, 1 - snap.animProgress) * 1.5 : 0;
+        const now = performance.now();
+        for (const a of snap.agents) {
+            let c;
+            if (a.transitionStart > 0 && a.groupOld != null) {
+                const t = clamp((now - a.transitionStart) / TRANSITION_MS, 0, 1);
+                c = lerpColor(GROUP_COLORS[a.groupOld], GROUP_COLORS[a.group], easeOut(t));
+            } else {
+                c = GROUP_COLORS[a.group];
+            }
+            ctx.globalAlpha = snap.matched && !a.paired ? 0.16 : 0.85;
+            const r = 3.4 + (a.paired ? pulse : 0);
+            ctx.beginPath();
+            ctx.arc(a.x, a.y, r, 0, Math.PI * 2);
+            ctx.fillStyle = c;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+    }
+    const drawT1 = () => draw(T1, ctx1);
+    const drawT2 = () => draw(T2, ctx2);
+
+    function animateMatch(snap, draw) {
+        function step() {
+            snap.animProgress += 0.04;
+            draw();
+            if (snap.animProgress < 1) {
+                snap.matchAnimFrame = requestAnimationFrame(step);
+            } else {
+                snap.matchAnimFrame = null;
+            }
+        }
+        if (snap.matchAnimFrame) cancelAnimationFrame(snap.matchAnimFrame);
+        snap.matchAnimFrame = requestAnimationFrame(step);
+    }
+
+    // -------- Read sliders --------
+    function read() {
+        return {
+            t1m: +$('t1-m').value, t1p: +$('t1-p').value,
+            t2m: +$('t2-m').value, t2p: +$('t2-p').value,
+        };
+    }
+    function updateSliderLabels() {
+        const v = read();
+        $('t1-m-val').textContent = v.t1m + '%';
+        $('t1-p-val').textContent = '+' + v.t1p + '%';
+        $('t2-m-val').textContent = v.t2m + '%';
+        $('t2-p-val').textContent = '+' + v.t2p + '%';
+    }
+
+    // -------- Reset matching state --------
+    function clearMatch(snap) {
+        snap.matched = false;
+        snap.pairs = [];
+        snap.agents.forEach(a => { a.paired = false; a.partner = null; });
+        if (snap.matchAnimFrame) cancelAnimationFrame(snap.matchAnimFrame);
+        snap.animProgress = 0;
+    }
+
+    // -------- Debounced auto-run --------
+    let _runDebounce = null;
+    function scheduleRun(delay = 350) {
+        if (_runDebounce) clearTimeout(_runDebounce);
+        _runDebounce = setTimeout(() => {
+            _runDebounce = null;
+            runAll();
+        }, delay);
+    }
+
+    // -------- Run, decompose per group --------
+    // Decomposition uses closed-form analytical values for the four cells —
+    // exact, deterministic, no stochastic noise. The canvases still run a
+    // single stochastic match each for visual illustration; that match is
+    // one realisation, while the displayed numbers are the analytical limit.
+    function runAll() {
+        const v = read();
+        const m1 = v.t1m / 100, p1 = v.t1p / 100;
+        const m2 = v.t2m / 100, p2 = v.t2p / 100;
+
+        // Convention: rows are behaviour, cols are structure
+        const e_T1T1 = analyticalEndogamy(m1, p1);              // T1 beh × T1 struct
+        const e_T1T2 = analyticalEndogamy(m2, p1);              // T1 beh × T2 struct
+        const e_T2T1 = analyticalEndogamy(m1, p2);              // T2 beh × T1 struct
+        const e_T2T2 = analyticalEndogamy(m2, p2);              // T2 beh × T2 struct
+
+        // Visible matchings — one realisation each, animated on the canvases.
+        runMatchInPlace(T1, p1);
+        T1.matched = true; T1.animProgress = 0;
+        animateMatch(T1, drawT1);
+
+        runMatchInPlace(T2, p2);
+        T2.matched = true; T2.animProgress = 0;
+        animateMatch(T2, drawT2);
+
+        // Per-group symmetric (Shapley) decomposition
+        const decomp = (e11, e12, e21, e22) => {
+            if ([e11, e12, e21, e22].some(isNaN)) {
+                return { dObs: NaN, dStruct: NaN, dBehav: NaN };
+            }
+            return {
+                dObs:    e22 - e11,
+                dStruct: 0.5 * ((e12 - e11) + (e22 - e21)),
+                dBehav:  0.5 * ((e21 - e11) + (e22 - e12)),
+            };
+        };
+        const majD = decomp(e_T1T1.maj, e_T1T2.maj, e_T2T1.maj, e_T2T2.maj);
+        const minD = decomp(e_T1T1.min, e_T1T2.min, e_T2T1.min, e_T2T2.min);
+
+        // Update DOM
+        const pctOrDash = v => isNaN(v) ? '—' : (v * 100).toFixed(1) + '%';
+        const ppFmt = d => isNaN(d) ? '—' : (d >= 0 ? '+' : '−') + Math.abs(d * 100).toFixed(1) + ' pp';
+
+        $('maj-t1').textContent = pctOrDash(e_T1T1.maj);
+        $('maj-t2').textContent = pctOrDash(e_T2T2.maj);
+        $('min-t1').textContent = pctOrDash(e_T1T1.min);
+        $('min-t2').textContent = pctOrDash(e_T2T2.min);
+
+        $('maj-d-obs').textContent    = ppFmt(majD.dObs);
+        $('maj-d-struct').textContent = ppFmt(majD.dStruct);
+        $('maj-d-behav').textContent  = ppFmt(majD.dBehav);
+        $('min-d-obs').textContent    = ppFmt(minD.dObs);
+        $('min-d-struct').textContent = ppFmt(minD.dStruct);
+        $('min-d-behav').textContent  = ppFmt(minD.dBehav);
+
+        // Bars centered on a zero axis: positive grows right of centre, negative
+        // grows left. Shared scale across both groups so widths compare directly.
+        const allDeltas = [
+            majD.dObs, majD.dStruct, majD.dBehav,
+            minD.dObs, minD.dStruct, minD.dBehav,
+        ].filter(x => !isNaN(x));
+        const maxAbs = Math.max(0.001, ...allDeltas.map(Math.abs));
+        const setBar = (id, x) => {
+            const fill = $(id);
+            if (isNaN(x)) {
+                fill.style.width = '0%';
+                return;
+            }
+            const halfPct = (Math.abs(x) / maxAbs) * 50;
+            fill.style.width = halfPct + '%';
+            if (x >= 0) {
+                fill.style.left = '50%';
+                fill.style.right = 'auto';
+                fill.style.borderRadius = '0 3px 3px 0';
+            } else {
+                fill.style.right = '50%';
+                fill.style.left = 'auto';
+                fill.style.borderRadius = '3px 0 0 3px';
+            }
+        };
+        setBar('bar-maj-obs',    majD.dObs);
+        setBar('bar-maj-struct', majD.dStruct);
+        setBar('bar-maj-behav',  majD.dBehav);
+        setBar('bar-min-obs',    minD.dObs);
+        setBar('bar-min-struct', minD.dStruct);
+        setBar('bar-min-behav',  minD.dBehav);
+    }
+
+    // -------- Slider wiring --------
+    function onMinorityInput(snap, sliderId, draw) {
+        return () => {
+            updateSliderLabels();
+            const v = read();
+            const m = (snap === T1 ? v.t1m : v.t2m) / 100;
+            if (snap._lastM !== m) {
+                snap._lastM = m;
+                adjustMinorityShare(snap, m);
+            }
+            clearMatch(snap);
+            tickAnimation(snap, draw);
+            scheduleRun();
+        };
+    }
+    $('t1-m').addEventListener('input', onMinorityInput(T1, 't1-m', drawT1));
+    $('t2-m').addEventListener('input', onMinorityInput(T2, 't2-m', drawT2));
+
+    ['t1-p', 't2-p'].forEach(id => $(id).addEventListener('input', () => {
+        updateSliderLabels();
+        scheduleRun();
+    }));
+
+    $('btn-match').addEventListener('click', () => {
+        if (_runDebounce) { clearTimeout(_runDebounce); _runDebounce = null; }
+        runAll();
+    });
+
+    $('btn-reset').addEventListener('click', () => {
+        if (_runDebounce) { clearTimeout(_runDebounce); _runDebounce = null; }
+        Object.entries(DEFAULTS).forEach(([k, v]) => {
+            const id = k.slice(0, 2) + '-' + k.slice(2);
+            $(id).value = v;
+        });
+        updateSliderLabels();
+        const v = read();
+        T1._lastM = v.t1m / 100; T2._lastM = v.t2m / 100;
+        T1.currentSeg = T1.targetSeg = FIXED_SEG;
+        T2.currentSeg = T2.targetSeg = FIXED_SEG;
+        pickMinorityClusters(T1); generateAgents(T1, T1._lastM);
+        pickMinorityClusters(T2); generateAgents(T2, T2._lastM);
+        clearMatch(T1); clearMatch(T2);
+        drawT1(); drawT2();
+        runAll();
+    });
+
+    // -------- Init --------
+    updateSliderLabels();
+    {
+        const v = read();
+        T1._lastM = v.t1m / 100; T2._lastM = v.t2m / 100;
+        T1.currentSeg = T1.targetSeg = FIXED_SEG;
+        T2.currentSeg = T2.targetSeg = FIXED_SEG;
+        pickMinorityClusters(T1); generateAgents(T1, T1._lastM);
+        pickMinorityClusters(T2); generateAgents(T2, T2._lastM);
+        drawT1(); drawT2();
+        // Empty results on load — user clicks "Run matching" or moves a slider to populate.
+    }
+    </script>
+    <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
