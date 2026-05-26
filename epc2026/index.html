@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
 
     <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
@@ -35,6 +35,8 @@
                 <li><a href="/#research">Research</a></li>
                 <li><a href="/simulation/">Simulations</a></li>
                 <li><a href="/#papers">Papers</a></li>
+                <li><a href="/#teaching">Teaching</a></li>
+                <li><a href="/#history">History</a></li>
                 <li><a href="/#contact">Contact</a></li>
                 <li><a href="/epc2026/" class="active">EPC 2026</a></li>
             </ul>
@@ -50,8 +52,7 @@
     <section class="swipe-hero" aria-label="Interactive intro">
 
         <div class="swipe-headline">
-            <h1>Who you meet, <em>who you choose.</em></h1>
-            <p>Five cards. Swipe through, then read on.</p>
+            <h1>Swipe <em>to match.</em></h1>
         </div>
 
         <div class="swipe-progress" id="swipe-progress" aria-hidden="true">
@@ -59,117 +60,90 @@
             <span></span>
             <span></span>
             <span></span>
-            <span></span>
         </div>
 
         <div class="swipe-stack" id="swipe-stack" role="region" aria-label="Card stack">
 
-            <!-- Card 1 -->
-            <article class="swipe-card" data-index="0" data-has-reveal="false">
+            <!-- Card 1 — Paper 4 (this poster) -->
+            <article class="swipe-card" data-index="0" data-target="#about-paper">
                 <div class="card-eyebrow">
-                    <span>Hypothesis 1</span>
-                    <span class="step">01 / 05</span>
+                    <span>Paper 4 · This poster</span>
+                    <span class="step">01 / 04</span>
                 </div>
-                <h2>You meet your partner where you <em>spend your time.</em></h2>
+                <h2>Universities and workplaces sort us <em>long before we choose.</em></h2>
                 <div class="card-body">
-                    <p>Same lecture hall, same office, same neighbourhood. How much of who you end up with is shaped before any choice gets made?</p>
+                    <p>How much of educational homogamy in Sweden is opportunity, and how much is choice? Three decades of register data, decomposed.</p>
                 </div>
                 <div class="card-foot">
-                    <div class="card-hint">Swipe right to keep going →</div>
+                    <div class="card-hint">Swipe right to read more →</div>
                 </div>
-                <div class="stamp stamp-yes" aria-hidden="true">Go on</div>
-                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+                <div class="stamp stamp-yes" aria-hidden="true">Match</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Next</div>
             </article>
 
-            <!-- Card 2 -->
-            <article class="swipe-card" data-index="1" data-has-reveal="true">
+            <!-- Card 2 — Paper 3 -->
+            <article class="swipe-card" data-index="1" data-target="#paper3">
                 <div class="card-eyebrow">
-                    <span>Finding</span>
-                    <span class="step">02 / 05</span>
+                    <span>Paper 3</span>
+                    <span class="step">02 / 04</span>
                 </div>
-                <h2>It matters. <em>A lot.</em></h2>
+                <h2>Rising intermarriage. <em>Stable boundaries.</em></h2>
                 <div class="card-body">
-                    <p>Sharing a university or workplace makes a union much more likely than living in the same county without ever crossing institutional paths.</p>
-                </div>
-                <div class="reveal">
-                    <p>Each additional year of shared employer or university enrolment substantially increases the odds of forming a union. <span class="accent">Opportunity structures romantic life before assortativity enters the picture.</span></p>
+                    <p>Interethnic unions in Sweden have risen for thirty years. Residual assortativity has not weakened, and in some configurations it has strengthened.</p>
                 </div>
                 <div class="card-foot">
-                    <button class="reveal-btn" type="button">Show how much</button>
-                    <div class="card-hint">Swipe right when ready →</div>
+                    <div class="card-hint">Swipe right to read more →</div>
                 </div>
-                <div class="stamp stamp-yes" aria-hidden="true">More</div>
-                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+                <div class="stamp stamp-yes" aria-hidden="true">Match</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Next</div>
             </article>
 
-            <!-- Card 3 -->
-            <article class="swipe-card" data-index="2" data-has-reveal="false">
+            <!-- Card 3 — Simulations -->
+            <article class="swipe-card" data-index="2" data-target="#sims">
                 <div class="card-eyebrow">
-                    <span>The question</span>
-                    <span class="step">03 / 05</span>
+                    <span>Interactive</span>
+                    <span class="step">03 / 04</span>
                 </div>
-                <h2>So how much of <em>educational homogamy</em> is really about who we choose?</h2>
+                <h2>Play with the levers behind <em>partner sorting.</em></h2>
                 <div class="card-body">
-                    <p>And how much is just "we happened to spend a decade in the same buildings"?</p>
+                    <p>Three browser simulations of opportunity, attraction, and the mixing they produce. Pull the sliders, see who pairs with whom.</p>
                 </div>
                 <div class="card-foot">
-                    <div class="card-hint">Swipe right for the answer →</div>
+                    <div class="card-hint">Swipe right to open →</div>
                 </div>
-                <div class="stamp stamp-yes" aria-hidden="true">Answer</div>
-                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+                <div class="stamp stamp-yes" aria-hidden="true">Open</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Next</div>
             </article>
 
-            <!-- Card 4 -->
-            <article class="swipe-card" data-index="3" data-has-reveal="true">
+            <!-- Card 4 — Paper 1 -->
+            <article class="swipe-card" data-index="3" data-target="#paper1">
                 <div class="card-eyebrow">
-                    <span>The answer</span>
-                    <span class="step">04 / 05</span>
+                    <span>Paper 1 · Preprint</span>
+                    <span class="step">04 / 04</span>
                 </div>
-                <h2>For the most educated: <em>29 to 40 percent.</em></h2>
+                <h2>However Far Away? <em>The spatial side.</em></h2>
                 <div class="card-body">
-                    <p>That share of their homogamy is explained by where they lived, studied, and worked. Not by anything we usually call choice.</p>
-                </div>
-                <div class="reveal">
-                    <p>For the least educated, those same channels explain <span class="accent">almost none of it.</span> The mechanisms of sorting differ across the education ladder.</p>
+                    <p>Residential proximity mediates 20 to 40 percent of ethnic endogamy in Sweden. Segregation narrows the partner market before anything else gets a say.</p>
                 </div>
                 <div class="card-foot">
-                    <button class="reveal-btn" type="button">And for the least educated?</button>
-                    <div class="card-hint">Swipe right for the bigger story →</div>
+                    <div class="card-hint">Swipe right to find it →</div>
                 </div>
-                <div class="stamp stamp-yes" aria-hidden="true">Bigger picture</div>
-                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
-            </article>
-
-            <!-- Card 5 -->
-            <article class="swipe-card" data-index="4" data-has-reveal="false">
-                <div class="card-eyebrow">
-                    <span>Bigger picture</span>
-                    <span class="step">05 / 05</span>
-                </div>
-                <h2>This poster is one piece of a <em>bigger puzzle.</em></h2>
-                <div class="card-body">
-                    <p>Who pairs with whom is always a mix of opportunity (who you can meet) and assortativity (the residual once opportunity is accounted for).</p>
-                    <p>That mix changes what looks like integration.</p>
-                </div>
-                <div class="card-foot">
-                    <div class="card-hint">Swipe right to read on ↓</div>
-                </div>
-                <div class="stamp stamp-yes" aria-hidden="true">Read on</div>
-                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+                <div class="stamp stamp-yes" aria-hidden="true">Find it</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Next</div>
             </article>
 
             <!-- End state -->
             <div class="swipe-end" id="swipe-end" aria-hidden="true">
-                <h2>Now the longer story.</h2>
-                <p>Five papers, one funded research agenda, and a few simulations you can play with.</p>
-                <a href="#about-paper" class="btn-down">Read the full agenda ↓</a>
+                <h2>No matches?</h2>
+                <p>The whole agenda is just below, plus everything on the homepage.</p>
+                <a href="#about-paper" class="btn-down">Browse anyway ↓</a>
                 <button class="replay" type="button" id="replay">Replay the cards</button>
             </div>
         </div>
 
         <div class="swipe-actions" id="swipe-actions">
-            <button class="btn-skip" id="btn-skip" type="button" aria-label="Skip card">✕</button>
-            <button class="btn-yes"  id="btn-yes"  type="button" aria-label="Next card">→</button>
+            <button class="btn-skip" id="btn-skip" type="button" aria-label="Next card">✕</button>
+            <button class="btn-yes"  id="btn-yes"  type="button" aria-label="Match">♥</button>
         </div>
 
         <div class="swipe-skip-link">
@@ -213,7 +187,7 @@
 
             <ul class="agenda-list">
 
-                <li class="agenda-item">
+                <li class="agenda-item" id="paper1">
                     <div class="tag">Paper 1 · Preprint · SocArXiv</div>
                     <h3>However Far Away? The spatial contingencies of assortative mating</h3>
                     <p>Lindmarker &amp; Jarvis. Residential proximity mediates 20 to 40 percent of ethnic endogamy. Segregation narrows the partner market before any choice is expressed.</p>
@@ -258,7 +232,7 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-label">Paper 3 · The bigger story</span>
-                <h2>The <em>integration paradox</em></h2>
+                <h2>Rising intermarriage. <em>Stable boundaries.</em></h2>
             </div>
 
             <div class="prose">
@@ -346,7 +320,7 @@
         </div>
     </footer>
 
-    <script src="swipe.js"></script>
+    <script src="swipe.js?v=2"></script>
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

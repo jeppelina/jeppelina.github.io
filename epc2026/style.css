@@ -488,6 +488,22 @@ img { max-width: 100%; display: block; }
 
 .section {
     padding: 4.5rem 0;
+    /* Account for the fixed 64px nav when scrolled to via #anchor */
+    scroll-margin-top: 72px;
+}
+.agenda-item { scroll-margin-top: 88px; }
+
+/* When an agenda item is the URL :target, give it a subtle pulse so the
+   visitor can see what they landed on after a card swipe-right. */
+.agenda-item:target {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-accent-light);
+    animation: agenda-pulse 1.6s ease-out 1;
+}
+@keyframes agenda-pulse {
+    0%   { box-shadow: 0 0 0 0  var(--color-accent-light); }
+    40%  { box-shadow: 0 0 0 10px var(--color-accent-light); }
+    100% { box-shadow: 0 0 0 4px var(--color-accent-light); }
 }
 .section.alt { background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
 .section.dark {
@@ -716,11 +732,24 @@ img { max-width: 100%; display: block; }
         flex-direction: column;
         padding: 1.5rem;
         border-bottom: 1px solid var(--color-border);
+        /* Closed state: pushed up AND fully hidden, so nothing peeks
+           through the translucent nav blur. */
         transform: translateY(-110%);
-        transition: transform var(--transition);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform var(--transition),
+                    opacity 0.2s ease,
+                    visibility 0s linear var(--transition);
         gap: 1rem;
     }
-    .nav-links.is-open { transform: translateY(0); }
+    .nav-links.is-open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        transition: transform var(--transition),
+                    opacity 0.2s ease,
+                    visibility 0s linear 0s;
+    }
     .swipe-stack { max-width: 340px; }
 }
 

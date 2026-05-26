@@ -90,6 +90,7 @@
     function commitSwipe(direction) {
         const card = activeCard();
         if (!card) return;
+        const target = (direction === 'right') ? card.dataset.target : null;
         const off = (direction === 'right' ? 1 : -1) * (window.innerWidth + 200);
         const rot = direction === 'right' ? 20 : -20;
         card.classList.remove('is-dragging');
@@ -107,6 +108,21 @@
                 finishStack();
             } else {
                 setDepths();
+            }
+            // After the card flies off, take the visitor to whatever they
+            // matched with. We update the URL hash so :target styling fires
+            // (e.g. the agenda-item pulse), then smooth-scroll.
+            if (target) {
+                const el = document.querySelector(target);
+                if (el) {
+                    // Set the hash without an extra jump, then animate.
+                    if (history.replaceState) {
+                        history.replaceState(null, '', target);
+                    } else {
+                        location.hash = target;
+                    }
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         }, 320);
     }
