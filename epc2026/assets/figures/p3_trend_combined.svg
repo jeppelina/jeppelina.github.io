@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 470" font-family="'IBM Plex Sans', system-ui, sans-serif">
+  <rect width="740" height="470" fill="#FFFFFF"/>
+
+  <!-- ============ TOP PANEL: foreign-born share ============ -->
+  <text x="80" y="34" font-family="Fraunces, Georgia, serif" font-size="17" fill="#141414">A growing foreign-born population</text>
+  <text x="80" y="51" font-size="12" fill="#6E6E6E">share of Sweden's population that is foreign-born</text>
+
+  <!-- panel frame: x 80-680, y 70-230 -->
+  <line x1="80" y1="230" x2="680" y2="230" stroke="#141414" stroke-width="0.75"/>
+  <line x1="80" y1="70" x2="80" y2="230" stroke="#141414" stroke-width="0.75"/>
+  <g font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6E6E6E">
+    <line x1="76" y1="190" x2="80" y2="190" stroke="#141414" stroke-width="0.5"/><text x="72" y="194" text-anchor="end">10%</text>
+    <line x1="76" y1="110" x2="80" y2="110" stroke="#141414" stroke-width="0.5"/><text x="72" y="114" text-anchor="end">20%</text>
+  </g>
+  <polyline points="80.0,195.2 101.4,193.7 122.9,191.2 144.3,187.1 165.7,186.1 187.1,185.5 208.6,184.5 230.0,183.3 251.4,182.2 272.9,180.4 294.3,178.5 315.7,176.6 337.1,174.8 358.6,173.3 380.0,171.4 401.4,168.0 422.9,164.3 444.3,160.4 465.7,156.6 487.1,153.3 508.6,150.6 530.0,147.7 551.4,143.9 572.9,139.4 594.3,134.9 615.7,128.2 637.1,122.6 658.6,117.9 680.0,114.4" fill="none" stroke="#13386B" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="80.0" cy="195.2" r="4" fill="#13386B"/>
+  <circle cx="680.0" cy="114.4" r="4" fill="#13386B"/>
+  <text x="92" y="200" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#141414">9.3%</text>
+  <text x="668" y="108" text-anchor="end" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#141414">19.5%</text>
+
+  <!-- ============ BOTTOM PANEL: endogamy ============ -->
+  <text x="80" y="278" font-family="Fraunces, Georgia, serif" font-size="17" fill="#141414">A declining rate of ethnic endogamy</text>
+  <text x="80" y="295" font-size="12" fill="#6E6E6E">share of Swedish-ancestry women partnering within their group</text>
+
+  <!-- panel frame: x 80-680, y 305-430 -->
+  <line x1="80" y1="430" x2="680" y2="430" stroke="#141414" stroke-width="0.75"/>
+  <line x1="80" y1="305" x2="80" y2="430" stroke="#141414" stroke-width="0.75"/>
+  <g font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6E6E6E">
+    <line x1="76" y1="377.5" x2="80" y2="377.5" stroke="#141414" stroke-width="0.5"/><text x="72" y="381" text-anchor="end">82%</text>
+    <line x1="76" y1="307.5" x2="80" y2="307.5" stroke="#141414" stroke-width="0.5"/><text x="72" y="311" text-anchor="end">86%</text>
+  </g>
+  <polyline points="80.0,314.4 101.4,320.1 122.9,315.0 144.3,319.5 165.7,320.8 187.1,315.3 208.6,320.1 230.0,318.9 251.4,326.9 272.9,321.0 294.3,323.7 315.7,324.8 337.1,333.1 358.6,333.5 380.0,334.7 401.4,336.5 422.9,342.2 444.3,341.1 465.7,346.4 487.1,345.4 508.6,344.0 530.0,348.6 551.4,348.2 572.9,347.8 594.3,355.5 615.7,363.0 637.1,369.3 658.6,377.2 680.0,385.0" fill="none" stroke="#13386B" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="80.0" cy="314.4" r="4" fill="#13386B"/>
+  <circle cx="680.0" cy="385.0" r="4" fill="#13386B"/>
+  <text x="92" y="310" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#141414">85.6%</text>
+  <text x="668" y="399" text-anchor="end" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#141414">81.6%</text>
+
+  <!-- shared x-axis labels -->
+  <g font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6E6E6E">
+    <text x="80" y="448" text-anchor="middle">1991</text>
+    <text x="294" y="448" text-anchor="middle">2000</text>
+    <text x="508" y="448" text-anchor="middle">2010</text>
+    <text x="680" y="448" text-anchor="middle">2019</text>
+  </g>
+
+  <!-- footer -->
+  <text x="80" y="464" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6E6E6E" letter-spacing="0.04em">SOURCE · STATISTICS SWEDEN REGISTERS · LINDMARKER</text>
+</svg>

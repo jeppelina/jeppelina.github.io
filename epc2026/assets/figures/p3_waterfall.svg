@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" font-family="'IBM Plex Sans', system-ui, sans-serif">
+  <!-- background: riso paper -->
+  <rect width="720" height="320" fill="#F4EEDC"/>
+
+  <!-- y-axis: 80% to 87%, plot height 200, top y=30, bottom y=230 -->
+  <!-- y_px = 230 - (val - 80) / 7 * 200 -->
+  <!-- 85.3% → y=78.6 -->
+  <!-- 83.2% → y=138.6 -->
+  <!-- 81.6% → y=184.3 -->
+  <!-- 80%  → y=230 -->
+  <!-- 82%  → y=172.9 -->
+  <!-- 84%  → y=115.7 -->
+  <!-- 86%  → y=58.6 -->
+
+  <!-- baseline x-axis at y=230 -->
+  <line x1="80" y1="230" x2="680" y2="230" stroke="#1A1A1A" stroke-width="0.75"/>
+
+  <!-- y-axis ticks & labels at 80, 82, 84, 86 -->
+  <g font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6F6A5C">
+    <line x1="76" y1="230" x2="80" y2="230" stroke="#1A1A1A" stroke-width="0.5"/>
+    <text x="72" y="234" text-anchor="end">80</text>
+    <line x1="76" y1="172.9" x2="80" y2="172.9" stroke="#1A1A1A" stroke-width="0.5"/>
+    <text x="72" y="177" text-anchor="end">82</text>
+    <line x1="76" y1="115.7" x2="80" y2="115.7" stroke="#1A1A1A" stroke-width="0.5"/>
+    <text x="72" y="120" text-anchor="end">84</text>
+    <line x1="76" y1="58.6" x2="80" y2="58.6" stroke="#1A1A1A" stroke-width="0.5"/>
+    <text x="72" y="63" text-anchor="end">86</text>
+  </g>
+
+  <!-- y-axis label -->
+  <text x="34" y="140" text-anchor="middle" font-size="12" fill="#1A1A1A" transform="rotate(-90, 34, 140)">
+    endogamy rate (%)
+  </text>
+
+  <!-- ===== BAR 1: baseline 1991-1999 (85.3%) ===== -->
+  <rect x="120" y="78.6" width="80" height="151.4" fill="#1A1A1A" fill-opacity="0.78"/>
+  <text x="160" y="68" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1A1A1A" font-weight="500">85.3%</text>
+  <text x="160" y="250" text-anchor="middle" font-size="12" fill="#1A1A1A">1991–1999</text>
+  <text x="160" y="266" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6F6A5C" letter-spacing="0.05em">BASELINE</text>
+
+  <!-- connector: top of bar 1 to top of bar 2 -->
+  <line x1="200" y1="78.6" x2="270" y2="78.6" stroke="#1A1A1A" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+  <!-- ===== BAR 2: structure shift -3.7 pp (riso blue, down) ===== -->
+  <rect x="270" y="78.6" width="80" height="105.7" fill="#2B4FCE" fill-opacity="0.85"/>
+  <!-- arrow down inside -->
+  <path d="M 310 100 L 310 168 M 304 158 L 310 168 L 316 158" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+  <text x="310" y="135" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="14" fill="#FFFFFF" font-weight="500">−3.7</text>
+  <text x="310" y="250" text-anchor="middle" font-size="12" fill="#1A1A1A">structure</text>
+  <text x="310" y="266" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#2B4FCE" letter-spacing="0.05em">MORE DIVERSE POOL</text>
+
+  <!-- connector: bottom of bar 2 to top of bar 3 -->
+  <line x1="350" y1="184.3" x2="420" y2="184.3" stroke="#1A1A1A" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+  <!-- ===== BAR 3: residual assortativity shift +1.5 pp (riso orange, up) ===== -->
+  <rect x="420" y="138.6" width="80" height="45.7" fill="#F26B4F" fill-opacity="0.95"/>
+  <!-- arrow up inside -->
+  <path d="M 460 178 L 460 145 M 454 155 L 460 145 L 466 155" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+  <text x="460" y="170" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#FFFFFF" font-weight="500">+1.5</text>
+  <text x="460" y="250" text-anchor="middle" font-size="12" fill="#1A1A1A">assortativity</text>
+  <text x="460" y="266" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#F26B4F" letter-spacing="0.05em">STRENGTHENED</text>
+
+  <!-- connector: top of bar 3 to top of bar 4 -->
+  <line x1="500" y1="138.6" x2="570" y2="138.6" stroke="#1A1A1A" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+  <!-- ===== BAR 4: endpoint 2010-2019 (83.2%) ===== -->
+  <rect x="570" y="138.6" width="80" height="91.4" fill="#1A1A1A" fill-opacity="0.78"/>
+  <text x="610" y="128" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" fill="#1A1A1A" font-weight="500">83.2%</text>
+  <text x="610" y="250" text-anchor="middle" font-size="12" fill="#1A1A1A">2010–2019</text>
+  <text x="610" y="266" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6F6A5C" letter-spacing="0.05em">NET −2.2 PP</text>
+
+  <!-- footer -->
+  <text x="80" y="305" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#6F6A5C" letter-spacing="0.05em">
+    SWEDISH-ANCESTRY WOMEN · STOCKHOLM COUNTY · OAXACA-BLINDER DECOMPOSITION ON CONDITIONAL-LOGIT MODEL · LINDMARKER
+  </text>
+</svg>

@@ -722,7 +722,8 @@ img { max-width: 100%; display: block; }
 .cta.ghost:hover { border-color: var(--color-accent); color: var(--color-accent); }
 .section.dark .cta.ghost:hover { color: #d9846b; border-color: #d9846b; }
 
-/* Pull quote */
+/* Pull quote — inherits color from the section so it works on both
+   light and dark backgrounds (previously hardcoded black on black). */
 .pull {
     margin: 1.8rem 0;
     padding: 0;
@@ -733,9 +734,43 @@ img { max-width: 100%; display: block; }
     font-style: italic;
     font-size: clamp(1.15rem, 2.8vw, 1.4rem);
     line-height: 1.4;
-    color: var(--color-text);
+    color: inherit;
     border-left: 3px solid var(--color-accent);
     padding-left: 1.1rem;
+}
+.section.dark .pull blockquote { border-left-color: #d9846b; }
+
+/* Figures inside the prose sections. Sit edge-to-edge of the container
+   on mobile, with a soft frame so SVG/PNG backgrounds don't bleed into
+   the dark section background. */
+.p3-figure {
+    margin: 1.8rem 0;
+    padding: 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+}
+.section.dark .p3-figure {
+    border-color: #2a2a2a;
+    background: #fafaf6;
+}
+.p3-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.p3-figure figcaption {
+    padding: 0.8rem 1rem 1rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+}
+.section.dark .p3-figure figcaption {
+    color: #6b6b6b;
+    border-top-color: #e5e3de;
 }
 
 /* Footer */
