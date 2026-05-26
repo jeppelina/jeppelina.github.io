@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPC 2026 · Educational Homogamy · Jesper Lindmarker</title>
+    <meta name="description" content="Companion page for the EPC 2026 poster on educational homogamy and multi-domain propinquity in Sweden, with links to related work and interactive simulations.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
+
+    <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
+    <meta property="og:title" content="EPC 2026 · Educational Homogamy">
+    <meta property="og:description" content="Poster companion: how much of educational homogamy comes from where we live, study, and work versus from who we choose. With links to related work in Swedish assortative mating.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.jesperlindmarker.com/epc2026/">
+    <meta property="og:image" content="https://www.jesperlindmarker.com/assets/images/portrait.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="robots" content="noindex,follow">
+</head>
+<body>
+    <a class="skip-link" href="#about-paper">Skip to content</a>
+
+    <nav class="nav" id="nav" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">JL</a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#research">Research</a></li>
+                <li><a href="/simulation/">Simulations</a></li>
+                <li><a href="/#papers">Papers</a></li>
+                <li><a href="/#contact">Contact</a></li>
+                <li><a href="/epc2026/" class="active">EPC 2026</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="eyebrow-band">
+        <span class="ev">EPC 2026 · Poster companion</span>
+        <span class="sub">Jesper Lindmarker · Linköping University</span>
+    </div>
+
+    <!-- ============ Swipe hero ============ -->
+    <section class="swipe-hero" aria-label="Interactive intro">
+
+        <div class="swipe-headline">
+            <h1>Who you meet, <em>who you choose.</em></h1>
+            <p>Five cards. Swipe through, then read on.</p>
+        </div>
+
+        <div class="swipe-progress" id="swipe-progress" aria-hidden="true">
+            <span class="is-current"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="swipe-stack" id="swipe-stack" role="region" aria-label="Card stack">
+
+            <!-- Card 1 -->
+            <article class="swipe-card" data-index="0" data-has-reveal="false">
+                <div class="card-eyebrow">
+                    <span>Hypothesis 1</span>
+                    <span class="step">01 / 05</span>
+                </div>
+                <h2>You meet your partner where you <em>spend your time.</em></h2>
+                <div class="card-body">
+                    <p>Same lecture hall, same office, same neighbourhood. How much of who you end up with is shaped before any choice gets made?</p>
+                </div>
+                <div class="card-foot">
+                    <div class="card-hint">Swipe right to keep going →</div>
+                </div>
+                <div class="stamp stamp-yes" aria-hidden="true">Go on</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="swipe-card" data-index="1" data-has-reveal="true">
+                <div class="card-eyebrow">
+                    <span>Finding</span>
+                    <span class="step">02 / 05</span>
+                </div>
+                <h2>It matters. <em>A lot.</em></h2>
+                <div class="card-body">
+                    <p>Sharing a university or workplace makes a union much more likely than living in the same county without ever crossing institutional paths.</p>
+                </div>
+                <div class="reveal">
+                    <p>Each additional year of shared employer or university enrolment substantially increases the odds of forming a union. <span class="accent">Opportunity structures romantic life before assortativity enters the picture.</span></p>
+                </div>
+                <div class="card-foot">
+                    <button class="reveal-btn" type="button">Show how much</button>
+                    <div class="card-hint">Swipe right when ready →</div>
+                </div>
+                <div class="stamp stamp-yes" aria-hidden="true">More</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="swipe-card" data-index="2" data-has-reveal="false">
+                <div class="card-eyebrow">
+                    <span>The question</span>
+                    <span class="step">03 / 05</span>
+                </div>
+                <h2>So how much of <em>educational homogamy</em> is really about who we choose?</h2>
+                <div class="card-body">
+                    <p>And how much is just "we happened to spend a decade in the same buildings"?</p>
+                </div>
+                <div class="card-foot">
+                    <div class="card-hint">Swipe right for the answer →</div>
+                </div>
+                <div class="stamp stamp-yes" aria-hidden="true">Answer</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="swipe-card" data-index="3" data-has-reveal="true">
+                <div class="card-eyebrow">
+                    <span>The answer</span>
+                    <span class="step">04 / 05</span>
+                </div>
+                <h2>For the most educated: <em>29 to 40 percent.</em></h2>
+                <div class="card-body">
+                    <p>That share of their homogamy is explained by where they lived, studied, and worked. Not by anything we usually call choice.</p>
+                </div>
+                <div class="reveal">
+                    <p>For the least educated, those same channels explain <span class="accent">almost none of it.</span> The mechanisms of sorting differ across the education ladder.</p>
+                </div>
+                <div class="card-foot">
+                    <button class="reveal-btn" type="button">And for the least educated?</button>
+                    <div class="card-hint">Swipe right for the bigger story →</div>
+                </div>
+                <div class="stamp stamp-yes" aria-hidden="true">Bigger picture</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+            </article>
+
+            <!-- Card 5 -->
+            <article class="swipe-card" data-index="4" data-has-reveal="false">
+                <div class="card-eyebrow">
+                    <span>Bigger picture</span>
+                    <span class="step">05 / 05</span>
+                </div>
+                <h2>This poster is one piece of a <em>bigger puzzle.</em></h2>
+                <div class="card-body">
+                    <p>Who pairs with whom is always a mix of opportunity (who you can meet) and assortativity (the residual once opportunity is accounted for).</p>
+                    <p>That mix changes what looks like integration.</p>
+                </div>
+                <div class="card-foot">
+                    <div class="card-hint">Swipe right to read on ↓</div>
+                </div>
+                <div class="stamp stamp-yes" aria-hidden="true">Read on</div>
+                <div class="stamp stamp-skip" aria-hidden="true">Skip</div>
+            </article>
+
+            <!-- End state -->
+            <div class="swipe-end" id="swipe-end" aria-hidden="true">
+                <h2>Now the longer story.</h2>
+                <p>Five papers, one funded research agenda, and a few simulations you can play with.</p>
+                <a href="#about-paper" class="btn-down">Read the full agenda ↓</a>
+                <button class="replay" type="button" id="replay">Replay the cards</button>
+            </div>
+        </div>
+
+        <div class="swipe-actions" id="swipe-actions">
+            <button class="btn-skip" id="btn-skip" type="button" aria-label="Skip card">✕</button>
+            <button class="btn-yes"  id="btn-yes"  type="button" aria-label="Next card">→</button>
+        </div>
+
+        <div class="swipe-skip-link">
+            <a href="#about-paper">Skip the cards, scroll down</a>
+        </div>
+    </section>
+
+    <!-- ============ About the poster ============ -->
+    <section class="section alt" id="about-paper">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">The poster · Paper 4</span>
+                <h2>The opportunity structure of <em>educational homogamy</em></h2>
+            </div>
+
+            <div class="prose">
+                <p>Educational homogamy is one of the most consistent findings in family demography: people with higher education tend to partner with each other. Behind that simple pattern sits a question that has outlasted decades of research. Is it about who we choose, or about who we get to meet?</p>
+
+                <p>Using Swedish population registers covering every first union from 1991 to 2022, we decomposed educational homogamy into its structural components: residential proximity, shared workplaces, and shared university enrolment. For couples where both partners hold tertiary education, those opportunity structures together explain 29 to 40 percent of their homogamy, with a clean dose-response pattern: each additional year of shared employer or university overlap substantially raises the odds of a union. For the least educated, the same channels explain almost nothing.</p>
+
+                <p>This paper extends an earlier study with Ben Jarvis (<a href="https://doi.org/10.31235/osf.io/4tq8z_v1" target="_blank" rel="noopener">"However Far Away?"</a>), which found that residential proximity alone mediates 20 to 40 percent of ethnic endogamy in Sweden. Here we add workplaces and universities as channels, and switch the dimension of stratification from ethnicity to education. The result is a clearer picture of how spatial and institutional sorting underwrite seemingly elective patterns of pairing, and how that underwriting varies sharply across the education distribution.</p>
+
+                <div class="callout">
+                    <strong>One line takeaway.</strong> Universities and workplaces sort the highly educated into homogeneous pools long before the moment we usually call partner choice. The least educated sort themselves through channels we cannot see in registers.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Research agenda ============ -->
+    <section class="section" id="agenda">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Where this fits</span>
+                <h2>A research agenda on <em>boundaries and choice</em></h2>
+            </div>
+
+            <div class="prose">
+                <p>The dissertation behind this poster asks one question in four ways: how much of observed partner sorting is opportunity, and how much is residual assortativity, across ethnic and educational lines, in registers covering the full Swedish population, using counterfactual partner comparisons. A fifth paper, on cohabitation and mortality, predates this thread but uses the same register infrastructure.</p>
+            </div>
+
+            <ul class="agenda-list">
+
+                <li class="agenda-item">
+                    <div class="tag">Paper 1 · Preprint · SocArXiv</div>
+                    <h3>However Far Away? The spatial contingencies of assortative mating</h3>
+                    <p>Lindmarker &amp; Jarvis. Residential proximity mediates 20 to 40 percent of ethnic endogamy. Segregation narrows the partner market before any choice is expressed.</p>
+                    <div class="links">
+                        <a href="https://doi.org/10.31235/osf.io/4tq8z_v1" target="_blank" rel="noopener">Preprint →</a>
+                    </div>
+                </li>
+
+                <li class="agenda-item">
+                    <div class="tag">Paper 2 · Working paper</div>
+                    <h3>Beyond majority and minority: fine-grained ethnic boundary structures</h3>
+                    <p>Lindmarker &amp; Nordlund. All 2,500 pairings across 50 ancestry groups in Sweden. Seven boundary clusters emerge. The same boundary can be open for women and closed for men.</p>
+                </li>
+
+                <li class="agenda-item is-feature">
+                    <div class="tag">Paper 3 · Working paper · Featured below</div>
+                    <h3>Three decades of ethnic assortative mating in Sweden</h3>
+                    <p>Conditional logit with Oaxaca-Blinder decomposition, 1991 to 2022. Interethnic unions rise. Residual assortativity does not weaken, and in some places strengthens. The integration paradox.</p>
+                </li>
+
+                <li class="agenda-item is-poster">
+                    <div class="tag">Paper 4 · Working paper · This poster</div>
+                    <h3>The opportunity structure of educational homogamy</h3>
+                    <p>Lindmarker &amp; Jarvis. Residence, workplaces, and universities together account for 29 to 40 percent of educational homogamy among the most educated, almost none among the least.</p>
+                </li>
+
+                <li class="agenda-item">
+                    <div class="tag">Earlier work · Published 2025 · European Journal of Population</div>
+                    <h3>Cohabitation and mortality across the life course</h3>
+                    <p>Lindmarker, Kolk &amp; Drefahl. Sibling fixed-effects on 5.6 million Swedes. Cohabitation looks protective for mortality, though less than marriage, and the effect varies across the life course.</p>
+                    <div class="links">
+                        <a href="https://doi.org/10.1007/s10680-024-09722-6" target="_blank" rel="noopener">Journal article →</a>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </section>
+
+    <!-- ============ The bigger story (Paper 3) ============ -->
+    <section class="section dark" id="paper3">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Paper 3 · The bigger story</span>
+                <h2>The <em>integration paradox</em></h2>
+            </div>
+
+            <div class="prose">
+                <p>Sweden's immigrant population has grown dramatically since 1991. Ethnic diversity has reshaped the partner market. Over the same period, interethnic unions have become more common in absolute terms. That reads like integration: boundaries eroding, communities mixing, demographic progress.</p>
+
+                <p>When you decompose the trend, the picture inverts.</p>
+
+                <p>Conditional logit models that hold partner availability constant show that the residual assortativity for same-group partners has not weakened. In several configurations, particularly among Swedish-origin women, it has strengthened. The rise in interethnic unions is not a sign of softening boundaries. It is a mechanical consequence of a partner market reshaped by migration and segregation. More diversity makes same-group pairing structurally harder, even when the appetite for it is unchanged or stronger.</p>
+
+                <div class="pull">
+                    <blockquote>"Without accounting for who is actually available, we mistake a structural shift for an attitudinal one. The Swedish case shows you cannot read boundary change off mixing rates alone."</blockquote>
+                </div>
+
+                <p>This matters for how demographic trends get interpreted. Rising intermarriage is routinely read as evidence that integration is working. Without an opportunity-side counterfactual, that reading is unsafe. The same observed rise can come from openness or from arithmetic, and the policy implications differ.</p>
+
+                <p>Paper 4 (this poster) is, in that sense, the methodological cousin of Paper 3: same logic, different dimension, same insistence that opportunity be modelled before behaviour gets named.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Simulations ============ -->
+    <section class="section" id="sims">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Play with it</span>
+                <h2>Three small <em>simulations</em></h2>
+            </div>
+
+            <div class="prose">
+                <p>The opportunity-versus-assortativity distinction is easier to feel than to explain. Three browser simulations make the lever visible. Adjust segregation, in-group attraction, and distance sensitivity, then watch couples form and see how much sorting emerges from each.</p>
+            </div>
+
+            <ul class="sim-list">
+                <li>
+                    <a href="/simulation/space-vs-preference/">
+                        <div class="sim-name">Space or preference</div>
+                        <div class="sim-desc">Two groups in a city. Crank segregation, leave attraction at zero, watch endogamy rise from geography alone.</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/simulation/structure-vs-behavior/">
+                        <div class="sim-name">Structure or behaviour</div>
+                        <div class="sim-desc">Compare two snapshots. See how rising exogamy can come from compositional change while behaviour stays constant.</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/simulation/status-vs-homophily/">
+                        <div class="sim-name">Status or homophily</div>
+                        <div class="sim-desc">Three groups with directed preferences. The same endogamy pattern can come from "I want my own" or from "others exclude me".</div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="cta-row">
+                <a class="cta primary" href="/simulation/">All simulations →</a>
+                <a class="cta ghost" href="/#research">Inline simulation on the homepage →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Contact ============ -->
+    <section class="section dark" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Find me · cite me · talk to me</span>
+                <h2>If any of this <em>resonates</em></h2>
+            </div>
+
+            <div class="prose">
+                <p>I'm a PhD candidate at the <a href="https://liu.se/en/organisation/liu/iei/ias" target="_blank" rel="noopener">Institute for Analytical Sociology</a>, Linköping University, defending in late 2026 and starting a Swedish Research Council postdoc in 2027. If you work on assortative mating, ethnic boundaries, segregation, or the methods used here, I'd like to talk.</p>
+            </div>
+
+            <div class="cta-row">
+                <a class="cta primary" href="mailto:jesper.lindmarker@gmail.com">Email me</a>
+                <a class="cta ghost" href="https://scholar.google.com/citations?user=12yuS3sAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+                <a class="cta ghost" href="https://www.linkedin.com/in/jesperlindmarker/" target="_blank" rel="noopener">LinkedIn</a>
+                <a class="cta ghost" href="/#papers">All papers on homepage</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Jesper Lindmarker · Built for EPC 2026 in Lisbon · <a href="/">Back to homepage</a></p>
+        </div>
+    </footer>
+
+    <script src="swipe.js"></script>
+    <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
