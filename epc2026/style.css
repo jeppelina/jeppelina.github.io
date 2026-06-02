@@ -489,13 +489,16 @@ img { max-width: 100%; display: block; }
     transform: translate(-50%, -50%) rotate(12deg);
 }
 
-/* Action buttons (below stack) */
+/* Action buttons — float in front of the deck, straddling the bottom edge of
+   the cards (cards sit behind, z-index < 40). */
 .swipe-actions {
+    position: relative;
+    z-index: 40;
     display: flex;
     gap: 1.5rem;
     justify-content: center;
     align-items: center;
-    margin-top: 0.9rem;
+    margin-top: -28px;
 }
 .swipe-actions button {
     width: 52px; height: 52px;
