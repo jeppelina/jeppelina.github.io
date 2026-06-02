@@ -199,8 +199,8 @@
             <div class="p4-explorer" id="p4-explorer">
                 <div class="p4-explorer-head">
                     <span class="p4-kicker">Interactive · the headline result</span>
-                    <h3>How much of educational homogamy is just opportunity?</h3>
-                    <p>Similarly-educated people partner with each other far more than chance would predict. But how much of that is choice, and how much is simply being routed through the same universities, workplaces, organisations, and neighbourhoods? Switch the channels on one at a time and watch the homogamy shrink toward 1&times;, the rate you would see if education carried no weight at all.</p>
+                    <h3>How much of educational homogamy is just sharing the same places?</h3>
+                    <p>Similarly-educated people pair up far more than the partner market alone would predict. The bars below already hold that market fixed: each compares a person's real partner against a pool of singles they could plausibly have met that year, so the supply of similarly-educated partners, along with age, cohort, and region, is already accounted for. These are not raw counts. What the slider adds is narrower, the specific settings two people actually shared: the same university, workplace, organisation, or neighbourhood. Switch them on one at a time and watch the homogamy shrink toward 1&times;, the rate you would see if those settings explained all of it.</p>
                 </div>
 
                 <div class="p4-seg" role="group" aria-label="Focal person">
@@ -217,12 +217,12 @@
 
                 <p class="p4-readout" id="p4-readout" aria-live="polite"></p>
 
-                <p class="p4-foot">Swedish registers, 842,486 first unions with women as ego (men estimated separately), 1991 to 2019. Bars show the odds of partnering with someone of the same education rather than a different education, where 1&times; is the rate expected if education did not matter. Channels are added in the order people meet them; what remains at the end is residual assortativity, an upper bound on what choice could explain, not proof of preference. KHB decomposition on the Model 4 scale.</p>
+                <p class="p4-foot">Swedish registers, 842,486 first unions with women as ego (men estimated separately), 1991 to 2019. Bars show the odds of partnering with someone of the same education rather than a different education, net of the sampled choice set and controls for age, cohort, and region, where 1&times; is the rate expected if education did not matter. The baseline already holds the local supply of partners fixed; the slider adds only shared institutions (universities, workplaces, organisations) and residential distance, in the order people meet them. What remains at the end is residual assortativity, an upper bound on what choice could explain, not proof of preference. KHB decomposition on the Model 4 scale.</p>
 
                 <noscript>
                     <figure class="paper-figure light">
-                        <img src="assets/figures/p4_mediation_gradient.png" alt="Share of educational homogamy explained by opportunity channels, by education pairing. Near zero for the least educated, rising to around half for the most educated." loading="lazy">
-                        <figcaption>Share of educational homogamy explained by opportunity, by education level. The bars climb across the distribution and turn negative at the very bottom.</figcaption>
+                        <img src="assets/figures/p4_mediation_gradient.png" alt="Share of educational homogamy explained by shared institutions and residential distance, by education pairing. Near zero for the least educated, rising to around half for the most educated." loading="lazy">
+                        <figcaption>Share of educational homogamy explained by shared institutions and residential distance, by education level, over and above the partner market the baseline already holds fixed. The bars climb across the distribution and turn negative at the very bottom.</figcaption>
                     </figure>
                 </noscript>
             </div>
@@ -440,7 +440,7 @@
     </footer>
 
     <script src="swipe.js?v=2"></script>
-    <script src="paper4.js?v=1"></script>
+    <script src="paper4.js?v=2"></script>
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

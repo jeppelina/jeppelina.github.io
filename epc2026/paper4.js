@@ -25,7 +25,7 @@
     // Top of the education distribution first, so the eye sees the top bars
     // collapse while the bottom ones barely move.
     var ORDER = ["Post-sec long", "Post-sec short", "Gymnasium", "No gymnasium"];
-    var CHANNELS = ["Raw", "Universities", "Workplaces", "Organisations", "Neighbourhoods"];
+    var CHANNELS = ["Baseline", "Universities", "Workplaces", "Organisations", "Neighbourhoods"];
     var CUMULATIVE = [
         "nothing yet",
         "universities",
@@ -119,15 +119,15 @@
 
     function renderReadout() {
         if (step === 0) {
-            readout.innerHTML = "Raw educational homogamy, before any opportunity is accounted for. " +
+            readout.innerHTML = "Baseline educational homogamy: this already nets out who each person could realistically have met, plus age, cohort, and region. It is not a raw count. " +
                 "Each bar is how much more often people partner within their education level than across it. " +
-                "<strong>Drag the slider to switch on the places people meet.</strong>";
+                "<strong>Drag the slider to add the settings where they actually overlapped.</strong>";
             return;
         }
         var topPct = Math.round(explainedPct(sex, "Post-sec long", step));
         var lowRaw = explainedPct(sex, "No gymnasium", step);
         var lowTxt = lowRaw < 1 ? "under 1" : String(Math.round(lowRaw));
-        readout.innerHTML = "Accounting for " + CUMULATIVE[step] + ": opportunity explains " +
+        readout.innerHTML = "With " + CUMULATIVE[step] + " accounted for, sharing those settings explains " +
             "<strong>" + topPct + "%</strong> of educational homogamy among the most-educated " + sex +
             ", but only <strong>" + lowTxt + "%</strong> among the least-educated.";
     }
