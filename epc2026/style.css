@@ -309,20 +309,11 @@ img { max-width: 100%; display: block; }
 }
 .swipe-card .card-body p + p { margin-top: 0.5rem; }
 .swipe-card .card-body .accent { color: var(--color-accent); font-weight: 600; }
-.swipe-card .card-body .card-rq {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1rem;
-    color: var(--color-text);
-    line-height: 1.4;
-    margin-bottom: 0.6rem;
-}
 
 /* For the simulations card — looks like a paper but is a tool.
-   Keep the accent slightly different so the eye registers it
-   as not-quite-a-paper. */
+   Keep the eyebrow a different accent so the eye registers it as
+   not-quite-a-paper; everything else matches the paper cards. */
 .swipe-card-tool .card-eyebrow { color: var(--color-accent-2); }
-.swipe-card-tool .card-authors { font-style: normal; font-size: 0.85rem; }
 
 /* First card: the poster you just scanned. A small portrait thumbnail of the
    poster sits beside the title so the visitor instantly recognises it. */
