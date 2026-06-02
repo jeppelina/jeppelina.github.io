@@ -176,22 +176,41 @@
         card.classList.add('is-dragging');
     }
 
+    // Release the card and forget the gesture without committing a swipe.
+    // Used when the browser takes over for a vertical scroll, or when a
+    // pointercancel fires. Snaps the card home and clears the stamps.
+    function abortDrag() {
+        if (!drag) return;
+        const card = drag.card;
+        drag = null;
+        card.classList.remove('is-dragging');
+        card.style.transform = '';
+        const sy = card.querySelector('.stamp-yes');
+        const ss = card.querySelector('.stamp-skip');
+        if (sy) sy.style.opacity = '0';
+        if (ss) ss.style.opacity = '0';
+    }
+
     function onPointerMove(e) {
         if (!drag) return;
         const dx = e.clientX - drag.startX;
         const dy = e.clientY - drag.startY;
 
-        // Determine if this gesture is horizontal (swipe) or vertical (scroll).
+        // Wait for a clear gesture before committing to a direction. Until the
+        // finger has travelled ~10px the card stays put, so a still finger or a
+        // tiny jitter never kicks off an accidental drag.
         if (drag.locked === null) {
-            if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
-                drag.locked = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-            }
+            const adx = Math.abs(dx), ady = Math.abs(dy);
+            if (adx < 10 && ady < 10) { return; }
+            // Bias toward a horizontal swipe: only hand the gesture back to the
+            // browser as a vertical scroll when it is clearly more vertical than
+            // horizontal. A swipe that starts slightly diagonally still reads as
+            // a swipe instead of snapping the card back to centre.
+            drag.locked = (ady > adx * 1.4) ? 'y' : 'x';
         }
         if (drag.locked === 'y') {
-            // Cancel the drag, let the browser scroll.
-            drag.card.classList.remove('is-dragging');
-            drag.card.style.transform = '';
-            drag = null;
+            // Vertical intent: let the browser scroll the page.
+            abortDrag();
             return;
         }
 
@@ -252,7 +271,9 @@
     stack.addEventListener('pointerdown', onPointerDown);
     stack.addEventListener('pointermove', onPointerMove);
     stack.addEventListener('pointerup', onPointerUp);
-    stack.addEventListener('pointercancel', onPointerUp);
+    // A cancel (e.g. the browser commandeering the gesture for a scroll) must
+    // never count as a tap-to-match: just snap the card home.
+    stack.addEventListener('pointercancel', abortDrag);
 
     // ---------- Reveal toggles ----------
     cards.forEach(card => {
