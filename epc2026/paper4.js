@@ -139,6 +139,16 @@
         var topPct = Math.round(explainedPct(sex, "Post-sec long", step));
         var lowRaw = explainedPct(sex, "No gymnasium", step);
         var lowTxt = lowRaw < 1 ? "under 1" : String(Math.round(lowRaw));
+        if (sex === "men") {
+            // Men's baselines are far apart: the most-educated sort strongly, the
+            // least-educated barely at all. Naming the two bases keeps the larger
+            // bottom share from reading as a contradiction of the smaller top one.
+            readout.innerHTML = "With " + CUMULATIVE[step] + " accounted for, shared settings explain " +
+                "<strong>" + topPct + "%</strong> of the strong educational homogamy among the most-educated men, " +
+                "who partner within their education almost ten times as often as across it, and " +
+                "<strong>" + lowTxt + "%</strong> of the slim homogamy among the least-educated.";
+            return;
+        }
         readout.innerHTML = "With " + CUMULATIVE[step] + " accounted for, sharing those settings explains " +
             "<strong>" + topPct + "%</strong> of educational homogamy among the most-educated " + sex +
             ", but only <strong>" + lowTxt + "%</strong> among the least-educated.";

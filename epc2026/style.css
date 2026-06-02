@@ -1368,12 +1368,12 @@ img { max-width: 100%; display: block; }
 .p4-slope { display: block; width: 100%; height: auto; }
 .p4-slope .grid { stroke: #cfcabd; stroke-width: 0.8; }
 .p4-slope .guide { stroke: #e2ddd1; stroke-width: 0.8; }
-.p4-slope .axis { stroke: var(--color-text); stroke-width: 1; }
-.p4-slope .seg { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.p4-slope .axis { stroke: var(--color-text); stroke-width: 1.2; }
+.p4-slope .seg { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
 .p4-slope .pt { stroke: var(--color-surface); stroke-width: 2; }
-.p4-slope .glab { fill: var(--color-text-muted); font-family: var(--font-mono); font-size: 13px; }
-.p4-slope .xlab { fill: var(--color-text); font-family: var(--font-sans); font-size: 15px; font-weight: 700; }
-.p4-slope .ytitle { fill: var(--color-text-muted); font-family: var(--font-sans); font-size: 13px; }
+.p4-slope .glab { fill: var(--color-text); font-family: var(--font-mono); font-size: 17px; }
+.p4-slope .xlab { fill: var(--color-text); font-family: var(--font-sans); font-size: 19px; font-weight: 700; }
+.p4-slope .ytitle { fill: var(--color-text); font-family: var(--font-sans); font-size: 17px; font-weight: 600; }
 
 /* dose-response bars */
 .p4-dose-sub {
@@ -1430,8 +1430,14 @@ img { max-width: 100%; display: block; }
     .p4-explorer-head h3 { font-size: 1.2rem; }
     .p4-fig h3 { font-size: 1.2rem; }
     .p4-dose-row { grid-template-columns: 56px 1fr 40px; gap: 0.5rem; }
-    .p4-slope .xlab { font-size: 13px; }
-    .p4-slope .glab, .p4-slope .ytitle { font-size: 12px; }
+    /* Push the wide figure nearly edge-to-edge so the plot gets real width. */
+    .p4-fig--wide {
+        width: calc(100vw - 0.8rem);
+        padding-left: 0.7rem;
+        padding-right: 0.7rem;
+    }
+    .p4-slope .xlab { font-size: 22px; }
+    .p4-slope .glab, .p4-slope .ytitle { font-size: 19px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
