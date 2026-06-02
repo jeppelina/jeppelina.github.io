@@ -420,6 +420,19 @@ img { max-width: 100%; display: block; }
 .swipe-card .card-figure figcaption {
     display: none;
 }
+/* For figures whose whole shape is the message (e.g. a trend line), show the
+   full figure on a white panel instead of cropping it. */
+.swipe-card .card-figure--contain {
+    background: var(--color-surface);
+}
+.swipe-card .card-figure--contain img {
+    object-fit: contain;
+}
+/* A taller strip for cards whose body text is short, so a contained figure
+   reads at a comfortable size. */
+.swipe-card .card-figure--tall {
+    height: 146px;
+}
 .swipe-card .reveal-btn {
     align-self: flex-start;
     background: none;
