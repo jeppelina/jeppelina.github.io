@@ -14,8 +14,11 @@
   header .sub { opacity:.85; font-size:13px; margin-top:3px; }
   .wrap { max-width:1080px; margin:0 auto; padding:18px 22px 60px; }
   .controls { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:10px; margin-bottom:14px; }
-  .controls input, .controls select { width:100%; padding:9px 11px; border:1px solid var(--line); border-radius:8px; background:var(--card); font-size:14px; }
-  @media (max-width:760px){ .controls{ grid-template-columns:1fr 1fr; } }
+  .controls input, .controls select { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--card); font-size:16px; }
+  @media (max-width:760px){
+    .controls{ grid-template-columns:1fr 1fr; }
+    .controls #q, .controls #inst{ grid-column:1 / -1; }
+  }
   .meta { color:var(--muted); font-size:13px; margin:4px 2px 14px; display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
   .meta button { font-size:12px; border:1px solid var(--line); background:#fff; border-radius:6px; padding:4px 9px; cursor:pointer; }
   table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
@@ -38,6 +41,28 @@
   .empty-state { text-align:center; color:var(--muted); padding:40px; }
   a.sess { color:var(--accent); text-decoration:none; }
   a.sess:hover { text-decoration:underline; }
+  footer.about { margin-top:26px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px; line-height:1.65; }
+  footer.about b { color:var(--ink); font-weight:600; }
+  footer.about a { color:var(--accent); }
+  /* mobile: render each person as a card instead of a wide table row */
+  @media (max-width:720px){
+    .wrap{ padding:14px 14px 48px; }
+    table, tbody { display:block; }
+    thead { display:none; }
+    table { border:0; background:transparent; border-radius:0; overflow:visible; }
+    tr.person { display:block; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-bottom:10px; }
+    tr.person:hover { background:var(--card); }
+    tr.person td { display:block; border:0; padding:1px 0; }
+    td.name { font-size:16px; margin-bottom:1px; }
+    td[data-label]::before { content:attr(data-label) ": "; color:var(--muted); font-size:12px; }
+    td.country, td.sessions { display:inline-block; }
+    td.country { margin-right:14px; }
+    td.country span { background:transparent; padding:0; color:var(--accent); font-weight:600; }
+    td.roles { margin-top:5px; }
+    tr.detail { display:block; }
+    tr.detail td { display:block; padding:0; }
+    .part .sub { font-size:12.5px; }
+  }
   /* gate */
   #gate { position:fixed; inset:0; background:var(--accent); display:flex; align-items:center; justify-content:center; z-index:50; }
   #gate .box { background:#fff; border-radius:14px; padding:28px 26px; width:330px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); text-align:center; }
@@ -94,6 +119,11 @@
       <tbody id="rows"></tbody>
     </table>
     <div id="empty" class="empty-state" style="display:none">No matches. Try broadening your search.</div>
+    <footer class="about">
+      <p><b>What this is.</b> An unofficial, searchable index of the EPC2026 programme, built so you can find participants by <b>country</b> or <b>institution</b> (for example everyone from Sweden, or from Stockholm University) which the official programme site does not let you do.</p>
+      <p><b>How it was made.</b> The public programme at <a href="https://epc2026.eaps.nl/" target="_blank" rel="noopener">epc2026.eaps.nl</a> was read once and parsed into a structured list of people, papers and sessions. Country is inferred from each person's stated affiliation, so it is approximate and a few institutions could not be placed. Not affiliated with EAPS or the EPC.</p>
+      <p>Built by Jesper Lindmarker.</p>
+    </footer>
   </div>
 </div>
 
@@ -190,9 +220,9 @@ function initApp(DATA){
       html += '<tr class="person" data-id="'+esc(p.id)+'">'+
         '<td class="name">'+esc(p.name)+'</td>'+
         '<td>'+esc(p.institution||'')+'</td>'+
-        '<td class="country'+(p.country?'':' empty')+'">'+cc+'</td>'+
-        '<td>'+p.n_participations+'</td>'+
-        '<td>'+roleBadges+'</td></tr>';
+        '<td class="country'+(p.country?'':' empty')+'" data-label="Country">'+cc+'</td>'+
+        '<td class="sessions" data-label="Sessions">'+p.n_participations+'</td>'+
+        '<td class="roles">'+roleBadges+'</td></tr>';
       if(p.id===openId){
         html += '<tr class="detail"><td colspan="5"><div class="detail">'+
           '<h4>'+esc(p.name)+(p.institution?' · '+esc(p.institution):'')+(p.country?' · '+esc(p.country):'')+'</h4>'+
