@@ -157,8 +157,9 @@
     function onPointerDown(e) {
         const card = activeCard();
         if (!card) return;
-        // Let the reveal button receive its click without starting a drag.
-        if (e.target.closest('.reveal-btn')) return;
+        // Let links and buttons (reveal toggle, poster thumbnail) receive their
+        // own click without starting a drag or a tap-to-match.
+        if (e.target.closest('a, button')) return;
         drag = {
             card,
             startX: e.clientX,
@@ -212,7 +213,7 @@
 
     function onPointerUp(e) {
         if (!drag) return;
-        const { card, dx } = drag;
+        const { card, dx, locked } = drag;
         const v = drag.velocity || 0;
         drag = null;
         card.classList.remove('is-dragging');
@@ -222,13 +223,23 @@
 
         if (past || flicked) {
             commitSwipe(dx > 0 ? 'right' : 'left');
-        } else {
-            card.style.transform = '';
-            const sy = card.querySelector('.stamp-yes');
-            const ss = card.querySelector('.stamp-skip');
-            if (sy) sy.style.opacity = '0';
-            if (ss) ss.style.opacity = '0';
+            return;
         }
+
+        // A tap (no directional lock, no real movement) counts as a match, so
+        // visitors who don't take to the swipe gesture can simply click a card
+        // to reach what it points at.
+        if (locked === null) {
+            commitSwipe('right');
+            return;
+        }
+
+        // Otherwise snap back to centre.
+        card.style.transform = '';
+        const sy = card.querySelector('.stamp-yes');
+        const ss = card.querySelector('.stamp-skip');
+        if (sy) sy.style.opacity = '0';
+        if (ss) ss.style.opacity = '0';
     }
 
     stack.addEventListener('pointerdown', onPointerDown);
