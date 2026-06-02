@@ -1004,6 +1004,9 @@ img { max-width: 100%; display: block; }
                     visibility 0s linear 0s;
     }
     .swipe-stack { max-width: 340px; }
+    /* The conference/author band duplicates info that is already in the nav
+       and the cards, so it is hidden on small screens to save vertical space. */
+    .eyebrow-band { display: none; }
 }
 
 @media (min-width: 768px) {
