@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=19">
+    <link rel="stylesheet" href="style.css?v=20">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
 
     <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
@@ -228,8 +228,33 @@
 
             <figure class="p4-fig">
                 <div class="p4-qhead"><span class="p4-badge">Q1</span><span class="p4-kicker">The dose-response</span></div>
-                <h3>How much more likely are you to choose a partner you have worked with?</h3>
-                <p class="p4-dose-sub">Shared workplace · relative odds of a union</p>
+                <h3>How much more likely are you to partner someone you shared a setting with?</h3>
+
+                <p class="p4-dose-sub p4-dose-sub--uni">Shared university · relative probability of a union</p>
+                <div class="p4-dose p4-dose--uni">
+                    <div class="p4-dose-row">
+                        <span class="p4-dose-lab">0 years</span>
+                        <div class="p4-dose-track"><div class="p4-dose-fill" style="width:13%"></div></div>
+                        <span class="p4-dose-val">1.0&times;</span>
+                    </div>
+                    <div class="p4-dose-row">
+                        <span class="p4-dose-lab">1 year</span>
+                        <div class="p4-dose-track"><div class="p4-dose-fill" style="width:30%"></div></div>
+                        <span class="p4-dose-val">2.3&times;</span>
+                    </div>
+                    <div class="p4-dose-row">
+                        <span class="p4-dose-lab">2 years</span>
+                        <div class="p4-dose-track"><div class="p4-dose-fill" style="width:49%"></div></div>
+                        <span class="p4-dose-val">3.7&times;</span>
+                    </div>
+                    <div class="p4-dose-row">
+                        <span class="p4-dose-lab">3+ years</span>
+                        <div class="p4-dose-track"><div class="p4-dose-fill" style="width:100%"></div></div>
+                        <span class="p4-dose-val">7.6&times;</span>
+                    </div>
+                </div>
+
+                <p class="p4-dose-sub">Shared workplace · relative probability of a union</p>
                 <div class="p4-dose">
                     <div class="p4-dose-row">
                         <span class="p4-dose-lab">0 years</span>
@@ -252,7 +277,9 @@
                         <span class="p4-dose-val">46&times;</span>
                     </div>
                 </div>
-                <figcaption class="p4-fig-cap">Relative odds of forming a union, by years of shared employment, from the conditional logit. Shared workplace enters as a categorical dose (none, 1, 2, 3 or more years) rather than a linear term, net of the sampled partner market and controls for age, cohort, and region. Each additional year multiplies the odds: a clear dose-response, not a faint nudge. Reference category: no shared employer (1.0&times;).</figcaption>
+
+                <figcaption class="p4-fig-cap">Relative probability of forming a union, by years of co-membership, from the conditional logit. Each setting enters as a categorical dose (none, 1, 2, 3 or more years) rather than a linear term, net of the sampled partner market and controls for age, cohort, and region. Each extra year multiplies the relative probability: a clear dose-response, not a faint nudge. Reference category for each setting: zero shared years (1.0&times;). Bars are scaled within each setting; the workplace effects are several times larger than the university effects. Estimated on the full Model 4.</figcaption>
+                <p class="p4-dose-link"><a href="assets/figures/p4_dose_response.png" target="_blank" rel="noopener">See the full coefficient plot, all settings and both sexes &rarr;</a></p>
             </figure>
 
             <div class="p4-explorer" id="p4-explorer">

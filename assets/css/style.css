@@ -19,6 +19,8 @@
     --color-accent-light: #F5EBE7;
     --color-accent-2: #3B6994;
     --color-accent-2-light: #E9EFF5;
+    --color-epc: #1F5D6E;
+    --color-epc-dark: #17474F;
     --color-border: #e5e3de;
     --color-dark: #141414;
     --color-dark-surface: #1c1c1c;
@@ -148,6 +150,35 @@ img {
 }
 .nav-links a:hover { color: var(--color-text); }
 .nav-links a:hover::after { width: 100%; }
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+/* Persistent conference CTA: a colour that pops, visible on mobile and desktop */
+.nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    background: var(--color-epc);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 0.45rem 0.95rem;
+    border-radius: 100px;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(31, 93, 110, 0.25);
+    transition: all var(--transition);
+}
+.nav-cta:hover {
+    background: var(--color-epc-dark);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(31, 93, 110, 0.35);
+}
 
 .nav-toggle {
     display: none;
@@ -290,6 +321,19 @@ img {
     border-color: var(--color-text);
     color: var(--color-text);
     transform: translateY(-1px);
+}
+
+.btn-epc {
+    background: var(--color-epc);
+    color: #fff;
+    gap: 0.4em;
+    box-shadow: 0 2px 10px rgba(31, 93, 110, 0.25);
+}
+.btn-epc:hover {
+    background: var(--color-epc-dark);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(31, 93, 110, 0.35);
 }
 
 .hero-image {
@@ -1102,6 +1146,7 @@ img {
     .nav-toggle {
         display: flex;
     }
+    .nav-right { gap: var(--space-sm); }
     .nav-links {
         position: fixed;
         top: 64px;
