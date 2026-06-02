@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=13">
+    <link rel="stylesheet" href="style.css?v=14">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
 
     <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
@@ -196,6 +196,37 @@
                 </div>
             </div>
 
+            <div class="p4-explorer" id="p4-explorer">
+                <div class="p4-explorer-head">
+                    <span class="p4-kicker">Interactive · the headline result</span>
+                    <h3>How much of educational homogamy is just opportunity?</h3>
+                    <p>Similarly-educated people partner with each other far more than chance would predict. But how much of that is choice, and how much is simply being routed through the same universities, workplaces, organisations, and neighbourhoods? Switch the channels on one at a time and watch the homogamy shrink toward 1&times;, the rate you would see if education carried no weight at all.</p>
+                </div>
+
+                <div class="p4-seg" role="group" aria-label="Focal person">
+                    <button type="button" class="is-on" data-sex="women" aria-pressed="true">Women</button>
+                    <button type="button" data-sex="men" aria-pressed="false">Men</button>
+                </div>
+
+                <div class="p4-chart" id="p4-chart"></div>
+
+                <div class="p4-stepper">
+                    <input type="range" id="p4-range" min="0" max="4" step="1" value="0" aria-label="Opportunity channels accounted for">
+                    <div class="p4-ticks" id="p4-ticks"></div>
+                </div>
+
+                <p class="p4-readout" id="p4-readout" aria-live="polite"></p>
+
+                <p class="p4-foot">Swedish registers, 842,486 first unions with women as ego (men estimated separately), 1991 to 2019. Bars show the odds of partnering with someone of the same education rather than a different education, where 1&times; is the rate expected if education did not matter. Channels are added in the order people meet them; what remains at the end is residual assortativity, an upper bound on what choice could explain, not proof of preference. KHB decomposition on the Model 4 scale.</p>
+
+                <noscript>
+                    <figure class="paper-figure light">
+                        <img src="assets/figures/p4_mediation_gradient.png" alt="Share of educational homogamy explained by opportunity channels, by education pairing. Near zero for the least educated, rising to around half for the most educated." loading="lazy">
+                        <figcaption>Share of educational homogamy explained by opportunity, by education level. The bars climb across the distribution and turn negative at the very bottom.</figcaption>
+                    </figure>
+                </noscript>
+            </div>
+
             <p class="fold-prompt">Unfold the study →</p>
 
             <div class="fold-group">
@@ -235,12 +266,7 @@
                 <details class="fold">
                     <summary><span class="fold-k">05 · What we found</span><span class="fold-x" aria-hidden="true">+</span></summary>
                     <div class="fold-body">
-                        <p>Opportunity does a lot of the work, but mainly near the top. For couples where both hold a long tertiary degree, residence, workplaces, and universities together account for around 40 percent of their educational homogamy; for the middle of the distribution it is closer to 30 percent. The channels show a clean dose-response: each extra year sharing an employer or a campus raises the odds of a union.</p>
-
-                        <figure class="paper-figure light">
-                            <img src="assets/figures/p4_mediation_gradient.png" alt="Bar chart of the share of educational homogamy explained by opportunity channels, by education pairing. For couples with no gymnasium degree the share is near zero or slightly negative; for gymnasium pairs about 7 percent; for short post-secondary pairs around 30 to 47 percent; for long post-secondary pairs up to 60 percent for universities and about 49 percent for all channels combined." loading="lazy">
-                            <figcaption>Share of educational homogamy explained by opportunity, by education level. The bars climb across the distribution, and turn negative at the very bottom.</figcaption>
-                        </figure>
+                        <p>Opportunity does a lot of the work, but mainly near the top, as the interactive above shows. For couples where both hold a long tertiary degree, residence, workplaces, and universities together account for around half of their educational homogamy; for the middle of the distribution it is closer to 30 percent. The channels show a clean dose-response: each extra year sharing an employer or a campus raises the odds of a union.</p>
 
                         <p>The surprise is at the bottom. For the least educated, these channels explain essentially none of their homogamy. Accounting for where they live even nudges their estimated sorting slightly upward, not down. Whatever brings similarly low-educated people together, it is not the residence, workplace, or university overlap that registers can see.</p>
 
@@ -414,6 +440,7 @@
     </footer>
 
     <script src="swipe.js?v=2"></script>
+    <script src="paper4.js?v=1"></script>
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
