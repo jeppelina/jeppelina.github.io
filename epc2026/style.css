@@ -1327,6 +1327,21 @@ img { max-width: 100%; display: block; }
     color: var(--color-text-muted);
 }
 
+/* A figure that breaks out of the 760px reading column to push the margins.
+   Centred on the viewport; the text inside stays at a readable line length. */
+.p4-fig--wide {
+    width: min(100vw - 2rem, 940px);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    padding-left: 1.8rem;
+    padding-right: 1.8rem;
+}
+.p4-fig--wide h3,
+.p4-fig--wide .p4-slope-legend,
+.p4-fig--wide .p4-fig-cap {
+    max-width: 700px;
+}
+
 /* slope chart */
 .p4-slope-legend {
     display: flex;

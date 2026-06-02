@@ -42,7 +42,9 @@
 
     let current = 0;
     const SWIPE_THRESHOLD = 90;     // px past center to commit
-    const VELOCITY_THRESHOLD = 0.45;// px per ms to commit on flick
+    const VELOCITY_THRESHOLD = 0.6; // px per ms to commit on flick
+    const FLICK_MIN_DISTANCE = 55;  // a flick must also travel this far, so a
+                                    // fast micro-jitter doesn't fling the card
     let drag = null;                // { card, startX, startY, lastX, lastT, dx, dy, locked }
 
     function setDepths() {
@@ -219,7 +221,12 @@
         card.classList.remove('is-dragging');
 
         const past = Math.abs(dx) > SWIPE_THRESHOLD;
-        const flicked = Math.abs(v) > VELOCITY_THRESHOLD;
+        // A flick must be fast, travel a real distance, and end in the same
+        // direction it is travelling, so a quick small jitter no longer flings
+        // the card off-screen.
+        const flicked = Math.abs(v) > VELOCITY_THRESHOLD &&
+                        Math.abs(dx) > FLICK_MIN_DISTANCE &&
+                        Math.sign(v) === Math.sign(dx);
 
         if (past || flicked) {
             commitSwipe(dx > 0 ? 'right' : 'left');

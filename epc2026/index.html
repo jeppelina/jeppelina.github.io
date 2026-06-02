@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=18">
+    <link rel="stylesheet" href="style.css?v=19">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
 
     <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
@@ -52,7 +52,7 @@
     <section class="swipe-hero" aria-label="Interactive intro">
 
         <div class="swipe-headline">
-            <h1>Swipe or tap <em>to match.</em></h1>
+            <h1>Swipe <em>to match.</em></h1>
         </div>
 
         <div class="swipe-progress" id="swipe-progress" aria-hidden="true">
@@ -67,7 +67,7 @@
             <!-- The poster paper -->
             <article class="swipe-card swipe-card-poster" data-index="0" data-target="#about-paper">
                 <div class="card-eyebrow">
-                    <span>★ The poster you just scanned</span>
+                    <span>★ EPC 2026 poster</span>
                     <span class="step">01 / 04</span>
                 </div>
                 <div class="card-poster-row">
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <p>The study behind the poster. Tap the card, or swipe right, for the question, the data, the method, and what we found.</p>
+                    <p>The study behind the poster. Swipe right for the question, the data, the method, and what we found.</p>
                 </div>
                 <div class="card-foot"></div>
                 <div class="stamp stamp-yes" aria-hidden="true">Match</div>
@@ -161,10 +161,6 @@
             <button class="btn-skip" id="btn-skip" type="button" aria-label="Next card">✕</button>
             <button class="btn-yes"  id="btn-yes"  type="button" aria-label="Match">♥</button>
         </div>
-
-        <div class="swipe-skip-link">
-            <a href="#about-paper">Skip the cards, scroll down</a>
-        </div>
     </section>
 
     <!-- ============ About the poster ============ -->
@@ -184,7 +180,7 @@
                 </figure>
             </div>
 
-            <figure class="p4-fig">
+            <figure class="p4-fig p4-fig--wide">
                 <span class="p4-kicker">The setup · before any model</span>
                 <h3>Universities and workplaces sort by education</h3>
                 <div class="p4-slope-legend">
@@ -227,7 +223,7 @@
                     <text class="xlab" x="524" y="340" text-anchor="middle">Rest of country</text>
                     <text class="ytitle" transform="rotate(-90 22 169)" x="22" y="169" text-anchor="middle">% with ego's level of education</text>
                 </svg>
-                <figcaption class="p4-fig-cap">Educational sorting of partner pools, by setting. For each education level we draw the single people an ego could plausibly have met in that setting, then read off the share who hold the ego's own education. A steep downward line means the setting concentrates people by schooling; a flat line means it barely sorts. University is the most concentrated pool and the rest of the country the broadest. Sorting is strong for the tertiary-educated and close to flat for the least educated. Swedish registers, 1990 to 2019.</figcaption>
+                <figcaption class="p4-fig-cap">Educational sorting of partner pools, by setting. For each ego we use the registers to sample individuals from the population who, in the same year, (1) co-attended the same university, (2) worked at the same workplace, or (3) lived in the rest of the country. For each pool we then report the share of sampled individuals who share the ego's level of education, plotted separately by the ego's own education. Sorting by education would show up as a higher same-education share in the university and workplace pools than in the rest-of-country pool. Swedish registers, 1990 to 2019.</figcaption>
             </figure>
 
             <figure class="p4-fig">
@@ -524,7 +520,7 @@
         </div>
     </footer>
 
-    <script src="swipe.js?v=3"></script>
+    <script src="swipe.js?v=4"></script>
     <script src="paper4.js?v=3"></script>
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
