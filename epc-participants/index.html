@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>EPC2026 Participant Search</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --line:#e2e5ea; --ink:#1d2330; --muted:#6b7280; --accent:#0d3987; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); }
+  header { background:var(--accent); color:#fff; padding:18px 22px; }
+  header h1 { margin:0; font-size:18px; font-weight:600; }
+  header .sub { opacity:.85; font-size:13px; margin-top:3px; }
+  .wrap { max-width:1080px; margin:0 auto; padding:18px 22px 60px; }
+  .controls { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:10px; margin-bottom:14px; }
+  .controls input, .controls select { width:100%; padding:9px 11px; border:1px solid var(--line); border-radius:8px; background:var(--card); font-size:14px; }
+  @media (max-width:760px){ .controls{ grid-template-columns:1fr 1fr; } }
+  .meta { color:var(--muted); font-size:13px; margin:4px 2px 14px; display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+  .meta button { font-size:12px; border:1px solid var(--line); background:#fff; border-radius:6px; padding:4px 9px; cursor:pointer; }
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  th, td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background:#fafbfc; font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); cursor:pointer; user-select:none; white-space:nowrap; }
+  th .arrow { opacity:.5; font-size:10px; }
+  tr.person { cursor:pointer; }
+  tr.person:hover { background:#f0f4fb; }
+  td.name { font-weight:600; }
+  td.country span { display:inline-block; background:#eef2fb; color:var(--accent); border-radius:20px; padding:1px 9px; font-size:12px; }
+  td.country.empty span { background:#f1f1f3; color:#9aa0ab; }
+  .badge { font-size:11px; background:#eef2fb; color:var(--accent); border-radius:4px; padding:1px 6px; margin-right:4px; white-space:nowrap; }
+  .badge.Presenter { background:#e7f6ec; color:#1a7f3c; }
+  .badge.Chair, .badge.Discussant { background:#fdf0e3; color:#a4621a; }
+  tr.detail td { background:#fafbfd; }
+  .detail h4 { margin:2px 0 8px; font-size:13px; color:var(--muted); }
+  .part { padding:7px 10px; border:1px solid var(--line); border-radius:8px; margin-bottom:7px; background:#fff; }
+  .part .top { font-weight:600; }
+  .part .sub { color:var(--muted); font-size:13px; }
+  .empty-state { text-align:center; color:var(--muted); padding:40px; }
+  a.sess { color:var(--accent); text-decoration:none; }
+  a.sess:hover { text-decoration:underline; }
+  /* gate */
+  #gate { position:fixed; inset:0; background:var(--accent); display:flex; align-items:center; justify-content:center; z-index:50; }
+  #gate .box { background:#fff; border-radius:14px; padding:28px 26px; width:330px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); text-align:center; }
+  #gate h2 { margin:0 0 4px; font-size:17px; }
+  #gate p { margin:0 0 16px; color:var(--muted); font-size:13px; }
+  #gate input { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:15px; }
+  #gate button { margin-top:12px; width:100%; padding:10px; border:0; border-radius:8px; background:var(--accent); color:#fff; font-size:15px; cursor:pointer; }
+  #gate button:disabled { opacity:.6; cursor:default; }
+  #gate .err { color:#c0341d; font-size:13px; margin-top:10px; min-height:16px; }
+  #app { display:none; }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <h2>EPC2026 Participant Search</h2>
+    <p>This index is private. Enter the password to continue.</p>
+    <form id="gateForm">
+      <input id="pw" type="password" placeholder="Password" autocomplete="off" autofocus />
+      <button id="gateBtn" type="submit">Unlock</button>
+    </form>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <h1>EPC2026 Participant Search</h1>
+    <div class="sub" id="hdrsub"></div>
+  </header>
+  <div class="wrap">
+    <div class="controls">
+      <input id="q" type="search" placeholder="Search name, institution, or paper title…" />
+      <select id="country"><option value="">All countries</option></select>
+      <select id="role">
+        <option value="">All roles</option>
+        <option>Presenter</option><option>Author</option><option>Chair</option><option>Discussant</option>
+      </select>
+      <input id="inst" type="search" placeholder="Institution contains…" />
+    </div>
+    <div class="meta">
+      <span id="count"></span>
+      <button id="reset">Reset filters</button>
+    </div>
+    <table>
+      <thead><tr>
+        <th data-sort="name">Name <span class="arrow"></span></th>
+        <th data-sort="institution">Institution <span class="arrow"></span></th>
+        <th data-sort="country">Country <span class="arrow"></span></th>
+        <th data-sort="n_participations">Sessions <span class="arrow"></span></th>
+        <th>Roles</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="empty" class="empty-state" style="display:none">No matches. Try broadening your search.</div>
+  </div>
+</div>
+
+<script>
+// ---------- decryption gate ----------
+async function decryptData(b64, password){
+  var raw = atob(b64.replace(/\s+/g,''));
+  var bytes = new Uint8Array(raw.length);
+  for(var i=0;i<raw.length;i++) bytes[i] = raw.charCodeAt(i);
+  // OpenSSL format: "Salted__"(8) + salt(8) + ciphertext
+  if(String.fromCharCode.apply(null, bytes.slice(0,8)) !== "Salted__") throw new Error("bad file");
+  var salt = bytes.slice(8,16), ct = bytes.slice(16);
+  var km = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
+  var bits = await crypto.subtle.deriveBits({name:"PBKDF2", salt:salt, iterations:200000, hash:"SHA-256"}, km, 384);
+  var d = new Uint8Array(bits);
+  var key = await crypto.subtle.importKey("raw", d.slice(0,32), {name:"AES-CBC"}, false, ["decrypt"]);
+  var plain = await crypto.subtle.decrypt({name:"AES-CBC", iv:d.slice(32,48)}, key, ct);
+  return new TextDecoder().decode(plain);
+}
+
+(function(){
+  var form=document.getElementById("gateForm"), pw=document.getElementById("pw"),
+      btn=document.getElementById("gateBtn"), err=document.getElementById("gateErr");
+  var cachedCipher=null;
+  async function getCipher(){
+    if(cachedCipher!==null) return cachedCipher;
+    var r=await fetch("data.enc"); if(!r.ok) throw new Error("Could not load data.enc");
+    cachedCipher=await r.text(); return cachedCipher;
+  }
+  form.addEventListener("submit", async function(e){
+    e.preventDefault();
+    err.textContent=""; btn.disabled=true; btn.textContent="Unlocking…";
+    try{
+      var cipher=await getCipher();
+      var json=await decryptData(cipher, pw.value);
+      var data=JSON.parse(json); // throws if wrong password produced garbage
+      document.getElementById("gate").style.display="none";
+      document.getElementById("app").style.display="block";
+      initApp(data);
+    }catch(ex){
+      err.textContent="Incorrect password.";
+      btn.disabled=false; btn.textContent="Unlock"; pw.select();
+    }
+  });
+})();
+
+// ---------- search app (runs after successful decrypt) ----------
+function initApp(DATA){
+  var people = DATA.people;
+  document.getElementById('hdrsub').textContent =
+    DATA.n_people + ' people · ' + DATA.n_sessions + ' sessions · ' + DATA.countries.length + ' countries · generated ' + DATA.generated_at;
+  var csel = document.getElementById('country');
+  DATA.countries.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; csel.appendChild(o); });
+
+  var q=document.getElementById('q'), inst=document.getElementById('inst'), rsel=document.getElementById('role');
+  var rowsEl=document.getElementById('rows'), countEl=document.getElementById('count'), emptyEl=document.getElementById('empty');
+  var sortKey='name', sortDir=1, openId=null;
+
+  function norm(s){ return (s||'').toLowerCase(); }
+  function matchPerson(p, terms){
+    var hay = norm(p.name)+' '+norm(p.institution)+' '+norm(p.country)+' '+
+              p.participations.map(function(x){return norm(x.paper_title)+' '+norm(x.institution);}).join(' ');
+    return terms.every(function(t){ return hay.indexOf(t)>=0; });
+  }
+  function current(){
+    var terms = norm(q.value).split(/\s+/).filter(Boolean);
+    var cval=csel.value, ival=norm(inst.value), rval=rsel.value;
+    var out = people.filter(function(p){
+      if(cval && p.country!==cval) return false;
+      if(ival && norm(p.institution).indexOf(ival)<0 &&
+         !p.participations.some(function(x){return norm(x.institution).indexOf(ival)>=0;})) return false;
+      if(rval && p.roles.indexOf(rval)<0) return false;
+      if(terms.length && !matchPerson(p, terms)) return false;
+      return true;
+    });
+    out.sort(function(a,b){
+      var x=a[sortKey], y=b[sortKey];
+      if(sortKey==='n_participations'){ return (x-y)*sortDir; }
+      x=norm(x); y=norm(y);
+      return x<y? -1*sortDir : x>y? 1*sortDir : 0;
+    });
+    return out;
+  }
+  function esc(s){ return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+
+  function render(){
+    var list=current();
+    countEl.textContent = list.length + ' of ' + people.length + ' people';
+    emptyEl.style.display = list.length? 'none':'block';
+    var html='';
+    list.forEach(function(p){
+      var roleBadges = p.roles.map(function(r){return '<span class="badge '+r+'">'+r+'</span>';}).join('');
+      var cc = p.country? '<span>'+esc(p.country)+'</span>' : '<span>—</span>';
+      html += '<tr class="person" data-id="'+esc(p.id)+'">'+
+        '<td class="name">'+esc(p.name)+'</td>'+
+        '<td>'+esc(p.institution||'')+'</td>'+
+        '<td class="country'+(p.country?'':' empty')+'">'+cc+'</td>'+
+        '<td>'+p.n_participations+'</td>'+
+        '<td>'+roleBadges+'</td></tr>';
+      if(p.id===openId){
+        html += '<tr class="detail"><td colspan="5"><div class="detail">'+
+          '<h4>'+esc(p.name)+(p.institution?' · '+esc(p.institution):'')+(p.country?' · '+esc(p.country):'')+'</h4>'+
+          p.participations.map(function(x){
+            var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(x.session);
+            var title = x.paper_title? esc(x.paper_title) : '<i>('+esc(x.role)+')</i>';
+            var instLine = x.institution && x.institution!==p.institution? ' · '+esc(x.institution):'';
+            return '<div class="part"><div class="top">'+title+'</div>'+
+              '<div class="sub"><span class="badge '+x.role+'">'+x.role+'</span> '+
+              '<a class="sess" href="'+link+'" target="_blank" rel="noopener">Session '+esc(x.session)+'</a> · '+
+              esc(x.session_title||'')+' · '+esc(x.day||'')+' '+esc(x.time||'')+' '+esc(x.room||'')+instLine+'</div></div>';
+          }).join('')+
+          '</div></td></tr>';
+      }
+    });
+    rowsEl.innerHTML=html;
+  }
+
+  rowsEl.addEventListener('click', function(e){
+    var tr=e.target.closest('tr.person'); if(!tr) return;
+    var id=tr.getAttribute('data-id');
+    openId = (openId===id)? null : id;
+    render();
+  });
+  document.querySelectorAll('th[data-sort]').forEach(function(th){
+    th.addEventListener('click', function(){
+      var k=th.getAttribute('data-sort');
+      if(sortKey===k){ sortDir*=-1; } else { sortKey=k; sortDir = (k==='n_participations')? -1 : 1; }
+      document.querySelectorAll('th .arrow').forEach(function(a){a.textContent='';});
+      th.querySelector('.arrow').textContent = sortDir>0? '▲':'▼';
+      render();
+    });
+  });
+  [q,inst].forEach(function(el){ el.addEventListener('input', function(){openId=null; render();}); });
+  [csel,rsel].forEach(function(el){ el.addEventListener('change', function(){openId=null; render();}); });
+  document.getElementById('reset').addEventListener('click', function(){
+    q.value=''; inst.value=''; csel.value=''; rsel.value=''; openId=null; sortKey='name'; sortDir=1; render();
+  });
+  q.focus();
+  render();
+}
+</script>
+</body>
+</html>

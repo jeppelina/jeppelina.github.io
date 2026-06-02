@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /epc-participants/
 
 Sitemap: https://www.jesperlindmarker.com/sitemap.xml
