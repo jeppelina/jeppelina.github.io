@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=17">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
 
     <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
@@ -227,7 +227,7 @@
                     <text class="xlab" x="524" y="340" text-anchor="middle">Rest of country</text>
                     <text class="ytitle" transform="rotate(-90 22 169)" x="22" y="169" text-anchor="middle">% with ego's level of education</text>
                 </svg>
-                <figcaption class="p4-fig-cap">Among the singles a person could meet in each setting, the share with the same education as them. A steep line means the setting sorts strongly by schooling; a flat line means it barely sorts at all. University concentrates the tertiary-educated; the least educated are barely sorted anywhere.</figcaption>
+                <figcaption class="p4-fig-cap">Educational sorting of partner pools, by setting. For each education level we draw the single people an ego could plausibly have met in that setting, then read off the share who hold the ego's own education. A steep downward line means the setting concentrates people by schooling; a flat line means it barely sorts. University is the most concentrated pool and the rest of the country the broadest. Sorting is strong for the tertiary-educated and close to flat for the least educated. Swedish registers, 1990 to 2019.</figcaption>
             </figure>
 
             <figure class="p4-fig">
@@ -256,7 +256,7 @@
                         <span class="p4-dose-val">46&times;</span>
                     </div>
                 </div>
-                <figcaption class="p4-fig-cap">Each extra year sharing an employer multiplies the odds of forming a union, before education even enters the model. Shared institutions are not a faint nudge but a strong, dose-like pull.</figcaption>
+                <figcaption class="p4-fig-cap">Relative odds of forming a union, by years of shared employment, from the conditional logit. Shared workplace enters as a categorical dose (none, 1, 2, 3 or more years) rather than a linear term, net of the sampled partner market and controls for age, cohort, and region. Each additional year multiplies the odds: a clear dose-response, not a faint nudge. Reference category: no shared employer (1.0&times;).</figcaption>
             </figure>
 
             <div class="p4-explorer" id="p4-explorer">
@@ -297,48 +297,64 @@
                 <details class="fold">
                     <summary><span class="fold-k">01 · The question</span><span class="fold-x" aria-hidden="true">+</span></summary>
                     <div class="fold-body">
-                        <p>Why do similarly-educated people pair up so much more often than chance would predict? Do they prefer one another, for shared outlook, lifestyle, or earning power? Or do universities and workplaces simply place them in the same rooms, year after year, until partnering becomes the likely outcome?</p>
-                        <p>And does the same answer hold across the whole education distribution, or only part of it?</p>
+                        <ul class="fold-list">
+                            <li>Similarly-educated people partner far more often than chance would predict. Why?</li>
+                            <li>Two candidate mechanisms. <strong>Preference</strong>: people seek out partners like themselves. <strong>Opportunity</strong>: universities and workplaces route similar people into the same rooms, year after year.</li>
+                            <li>Both produce the same thing, a homogamous union, so the outcome alone cannot tell them apart.</li>
+                            <li>And does one answer hold across the whole education distribution, or only part of it?</li>
+                        </ul>
                     </div>
                 </details>
 
                 <details class="fold">
                     <summary><span class="fold-k">02 · The theory</span><span class="fold-x" aria-hidden="true">+</span></summary>
                     <div class="fold-body">
-                        <p>Three forces shape who we end up with: who we prefer, who we get the chance to meet, and who our families and communities steer us toward (Kalmijn 1998). This study isolates the middle one. Following Blau's argument that social structure sets the odds of contact, and Feld's idea that everyday life is organised around shared foci, a workplace, a campus, a neighbourhood, it treats the partner pool as something built by where people are routed before any choice is made.</p>
-                        <p>The catch is that opportunity and choice produce the same thing: homogamous unions. You cannot tell them apart from the outcome alone. The strategy is to model the opportunity channels we can measure, then read whatever educational sorting remains as an upper bound on what choice could explain.</p>
+                        <ul class="fold-list">
+                            <li>Three forces shape who we pair with: who we prefer, who we get the chance to meet, and who family and community steer us toward (Kalmijn 1998). This study isolates the second.</li>
+                            <li><strong>Blau</strong>: social structure sets the baseline odds of contact between groups.</li>
+                            <li><strong>Feld</strong>: everyday life is organised around shared foci, a campus, a workplace, a neighbourhood, that route people into repeated contact.</li>
+                            <li>Identification problem: since opportunity and choice both yield homogamous unions, the strategy is to model the opportunity channels we can measure, then read whatever sorting remains as an upper bound on what choice could explain.</li>
+                        </ul>
                     </div>
                 </details>
 
                 <details class="fold">
                     <summary><span class="fold-k">03 · The data</span><span class="fold-x" aria-hidden="true">+</span></summary>
                     <div class="fold-body">
-                        <p>Swedish population registers from Statistics Sweden, covering the full resident population. The analysis follows every first union from 1991 to 2019, dating a union to the year two people move from separate addresses into a shared one.</p>
-                        <p>For each person we reconstruct a full history: where they lived, at 100-metre resolution; every employer; and every university enrolment. Around 957,000 first unions among women anchor the main analysis, with men estimated separately.</p>
+                        <ul class="fold-list">
+                            <li>Swedish population registers (Statistics Sweden), full resident population, 1990 to 2022.</li>
+                            <li>Unit: first opposite-sex unions, dated to the year two people move from separate addresses into a shared one. Cohabitation onsets 1991 to 2019; ego aged 17 to 45. Same-sex unions and migrate-to-cohabit cases excluded.</li>
+                            <li>Cohorts born 1972 or later only. The employer register starts in 1990, so this floor guarantees a full workplace and organisation history from age 18 and avoids left-censoring the institutional channels.</li>
+                            <li>842,486 first unions with women as ego, a comparable count with men. Women and men estimated separately.</li>
+                            <li>Each person's history is reconstructed: residence at 100-metre resolution, every employer and organisation, every university enrolment.</li>
+                            <li>Covariates: education in 4 levels (no gymnasium / gymnasium / post-secondary short under 3 years / post-secondary long 3 or more years); couple homogamy in 5 categories (reference: different education); log residential distance; institutional overlap entered categorically as 0, 1, 2, or 3 or more shared years. Controls: age-difference bands, shared ancestry (country and region of origin, from parental birth country), and immigrant generation.</li>
+                        </ul>
                     </div>
                 </details>
 
                 <details class="fold">
                     <summary><span class="fold-k">04 · The method</span><span class="fold-x" aria-hidden="true">+</span></summary>
                     <div class="fold-body">
-                        <p>The tool is a conditional logit, or discrete choice, model. For every person who formed a union, we build a choice set: their actual partner plus around 100 realistic alternatives, drawn from the singles they could plausibly have met in the same local market that year. The model then asks which features predict who was actually chosen, shared education, short residential distance, a shared employer, a shared campus.</p>
-                        <p>Adding the opportunity channels one at a time, and watching how much of the education effect each one absorbs, lets us attribute a share of educational homogamy to where people live, work, and study, and see what is left over.</p>
+                        <ul class="fold-list">
+                            <li>Conditional logit (McFadden's discrete-choice model). Each ego who formed a union "chooses" from their real partner plus about 100 single alternatives.</li>
+                            <li>The alternatives are drawn by stratified sampling from the local market that year, with a McFadden-Manski offset correcting for unequal sampling rates. The baseline therefore already holds the partner supply fixed.</li>
+                            <li>exp(coefficient) reads as the relative odds of choosing a partner with a given feature: same education, short distance, shared employer, shared campus.</li>
+                            <li>Opportunity channels are added one at a time in life-course order: university, then workplace, then organisation (excluding shared workplace), then residential distance.</li>
+                            <li>The KHB decomposition places every nested model on one (Model 4) scale and reports how much of the education coefficient each channel absorbs. Standard errors clustered on the ego; estimation via the fastclogit R package (github.com/jeppelina/fastclogit).</li>
+                        </ul>
                     </div>
                 </details>
 
                 <details class="fold">
-                    <summary><span class="fold-k">05 · What we found</span><span class="fold-x" aria-hidden="true">+</span></summary>
+                    <summary><span class="fold-k">05 · Limitations</span><span class="fold-x" aria-hidden="true">+</span></summary>
                     <div class="fold-body">
-                        <p>Opportunity does a lot of the work, but mainly near the top, as the interactive above shows. For couples where both hold a long tertiary degree, residence, workplaces, and universities together account for around half of their educational homogamy; for the middle of the distribution it is closer to 30 percent. The channels show a clean dose-response: each extra year sharing an employer or a campus raises the odds of a union.</p>
-
-                        <p>The surprise is at the bottom. For the least educated, these channels explain essentially none of their homogamy. Accounting for where they live even nudges their estimated sorting slightly upward, not down. Whatever brings similarly low-educated people together, it is not the residence, workplace, or university overlap that registers can see.</p>
-
-                        <figure class="paper-figure light">
-                            <img src="assets/figures/p4_overlap_years.png" alt="Stacked horizontal bars showing the share of all couples who shared a workplace, organisation, or university for one, two, or three or more years before their union. Shared organisation reaches about 14 percent of couples in total, shared university about 10 percent, shared workplace about 9 percent." loading="lazy">
-                            <figcaption>How common shared institutions actually are. Only a minority of couples share one, but when they do, union odds rise sharply.</figcaption>
-                        </figure>
-
-                        <p>So the mechanism of educational homogamy is not one thing. It runs through visible institutions at the top of the distribution, and through something registers cannot see at the bottom.</p>
+                        <ul class="fold-list">
+                            <li><strong>Unobserved confounders.</strong> Traits registers cannot see, sociability, lifestyle, ambition, could route people into both shared institutions and similar partners, which would overstate the opportunity channels.</li>
+                            <li><strong>Coarse measurement.</strong> Sharing an employer or a campus is not the same as sharing a team or a programme, so true co-presence is measured with error. This works the opposite way and understates the channels. The net bias is unknown, but the qualitative patterns (the gradient, the gender asymmetry, the dose-response) are robust.</li>
+                            <li><strong>Selection into strata.</strong> Education shapes which institutions a person enters, so the sampling strata themselves sit partly on the causal pathway from education to partner, rather than being a clean exogenous market. I probe how far this distorts a clogit decomposition with simulations in the dissertation kappa; they stress-test selection and confounding but do not fully resolve the exact stratified design used here.</li>
+                            <li><strong>Upper bound, not preference.</strong> Whatever sorting survives all the channels is residual assortativity, an upper bound on what choice could explain, not proof of preference.</li>
+                        </ul>
+                        <p class="fold-cite">Simulation code: <a href="https://github.com/jeppelina/clogit-validation-simulations" target="_blank" rel="noopener">github.com/jeppelina/clogit-validation-simulations</a>.</p>
                     </div>
                 </details>
 

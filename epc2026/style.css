@@ -970,6 +970,46 @@ img { max-width: 100%; display: block; }
 }
 .fold-body p:last-child { margin-bottom: 0; }
 .fold-body .paper-figure figcaption { font-size: 0.82rem; }
+.fold-list {
+    margin: 0 0 0.9rem 0;
+    padding: 0;
+    list-style: none;
+}
+.fold-list:last-child { margin-bottom: 0; }
+.fold-list li {
+    position: relative;
+    padding: 0 0 0 1.15rem;
+    margin: 0 0 0.6rem 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.fold-list li:last-child { margin-bottom: 0; }
+.fold-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-accent);
+}
+.fold-list strong { font-weight: 600; }
+.fold-sub {
+    margin: 0 0 0.5rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+.fold-cite {
+    margin: 0.9rem 0 0 0;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+}
+.fold-cite a { color: var(--color-accent); }
 
 /* Footer */
 .footer {
