@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="style.css?v=6">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
 
     <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
@@ -65,18 +65,26 @@
         <div class="swipe-stack" id="swipe-stack" role="region" aria-label="Card stack">
 
             <!-- The poster paper -->
-            <article class="swipe-card" data-index="0" data-target="#about-paper">
+            <article class="swipe-card swipe-card-poster" data-index="0" data-target="#about-paper">
                 <div class="card-eyebrow">
-                    <span>Working paper · This poster</span>
+                    <span>★ The poster you just scanned</span>
                     <span class="step">01 / 04</span>
                 </div>
-                <h2 class="card-title">The Opportunity Structure of Educational Homogamy</h2>
-                <p class="card-authors">Jesper Lindmarker &amp; Benjamin F. Jarvis</p>
+                <div class="card-poster-row">
+                    <a class="card-poster-thumb" href="assets/figures/p4_poster.jpg" target="_blank" rel="noopener" aria-label="Open the full poster in a new tab">
+                        <img src="assets/figures/p4_poster_thumb.jpg" alt="The EPC 2026 poster" width="720" height="1018">
+                        <span class="card-poster-zoom" aria-hidden="true">⤢</span>
+                    </a>
+                    <div class="card-poster-meta">
+                        <h2 class="card-title">Do we like similar partners, or just happen to <em>work with them?</em></h2>
+                        <p class="card-authors">Lindmarker &amp; Jarvis · educational matching in Sweden</p>
+                    </div>
+                </div>
                 <div class="card-body">
-                    <p>Conditional logit models on Swedish first unions, 1991 to 2022. Residential proximity, workplaces, and shared university enrolment together account for 29 to 40 percent of educational homogamy among the most educated, and almost none among the least.</p>
+                    <p>The study behind the poster. Swipe right for the question, the data, the method, and what we found.</p>
                 </div>
                 <div class="card-foot">
-                    <div class="card-hint">Match to read more →</div>
+                    <div class="card-hint">Match to read the study →</div>
                 </div>
                 <div class="stamp stamp-yes" aria-hidden="true">Match</div>
                 <div class="stamp stamp-skip" aria-hidden="true">Next</div>
@@ -161,19 +169,91 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-label">The work behind the poster</span>
-                <h2>The opportunity structure of <em>educational homogamy</em></h2>
+                <h2>Do we like similar partners, or do we just happen to <em>work with them?</em></h2>
+            </div>
+
+            <div class="about-grid">
+                <figure class="poster-embed">
+                    <a href="assets/figures/p4_poster.jpg" target="_blank" rel="noopener" aria-label="Open the full poster in a new tab">
+                        <img src="assets/figures/p4_poster.jpg" alt="The full EPC 2026 poster: The Opportunity Structure of Educational Homogamy, by Jesper Lindmarker and Benjamin F. Jarvis." loading="lazy" width="1500" height="2120">
+                        <span class="poster-embed-zoom">Tap to enlarge ⤢</span>
+                    </a>
+                </figure>
+
+                <div class="about-lede">
+                    <div class="prose">
+                        <p>Educational homogamy, the tendency for people with similar schooling to partner up, is one of the most stable findings in family demography. It also concentrates education, and the earnings that follow it, within households. So it matters whether it reflects who people <em>choose</em> or simply who they are <em>routed past</em>.</p>
+
+                        <p>This poster takes the second possibility seriously. Using Swedish population registers, it asks how much of educational homogamy can be traced to three opportunity channels, where people live, where they work, and where they study, and how much is left once those are accounted for.</p>
+
+                        <div class="callout">
+                            <strong>One line.</strong> Institutional and residential sorting drive educational homogamy at the top of the education distribution, not the bottom.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="fold-prompt">Unfold the study →</p>
+
+            <div class="fold-group">
+
+                <details class="fold">
+                    <summary><span class="fold-k">01 · The question</span><span class="fold-x" aria-hidden="true">+</span></summary>
+                    <div class="fold-body">
+                        <p>Similarly-educated people partner with each other far more often than chance would predict. The open question is why. Do they prefer one another, for shared outlook, lifestyle, or earning power? Or do universities and workplaces simply place them in the same rooms, year after year, until partnering becomes the likely outcome?</p>
+                        <p>And does the same answer hold across the whole education distribution, or only part of it?</p>
+                    </div>
+                </details>
+
+                <details class="fold">
+                    <summary><span class="fold-k">02 · The theory</span><span class="fold-x" aria-hidden="true">+</span></summary>
+                    <div class="fold-body">
+                        <p>Three forces shape who we end up with: who we prefer, who we get the chance to meet, and who our families and communities steer us toward (Kalmijn 1998). This study isolates the middle one. Following Blau's argument that social structure sets the odds of contact, and Feld's idea that everyday life is organised around shared foci, a workplace, a campus, a neighbourhood, it treats the partner pool as something built by where people are routed before any choice is made.</p>
+                        <p>The catch is that opportunity and choice produce the same thing: homogamous unions. You cannot tell them apart from the outcome alone. The strategy is to model the opportunity channels we can measure, then read whatever educational sorting remains as an upper bound on what choice could explain.</p>
+                    </div>
+                </details>
+
+                <details class="fold">
+                    <summary><span class="fold-k">03 · The data</span><span class="fold-x" aria-hidden="true">+</span></summary>
+                    <div class="fold-body">
+                        <p>Swedish population registers from Statistics Sweden, covering the full resident population. The analysis follows every first union from 1991 to 2019, dating a union to the year two people move from separate addresses into a shared one.</p>
+                        <p>For each person we reconstruct a full history: where they lived, at 100-metre resolution; every employer; and every university enrolment. Around 957,000 first unions among women anchor the main analysis, with men estimated separately.</p>
+                    </div>
+                </details>
+
+                <details class="fold">
+                    <summary><span class="fold-k">04 · The method</span><span class="fold-x" aria-hidden="true">+</span></summary>
+                    <div class="fold-body">
+                        <p>The tool is a conditional logit, or discrete choice, model. For every person who formed a union, we build a choice set: their actual partner plus around 100 realistic alternatives, drawn from the singles they could plausibly have met in the same local market that year. The model then asks which features predict who was actually chosen, shared education, short residential distance, a shared employer, a shared campus.</p>
+                        <p>Adding the opportunity channels one at a time, and watching how much of the education effect each one absorbs, lets us attribute a share of educational homogamy to where people live, work, and study, and see what is left over.</p>
+                    </div>
+                </details>
+
+                <details class="fold">
+                    <summary><span class="fold-k">05 · What we found</span><span class="fold-x" aria-hidden="true">+</span></summary>
+                    <div class="fold-body">
+                        <p>Opportunity does a lot of the work, but mainly near the top. For couples where both hold a long tertiary degree, residence, workplaces, and universities together account for around 40 percent of their educational homogamy; for the middle of the distribution it is closer to 30 percent. The channels show a clean dose-response: each extra year sharing an employer or a campus raises the odds of a union.</p>
+
+                        <figure class="paper-figure light">
+                            <img src="assets/figures/p4_mediation_gradient.png" alt="Bar chart of the share of educational homogamy explained by opportunity channels, by education pairing. For couples with no gymnasium degree the share is near zero or slightly negative; for gymnasium pairs about 7 percent; for short post-secondary pairs around 30 to 47 percent; for long post-secondary pairs up to 60 percent for universities and about 49 percent for all channels combined." loading="lazy">
+                            <figcaption>Share of educational homogamy explained by opportunity, by education level. The bars climb across the distribution, and turn negative at the very bottom.</figcaption>
+                        </figure>
+
+                        <p>The surprise is at the bottom. For the least educated, these channels explain essentially none of their homogamy. Accounting for where they live even nudges their estimated sorting slightly upward, not down. Whatever brings similarly low-educated people together, it is not the residence, workplace, or university overlap that registers can see.</p>
+
+                        <figure class="paper-figure light">
+                            <img src="assets/figures/p4_overlap_years.png" alt="Stacked horizontal bars showing the share of all couples who shared a workplace, organisation, or university for one, two, or three or more years before their union. Shared organisation reaches about 14 percent of couples in total, shared university about 10 percent, shared workplace about 9 percent." loading="lazy">
+                            <figcaption>How common shared institutions actually are. Only a minority of couples share one, but when they do, union odds rise sharply.</figcaption>
+                        </figure>
+
+                        <p>So the mechanism of educational homogamy is not one thing. It runs through visible institutions at the top of the distribution, and through something registers cannot see at the bottom.</p>
+                    </div>
+                </details>
+
             </div>
 
             <div class="prose">
-                <p>Educational homogamy is one of the most consistent findings in family demography: people with higher education tend to partner with each other. Behind that simple pattern sits a question that has outlasted decades of research. Is it about who we choose, or about who we get to meet?</p>
-
-                <p>Using Swedish population registers covering every first union from 1991 to 2022, we decomposed educational homogamy into its structural components: residential proximity, shared workplaces, and shared university enrolment. For couples where both partners hold tertiary education, those opportunity structures together explain 29 to 40 percent of their homogamy, with a clean dose-response pattern: each additional year of shared employer or university overlap substantially raises the odds of a union. For the least educated, the same channels explain almost nothing.</p>
-
-                <p>This paper extends an earlier study with Ben Jarvis (<a href="https://doi.org/10.31235/osf.io/4tq8z_v1" target="_blank" rel="noopener">"However Far Away?"</a>), which found that residential proximity alone mediates 20 to 40 percent of ethnic endogamy in Sweden. Here we add workplaces and universities as channels, and switch the dimension of stratification from ethnicity to education. The result is a clearer picture of how spatial and institutional sorting underwrite seemingly elective patterns of pairing, and how that underwriting varies sharply across the education distribution.</p>
-
-                <div class="callout">
-                    <strong>One line takeaway.</strong> Universities and workplaces sort the highly educated into homogeneous pools long before the moment we usually call partner choice. The least educated sort themselves through channels we cannot see in registers.
-                </div>
+                <p>This is the methodological cousin of <a href="#paper3">the ethnic-boundaries work below</a>: the same insistence that opportunity be modelled before behaviour gets named, applied to a different line of division. It extends an earlier study with Ben Jarvis, <a href="https://doi.org/10.31235/osf.io/4tq8z_v1" target="_blank" rel="noopener">"However Far Away?"</a>, which showed residential proximity alone mediates 20 to 40 percent of ethnic endogamy in Sweden.</p>
             </div>
         </div>
     </section>
