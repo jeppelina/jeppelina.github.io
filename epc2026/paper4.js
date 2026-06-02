@@ -34,6 +34,11 @@
         "universities, workplaces, organisations, and neighbourhoods"
     ];
 
+    // Linear axis anchored at 1x (different education), matching the poster
+    // dumbbell. Separate caps per sex because the men's odds-ratio range is
+    // roughly five times wider.
+    var MAXX = { women: 3.0, men: 10.0 };
+
     var root = document.getElementById("p4-explorer");
     if (!root) { return; }
     var chart = document.getElementById("p4-chart");
@@ -45,10 +50,12 @@
     var sex = "women";
     var step = 0;
 
-    function maxBaseline(s) {
-        return ORDER.reduce(function (m, lvl) {
-            return Math.max(m, DATA[s][lvl][0]);
-        }, 0);
+    // Position of an odds ratio on the 1x-anchored axis, as a percent of track.
+    function xpos(v, s) {
+        var p = (v - 1) / (MAXX[s] - 1) * 100;
+        if (p < 0) { p = 0; }
+        if (p > 100) { p = 100; }
+        return p;
     }
 
     // Share of baseline log-odds removed by the channels switched on so far.
@@ -65,9 +72,11 @@
             html += '<div class="p4-row" data-level="' + ORDER[i] + '">' +
                 '<div class="p4-row-label">' + ORDER[i] + '</div>' +
                 '<div class="p4-track">' +
-                    '<div class="p4-explained"></div>' +
-                    '<div class="p4-bar"></div>' +
-                    '<div class="p4-base"></div>' +
+                    '<div class="p4-axis"></div>' +
+                    '<div class="p4-ref"></div>' +
+                    '<div class="p4-link"></div>' +
+                    '<div class="p4-dot p4-dot-base"></div>' +
+                    '<div class="p4-dot p4-dot-cur"></div>' +
                 '</div>' +
                 '<div class="p4-val"></div>' +
             '</div>';
@@ -82,31 +91,34 @@
     }
 
     function render() {
-        var mx = Math.log(maxBaseline(sex));
+        chart.classList.toggle("is-women", sex === "women");
+        chart.classList.toggle("is-men", sex === "men");
         for (var i = 0; i < ORDER.length; i++) {
             var lvl = ORDER[i];
             var vals = DATA[sex][lvl];
             var base = vals[0];
             var cur = vals[step];
-            var wBase = Math.log(base) / mx * 100;
-            var wCur = Math.log(cur) / mx * 100;
+            var xBase = xpos(base, sex);
+            var xCur = xpos(cur, sex);
             var row = chart.children[i];
-            var bar = row.querySelector(".p4-bar");
-            var exp = row.querySelector(".p4-explained");
-            var baseEl = row.querySelector(".p4-base");
+            var link = row.querySelector(".p4-link");
+            var dotBase = row.querySelector(".p4-dot-base");
+            var dotCur = row.querySelector(".p4-dot-cur");
             var val = row.querySelector(".p4-val");
 
-            bar.style.width = wCur.toFixed(2) + "%";
-            var lo = Math.min(wCur, wBase);
-            var hi = Math.max(wCur, wBase);
-            exp.style.left = lo.toFixed(2) + "%";
-            exp.style.width = (hi - lo).toFixed(2) + "%";
+            dotBase.style.left = xBase.toFixed(2) + "%";
+            dotCur.style.left = xCur.toFixed(2) + "%";
+            var lo = Math.min(xCur, xBase);
+            var hi = Math.max(xCur, xBase);
+            link.style.left = lo.toFixed(2) + "%";
+            link.style.width = (hi - lo).toFixed(2) + "%";
             // A channel can push the estimate up rather than down (residential
-            // suppression): flag it so the slice reads as a different colour.
-            if (wCur > wBase + 0.05) { exp.classList.add("is-up"); }
-            else { exp.classList.remove("is-up"); }
-            baseEl.style.left = wBase.toFixed(2) + "%";
-            val.textContent = cur.toFixed(2) + "×";
+            // suppression): flag it so the connector reads as a different colour.
+            if (xCur > xBase + 0.05) { link.classList.add("is-up"); }
+            else { link.classList.remove("is-up"); }
+            val.innerHTML = '<span class="p4-v-base">' + base.toFixed(2) + '</span>' +
+                '<span class="p4-v-arrow">&rarr;</span>' +
+                '<span class="p4-v-cur">' + cur.toFixed(2) + '</span>';
         }
 
         var tickEls = ticks.querySelectorAll(".p4-tick");

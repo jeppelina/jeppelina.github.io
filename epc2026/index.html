@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=17">
+    <link rel="stylesheet" href="style.css?v=18">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>J</text></svg>">
 
     <link rel="canonical" href="https://www.jesperlindmarker.com/epc2026/">
@@ -231,7 +231,7 @@
             </figure>
 
             <figure class="p4-fig">
-                <span class="p4-kicker">Q1 · the dose-response</span>
+                <div class="p4-qhead"><span class="p4-badge">Q1</span><span class="p4-kicker">The dose-response</span></div>
                 <h3>How much more likely are you to choose a partner you have worked with?</h3>
                 <p class="p4-dose-sub">Shared workplace · relative odds of a union</p>
                 <div class="p4-dose">
@@ -261,9 +261,9 @@
 
             <div class="p4-explorer" id="p4-explorer">
                 <div class="p4-explorer-head">
-                    <span class="p4-kicker">Q2 · interactive</span>
-                    <h3>How much of educational homogamy is left once we account for sorting?</h3>
-                    <p>The bars already hold the partner market fixed: each compares a real partner against a pool of singles the ego could plausibly have met, so the supply of similarly-educated partners, plus age, cohort, and region, is already accounted for. The slider then adds only the settings two people actually shared. Watch the homogamy shrink toward 1&times;, the rate you would see if those settings explained all of it.</p>
+                    <div class="p4-qhead"><span class="p4-badge">Q2</span><span class="p4-kicker">Interactive</span></div>
+                    <h3>How much of educational homogamy is left after we account for sorting?</h3>
+                    <p>Each dot already holds the partner market fixed: it compares a real partner against a pool of singles the ego could plausibly have met, so the supply of similarly-educated partners, plus age, cohort, and region, is already accounted for. The hollow dot is that baseline. Drag the slider to add the settings two people actually shared, and watch the filled dot slide left toward 1&times;, the rate you would see if those settings explained all of it.</p>
                 </div>
 
                 <div class="p4-seg" role="group" aria-label="Focal person">
@@ -271,7 +271,13 @@
                     <button type="button" data-sex="men" aria-pressed="false">Men</button>
                 </div>
 
-                <div class="p4-chart" id="p4-chart"></div>
+                <div class="p4-chart is-women" id="p4-chart"></div>
+
+                <div class="p4-legend">
+                    <span class="p4-leg-item"><span class="p4-leg-dot is-base"></span>baseline</span>
+                    <span class="p4-leg-item"><span class="p4-leg-dot is-cur"></span>after sorting</span>
+                    <span class="p4-leg-note">1&times; = different education</span>
+                </div>
 
                 <div class="p4-stepper">
                     <input type="range" id="p4-range" min="0" max="4" step="1" value="0" aria-label="Opportunity channels accounted for">
@@ -280,7 +286,7 @@
 
                 <p class="p4-readout" id="p4-readout" aria-live="polite"></p>
 
-                <p class="p4-foot">Swedish registers, 842,486 first unions with women as ego (men estimated separately), 1991 to 2019. Bars show the odds of partnering within rather than across education, net of the sampled choice set and controls for age, cohort, and region; 1&times; means education carried no weight. The slider adds only shared institutions and residential distance, in the order people meet them. What remains is residual assortativity, an upper bound on what choice could explain, not proof of preference. KHB decomposition on the Model 4 scale.</p>
+                <p class="p4-foot">Swedish registers, 842,486 first unions with women as ego (men estimated separately), 1991 to 2019. Each dot pair shows the odds of partnering within rather than across education, net of the sampled choice set and controls for age, cohort, and region; 1&times; means education carried no weight. The slider adds only shared institutions and residential distance, in the order people meet them. What remains is residual assortativity, an upper bound on what choice could explain, not proof of preference. KHB decomposition on the Model 4 scale.</p>
 
                 <noscript>
                     <figure class="paper-figure light">
@@ -519,7 +525,7 @@
     </footer>
 
     <script src="swipe.js?v=2"></script>
-    <script src="paper4.js?v=2"></script>
+    <script src="paper4.js?v=3"></script>
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
