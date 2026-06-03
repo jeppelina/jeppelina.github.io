@@ -634,9 +634,16 @@ function initApp(DATA){
     if(me && me.sim && me.sim.length) sources.push({name:'similar', list:me.sim.slice()});
     return sources;
   }
+  // Pure co-authors (role "Author" only, never presenting/chairing/discussing)
+  // usually do not attend in person, so keep them out of "who to meet".
+  function attending(p){
+    return !!(p && p.roles && p.roles.some(function(r){
+      return r==='Presenter' || r==='Chair' || r==='Discussant';
+    }));
+  }
   function availFrom(list){
     var seen={}; liked().concat(skipped()).forEach(function(id){seen[id]=1;});
-    return list.filter(function(s){ return byId[s.i] && !seen[s.i]; });
+    return list.filter(function(s){ return byId[s.i] && !seen[s.i] && attending(byId[s.i]); });
   }
 
   var meSearch=document.getElementById('me-search'), meResults=document.getElementById('me-results');
@@ -724,15 +731,12 @@ function initApp(DATA){
     var abs=ABS[part.abstract_id]||'';
     var clipped = abs.length>320;
     if(abs.length>520) abs=abs.slice(0,520).replace(/\s+\S*$/,'')+'…';
-    var chips=(s.k||[]).map(function(w){return '<span class="chip">'+esc(w)+'</span>';}).join('');
-    var chipLabel = s._src==='interest' ? 'shared terms' : 'you both';
     return '<div class="mcard" id="topcard">'+
       '<div class="stamp stamp-yes" aria-hidden="true">Meet</div>'+
       '<div class="stamp stamp-skip" aria-hidden="true">Skip</div>'+
       '<button type="button" class="mscore" data-method title="How matches are computed">match '+Math.round(s.s*100)+'%</button>'+
       '<h3>'+esc(p.name)+'</h3>'+
       '<div class="aff">'+esc(p.institution||'')+(p.country?' · <b>'+esc(p.country)+'</b>':'')+'</div>'+
-      (chips?'<div class="chips">'+chipLabel+': '+chips+'</div>':'')+
       (part.paper_title?'<div class="paper">'+esc(part.paper_title)+'</div>':'')+
       (abs?'<div class="snip'+(clipped?' is-clipped':'')+'">'+esc(abs)+'</div>':'')+
       scheduleHTML(p)+
