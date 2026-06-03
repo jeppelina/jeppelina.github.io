@@ -109,6 +109,24 @@
   .listrow button.rm { float:right; border:0; background:none; color:#b04a3a; cursor:pointer; font-size:13px; }
   .meet-actions { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
   .meet-actions button { border:1px solid var(--line); background:#fff; border-radius:8px; padding:7px 12px; font-size:13px; cursor:pointer; }
+  /* who-to-meet setup cards */
+  .setup-card { border:1px solid var(--line); border-radius:10px; background:#fff; padding:13px 14px; margin-bottom:12px; }
+  .setup-card .setup-h { font-weight:600; font-size:14px; margin-bottom:8px; }
+  .setup-card input, .setup-card textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:16px; font-family:inherit; }
+  .setup-card textarea { min-height:74px; resize:vertical; line-height:1.5; }
+  .setup-card small { display:block; color:var(--muted); font-size:12px; margin-top:7px; line-height:1.5; }
+  .setup-card .chosen { margin-top:8px; font-size:14px; }
+  .setup-card .chosen b { color:var(--accent); }
+  .setup-card .chosen button { margin-left:8px; border:0; background:none; color:#b04a3a; cursor:pointer; font-size:12.5px; }
+  button.go { width:100%; padding:13px; border:0; border-radius:10px; background:var(--accent); color:#fff; font-size:15px; font-weight:600; cursor:pointer; }
+  /* method tab */
+  .method { max-width:760px; }
+  .method h2 { font-size:18px; margin:6px 0 6px; }
+  .method h3 { font-size:14px; margin:20px 0 5px; color:var(--accent); }
+  .method p { margin:6px 0; color:#3a4151; }
+  .method code { background:#eef1f6; border-radius:4px; padding:1px 5px; font-size:12.5px; }
+  .method ul { margin:6px 0; padding-left:20px; color:#3a4151; }
+  .method li { margin:3px 0; }
   /* gate */
   #gate { position:fixed; inset:0; background:var(--accent); display:flex; align-items:center; justify-content:center; z-index:50; }
   #gate .box { background:#fff; border-radius:14px; padding:28px 26px; width:330px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); text-align:center; }
@@ -143,6 +161,7 @@
   <nav class="tabs">
     <button data-tab="browse" class="active">Browse</button>
     <button data-tab="meet">Who to meet</button>
+    <button data-tab="method">Method</button>
   </nav>
   <div class="wrap" id="view-browse">
     <div class="controls">
@@ -178,14 +197,25 @@
 
   <div class="wrap" id="view-meet" style="display:none">
     <div id="me-setup">
-      <div class="me-bar">
-        <span class="who" id="who-label">First, find yourself in the programme:</span>
+      <p style="font-size:14px;margin:2px 0 14px">Get a personalised shortlist of people whose work is closest to yours. Use either option below, or both.</p>
+
+      <div class="setup-card">
+        <div class="setup-h">1 · Find yourself in the programme</div>
         <input id="me-search" type="search" placeholder="Type your name…" />
+        <div class="picklist" id="me-results" style="display:none"></div>
+        <div id="me-chosen" class="chosen" style="display:none"></div>
+        <small>Optional. Suggestions then start from your own abstract text. People you share a paper with are left out.</small>
       </div>
-      <div class="picklist" id="me-results" style="display:none"></div>
-      <p style="color:var(--muted);font-size:12.5px;line-height:1.6">
-        This just personalises suggestions on this device (saved in your browser). No account, no login, nothing sent anywhere.
-        Suggestions come from overlap in your abstract text with others, and people you share a paper with are left out.
+
+      <div class="setup-card">
+        <div class="setup-h">2 · Describe your interests</div>
+        <textarea id="me-interests" placeholder="e.g. assortative mating, ethnic intermarriage, divorce, Swedish register data, event-history models…"></textarea>
+        <small>Useful if you are not presenting, or to broaden beyond your own paper. The text is matched in your browser against everyone's abstracts.</small>
+      </div>
+
+      <button id="me-go" class="go">Show people to meet →</button>
+      <p style="color:var(--muted);font-size:12.5px;line-height:1.6;margin-top:14px">
+        Everything stays on this device (saved in your browser). No account, no login, nothing sent anywhere.
       </p>
     </div>
 
@@ -218,6 +248,39 @@
         <div id="list-rows"></div>
       </div>
     </div>
+  </div>
+
+  <div class="wrap method" id="view-method" style="display:none">
+    <h2>How this was built</h2>
+    <p>This is a personal, unofficial tool, and since the audience is researchers it is meant to be transparent about its method. Nothing here is affiliated with EAPS or the EPC.</p>
+
+    <h3>1. Source and scraping</h3>
+    <p>The only input is the public conference programme at <a href="https://epc2026.eaps.nl/" target="_blank" rel="noopener">epc2026.eaps.nl</a>. Each session page and each linked abstract page was downloaded once with a small Python script using only the standard library (<code>urllib</code>), at about one request per second, with on-disk caching so the site was read a single time. No login, no private data, no API.</p>
+
+    <h3>2. Parsing</h3>
+    <p>The saved HTML was parsed into structured records: people, their stated affiliation, their role (presenter, author, chair, discussant), the papers, the sessions, and the full abstract text. The totals are shown in the header.</p>
+
+    <h3>3. Country</h3>
+    <p>Country is not listed in the programme, so it is inferred from each person's affiliation string using a dictionary of institutions and place-name keywords. This is approximate: a few affiliations cannot be placed, and edge cases will be wrong.</p>
+
+    <h3>4. "Who to meet" similarity</h3>
+    <p>For each person a single document is formed from their paper titles and abstract text. Two similarity measures are computed between every pair of these documents and then averaged:</p>
+    <ul>
+      <li><b>TF-IDF cosine.</b> Term overlap weighted by how distinctive each term is. It rewards shared specific vocabulary (for example "assortative mating" or "register data").</li>
+      <li><b>Sentence-embedding cosine.</b> Each document is encoded with the <code>all-MiniLM-L6-v2</code> sentence-transformer (384 dimensions) and compared by cosine. This rewards topical closeness even when the wording differs.</li>
+    </ul>
+    <p>The two scores are blended equally. People who share a paper are removed from each other's suggestions, since they already know each other, and the strongest matches per person are stored.</p>
+
+    <h3>5. Building from your own interests</h3>
+    <p>In the "Who to meet" tab you can also type free text. That text is turned into a TF-IDF vector in your browser, over the same vocabulary as above, and scored against everyone's stored abstract vector locally. It runs entirely on your device, so there is no model to download and nothing is sent anywhere.</p>
+
+    <h3>6. Ordering of suggestions</h3>
+    <p>The discover deck is not a strict ranking. The next card is drawn at random with probability weighted toward higher matches, so strong matches come up most often while the order stays varied.</p>
+
+    <h3>7. Privacy and security</h3>
+    <p>The whole dataset is encrypted with AES-256 (key derived with PBKDF2, SHA-256, 200,000 iterations) and is decrypted only in your browser with the shared password, through the built-in WebCrypto API. The page is fully static, with no server or database. Your chosen identity, typed interests, and saved shortlist live only in this browser's local storage.</p>
+
+    <p style="margin-top:18px;color:var(--muted)">Built by Jesper Lindmarker.</p>
   </div>
 </div>
 
@@ -377,15 +440,68 @@ function initApp(DATA){
       var t=b.getAttribute('data-tab');
       document.getElementById('view-browse').style.display = t==='browse'?'block':'none';
       document.getElementById('view-meet').style.display   = t==='meet'?'block':'none';
+      document.getElementById('view-method').style.display = t==='method'?'block':'none';
       if(t==='meet') renderMeet();
     });
   });
 
   function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
   function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-  var K_ME='epc_me', K_LIKE='epc_liked', K_SKIP='epc_skipped';
+  var K_ME='epc_me', K_LIKE='epc_liked', K_SKIP='epc_skipped', K_INT='epc_interests';
   function liked(){ return lsGet(K_LIKE)||[]; }
   function skipped(){ return lsGet(K_SKIP)||[]; }
+
+  // ---- in-browser TF-IDF: score typed interest text against everyone ----
+  // Uses the same vocabulary + idf that built the stored per-person vectors,
+  // so the whole thing runs locally with no model download.
+  var VOCAB=DATA.vocab||[], IDF=DATA.idf||[], VIDX=null;
+  function ensureVidx(){ if(VIDX) return; VIDX={}; for(var i=0;i<VOCAB.length;i++) VIDX[VOCAB[i]]=i; }
+  function textVec(t){
+    ensureVidx();
+    var toks=(String(t||'').toLowerCase().match(/[a-z][a-z\-]{2,}/g))||[], tf={};
+    toks.forEach(function(w){ var j=VIDX[w]; if(j!==undefined) tf[j]=(tf[j]||0)+1; });
+    var keys=Object.keys(tf); if(!keys.length) return null;
+    var nrm=0, vec={};
+    keys.forEach(function(j){ var w=tf[j]*(IDF[j]||0); vec[j]=w; nrm+=w*w; });
+    nrm=Math.sqrt(nrm)||1; keys.forEach(function(j){ vec[j]/=nrm; });
+    return vec;
+  }
+  // people who share a paper with you (so they can be left out, as in the
+  // precomputed suggestions). Cached per chosen identity.
+  var _coCache={};
+  function coauthorsOf(meId){
+    if(!meId) return {};
+    if(_coCache[meId]) return _coCache[meId];
+    var me=byId[meId], mine={}, ex={};
+    if(me){
+      me.participations.forEach(function(x){ if(x.abstract_id) mine[x.abstract_id]=1; });
+      people.forEach(function(p){ p.participations.forEach(function(x){ if(x.abstract_id && mine[x.abstract_id]) ex[p.id]=1; }); });
+    }
+    ex[meId]=1; _coCache[meId]=ex; return ex;
+  }
+  function interestRank(txt){
+    var uvec=textVec(txt); if(!uvec) return [];
+    var meId=lsGet(K_ME), ex=coauthorsOf(meId), out=[];
+    people.forEach(function(p){
+      if(ex[p.id]) return;
+      var tv=p.tv; if(!tv||!tv.length) return;
+      var dot=0, shared=[];
+      for(var k=0;k<tv.length;k++){
+        var u=uvec[tv[k][0]];
+        if(u){ dot+=u*tv[k][1]; if(shared.length<4) shared.push(VOCAB[tv[k][0]]); }
+      }
+      if(dot>0) out.push({i:p.id, s:dot, k:shared});
+    });
+    out.sort(function(a,b){ return b.s-a.s; });
+    return out.slice(0,60);
+  }
+  // ranking source: typed interests take priority, else your own abstract
+  function rankList(){
+    var txt=(lsGet(K_INT)||'').trim();
+    if(txt) return interestRank(txt);
+    var me=byId[lsGet(K_ME)];
+    return (me&&me.sim)? me.sim.slice() : [];
+  }
 
   var meSearch=document.getElementById('me-search'), meResults=document.getElementById('me-results');
   meSearch.addEventListener('input', function(){
@@ -400,10 +516,40 @@ function initApp(DATA){
   });
   meResults.addEventListener('click', function(e){
     var d=e.target.closest('div[data-id]'); if(!d) return;
-    lsSet(K_ME, d.getAttribute('data-id')); meSearch.value=''; meResults.style.display='none'; renderMeet();
+    lsSet(K_ME, d.getAttribute('data-id')); meSearch.value=''; meResults.style.display='none'; setupPrefill();
   });
+  // clear the selected self from inside the setup card
+  document.getElementById('me-chosen').addEventListener('click', function(e){
+    if(e.target.id==='me-clear'){ lsSet(K_ME,null); setupPrefill(); }
+  });
+  // fill the setup form from whatever is currently saved
+  function setupPrefill(){
+    var me=byId[lsGet(K_ME)];
+    var ch=document.getElementById('me-chosen');
+    if(me){ ch.style.display='block';
+      ch.innerHTML='Selected: <b>'+esc(me.name)+'</b>'+(me.institution?' · '+esc(me.institution):'')+
+        ' <button id="me-clear" type="button">clear</button>'; }
+    else { ch.style.display='none'; ch.innerHTML=''; }
+    document.getElementById('me-interests').value = lsGet(K_INT)||'';
+  }
+  function hasSource(){
+    var me=byId[lsGet(K_ME)]; var txt=(lsGet(K_INT)||'').trim();
+    return (me&&me.sim) || !!txt;
+  }
+  // "Show people to meet" — save typed interests and open the deck
+  document.getElementById('me-go').addEventListener('click', function(){
+    var txt=document.getElementById('me-interests').value.trim();
+    lsSet(K_INT, txt||null);
+    if(!hasSource()){ document.getElementById('me-interests').focus(); return; }
+    lsSet(K_SKIP, []);            // fresh deck for the new criteria
+    renderMeet();
+    document.querySelector('.subtabs button[data-sub="discover"]').click();
+  });
+  // "change" — go back to the setup form with current values filled in
   document.getElementById('me-change').addEventListener('click', function(){
-    lsSet(K_ME,null); renderMeet();
+    document.getElementById('me-setup').style.display='block';
+    document.getElementById('me-meet').style.display='none';
+    setupPrefill();
   });
 
   // subtabs
@@ -423,9 +569,8 @@ function initApp(DATA){
     return p.participations[0]||null;
   }
   function queue(){
-    var meId=lsGet(K_ME); var me=byId[meId]; if(!me||!me.sim) return [];
     var seen={}; liked().concat(skipped()).forEach(function(id){seen[id]=1;});
-    return me.sim.filter(function(s){ return byId[s.i] && !seen[s.i]; });
+    return rankList().filter(function(s){ return byId[s.i] && !seen[s.i]; });
   }
 
   function cardHTML(s){
@@ -449,17 +594,29 @@ function initApp(DATA){
     '</div>';
   }
 
-  var deck=document.getElementById('deck');
+  var deck=document.getElementById('deck'), curS=null;
+  // draw the next card at random, weighted toward higher matches, so the
+  // order is not a strict ranking but still favours strong matches.
+  function pick(qd){
+    if(qd.length<=1) return qd[0];
+    var w=qd.map(function(s){ return Math.pow(Math.max(s.s,0.001),4); });
+    var sum=0; w.forEach(function(x){ sum+=x; });
+    var r=Math.random()*sum, acc=0;
+    for(var i=0;i<qd.length;i++){ acc+=w[i]; if(r<=acc) return qd[i]; }
+    return qd[qd.length-1];
+  }
   function renderDeck(){
     var qd=queue();
     if(!qd.length){
+      curS=null;
       deck.innerHTML='<div class="deck-done">No more suggestions right now. Saved people are in <b>My list</b>.</div>';
       document.getElementById('swipe-btns').style.display='none';
       return;
     }
     document.getElementById('swipe-btns').style.display='flex';
-    deck.innerHTML=cardHTML(qd[0]);
-    attachDrag(document.getElementById('topcard'), qd[0]);
+    curS=pick(qd);
+    deck.innerHTML=cardHTML(curS);
+    attachDrag(document.getElementById('topcard'), curS);
   }
   function decide(s, save){
     if(save){ var L=liked(); if(L.indexOf(s.i)<0){ L.push(s.i); lsSet(K_LIKE,L); } }
@@ -482,14 +639,14 @@ function initApp(DATA){
       } else { card.style.transform=''; card.style.opacity=''; }
     });
   }
-  document.getElementById('btn-skip').addEventListener('click', function(){ var qd=queue(); if(qd[0]) decide(qd[0],false); });
-  document.getElementById('btn-save').addEventListener('click', function(){ var qd=queue(); if(qd[0]) decide(qd[0],true); });
+  document.getElementById('btn-skip').addEventListener('click', function(){ if(curS) decide(curS,false); });
+  document.getElementById('btn-save').addEventListener('click', function(){ if(curS) decide(curS,true); });
   document.addEventListener('keydown', function(e){
     if(document.getElementById('view-meet').style.display==='none') return;
     if(document.getElementById('sub-discover').style.display==='none') return;
-    var qd=queue(); if(!qd[0]) return;
-    if(e.key==='ArrowRight') decide(qd[0],true);
-    else if(e.key==='ArrowLeft') decide(qd[0],false);
+    if(!curS) return;
+    if(e.key==='ArrowRight') decide(curS,true);
+    else if(e.key==='ArrowLeft') decide(curS,false);
   });
 
   function updateCount(){ document.getElementById('list-n').textContent=liked().length; }
@@ -525,11 +682,19 @@ function initApp(DATA){
   });
 
   function renderMeet(){
-    var meId=lsGet(K_ME); var me=byId[meId];
-    if(!me){ document.getElementById('me-setup').style.display='block'; document.getElementById('me-meet').style.display='none'; meSearch.focus(); return; }
+    if(!hasSource()){
+      document.getElementById('me-setup').style.display='block';
+      document.getElementById('me-meet').style.display='none';
+      setupPrefill();
+      return;
+    }
     document.getElementById('me-setup').style.display='none';
     document.getElementById('me-meet').style.display='block';
-    document.getElementById('me-name').innerHTML='You: <b>'+esc(me.name)+'</b>'+(me.institution?' · '+esc(me.institution):'');
+    var me=byId[lsGet(K_ME)], txt=(lsGet(K_INT)||'').trim();
+    var bits=[];
+    if(me) bits.push('You: <b>'+esc(me.name)+'</b>');
+    if(txt) bits.push('Interests: <b>'+esc(txt.length>60?txt.slice(0,60)+'…':txt)+'</b>');
+    document.getElementById('me-name').innerHTML=bits.join(' &nbsp;·&nbsp; ');
     updateCount(); renderDeck();
   }
 
