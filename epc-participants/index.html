@@ -158,6 +158,9 @@
   /* method tab */
   .method { max-width:760px; }
   .method h2 { font-size:18px; margin:6px 0 6px; }
+  .method .byline { margin:0 0 10px; font-size:13px; color:var(--muted); }
+  .method .byline a { color:var(--accent); text-decoration:none; }
+  .method .byline a:hover { text-decoration:underline; }
   .method h3 { font-size:14px; margin:20px 0 5px; color:var(--accent); }
   .method p { margin:6px 0; color:#3a4151; }
   .method code { background:#eef1f6; border-radius:4px; padding:1px 5px; font-size:12.5px; }
@@ -303,6 +306,7 @@
 
   <div class="wrap method" id="view-method" style="display:none">
     <h2>How this was built</h2>
+    <p class="byline">By <a href="https://jesperlindmarker.com" target="_blank" rel="noopener">Jesper Lindmarker</a></p>
     <p>This is a personal, unofficial tool, and since the audience is researchers it is meant to be transparent about its method. Nothing here is affiliated with EAPS or the EPC.</p>
 
     <h3>1. Source and scraping</h3>
@@ -329,7 +333,6 @@
     <h3>6. Privacy and security</h3>
     <p>The whole dataset is encrypted with AES-256 (key derived with PBKDF2, SHA-256, 200,000 iterations) and is decrypted only in your browser with the shared password, through the built-in WebCrypto API. The page is fully static, with no server or database. Your chosen identity, typed interests, and saved shortlist live only in this browser's local storage.</p>
 
-    <p style="margin-top:18px;color:var(--muted)">Built by Jesper Lindmarker.</p>
   </div>
 
   <div class="wrap links" id="view-links" style="display:none">
