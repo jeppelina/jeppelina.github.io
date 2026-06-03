@@ -324,6 +324,7 @@
 
     <h3>5. Building from your own interests</h3>
     <p>In the "Who to meet" tab you can also type free text. That text is turned into a TF-IDF vector in your browser, over the same vocabulary as above, and scored against everyone's stored abstract vector locally. It runs entirely on your device, so there is no model to download and nothing is sent anywhere.</p>
+    <p>If you set both an identity and some typed interests, the two stay separate rather than merging into one number: the deck alternates between cards picked by your typed interests and cards picked by similarity to your own abstracts, so neither one dominates the suggestions.</p>
 
     <h3>6. Privacy and security</h3>
     <p>The whole dataset is encrypted with AES-256 (key derived with PBKDF2, SHA-256, 200,000 iterations) and is decrypted only in your browser with the shared password, through the built-in WebCrypto API. The page is fully static, with no server or database. Your chosen identity, typed interests, and saved shortlist live only in this browser's local storage.</p>
