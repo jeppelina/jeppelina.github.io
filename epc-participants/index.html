@@ -101,8 +101,6 @@
   .mcard h3 { margin:0 4px 2px 0; font-size:19px; }
   .mcard .aff { color:var(--muted); font-size:13.5px; margin-bottom:10px; }
   .mcard .aff b { color:var(--accent); font-weight:600; }
-  .mcard .mwhy { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:-4px 0 10px; }
-  .mcard .mwhy b { color:var(--slate); font-weight:700; letter-spacing:.02em; }
   .chips { margin:0 0 12px; }
   .chip { display:inline-block; background:var(--accent-soft); color:var(--accent); border-radius:20px; padding:2px 10px;
     font-size:12px; margin:0 5px 5px 0; }
@@ -127,6 +125,11 @@
     font-weight:600; cursor:pointer; background:#fff; }
   .swipe-btns .skip { color:#8a8f9a; }
   .swipe-btns .save { background:var(--go); color:#fff; border-color:var(--go); }
+  /* a little more breathing room on the sides on phones */
+  @media (max-width:560px){
+    .deck { margin-left:14px; margin-right:14px; }
+    .swipe-btns { margin-left:14px; margin-right:14px; }
+  }
   .deck-done { text-align:center; color:var(--muted); padding:30px 10px; }
   .listrow { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-bottom:9px; }
   .listrow .top { font-weight:600; }
@@ -690,16 +693,12 @@ function initApp(DATA){
     if(abs.length>520) abs=abs.slice(0,520).replace(/\s+\S*$/,'')+'…';
     var chips=(s.k||[]).map(function(w){return '<span class="chip">'+esc(w)+'</span>';}).join('');
     var chipLabel = s._src==='interest' ? 'shared terms' : 'you both';
-    var why = s._multi
-      ? '<div class="mwhy">via '+(s._src==='interest'?'<b>your interests</b>':'<b>work close to yours</b>')+'</div>'
-      : '';
     return '<div class="mcard" id="topcard">'+
       '<div class="stamp stamp-yes" aria-hidden="true">Meet</div>'+
       '<div class="stamp stamp-skip" aria-hidden="true">Skip</div>'+
       '<button type="button" class="mscore" data-method title="How matches are computed">match '+Math.round(s.s*100)+'%</button>'+
       '<h3>'+esc(p.name)+'</h3>'+
       '<div class="aff">'+esc(p.institution||'')+(p.country?' · <b>'+esc(p.country)+'</b>':'')+'</div>'+
-      why+
       (chips?'<div class="chips">'+chipLabel+': '+chips+'</div>':'')+
       (part.paper_title?'<div class="paper">'+esc(part.paper_title)+'</div>':'')+
       (abs?'<div class="snip'+(clipped?' is-clipped':'')+'">'+esc(abs)+'</div>':'')+
