@@ -83,9 +83,9 @@
   .subtabs { display:flex; gap:8px; margin-bottom:14px; }
   .subtabs button { border:1px solid var(--line); background:#fff; border-radius:20px; padding:6px 14px; font-size:13px; cursor:pointer; }
   .subtabs button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-  .deck { position:relative; max-width:460px; margin:0 auto; touch-action:pan-y; }
+  .deck { position:relative; max-width:360px; margin:0 auto; touch-action:pan-y; }
   .mcard { position:relative; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 18px 16px;
-    box-shadow:0 6px 22px rgba(20,40,90,.08); cursor:grab; user-select:none; -webkit-user-select:none;
+    min-height:300px; box-shadow:0 6px 22px rgba(20,40,90,.08); cursor:grab; user-select:none; -webkit-user-select:none;
     will-change:transform,opacity; transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease; }
   .mcard.is-dragging { transition:none; cursor:grabbing; }
   .mcard .stamp { position:absolute; top:16px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-weight:700;
@@ -104,11 +104,23 @@
   .chips { margin:0 0 12px; }
   .chip { display:inline-block; background:var(--accent-soft); color:var(--accent); border-radius:20px; padding:2px 10px;
     font-size:12px; margin:0 5px 5px 0; }
-  .mcard .paper { font-weight:600; font-size:14.5px; margin-bottom:4px; }
-  .mcard .snip { font-size:13px; line-height:1.5; color:#3a4151; margin-bottom:10px; }
-  .mcard .when { font-size:12.5px; color:var(--muted); }
-  .mcard .when a { color:var(--accent); text-decoration:none; }
-  .swipe-btns { display:flex; gap:12px; max-width:460px; margin:14px auto 0; }
+  .mcard .paper { font-weight:600; font-size:14.5px; margin-bottom:6px; }
+  .mcard .snip { position:relative; font-size:13px; line-height:1.5; color:#3a4151; margin-bottom:12px;
+    padding-left:11px; border-left:3px solid var(--accent-soft); }
+  .mcard .snip.is-clipped { max-height:120px; overflow:hidden; }
+  .mcard .snip.is-clipped::after { content:''; position:absolute; left:0; right:0; bottom:0; height:34px;
+    background:linear-gradient(rgba(255,255,255,0), var(--card)); pointer-events:none; }
+  .mcard .schedule { margin-top:2px; border-top:1px solid var(--line); padding-top:10px; }
+  .mcard .sess-head { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:7px; }
+  .mcard a.sess-line { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 8px; text-decoration:none;
+    padding:6px 8px; border-radius:7px; margin-bottom:5px; background:#f6f8fc; }
+  .mcard a.sess-line:last-child { margin-bottom:0; }
+  .mcard a.sess-line:hover { background:var(--accent-soft); }
+  .mcard .sess-id { color:var(--accent); font-weight:600; font-size:12.5px; }
+  .mcard .sess-when { color:var(--muted); font-size:12.5px; }
+  .mcard .srole { font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--slate);
+    background:var(--slate-soft); border-radius:4px; padding:1px 6px; margin-left:auto; }
+  .swipe-btns { display:flex; gap:12px; max-width:360px; margin:14px auto 0; }
   .swipe-btns button { flex:1; padding:13px; border-radius:12px; border:1px solid var(--line); font-size:15px;
     font-weight:600; cursor:pointer; background:#fff; }
   .swipe-btns .skip { color:#8a8f9a; }
@@ -139,6 +151,19 @@
   .method code { background:#eef1f6; border-radius:4px; padding:1px 5px; font-size:12.5px; }
   .method ul { margin:6px 0; padding-left:20px; color:#3a4151; }
   .method li { margin:3px 0; }
+  /* links tab */
+  .links { max-width:760px; }
+  .links h2 { font-size:18px; margin:6px 0 6px; }
+  .links h3 { font-size:14px; margin:22px 0 10px; color:var(--accent); }
+  .links > p { color:#3a4151; margin:6px 0; }
+  .linkgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:560px){ .linkgrid{ grid-template-columns:1fr; } }
+  .linkcard { display:block; border:1px solid var(--line); border-radius:10px; background:#fff; padding:12px 14px;
+    text-decoration:none; color:var(--ink); transition:border-color .15s, box-shadow .15s, background .15s; }
+  .linkcard:hover { border-color:var(--accent); background:var(--accent-soft); box-shadow:0 4px 14px rgba(20,40,90,.07); }
+  .linkcard .lk-t { display:block; font-weight:600; font-size:14.5px; color:var(--accent); }
+  .linkcard .lk-t::after { content:" ↗"; font-size:12px; opacity:.6; }
+  .linkcard .lk-d { display:block; color:var(--muted); font-size:12.5px; margin-top:2px; }
   /* gate */
   #gate { position:fixed; inset:0; background:var(--accent); display:flex; align-items:center; justify-content:center; z-index:50; }
   #gate .box { background:#fff; border-radius:14px; padding:28px 26px; width:330px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); text-align:center; }
@@ -174,6 +199,7 @@
     <button data-tab="browse" class="active">Browse</button>
     <button data-tab="meet">Who to meet</button>
     <button data-tab="method">Method</button>
+    <button data-tab="links">EPC site</button>
   </nav>
   <div class="wrap" id="view-browse">
     <div class="controls">
@@ -290,6 +316,59 @@
     <p>The whole dataset is encrypted with AES-256 (key derived with PBKDF2, SHA-256, 200,000 iterations) and is decrypted only in your browser with the shared password, through the built-in WebCrypto API. The page is fully static, with no server or database. Your chosen identity, typed interests, and saved shortlist live only in this browser's local storage.</p>
 
     <p style="margin-top:18px;color:var(--muted)">Built by Jesper Lindmarker.</p>
+  </div>
+
+  <div class="wrap links" id="view-links" style="display:none">
+    <h2>The official EPC2026 site</h2>
+    <p>This index is unofficial. For registration, the live schedule and the source of record, use the official conference site. European Population Conference, Bologna, 3-6 June 2026.</p>
+
+    <div class="linkgrid">
+      <a class="linkcard" href="https://epc2026.eaps.nl/" target="_blank" rel="noopener">
+        <span class="lk-t">Conference home</span>
+        <span class="lk-d">Landing page and login</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/lobby" target="_blank" rel="noopener">
+        <span class="lk-t">Registration / lobby</span>
+        <span class="lk-d">Sign in and register</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/days" target="_blank" rel="noopener">
+        <span class="lk-t">Programme by day</span>
+        <span class="lk-d">Sessions day by day</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/summary" target="_blank" rel="noopener">
+        <span class="lk-t">Programme summary</span>
+        <span class="lk-d">Overview of the schedule</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/topics" target="_blank" rel="noopener">
+        <span class="lk-t">Themes</span>
+        <span class="lk-d">Browse sessions by topic</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/participants" target="_blank" rel="noopener">
+        <span class="lk-t">Lookup participant</span>
+        <span class="lk-d">Official participant search</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/institutions" target="_blank" rel="noopener">
+        <span class="lk-t">Institutions</span>
+        <span class="lk-d">Browse by institution</span>
+      </a>
+    </div>
+
+    <h3>Documents (PDF)</h3>
+    <div class="linkgrid">
+      <a class="linkcard" href="https://epc2026.eaps.nl/hps/EPC2026_FinalProgram.pdf" target="_blank" rel="noopener">
+        <span class="lk-t">Final programme</span>
+        <span class="lk-d">Full programme, PDF</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/hps/EPC2026_ProgramOverview.pdf" target="_blank" rel="noopener">
+        <span class="lk-t">Programme overview</span>
+        <span class="lk-d">At-a-glance grid, PDF</span>
+      </a>
+      <a class="linkcard" href="https://epc2026.eaps.nl/hps/EPC2026_BookofAbstracts.pdf" target="_blank" rel="noopener">
+        <span class="lk-t">Book of abstracts</span>
+        <span class="lk-d">All abstracts, PDF</span>
+      </a>
+    </div>
+    <p style="color:var(--muted);font-size:12.5px;margin-top:18px">Links open the official site at epc2026.eaps.nl in a new tab. Not affiliated with EAPS or the EPC.</p>
   </div>
 </div>
 
@@ -450,6 +529,7 @@ function initApp(DATA){
       document.getElementById('view-browse').style.display = t==='browse'?'block':'none';
       document.getElementById('view-meet').style.display   = t==='meet'?'block':'none';
       document.getElementById('view-method').style.display = t==='method'?'block':'none';
+      document.getElementById('view-links').style.display  = t==='links'?'block':'none';
       if(t==='meet') renderMeet();
     });
   });
@@ -582,16 +662,27 @@ function initApp(DATA){
     return rankList().filter(function(s){ return byId[s.i] && !seen[s.i]; });
   }
 
+  // a compact "where to find them" list of every session a person is in, so
+  // people presenting in more than one slot show up cleanly.
+  function scheduleHTML(p){
+    var lines=p.participations.filter(function(x){ return x.session; }).map(function(x){
+      var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(x.session);
+      return '<a class="sess-line" href="'+link+'" target="_blank" rel="noopener">'+
+        '<span class="sess-id">Session '+esc(x.session)+'</span>'+
+        '<span class="sess-when">'+esc(x.day||'')+' '+esc(x.time||'')+(x.room?' · '+esc(x.room):'')+'</span>'+
+        (x.role?'<span class="srole">'+esc(x.role)+'</span>':'')+
+      '</a>';
+    });
+    if(!lines.length) return '';
+    var head=lines.length>1? 'In '+lines.length+' sessions' : 'Session';
+    return '<div class="schedule"><div class="sess-head">'+head+'</div>'+lines.join('')+'</div>';
+  }
   function cardHTML(s){
     var p=byId[s.i]; var part=firstPaper(p)||{};
-    var abs=ABS[part.abstract_id]||''; if(abs.length>240) abs=abs.slice(0,240).replace(/\s+\S*$/,'')+'…';
+    var abs=ABS[part.abstract_id]||'';
+    var clipped = abs.length>320;
+    if(abs.length>520) abs=abs.slice(0,520).replace(/\s+\S*$/,'')+'…';
     var chips=(s.k||[]).map(function(w){return '<span class="chip">'+esc(w)+'</span>';}).join('');
-    var when='';
-    if(part.session){
-      var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(part.session);
-      when='<a href="'+link+'" target="_blank" rel="noopener">Session '+esc(part.session)+'</a> · '+
-        esc(part.day||'')+' '+esc(part.time||'')+(part.room?' · '+esc(part.room):'');
-    }
     return '<div class="mcard" id="topcard">'+
       '<div class="stamp stamp-yes" aria-hidden="true">Meet</div>'+
       '<div class="stamp stamp-skip" aria-hidden="true">Skip</div>'+
@@ -600,8 +691,8 @@ function initApp(DATA){
       '<div class="aff">'+esc(p.institution||'')+(p.country?' · <b>'+esc(p.country)+'</b>':'')+'</div>'+
       (chips?'<div class="chips">you both: '+chips+'</div>':'')+
       (part.paper_title?'<div class="paper">'+esc(part.paper_title)+'</div>':'')+
-      (abs?'<div class="snip">'+esc(abs)+'</div>':'')+
-      (when?'<div class="when">'+when+'</div>':'')+
+      (abs?'<div class="snip'+(clipped?' is-clipped':'')+'">'+esc(abs)+'</div>':'')+
+      scheduleHTML(p)+
     '</div>';
   }
 
