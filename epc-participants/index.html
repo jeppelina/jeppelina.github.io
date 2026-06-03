@@ -38,6 +38,7 @@
   .part { padding:7px 10px; border:1px solid var(--line); border-radius:8px; margin-bottom:7px; background:#fff; }
   .part .top { font-weight:600; }
   .part .sub { color:var(--muted); font-size:13px; }
+  .part .abs { margin-top:7px; font-size:13px; line-height:1.55; color:#3a4151; }
   .empty-state { text-align:center; color:var(--muted); padding:40px; }
   a.sess { color:var(--accent); text-decoration:none; }
   a.sess:hover { text-decoration:underline; }
@@ -63,6 +64,51 @@
     tr.detail td { display:block; padding:0; }
     .part .sub { font-size:12.5px; }
   }
+  /* tabs */
+  nav.tabs { background:#0b2f70; display:flex; gap:2px; padding:0 12px; }
+  nav.tabs button { background:transparent; border:0; color:#cdd8ef; font-size:14px; font-weight:600;
+    padding:11px 16px; cursor:pointer; border-bottom:3px solid transparent; }
+  nav.tabs button.active { color:#fff; border-bottom-color:#fff; }
+  /* meet / who-to-meet */
+  .me-bar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:14px; }
+  .me-bar .who { font-size:14px; }
+  .me-bar .who b { color:var(--accent); }
+  .me-bar input { flex:1; min-width:180px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:16px; }
+  .me-bar button.link { background:none; border:0; color:var(--accent); cursor:pointer; font-size:13px; padding:0; }
+  .picklist { border:1px solid var(--line); border-radius:8px; background:#fff; max-height:240px; overflow:auto; margin-bottom:14px; }
+  .picklist div { padding:9px 12px; cursor:pointer; border-bottom:1px solid var(--line); font-size:14px; }
+  .picklist div:hover { background:#f0f4fb; }
+  .picklist div small { color:var(--muted); }
+  .subtabs { display:flex; gap:8px; margin-bottom:14px; }
+  .subtabs button { border:1px solid var(--line); background:#fff; border-radius:20px; padding:6px 14px; font-size:13px; cursor:pointer; }
+  .subtabs button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .deck { position:relative; max-width:460px; margin:0 auto; }
+  .mcard { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 18px 16px;
+    box-shadow:0 6px 22px rgba(20,40,90,.08); }
+  .mcard .mscore { float:right; font-size:12px; color:var(--muted); background:#eef2fb; border-radius:20px; padding:2px 9px; }
+  .mcard h3 { margin:0 4px 2px 0; font-size:19px; }
+  .mcard .aff { color:var(--muted); font-size:13.5px; margin-bottom:10px; }
+  .mcard .aff b { color:var(--accent); font-weight:600; }
+  .chips { margin:0 0 12px; }
+  .chip { display:inline-block; background:#e7f0ff; color:var(--accent); border-radius:20px; padding:2px 10px;
+    font-size:12px; margin:0 5px 5px 0; }
+  .mcard .paper { font-weight:600; font-size:14.5px; margin-bottom:4px; }
+  .mcard .snip { font-size:13px; line-height:1.5; color:#3a4151; margin-bottom:10px; }
+  .mcard .when { font-size:12.5px; color:var(--muted); }
+  .mcard .when a { color:var(--accent); text-decoration:none; }
+  .swipe-btns { display:flex; gap:12px; max-width:460px; margin:14px auto 0; }
+  .swipe-btns button { flex:1; padding:13px; border-radius:12px; border:1px solid var(--line); font-size:15px;
+    font-weight:600; cursor:pointer; background:#fff; }
+  .swipe-btns .skip { color:#8a8f9a; }
+  .swipe-btns .save { background:#1a7f3c; color:#fff; border-color:#1a7f3c; }
+  .deck-done { text-align:center; color:var(--muted); padding:30px 10px; }
+  .listrow { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-bottom:9px; }
+  .listrow .top { font-weight:600; }
+  .listrow .meta2 { color:var(--muted); font-size:12.5px; margin-top:2px; }
+  .listrow .meta2 a { color:var(--accent); text-decoration:none; }
+  .listrow button.rm { float:right; border:0; background:none; color:#b04a3a; cursor:pointer; font-size:13px; }
+  .meet-actions { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .meet-actions button { border:1px solid var(--line); background:#fff; border-radius:8px; padding:7px 12px; font-size:13px; cursor:pointer; }
   /* gate */
   #gate { position:fixed; inset:0; background:var(--accent); display:flex; align-items:center; justify-content:center; z-index:50; }
   #gate .box { background:#fff; border-radius:14px; padding:28px 26px; width:330px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); text-align:center; }
@@ -94,9 +140,13 @@
     <h1>EPC2026 Participant Search</h1>
     <div class="sub" id="hdrsub"></div>
   </header>
-  <div class="wrap">
+  <nav class="tabs">
+    <button data-tab="browse" class="active">Browse</button>
+    <button data-tab="meet">Who to meet</button>
+  </nav>
+  <div class="wrap" id="view-browse">
     <div class="controls">
-      <input id="q" type="search" placeholder="Search name, institution, or paper title…" />
+      <input id="q" type="search" placeholder="Search name, institution, paper title, or abstract…" />
       <select id="country"><option value="">All countries</option></select>
       <select id="role">
         <option value="">All roles</option>
@@ -121,9 +171,53 @@
     <div id="empty" class="empty-state" style="display:none">No matches. Try broadening your search.</div>
     <footer class="about">
       <p><b>What this is.</b> An unofficial, searchable index of the EPC2026 programme, built so you can find participants by <b>country</b> or <b>institution</b> (for example everyone from Sweden, or from Stockholm University) which the official programme site does not let you do.</p>
-      <p><b>How it was made.</b> The public programme at <a href="https://epc2026.eaps.nl/" target="_blank" rel="noopener">epc2026.eaps.nl</a> was read once and parsed into a structured list of people, papers and sessions. Country is inferred from each person's stated affiliation, so it is approximate and a few institutions could not be placed. Not affiliated with EAPS or the EPC.</p>
+      <p><b>How it was made.</b> The public programme at <a href="https://epc2026.eaps.nl/" target="_blank" rel="noopener">epc2026.eaps.nl</a> was read once and parsed into a structured list of people, papers, sessions and abstracts. Country is inferred from each person's stated affiliation, so it is approximate and a few institutions could not be placed. Not affiliated with EAPS or the EPC.</p>
       <p>Built by Jesper Lindmarker.</p>
     </footer>
+  </div>
+
+  <div class="wrap" id="view-meet" style="display:none">
+    <div id="me-setup">
+      <div class="me-bar">
+        <span class="who" id="who-label">First, find yourself in the programme:</span>
+        <input id="me-search" type="search" placeholder="Type your name…" />
+      </div>
+      <div class="picklist" id="me-results" style="display:none"></div>
+      <p style="color:var(--muted);font-size:12.5px;line-height:1.6">
+        This just personalises suggestions on this device (saved in your browser). No account, no login, nothing sent anywhere.
+        Suggestions come from overlap in your abstract text with others, and people you share a paper with are left out.
+      </p>
+    </div>
+
+    <div id="me-meet" style="display:none">
+      <div class="me-bar">
+        <span class="who" id="me-name"></span>
+        <button class="link" id="me-change">change</button>
+      </div>
+      <div class="subtabs">
+        <button data-sub="discover" class="active">Discover</button>
+        <button data-sub="list">My list (<span id="list-n">0</span>)</button>
+      </div>
+
+      <div id="sub-discover">
+        <div class="deck" id="deck"></div>
+        <div class="swipe-btns" id="swipe-btns">
+          <button class="skip" id="btn-skip">✕ Skip</button>
+          <button class="save" id="btn-save">★ Save to meet</button>
+        </div>
+        <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:10px">
+          Swipe the card, tap a button, or use the ← / → arrow keys.
+        </p>
+      </div>
+
+      <div id="sub-list" style="display:none">
+        <div class="meet-actions">
+          <button id="copy-list">Copy list</button>
+          <button id="reset-deck">Start swiping over</button>
+        </div>
+        <div id="list-rows"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -173,6 +267,15 @@ async function decryptData(b64, password){
 // ---------- search app (runs after successful decrypt) ----------
 function initApp(DATA){
   var people = DATA.people;
+  var ABS = DATA.abstracts || {};
+  // Precompute a lowercased search haystack per person (name, institution,
+  // country, paper titles, and abstract text) so filtering stays fast.
+  people.forEach(function(p){
+    var parts = p.participations.map(function(x){
+      return (x.paper_title||'')+' '+(x.institution||'')+' '+(ABS[x.abstract_id]||'');
+    }).join(' ');
+    p._hay = (p.name+' '+p.institution+' '+p.country+' '+parts).toLowerCase();
+  });
   document.getElementById('hdrsub').textContent =
     DATA.n_people + ' people · ' + DATA.n_sessions + ' sessions · ' + DATA.countries.length + ' countries · generated ' + DATA.generated_at;
   var csel = document.getElementById('country');
@@ -184,8 +287,7 @@ function initApp(DATA){
 
   function norm(s){ return (s||'').toLowerCase(); }
   function matchPerson(p, terms){
-    var hay = norm(p.name)+' '+norm(p.institution)+' '+norm(p.country)+' '+
-              p.participations.map(function(x){return norm(x.paper_title)+' '+norm(x.institution);}).join(' ');
+    var hay = p._hay;
     return terms.every(function(t){ return hay.indexOf(t)>=0; });
   }
   function current(){
@@ -230,10 +332,12 @@ function initApp(DATA){
             var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(x.session);
             var title = x.paper_title? esc(x.paper_title) : '<i>('+esc(x.role)+')</i>';
             var instLine = x.institution && x.institution!==p.institution? ' · '+esc(x.institution):'';
+            var abs = ABS[x.abstract_id];
+            var absHtml = abs? '<div class="abs">'+esc(abs)+'</div>' : '';
             return '<div class="part"><div class="top">'+title+'</div>'+
               '<div class="sub"><span class="badge '+x.role+'">'+x.role+'</span> '+
               '<a class="sess" href="'+link+'" target="_blank" rel="noopener">Session '+esc(x.session)+'</a> · '+
-              esc(x.session_title||'')+' · '+esc(x.day||'')+' '+esc(x.time||'')+' '+esc(x.room||'')+instLine+'</div></div>';
+              esc(x.session_title||'')+' · '+esc(x.day||'')+' '+esc(x.time||'')+' '+esc(x.room||'')+instLine+'</div>'+absHtml+'</div>';
           }).join('')+
           '</div></td></tr>';
       }
@@ -261,6 +365,174 @@ function initApp(DATA){
   document.getElementById('reset').addEventListener('click', function(){
     q.value=''; inst.value=''; csel.value=''; rsel.value=''; openId=null; sortKey='name'; sortDir=1; render();
   });
+
+  // ---------- Who to meet ----------
+  var byId={}; people.forEach(function(p){ byId[p.id]=p; });
+
+  // top tabs
+  document.querySelectorAll('nav.tabs button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('nav.tabs button').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      var t=b.getAttribute('data-tab');
+      document.getElementById('view-browse').style.display = t==='browse'?'block':'none';
+      document.getElementById('view-meet').style.display   = t==='meet'?'block':'none';
+      if(t==='meet') renderMeet();
+    });
+  });
+
+  function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  var K_ME='epc_me', K_LIKE='epc_liked', K_SKIP='epc_skipped';
+  function liked(){ return lsGet(K_LIKE)||[]; }
+  function skipped(){ return lsGet(K_SKIP)||[]; }
+
+  var meSearch=document.getElementById('me-search'), meResults=document.getElementById('me-results');
+  meSearch.addEventListener('input', function(){
+    var t=norm(meSearch.value);
+    if(t.length<2){ meResults.style.display='none'; return; }
+    var hits=people.filter(function(p){ return norm(p.name).indexOf(t)>=0; }).slice(0,12);
+    meResults.innerHTML = hits.map(function(p){
+      return '<div data-id="'+esc(p.id)+'">'+esc(p.name)+' <small>'+esc(p.institution||'')+
+             (p.country?' · '+esc(p.country):'')+'</small></div>';
+    }).join('') || '<div><small>No match.</small></div>';
+    meResults.style.display='block';
+  });
+  meResults.addEventListener('click', function(e){
+    var d=e.target.closest('div[data-id]'); if(!d) return;
+    lsSet(K_ME, d.getAttribute('data-id')); meSearch.value=''; meResults.style.display='none'; renderMeet();
+  });
+  document.getElementById('me-change').addEventListener('click', function(){
+    lsSet(K_ME,null); renderMeet();
+  });
+
+  // subtabs
+  document.querySelectorAll('.subtabs button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.subtabs button').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      var s=b.getAttribute('data-sub');
+      document.getElementById('sub-discover').style.display = s==='discover'?'block':'none';
+      document.getElementById('sub-list').style.display     = s==='list'?'block':'none';
+      if(s==='list') renderList();
+    });
+  });
+
+  function firstPaper(p){
+    for(var i=0;i<p.participations.length;i++){ if(p.participations[i].paper_title) return p.participations[i]; }
+    return p.participations[0]||null;
+  }
+  function queue(){
+    var meId=lsGet(K_ME); var me=byId[meId]; if(!me||!me.sim) return [];
+    var seen={}; liked().concat(skipped()).forEach(function(id){seen[id]=1;});
+    return me.sim.filter(function(s){ return byId[s.i] && !seen[s.i]; });
+  }
+
+  function cardHTML(s){
+    var p=byId[s.i]; var part=firstPaper(p)||{};
+    var abs=ABS[part.abstract_id]||''; if(abs.length>240) abs=abs.slice(0,240).replace(/\s+\S*$/,'')+'…';
+    var chips=(s.k||[]).map(function(w){return '<span class="chip">'+esc(w)+'</span>';}).join('');
+    var when='';
+    if(part.session){
+      var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(part.session);
+      when='<a href="'+link+'" target="_blank" rel="noopener">Session '+esc(part.session)+'</a> · '+
+        esc(part.day||'')+' '+esc(part.time||'')+(part.room?' · '+esc(part.room):'');
+    }
+    return '<div class="mcard" id="topcard">'+
+      '<span class="mscore">match '+Math.round(s.s*100)+'%</span>'+
+      '<h3>'+esc(p.name)+'</h3>'+
+      '<div class="aff">'+esc(p.institution||'')+(p.country?' · <b>'+esc(p.country)+'</b>':'')+'</div>'+
+      (chips?'<div class="chips">you both: '+chips+'</div>':'')+
+      (part.paper_title?'<div class="paper">'+esc(part.paper_title)+'</div>':'')+
+      (abs?'<div class="snip">'+esc(abs)+'</div>':'')+
+      (when?'<div class="when">'+when+'</div>':'')+
+    '</div>';
+  }
+
+  var deck=document.getElementById('deck');
+  function renderDeck(){
+    var qd=queue();
+    if(!qd.length){
+      deck.innerHTML='<div class="deck-done">No more suggestions right now. Saved people are in <b>My list</b>.</div>';
+      document.getElementById('swipe-btns').style.display='none';
+      return;
+    }
+    document.getElementById('swipe-btns').style.display='flex';
+    deck.innerHTML=cardHTML(qd[0]);
+    attachDrag(document.getElementById('topcard'), qd[0]);
+  }
+  function decide(s, save){
+    if(save){ var L=liked(); if(L.indexOf(s.i)<0){ L.push(s.i); lsSet(K_LIKE,L); } }
+    else { var S=skipped(); if(S.indexOf(s.i)<0){ S.push(s.i); lsSet(K_SKIP,S); } }
+    updateCount(); renderDeck();
+  }
+  function attachDrag(card, s){
+    var x0=null, dx=0;
+    card.addEventListener('pointerdown', function(e){ x0=e.clientX; card.setPointerCapture(e.pointerId); });
+    card.addEventListener('pointermove', function(e){
+      if(x0===null) return; dx=e.clientX-x0;
+      card.style.transform='translateX('+dx+'px) rotate('+(dx/30)+'deg)';
+      card.style.opacity = 1-Math.min(Math.abs(dx)/400,0.5);
+    });
+    card.addEventListener('pointerup', function(){
+      if(x0===null) return; var d=dx; x0=null; dx=0;
+      if(Math.abs(d)>90){ card.style.transition='transform .2s,opacity .2s';
+        card.style.transform='translateX('+(d>0?600:-600)+'px)'; card.style.opacity='0';
+        setTimeout(function(){ decide(s, d>0); },160);
+      } else { card.style.transform=''; card.style.opacity=''; }
+    });
+  }
+  document.getElementById('btn-skip').addEventListener('click', function(){ var qd=queue(); if(qd[0]) decide(qd[0],false); });
+  document.getElementById('btn-save').addEventListener('click', function(){ var qd=queue(); if(qd[0]) decide(qd[0],true); });
+  document.addEventListener('keydown', function(e){
+    if(document.getElementById('view-meet').style.display==='none') return;
+    if(document.getElementById('sub-discover').style.display==='none') return;
+    var qd=queue(); if(!qd[0]) return;
+    if(e.key==='ArrowRight') decide(qd[0],true);
+    else if(e.key==='ArrowLeft') decide(qd[0],false);
+  });
+
+  function updateCount(){ document.getElementById('list-n').textContent=liked().length; }
+  function renderList(){
+    updateCount();
+    var rows=liked().map(function(id){return byId[id];}).filter(Boolean);
+    if(!rows.length){ document.getElementById('list-rows').innerHTML='<p style="color:var(--muted)">Nothing saved yet. Swipe right (★) on people you want to meet.</p>'; return; }
+    rows.sort(function(a,b){ var pa=firstPaper(a)||{},pb=firstPaper(b)||{}; return norm((pa.day||'')+(pa.time||'')) < norm((pb.day||'')+(pb.time||''))?-1:1; });
+    document.getElementById('list-rows').innerHTML = rows.map(function(p){
+      var part=firstPaper(p)||{};
+      var when=part.session? 'Session '+esc(part.session)+' · '+esc(part.day||'')+' '+esc(part.time||'')+(part.room?' · '+esc(part.room):''):'';
+      return '<div class="listrow"><button class="rm" data-id="'+esc(p.id)+'">remove</button>'+
+        '<div class="top">'+esc(p.name)+'</div>'+
+        '<div class="meta2">'+esc(p.institution||'')+(p.country?' · '+esc(p.country):'')+'</div>'+
+        (part.paper_title?'<div class="meta2">'+esc(part.paper_title)+'</div>':'')+
+        (when?'<div class="meta2">'+when+'</div>':'')+'</div>';
+    }).join('');
+  }
+  document.getElementById('list-rows').addEventListener('click', function(e){
+    var b=e.target.closest('button.rm'); if(!b) return;
+    var id=b.getAttribute('data-id'); lsSet(K_LIKE, liked().filter(function(x){return x!==id;}));
+    renderList(); updateCount();
+  });
+  document.getElementById('copy-list').addEventListener('click', function(){
+    var txt=liked().map(function(id){var p=byId[id]; if(!p) return ''; var part=firstPaper(p)||{};
+      return p.name+' — '+(p.institution||'')+(p.country?', '+p.country:'')+
+        (part.session?'  ['+'Session '+part.session+', '+(part.day||'')+' '+(part.time||'')+(part.room?', '+part.room:'')+']':''); }).filter(Boolean).join('\n');
+    navigator.clipboard.writeText(txt).then(function(){ var b=document.getElementById('copy-list'); var o=b.textContent; b.textContent='Copied!'; setTimeout(function(){b.textContent=o;},1200); });
+  });
+  document.getElementById('reset-deck').addEventListener('click', function(){
+    lsSet(K_SKIP,[]); renderDeck();
+    document.querySelector('.subtabs button[data-sub="discover"]').click();
+  });
+
+  function renderMeet(){
+    var meId=lsGet(K_ME); var me=byId[meId];
+    if(!me){ document.getElementById('me-setup').style.display='block'; document.getElementById('me-meet').style.display='none'; meSearch.focus(); return; }
+    document.getElementById('me-setup').style.display='none';
+    document.getElementById('me-meet').style.display='block';
+    document.getElementById('me-name').innerHTML='You: <b>'+esc(me.name)+'</b>'+(me.institution?' · '+esc(me.institution):'');
+    updateCount(); renderDeck();
+  }
+
   q.focus();
   render();
 }
