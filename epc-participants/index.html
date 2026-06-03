@@ -82,9 +82,17 @@
   .subtabs { display:flex; gap:8px; margin-bottom:14px; }
   .subtabs button { border:1px solid var(--line); background:#fff; border-radius:20px; padding:6px 14px; font-size:13px; cursor:pointer; }
   .subtabs button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-  .deck { position:relative; max-width:460px; margin:0 auto; }
-  .mcard { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 18px 16px;
-    box-shadow:0 6px 22px rgba(20,40,90,.08); }
+  .deck { position:relative; max-width:460px; margin:0 auto; touch-action:pan-y; }
+  .mcard { position:relative; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 18px 16px;
+    box-shadow:0 6px 22px rgba(20,40,90,.08); cursor:grab; user-select:none; -webkit-user-select:none;
+    will-change:transform,opacity; transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease; }
+  .mcard.is-dragging { transition:none; cursor:grabbing; }
+  .mcard .stamp { position:absolute; top:16px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-weight:700;
+    font-size:21px; letter-spacing:.12em; text-transform:uppercase; padding:5px 13px; border-radius:8px;
+    border:3px solid currentColor; background:rgba(255,255,255,.92); opacity:0; transition:opacity .1s linear;
+    pointer-events:none; white-space:nowrap; }
+  .mcard .stamp-yes { left:16px; color:#1a7f3c; transform:rotate(-12deg); }
+  .mcard .stamp-skip { right:16px; color:#b04a3a; transform:rotate(12deg); }
   .mcard .mscore { float:right; font-size:12px; color:var(--muted); background:#eef2fb; border-radius:20px; padding:2px 9px; }
   .mcard h3 { margin:0 4px 2px 0; font-size:19px; }
   .mcard .aff { color:var(--muted); font-size:13.5px; margin-bottom:10px; }
@@ -584,6 +592,8 @@ function initApp(DATA){
         esc(part.day||'')+' '+esc(part.time||'')+(part.room?' · '+esc(part.room):'');
     }
     return '<div class="mcard" id="topcard">'+
+      '<div class="stamp stamp-yes" aria-hidden="true">Meet</div>'+
+      '<div class="stamp stamp-skip" aria-hidden="true">Skip</div>'+
       '<span class="mscore">match '+Math.round(s.s*100)+'%</span>'+
       '<h3>'+esc(p.name)+'</h3>'+
       '<div class="aff">'+esc(p.institution||'')+(p.country?' · <b>'+esc(p.country)+'</b>':'')+'</div>'+
@@ -618,35 +628,77 @@ function initApp(DATA){
     deck.innerHTML=cardHTML(curS);
     attachDrag(document.getElementById('topcard'), curS);
   }
-  function decide(s, save){
+  var THRESH=90, V_THRESH=0.6, FLICK_MIN=55;  // commit thresholds
+  function record(s, save){
     if(save){ var L=liked(); if(L.indexOf(s.i)<0){ L.push(s.i); lsSet(K_LIKE,L); } }
     else { var S=skipped(); if(S.indexOf(s.i)<0){ S.push(s.i); lsSet(K_SKIP,S); } }
-    updateCount(); renderDeck();
+    updateCount();
+  }
+  function setStamps(card, dx){
+    var yes=card.querySelector('.stamp-yes'), skip=card.querySelector('.stamp-skip');
+    if(yes) yes.style.opacity=String(Math.min(1, Math.max(0, dx/THRESH)));
+    if(skip) skip.style.opacity=String(Math.min(1, Math.max(0, -dx/THRESH)));
+  }
+  // fly the current card off-screen (transition is on once is-dragging is gone),
+  // record the decision, then deal the next card.
+  function commit(s, save){
+    var card=document.getElementById('topcard');
+    record(s, save);
+    if(!card){ renderDeck(); return; }
+    card.classList.remove('is-dragging');
+    var off=(save?1:-1)*(window.innerWidth+220);
+    card.style.transform='translate('+off+'px,40px) rotate('+(save?18:-18)+'deg)';
+    card.style.opacity='0';
+    var st=card.querySelector(save?'.stamp-yes':'.stamp-skip'); if(st) st.style.opacity='1';
+    setTimeout(renderDeck, 300);
   }
   function attachDrag(card, s){
-    var x0=null, dx=0;
-    card.addEventListener('pointerdown', function(e){ x0=e.clientX; card.setPointerCapture(e.pointerId); });
-    card.addEventListener('pointermove', function(e){
-      if(x0===null) return; dx=e.clientX-x0;
-      card.style.transform='translateX('+dx+'px) rotate('+(dx/30)+'deg)';
-      card.style.opacity = 1-Math.min(Math.abs(dx)/400,0.5);
+    var sx=0, sy=0, dx=0, lastX=0, lastT=0, vel=0, locked=null, active=false;
+    function abort(){
+      if(!active) return; active=false;
+      card.classList.remove('is-dragging');
+      card.style.transform=''; card.style.opacity=''; setStamps(card,0);
+    }
+    card.addEventListener('pointerdown', function(e){
+      if(e.target.closest('a, button')) return;   // keep link clicks working
+      active=true; locked=null; dx=0; vel=0;
+      sx=e.clientX; sy=e.clientY; lastX=e.clientX; lastT=performance.now();
+      card.classList.add('is-dragging');
+      card.setPointerCapture && card.setPointerCapture(e.pointerId);
     });
+    card.addEventListener('pointermove', function(e){
+      if(!active) return;
+      var ddx=e.clientX-sx, ddy=e.clientY-sy;
+      if(locked===null){
+        var adx=Math.abs(ddx), ady=Math.abs(ddy);
+        if(adx<10 && ady<10) return;          // 10px deadzone before committing
+        locked=(ady>adx*1.4)?'y':'x';          // bias toward horizontal swipes
+      }
+      if(locked==='y'){ abort(); return; }     // vertical intent -> page scrolls
+      dx=ddx;
+      var t=performance.now();
+      vel=(e.clientX-lastX)/Math.max(1,t-lastT); lastX=e.clientX; lastT=t;
+      card.style.transform='translate('+ddx+'px,'+(ddy*0.4)+'px) rotate('+(ddx/18)+'deg)';
+      setStamps(card, ddx);
+    });
+    card.addEventListener('pointercancel', abort);
     card.addEventListener('pointerup', function(){
-      if(x0===null) return; var d=dx; x0=null; dx=0;
-      if(Math.abs(d)>90){ card.style.transition='transform .2s,opacity .2s';
-        card.style.transform='translateX('+(d>0?600:-600)+'px)'; card.style.opacity='0';
-        setTimeout(function(){ decide(s, d>0); },160);
-      } else { card.style.transform=''; card.style.opacity=''; }
+      if(!active) return; active=false;
+      card.classList.remove('is-dragging');
+      var past=Math.abs(dx)>THRESH;
+      var flick=Math.abs(vel)>V_THRESH && Math.abs(dx)>FLICK_MIN && (vel>0)===(dx>0);
+      if(past||flick){ commit(s, dx>0); return; }
+      card.style.transform=''; card.style.opacity=''; setStamps(card,0);  // smooth snap home
     });
   }
-  document.getElementById('btn-skip').addEventListener('click', function(){ if(curS) decide(curS,false); });
-  document.getElementById('btn-save').addEventListener('click', function(){ if(curS) decide(curS,true); });
+  document.getElementById('btn-skip').addEventListener('click', function(){ if(curS) commit(curS,false); });
+  document.getElementById('btn-save').addEventListener('click', function(){ if(curS) commit(curS,true); });
   document.addEventListener('keydown', function(e){
     if(document.getElementById('view-meet').style.display==='none') return;
     if(document.getElementById('sub-discover').style.display==='none') return;
     if(!curS) return;
-    if(e.key==='ArrowRight') decide(curS,true);
-    else if(e.key==='ArrowLeft') decide(curS,false);
+    if(e.key==='ArrowRight') commit(curS,true);
+    else if(e.key==='ArrowLeft') commit(curS,false);
   });
 
   function updateCount(){ document.getElementById('list-n').textContent=liked().length; }
