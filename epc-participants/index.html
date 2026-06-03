@@ -34,6 +34,11 @@
   .badge { font-size:11px; background:var(--accent-soft); color:var(--accent); border-radius:4px; padding:1px 6px; margin-right:4px; white-space:nowrap; }
   .badge.Presenter { background:var(--go-soft); color:var(--go); }
   .badge.Chair, .badge.Discussant { background:var(--slate-soft); color:var(--slate); }
+  td.act { text-align:right; white-space:nowrap; }
+  .meetbtn { border:1px solid var(--line); background:#fff; color:var(--accent); border-radius:20px;
+    padding:4px 11px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
+  .meetbtn:hover { background:var(--accent-soft); }
+  .meetbtn.is-on { background:var(--go-soft); color:var(--go); border-color:var(--go-soft); }
   tr.detail td { background:#fafbfd; }
   .detail h4 { margin:2px 0 8px; font-size:13px; color:var(--muted); }
   .part { padding:7px 10px; border:1px solid var(--line); border-radius:8px; margin-bottom:7px; background:#fff; }
@@ -60,7 +65,9 @@
     td.country, td.sessions { display:inline-block; }
     td.country { margin-right:14px; }
     td.country span { background:transparent; padding:0; color:var(--accent); font-weight:600; }
-    td.roles { margin-top:5px; }
+    td.roles { margin-top:5px; display:inline-block; }
+    td.act { margin-top:8px; text-align:left; }
+    .meetbtn { padding:7px 14px; font-size:13px; }
     tr.detail { display:block; }
     tr.detail td { display:block; padding:0; }
     .part .sub { font-size:12.5px; }
@@ -227,6 +234,7 @@
         <th data-sort="country">Country <span class="arrow"></span></th>
         <th data-sort="n_participations">Sessions <span class="arrow"></span></th>
         <th>Roles</th>
+        <th></th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
@@ -431,6 +439,7 @@ function initApp(DATA){
       return (x.paper_title||'')+' '+(x.institution||'')+' '+(ABS[x.abstract_id]||'');
     }).join(' ');
     p._hay = (p.name+' '+p.institution+' '+p.country+' '+parts).toLowerCase();
+    p._rand = Math.random();   // stable shuffle key for the default (unsorted) order
   });
   document.getElementById('hdrsub').textContent =
     DATA.n_people + ' people · ' + DATA.n_sessions + ' sessions · ' + DATA.countries.length + ' countries · generated ' + DATA.generated_at;
@@ -439,7 +448,7 @@ function initApp(DATA){
 
   var q=document.getElementById('q'), inst=document.getElementById('inst'), rsel=document.getElementById('role');
   var rowsEl=document.getElementById('rows'), countEl=document.getElementById('count'), emptyEl=document.getElementById('empty');
-  var sortKey='name', sortDir=1, openId=null;
+  var sortKey='_rand', sortDir=1, openId=null;   // start shuffled, not A-Z
 
   function norm(s){ return (s||'').toLowerCase(); }
   function matchPerson(p, terms){
@@ -459,7 +468,7 @@ function initApp(DATA){
     });
     out.sort(function(a,b){
       var x=a[sortKey], y=b[sortKey];
-      if(sortKey==='n_participations'){ return (x-y)*sortDir; }
+      if(sortKey==='n_participations' || sortKey==='_rand'){ return (x-y)*sortDir; }
       x=norm(x); y=norm(y);
       return x<y? -1*sortDir : x>y? 1*sortDir : 0;
     });
@@ -469,20 +478,25 @@ function initApp(DATA){
 
   function render(){
     var list=current();
+    var onList={}; liked().forEach(function(id){ onList[id]=1; });
     countEl.textContent = list.length + ' of ' + people.length + ' people';
     emptyEl.style.display = list.length? 'none':'block';
     var html='';
     list.forEach(function(p){
       var roleBadges = p.roles.map(function(r){return '<span class="badge '+r+'">'+r+'</span>';}).join('');
       var cc = p.country? '<span>'+esc(p.country)+'</span>' : '<span>—</span>';
+      var on = !!onList[p.id];
+      var meetBtn = '<button type="button" class="meetbtn'+(on?' is-on':'')+'" data-meet="'+esc(p.id)+'">'+
+        (on?'✓ On list':'+ Meet')+'</button>';
       html += '<tr class="person" data-id="'+esc(p.id)+'">'+
         '<td class="name">'+esc(p.name)+'</td>'+
         '<td>'+esc(p.institution||'')+'</td>'+
         '<td class="country'+(p.country?'':' empty')+'" data-label="Country">'+cc+'</td>'+
         '<td class="sessions" data-label="Sessions">'+p.n_participations+'</td>'+
-        '<td class="roles">'+roleBadges+'</td></tr>';
+        '<td class="roles">'+roleBadges+'</td>'+
+        '<td class="act">'+meetBtn+'</td></tr>';
       if(p.id===openId){
-        html += '<tr class="detail"><td colspan="5"><div class="detail">'+
+        html += '<tr class="detail"><td colspan="6"><div class="detail">'+
           '<h4>'+esc(p.name)+(p.institution?' · '+esc(p.institution):'')+(p.country?' · '+esc(p.country):'')+'</h4>'+
           p.participations.map(function(x){
             var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(x.session);
@@ -502,6 +516,17 @@ function initApp(DATA){
   }
 
   rowsEl.addEventListener('click', function(e){
+    // the "+ Meet" button toggles the meeting list without expanding the row
+    var mb=e.target.closest('.meetbtn');
+    if(mb){
+      e.stopPropagation();
+      var mid=mb.getAttribute('data-meet');
+      var L=liked();
+      if(L.indexOf(mid)>=0){ L=L.filter(function(x){return x!==mid;}); }
+      else { L.push(mid); }
+      lsSet(K_LIKE, L); updateCount(); render();
+      return;
+    }
     var tr=e.target.closest('tr.person'); if(!tr) return;
     var id=tr.getAttribute('data-id');
     openId = (openId===id)? null : id;
@@ -519,7 +544,11 @@ function initApp(DATA){
   [q,inst].forEach(function(el){ el.addEventListener('input', function(){openId=null; render();}); });
   [csel,rsel].forEach(function(el){ el.addEventListener('change', function(){openId=null; render();}); });
   document.getElementById('reset').addEventListener('click', function(){
-    q.value=''; inst.value=''; csel.value=''; rsel.value=''; openId=null; sortKey='name'; sortDir=1; render();
+    q.value=''; inst.value=''; csel.value=''; rsel.value=''; openId=null;
+    sortKey='_rand'; sortDir=1;
+    people.forEach(function(p){ p._rand=Math.random(); });   // fresh shuffle
+    document.querySelectorAll('th .arrow').forEach(function(a){a.textContent='';});
+    render();
   });
 
   // ---------- Who to meet ----------
@@ -847,7 +876,10 @@ function initApp(DATA){
   });
 
   function renderMeet(){
-    if(!hasSource()){
+    var srcOK=hasSource();
+    // With no recommender source AND nothing saved, there is nothing to show
+    // yet, so fall back to the setup form.
+    if(!srcOK && !liked().length){
       document.getElementById('me-setup').style.display='block';
       document.getElementById('me-meet').style.display='none';
       setupPrefill();
@@ -859,8 +891,12 @@ function initApp(DATA){
     var bits=[];
     if(me) bits.push('You: <b>'+esc(me.name)+'</b>');
     if(txt) bits.push('Interests: <b>'+esc(txt.length>60?txt.slice(0,60)+'…':txt)+'</b>');
+    // Someone who only added people from Browse has a list but no source: send
+    // them straight to it rather than an empty swipe deck.
+    if(!bits.length) bits.push('Your saved people');
     document.getElementById('me-name').innerHTML=bits.join(' &nbsp;·&nbsp; ');
     updateCount(); renderDeck();
+    if(!srcOK) document.querySelector('.subtabs button[data-sub="list"]').click();
   }
 
   q.focus();
