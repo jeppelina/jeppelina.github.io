@@ -214,12 +214,19 @@
   .prog-toggles #prog-now { margin-left:auto; border:1px solid var(--accent); background:var(--accent-soft); color:var(--accent); border-radius:20px; padding:5px 12px; font-size:12.5px; font-weight:600; cursor:pointer; }
   .prog-count { color:var(--muted); font-size:12.5px; margin:0 2px 10px; }
   .slot { margin:0 0 14px; scroll-margin-top:56px; }
-  .slot-h { display:flex; align-items:center; gap:9px; margin:0 2px 7px; font-size:13px; font-weight:700; color:var(--ink); }
+  .slot-h { display:flex; align-items:center; gap:9px; margin:0 2px 7px; font-size:13px; font-weight:700; color:var(--ink); cursor:pointer; }
   .slot-tag { font-size:11px; font-weight:600; border-radius:20px; padding:1px 9px; }
   .slot-tag.now { background:var(--go); color:#fff; }
   .slot-tag.next { background:var(--accent-soft); color:var(--accent); }
   .slot-tag.done { background:var(--slate-soft); color:var(--slate); }
   .slot.is-done { opacity:.6; }
+  .slot.is-done:hover, .slot.is-collapsed:hover { opacity:1; }
+  .slot-count { font-weight:600; color:var(--muted); font-size:12px; display:none; }
+  .slot.is-collapsed .slot-count { display:inline; margin-left:auto; }
+  .slot-h::after { content:"\2304"; color:var(--muted); font-size:15px; line-height:1; transition:transform .15s; }
+  .slot:not(.is-collapsed) .slot-h::after { margin-left:auto; }
+  .slot.is-collapsed .slot-h::after { transform:rotate(-90deg); }
+  .slot.is-collapsed .scard { display:none; }
   .scard { position:relative; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 40px 11px 13px; margin-bottom:8px; }
   .scard.has-mine { border-color:#b9d0bf; box-shadow:inset 3px 0 0 var(--go); }
   .scard-h { cursor:pointer; }
@@ -1163,6 +1170,8 @@ function initApp(DATA){
         if(ab){ ab.hidden=!ab.hidden; pt.setAttribute('aria-expanded', String(!ab.hidden)); }
         return;
       }
+      var sh=e.target.closest('.slot-h');
+      if(sh){ sh.parentNode.classList.toggle('is-collapsed'); return; }
       var h=e.target.closest('.scard-h');
       if(h){ h.parentNode.classList.toggle('open'); }
     });
@@ -1234,23 +1243,31 @@ function initApp(DATA){
     var slots={};
     list.forEach(function(s){ (slots[s.time]=slots[s.time]||[]).push(s); });
     var keys=Object.keys(slots).sort(function(a,b){ return (slotMin(a)||[0])[0]-(slotMin(b)||[0])[0]; });
+    // only the live day fades + folds away past slots so "now" floats to the
+    // top; other days (past or future) render fully expanded and unfaded.
+    var isToday=(bolognaDateNum()===dayObj.dnum);
     var now=Date.now(), html='', anchorSlot=null, firstUpcoming=null;
     keys.forEach(function(k){
-      var ab=slotAbs(dayObj.dnum,k), tag='', cls='';
-      if(ab){
-        if(now>=ab[0] && now<ab[1]){ tag='<span class="slot-tag now">Now</span>'; anchorSlot=k; }
-        else if(now<ab[0]){ tag='<span class="slot-tag next">Upcoming</span>'; if(!firstUpcoming) firstUpcoming=k; }
-        else { tag='<span class="slot-tag done">Ended</span>'; cls=' is-done'; }
+      var tag='', cls='', collapsed=false, n=slots[k].length;
+      if(isToday){
+        var ab=slotAbs(dayObj.dnum,k);
+        if(ab){
+          if(now>=ab[0] && now<ab[1]){ tag='<span class="slot-tag now">Now</span>'; anchorSlot=k; }
+          else if(now<ab[0]){ tag='<span class="slot-tag next">Upcoming</span>'; if(!firstUpcoming) firstUpcoming=k; }
+          else { tag='<span class="slot-tag done">Ended</span>'; cls=' is-done'; collapsed=true; }
+        }
       }
       var cards=slots[k].sort(function(a,b){ return (a.room||'').localeCompare(b.room||'')||(''+a.id).localeCompare(''+b.id); })
                         .map(function(s){ return progCard(s,likedSet,starSet); }).join('');
-      html+='<div class="slot'+cls+'" data-slot="'+esc(k)+'"><div class="slot-h"><span>'+esc(k)+'</span>'+tag+'</div>'+cards+'</div>';
+      html+='<div class="slot'+cls+(collapsed?' is-collapsed':'')+'" data-slot="'+esc(k)+'">'+
+        '<div class="slot-h"><span>'+esc(k)+'</span>'+tag+
+          '<span class="slot-count">'+n+' session'+(n!==1?'s':'')+'</span></div>'+cards+'</div>';
     });
     var lc=document.getElementById('prog-list');
     lc.innerHTML = html || '<div class="prog-empty">No sessions match these filters.</div>';
     document.getElementById('prog-count').textContent = list.length+' session'+(list.length!==1?'s':'')+' on '+dayObj.day;
     progAnchor = anchorSlot || firstUpcoming || (keys.length?keys[keys.length-1]:null);
-    if(scrollNow && progAnchor){
+    if(scrollNow && isToday && progAnchor){
       var el=lc.querySelector('.slot[data-slot="'+(window.CSS&&CSS.escape?CSS.escape(progAnchor):progAnchor)+'"]');
       if(el) el.scrollIntoView({block:'start', behavior:'smooth'});
     }
