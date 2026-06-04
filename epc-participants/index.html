@@ -144,6 +144,9 @@
   .listrow .meta2 { color:var(--muted); font-size:12.5px; margin-top:2px; }
   .listrow .meta2 a { color:var(--accent); text-decoration:none; }
   .listrow button.rm { float:right; border:0; background:none; color:#a9554a; cursor:pointer; font-size:13px; }
+  .listrow .matchpct { color:var(--accent); background:var(--accent-soft); border-radius:6px; padding:1px 6px; font-size:12px; font-weight:600; margin-right:6px; }
+  .listrow button.meet { float:right; border:1px solid var(--line); background:#fff; color:var(--accent); cursor:pointer; font-size:12.5px; border-radius:20px; padding:3px 11px; }
+  .listrow button.meet.on { background:var(--accent); border-color:var(--accent); color:#fff; }
   .meet-actions { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
   .meet-actions button { border:1px solid var(--line); background:#fff; border-radius:8px; padding:7px 12px; font-size:13px; cursor:pointer; }
   /* who-to-meet setup cards */
@@ -322,6 +325,7 @@
       </div>
       <div class="subtabs">
         <button data-sub="discover" class="active">Discover</button>
+        <button data-sub="closest">Closest to me</button>
         <button data-sub="list">My list (<span id="list-n">0</span>)</button>
       </div>
 
@@ -334,6 +338,11 @@
         <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:10px">
           Swipe the card, tap a button, or use the ← / → arrow keys.
         </p>
+      </div>
+
+      <div id="sub-closest" style="display:none">
+        <p style="color:var(--muted);font-size:12.5px;margin:2px 0 12px">People whose abstracts are closest to yours, ranked. Co-authors are left out.</p>
+        <div id="closest-rows"></div>
       </div>
 
       <div id="sub-list" style="display:none">
@@ -753,9 +762,37 @@ function initApp(DATA){
       b.classList.add('active');
       var s=b.getAttribute('data-sub');
       document.getElementById('sub-discover').style.display = s==='discover'?'block':'none';
+      document.getElementById('sub-closest').style.display  = s==='closest'?'block':'none';
       document.getElementById('sub-list').style.display     = s==='list'?'block':'none';
       if(s==='list') renderList();
+      if(s==='closest') renderClosest();
     });
+  });
+
+  function renderClosest(){
+    var me=byId[lsGet(K_ME)];
+    var box=document.getElementById('closest-rows');
+    if(!me){ box.innerHTML='<p style="color:var(--muted)">Pick yourself in the programme first (use "change" above) to see who is closest to your work.</p>'; return; }
+    var sim=me.sim||[];
+    if(!sim.length){ box.innerHTML='<p style="color:var(--muted)">No closest-match list for you. This happens when no abstract or title text was found for your papers.</p>'; return; }
+    var likedSet={}; liked().forEach(function(id){likedSet[id]=1;});
+    box.innerHTML = sim.map(function(e){
+      var p=byId[e[0]]; if(!p) return '';
+      var pct=Math.round(e[1]*100), part=firstPaper(p)||{}, on=likedSet[p.id];
+      return '<div class="listrow">'+
+        '<button class="meet'+(on?' on':'')+'" data-id="'+esc(p.id)+'">'+(on?'✓ on list':'+ Meet')+'</button>'+
+        '<div class="top"><span class="matchpct">'+pct+'%</span>'+esc(p.name)+'</div>'+
+        '<div class="meta2">'+esc(p.institution||'')+(p.country?' · '+esc(p.country):'')+'</div>'+
+        (part.paper_title?'<div class="meta2">'+esc(part.paper_title)+'</div>':'')+
+      '</div>';
+    }).filter(Boolean).join('');
+  }
+  document.getElementById('closest-rows').addEventListener('click', function(e){
+    var b=e.target.closest('button.meet'); if(!b) return;
+    var id=b.getAttribute('data-id'), L=liked();
+    if(L.indexOf(id)>=0) lsSet(K_LIKE, L.filter(function(x){return x!==id;}));
+    else { L.push(id); lsSet(K_LIKE, L); }
+    renderClosest(); updateCount();
   });
 
   function firstPaper(p){
