@@ -105,6 +105,7 @@
     border-radius:20px; padding:3px 10px; cursor:pointer; }
   .mcard .mscore::after { content:" ⓘ"; opacity:.55; font-size:11px; }
   .mcard .mscore:hover { background:#dde6f6; }
+  .mcard .mtag { float:right; font:inherit; font-size:12px; color:var(--muted); background:var(--line); border-radius:20px; padding:3px 10px; }
   .mcard h3 { margin:0 4px 2px 0; font-size:19px; }
   .mcard .aff { color:var(--muted); font-size:13.5px; margin-bottom:10px; }
   .mcard .aff b { color:var(--accent); font-weight:600; }
@@ -691,7 +692,7 @@ function initApp(DATA){
       if(dot>0) out.push({i:p.id, s:dot, k:shared});
     });
     out.sort(function(a,b){ return b.s-a.s; });
-    return out.slice(0,60);
+    return out.slice(0,250);
   }
   // The two engines score on different scales (typed-interest dot products vs
   // blended abstract-cosine), so we keep them separate rather than fold them
@@ -715,6 +716,16 @@ function initApp(DATA){
   function availFrom(list){
     var seen={}; liked().concat(skipped()).forEach(function(id){seen[id]=1;});
     return list.filter(function(s){ return byId[s.i] && !seen[s.i] && attending(byId[s.i]); });
+  }
+  // once the ranked shortlists are used up, keep dealing the remaining people
+  // who are actually at the conference (presenting / chairing / discussing),
+  // in shuffled order, so the deck does not stop early.
+  function fallbackPool(){
+    var seen={}; liked().concat(skipped()).forEach(function(id){seen[id]=1;});
+    var meId=lsGet(K_ME), ex = meId ? coauthorsOf(meId) : {};
+    return people.filter(function(p){
+      return attending(p) && !seen[p.id] && !ex[p.id];
+    }).map(function(p){ return {i:p.id, s:0, k:[]}; });
   }
 
   var meSearch=document.getElementById('me-search'), meResults=document.getElementById('me-results');
@@ -805,7 +816,9 @@ function initApp(DATA){
     return '<div class="mcard" id="topcard">'+
       '<div class="stamp stamp-yes" aria-hidden="true">Meet</div>'+
       '<div class="stamp stamp-skip" aria-hidden="true">Skip</div>'+
-      '<button type="button" class="mscore" data-method title="How matches are computed">match '+Math.round(s.s*100)+'%</button>'+
+      (s._src==='more'
+        ? '<span class="mtag" title="Beyond your top matches, shown so you can keep meeting people">more to meet</span>'
+        : '<button type="button" class="mscore" data-method title="How matches are computed">match '+Math.round(s.s*100)+'%</button>')+
       '<h3>'+esc(p.name)+'</h3>'+
       '<div class="aff">'+esc(p.institution||'')+(p.country?' · <b>'+esc(p.country)+'</b>':'')+'</div>'+
       (part.paper_title?'<div class="paper">'+esc(part.paper_title)+'</div>':'')+
@@ -838,8 +851,13 @@ function initApp(DATA){
     var pools=activeSources().map(function(src){ return {name:src.name, list:availFrom(src.list)}; })
                              .filter(function(pl){ return pl.list.length; });
     if(!pools.length){
+      // ranked shortlists exhausted -> fall back to everyone else attending
+      var fb=fallbackPool();
+      if(fb.length) pools=[{name:'more', list:fb}];
+    }
+    if(!pools.length){
       curS=null;
-      deck.innerHTML='<div class="deck-done">No more suggestions right now. Saved people are in <b>My list</b>.</div>';
+      deck.innerHTML='<div class="deck-done">That is everyone at the conference now. Saved people are in <b>My list</b>.</div>';
       document.getElementById('swipe-btns').style.display='none';
       return;
     }
