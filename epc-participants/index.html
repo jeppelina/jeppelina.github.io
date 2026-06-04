@@ -257,13 +257,13 @@
     <div class="sub" id="hdrsub"></div>
   </header>
   <nav class="tabs">
-    <button data-tab="browse" class="active">Browse</button>
-    <button data-tab="meet">Who to meet</button>
+    <button data-tab="meet" class="active">Who to meet</button>
+    <button data-tab="browse">Browse</button>
     <button data-tab="programme">Programme</button>
     <button data-tab="method">Method</button>
     <button data-tab="links">EPC site</button>
   </nav>
-  <div class="wrap" id="view-browse">
+  <div class="wrap" id="view-browse" style="display:none">
     <div class="controls">
       <input id="q" type="search" placeholder="Search name, institution, paper title, or abstract…" />
       <select id="country"><option value="">All countries</option></select>
@@ -296,7 +296,7 @@
     </footer>
   </div>
 
-  <div class="wrap" id="view-meet" style="display:none">
+  <div class="wrap" id="view-meet">
     <div id="me-setup">
       <p style="font-size:14px;margin:2px 0 14px">Get a personalised shortlist of people whose work is closest to yours. Use either option below, or both.</p>
 
@@ -1128,8 +1128,8 @@ function initApp(DATA){
     }
   }
 
-  q.focus();
-  render();
+  render();       // prepare the Browse table for when its tab is opened
+  renderMeet();   // "Who to meet" is the default tab on load
 }
 </script>
 <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
