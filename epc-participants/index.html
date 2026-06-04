@@ -703,7 +703,11 @@ function initApp(DATA){
     var txt=(lsGet(K_INT)||'').trim();
     if(txt){ var ir=interestRank(txt); if(ir.length) sources.push({name:'interest', list:ir}); }
     var me=byId[lsGet(K_ME)];
-    if(me && me.sim && me.sim.length) sources.push({name:'similar', list:me.sim.slice()});
+    // sim is stored compactly as [id, score] pairs; expand only the current
+    // user's list into the {i, s} shape the deck consumes.
+    if(me && me.sim && me.sim.length){
+      sources.push({name:'similar', list:me.sim.map(function(e){ return {i:e[0], s:e[1]}; })});
+    }
     return sources;
   }
   // Pure co-authors (role "Author" only, never presenting/chairing/discussing)
