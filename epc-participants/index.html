@@ -350,7 +350,7 @@
       </div>
 
       <div id="sub-closest" style="display:none">
-        <p style="color:var(--muted);font-size:12.5px;margin:2px 0 12px">People whose abstracts are closest to yours, ranked. Co-authors are left out.</p>
+        <p style="color:var(--muted);font-size:12.5px;margin:2px 0 12px">People whose abstracts are closest to yours, ranked. Co-authors are left out. <a href="#" class="link" id="closest-method">How is the match scored?</a></p>
         <div id="closest-rows"></div>
       </div>
 
@@ -796,6 +796,11 @@ function initApp(DATA){
       '</div>';
     }).filter(Boolean).join('');
   }
+  document.getElementById('closest-method').addEventListener('click', function(e){
+    e.preventDefault();
+    var mb=[].slice.call(document.querySelectorAll('nav.tabs button')).filter(function(b){ return b.getAttribute('data-tab')==='method'; })[0];
+    if(mb){ mb.click(); window.scrollTo(0,0); }
+  });
   document.getElementById('closest-rows').addEventListener('click', function(e){
     var b=e.target.closest('button.meet'); if(!b) return;
     var id=b.getAttribute('data-id'), L=liked();
