@@ -231,6 +231,7 @@
   .pp { color:var(--ink); }
   .pa { color:var(--muted); }
   .pa.pres { color:var(--ink); font-weight:600; }
+  .pa-aff { color:var(--muted); font-weight:400; font-size:.92em; }
   .pp.on, .pa.on { background:var(--go-soft); color:var(--go); font-weight:600; border-radius:4px; padding:0 4px; }
   .prog-empty { text-align:center; color:var(--muted); padding:32px; }
   @media (max-width:560px){
@@ -815,14 +816,21 @@ function initApp(DATA){
 
   var deck=document.getElementById('deck'), curS=null, srcTurn=0;
   // draw the next card at random, weighted toward higher matches, so the
-  // order is not a strict ranking but still favours strong matches.
+  // order is not a strict ranking but still favours strong matches. We take
+  // the best of a few weighted draws so the strongest matches reliably come
+  // earlier, while keeping enough variety that revisits are not identical.
   function pick(qd){
     if(qd.length<=1) return qd[0];
-    var w=qd.map(function(s){ return Math.pow(Math.max(s.s,0.001),4); });
-    var sum=0; w.forEach(function(x){ sum+=x; });
-    var r=Math.random()*sum, acc=0;
-    for(var i=0;i<qd.length;i++){ acc+=w[i]; if(r<=acc) return qd[i]; }
-    return qd[qd.length-1];
+    function draw(){
+      var w=qd.map(function(s){ return Math.pow(Math.max(s.s,0.001),4); });
+      var sum=0; w.forEach(function(x){ sum+=x; });
+      var r=Math.random()*sum, acc=0;
+      for(var i=0;i<qd.length;i++){ acc+=w[i]; if(r<=acc) return qd[i]; }
+      return qd[qd.length-1];
+    }
+    var best=draw();
+    for(var k=0;k<2;k++){ var c=draw(); if(c.s>best.s) best=c; }  // best of 3 -> stronger matches first
+    return best;
   }
   function renderDeck(){
     // build a pool per active engine (interests / abstract-similarity), drop
@@ -1083,8 +1091,9 @@ function initApp(DATA){
       var presSet={}; (p.pr||[]).forEach(function(id){ presSet[id]=1; });
       var ids=(p.au&&p.au.length)?p.au:(p.pr||[]);
       var au=ids.map(function(id){
-        var pn=byId[id]?byId[id].name:''; if(!pn) return '';
-        return '<span class="pa'+(presSet[id]?' pres':'')+(likedSet[id]?' on':'')+'">'+esc(pn)+'</span>';
+        var per=byId[id]; if(!per||!per.name) return '';
+        var aff=(presSet[id] && per.institution) ? ' <span class="pa-aff">('+esc(per.institution)+')</span>' : '';
+        return '<span class="pa'+(presSet[id]?' pres':'')+(likedSet[id]?' on':'')+'">'+esc(per.name)+aff+'</span>';
       }).filter(Boolean).join(', ');
       var ttl=p.aid ? '<a href="https://epc2026.eaps.nl/abstracts/'+encodeURIComponent(p.aid)+'" target="_blank" rel="noopener">'+esc(p.t)+'</a>' : esc(p.t);
       return '<div class="ppr">'+ttl+(au?'<div class="ppres">'+au+'</div>':'')+'</div>';
