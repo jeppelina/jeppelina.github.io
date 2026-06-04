@@ -127,15 +127,19 @@
   .mcard .snip.is-clipped { max-height:120px; overflow:hidden; }
   .mcard .snip.is-clipped::after { content:''; position:absolute; left:0; right:0; bottom:0; height:34px;
     background:linear-gradient(rgba(255,255,255,0), var(--card)); pointer-events:none; }
-  .mcard .schedule { margin-top:2px; border-top:1px solid var(--line); padding-top:10px; }
-  .mcard .sess-head { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:7px; }
-  .mcard a.sess-line { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 8px; text-decoration:none;
-    padding:6px 8px; border-radius:7px; margin-bottom:5px; background:#f6f8fc; }
-  .mcard a.sess-line:last-child { margin-bottom:0; }
-  .mcard a.sess-line:hover { background:var(--accent-soft); }
-  .mcard .sess-id { color:var(--accent); font-weight:600; font-size:12.5px; }
-  .mcard .sess-when { color:var(--muted); font-size:12.5px; }
-  .mcard .srole { font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--slate);
+  .schedule { margin-top:8px; border-top:1px solid var(--line); padding-top:10px; }
+  .schedule .sess-head { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:7px; }
+  .sess-row { display:flex; align-items:stretch; gap:6px; margin-bottom:5px; }
+  .sess-row:last-child { margin-bottom:0; }
+  .sstar { flex:0 0 auto; border:1px solid var(--line); background:#fff; color:#c9ccd6; font-size:15px;
+    line-height:1; cursor:pointer; border-radius:7px; padding:0 9px; }
+  .sstar.on { color:#e6a700; border-color:#e6cd8c; background:#fff9e9; }
+  a.sess-line { flex:1; display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 8px; text-decoration:none;
+    padding:6px 8px; border-radius:7px; background:#f6f8fc; }
+  a.sess-line:hover { background:var(--accent-soft); }
+  .sess-id { color:var(--accent); font-weight:600; font-size:12.5px; }
+  .sess-when { color:var(--muted); font-size:12.5px; }
+  .srole { font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--slate);
     background:var(--slate-soft); border-radius:4px; padding:1px 6px; margin-left:auto; }
   .swipe-btns { display:flex; gap:12px; max-width:360px; margin:14px auto 0; }
   .swipe-btns button { flex:1; padding:13px; border-radius:12px; border:1px solid var(--line); font-size:15px;
@@ -561,8 +565,9 @@ function initApp(DATA){
             var instLine = x.institution && x.institution!==p.institution? ' · '+esc(x.institution):'';
             var abs = ABS[x.abstract_id];
             var absHtml = abs? '<div class="abs">'+esc(abs)+'</div>' : '';
+            var sstar = x.session? starBtn(x.session)+' ' : '';
             return '<div class="part"><div class="top">'+title+'</div>'+
-              '<div class="sub"><span class="badge '+x.role+'">'+x.role+'</span> '+
+              '<div class="sub">'+sstar+'<span class="badge '+x.role+'">'+x.role+'</span> '+
               '<a class="sess" href="'+link+'" target="_blank" rel="noopener">Session '+esc(x.session)+'</a> · '+
               esc(x.session_title||'')+' · '+esc(x.day||'')+' '+esc(x.time||'')+' '+esc(x.room||'')+instLine+'</div>'+absHtml+'</div>';
           }).join('')+
@@ -573,6 +578,7 @@ function initApp(DATA){
   }
 
   rowsEl.addEventListener('click', function(e){
+    if(handleSessionStar(e)) return;
     // the "+ Meet" button toggles the meeting list without expanding the row
     var mb=e.target.closest('.meetbtn');
     if(mb){
@@ -793,6 +799,7 @@ function initApp(DATA){
         '<div class="top"><span class="matchpct">'+pct+'%</span>'+esc(p.name)+'</div>'+
         '<div class="meta2">'+esc(p.institution||'')+(p.country?' · '+esc(p.country):'')+'</div>'+
         (part.paper_title?'<div class="meta2">'+esc(part.paper_title)+'</div>':'')+
+        scheduleHTML(p)+
       '</div>';
     }).filter(Boolean).join('');
   }
@@ -802,6 +809,7 @@ function initApp(DATA){
     if(mb){ mb.click(); window.scrollTo(0,0); }
   });
   document.getElementById('closest-rows').addEventListener('click', function(e){
+    if(handleSessionStar(e)) return;
     var b=e.target.closest('button.meet'); if(!b) return;
     var id=b.getAttribute('data-id'), L=liked();
     if(L.indexOf(id)>=0) lsSet(K_LIKE, L.filter(function(x){return x!==id;}));
@@ -815,14 +823,32 @@ function initApp(DATA){
   }
   // a compact "where to find them" list of every session a person is in, so
   // people presenting in more than one slot show up cleanly.
+  function starBtn(sid){
+    var on=starred().indexOf(sid)>=0;
+    return '<button type="button" class="sstar'+(on?' on':'')+'" data-star="'+esc(sid)+'" '+
+      'title="Save session to my programme" aria-label="Save session to my programme">'+(on?'★':'☆')+'</button>';
+  }
+  // toggle a session into the starred programme from any people list; flips the
+  // clicked button in place so the surrounding list does not need re-rendering.
+  function handleSessionStar(e){
+    var b=e.target.closest('.sstar'); if(!b) return false;
+    e.preventDefault(); e.stopPropagation();
+    var sid=b.getAttribute('data-star'), L=starred(), i=L.indexOf(sid);
+    if(i>=0){ L.splice(i,1); b.classList.remove('on'); b.textContent='☆'; }
+    else { L.push(sid); b.classList.add('on'); b.textContent='★'; }
+    lsSet(K_STAR, L);
+    return true;
+  }
   function scheduleHTML(p){
     var lines=p.participations.filter(function(x){ return x.session; }).map(function(x){
       var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(x.session);
-      return '<a class="sess-line" href="'+link+'" target="_blank" rel="noopener">'+
-        '<span class="sess-id">Session '+esc(x.session)+'</span>'+
-        '<span class="sess-when">'+esc(x.day||'')+' '+esc(x.time||'')+(x.room?' · '+esc(x.room):'')+'</span>'+
-        (x.role?'<span class="srole">'+esc(x.role)+'</span>':'')+
-      '</a>';
+      return '<div class="sess-row">'+starBtn(x.session)+
+        '<a class="sess-line" href="'+link+'" target="_blank" rel="noopener">'+
+          '<span class="sess-id">Session '+esc(x.session)+'</span>'+
+          '<span class="sess-when">'+esc(x.day||'')+' '+esc(x.time||'')+(x.room?' · '+esc(x.room):'')+'</span>'+
+          (x.role?'<span class="srole">'+esc(x.role)+'</span>':'')+
+        '</a>'+
+      '</div>';
     });
     if(!lines.length) return '';
     var head=lines.length>1? 'In '+lines.length+' sessions' : 'Session';
@@ -971,6 +997,7 @@ function initApp(DATA){
   document.getElementById('btn-save').addEventListener('click', function(){ if(curS) commit(curS,true); });
   // the match badge explains itself: jump to the Method tab
   deck.addEventListener('click', function(e){
+    if(handleSessionStar(e)) return;
     if(!e.target.closest('.mscore')) return;
     var mb=[].slice.call(document.querySelectorAll('nav.tabs button')).filter(function(b){ return b.getAttribute('data-tab')==='method'; })[0];
     if(mb){ mb.click(); window.scrollTo(0,0); }
