@@ -239,6 +239,13 @@
   .scard.open .sdet { display:block; }
   .ppr { font-size:13px; margin-bottom:8px; }
   .ppr a { color:var(--accent); text-decoration:none; }
+  .ppr-t { font:inherit; text-align:left; padding:0; border:0; background:none; color:var(--accent);
+    cursor:pointer; display:inline; }
+  .ppr-t.plain { color:inherit; cursor:default; }
+  button.ppr-t::after { content:" ›"; opacity:.6; display:inline-block; transition:transform .15s; }
+  button.ppr-t[aria-expanded="true"]::after { transform:rotate(90deg); }
+  .ppr-abs { font-size:12.5px; color:var(--slate); line-height:1.5; margin-top:5px;
+    padding-left:9px; border-left:2px solid var(--line); }
   .ppres { font-size:12.5px; color:var(--muted); margin-top:2px; }
   .schairs { font-size:12px; color:var(--muted); margin-top:4px; }
   .pp { color:var(--ink); }
@@ -359,10 +366,6 @@
       </div>
 
       <div id="sub-list" style="display:none">
-        <div class="meet-actions">
-          <button id="copy-list">Copy list</button>
-          <button id="reset-deck">Start swiping over</button>
-        </div>
         <div id="list-rows"></div>
       </div>
     </div>
@@ -560,15 +563,15 @@ function initApp(DATA){
         html += '<tr class="detail"><td colspan="6"><div class="detail">'+
           '<h4>'+esc(p.name)+(p.institution?' · '+esc(p.institution):'')+(p.country?' · '+esc(p.country):'')+'</h4>'+
           p.participations.map(function(x){
-            var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(x.session);
             var title = x.paper_title? esc(x.paper_title) : '<i>('+esc(x.role)+')</i>';
             var instLine = x.institution && x.institution!==p.institution? ' · '+esc(x.institution):'';
             var abs = ABS[x.abstract_id];
             var absHtml = abs? '<div class="abs">'+esc(abs)+'</div>' : '';
             var sstar = x.session? starBtn(x.session)+' ' : '';
+            var sessLink = x.session? '<a class="sess" href="#" data-goto="'+esc(x.session)+'">Session '+esc(x.session)+'</a> · ' : '';
             return '<div class="part"><div class="top">'+title+'</div>'+
               '<div class="sub">'+sstar+'<span class="badge '+x.role+'">'+x.role+'</span> '+
-              '<a class="sess" href="'+link+'" target="_blank" rel="noopener">Session '+esc(x.session)+'</a> · '+
+              sessLink+
               esc(x.session_title||'')+' · '+esc(x.day||'')+' '+esc(x.time||'')+' '+esc(x.room||'')+instLine+'</div>'+absHtml+'</div>';
           }).join('')+
           '</div></td></tr>';
@@ -579,6 +582,7 @@ function initApp(DATA){
 
   rowsEl.addEventListener('click', function(e){
     if(handleSessionStar(e)) return;
+    if(handleSessionGoto(e)) return;
     // the "+ Meet" button toggles the meeting list without expanding the row
     var mb=e.target.closest('.meetbtn');
     if(mb){
@@ -810,6 +814,7 @@ function initApp(DATA){
   });
   document.getElementById('closest-rows').addEventListener('click', function(e){
     if(handleSessionStar(e)) return;
+    if(handleSessionGoto(e)) return;
     var b=e.target.closest('button.meet'); if(!b) return;
     var id=b.getAttribute('data-id'), L=liked();
     if(L.indexOf(id)>=0) lsSet(K_LIKE, L.filter(function(x){return x!==id;}));
@@ -841,9 +846,8 @@ function initApp(DATA){
   }
   function scheduleHTML(p){
     var lines=p.participations.filter(function(x){ return x.session; }).map(function(x){
-      var link='https://epc2026.eaps.nl/sessions/'+encodeURIComponent(x.session);
       return '<div class="sess-row">'+starBtn(x.session)+
-        '<a class="sess-line" href="'+link+'" target="_blank" rel="noopener">'+
+        '<a class="sess-line" href="#" data-goto="'+esc(x.session)+'">'+
           '<span class="sess-id">Session '+esc(x.session)+'</span>'+
           '<span class="sess-when">'+esc(x.day||'')+' '+esc(x.time||'')+(x.room?' · '+esc(x.room):'')+'</span>'+
           (x.role?'<span class="srole">'+esc(x.role)+'</span>':'')+
@@ -998,6 +1002,7 @@ function initApp(DATA){
   // the match badge explains itself: jump to the Method tab
   deck.addEventListener('click', function(e){
     if(handleSessionStar(e)) return;
+    if(handleSessionGoto(e)) return;
     if(!e.target.closest('.mscore')) return;
     var mb=[].slice.call(document.querySelectorAll('nav.tabs button')).filter(function(b){ return b.getAttribute('data-tab')==='method'; })[0];
     if(mb){ mb.click(); window.scrollTo(0,0); }
@@ -1031,17 +1036,6 @@ function initApp(DATA){
     var id=b.getAttribute('data-id'); lsSet(K_LIKE, liked().filter(function(x){return x!==id;}));
     renderList(); updateCount();
   });
-  document.getElementById('copy-list').addEventListener('click', function(){
-    var txt=liked().map(function(id){var p=byId[id]; if(!p) return ''; var part=firstPaper(p)||{};
-      return p.name+' — '+(p.institution||'')+(p.country?', '+p.country:'')+
-        (part.session?'  ['+'Session '+part.session+', '+(part.day||'')+' '+(part.time||'')+(part.room?', '+part.room:'')+']':''); }).filter(Boolean).join('\n');
-    navigator.clipboard.writeText(txt).then(function(){ var b=document.getElementById('copy-list'); var o=b.textContent; b.textContent='Copied!'; setTimeout(function(){b.textContent=o;},1200); });
-  });
-  document.getElementById('reset-deck').addEventListener('click', function(){
-    lsSet(K_SKIP,[]); srcTurn=0; renderDeck();
-    document.querySelector('.subtabs button[data-sub="discover"]').click();
-  });
-
   function renderMeet(){
     var srcOK=hasSource();
     // With no recommender source AND nothing saved, there is nothing to show
@@ -1097,7 +1091,9 @@ function initApp(DATA){
     return 'Fri';
   }
   // precompute per-session id set, search haystack and slot minutes
+  var sessById={};
   SESSIONS.forEach(function(s){
+    sessById[s.id]=s;
     var ids={};
     s.papers.forEach(function(p){ (p.au||[]).forEach(function(id){ ids[id]=1; }); });
     (s.ch||[]).forEach(function(id){ ids[id]=1; });
@@ -1108,6 +1104,31 @@ function initApp(DATA){
     s._hay=(s.title+' '+s.theme+' '+pt+' '+names).toLowerCase();
     s._slot=slotMin(s.time)||[9999,9999];
   });
+  // jump from any session link straight to that session in the Programme tab,
+  // opened and scrolled into view, instead of leaving for the EPC site.
+  function goToSession(sid){
+    var s=sessById[sid]; if(!s) return;
+    var dayObj=DAYS.filter(function(d){return d.day===s.day;})[0];
+    if(dayObj) progDay=dayObj.key;
+    // clear programme filters so the target session is never filtered out
+    ['prog-q','prog-room','prog-theme'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    var pm=document.getElementById('prog-mine'); if(pm) pm.checked=false;
+    var ps=document.getElementById('prog-star'); if(ps) ps.checked=false;
+    var pb=[].slice.call(document.querySelectorAll('nav.tabs button')).filter(function(b){ return b.getAttribute('data-tab')==='programme'; })[0];
+    if(pb) pb.click();   // shows the tab and renders the day
+    var sel=(window.CSS&&CSS.escape)?CSS.escape(sid):sid;
+    var star=document.querySelector('#prog-list [data-star="'+sel+'"]');
+    if(star){
+      var card=star.closest('.scard');
+      if(card){ card.classList.add('open'); card.scrollIntoView({block:'center', behavior:'smooth'}); }
+    }
+  }
+  function handleSessionGoto(e){
+    var a=e.target.closest('[data-goto]'); if(!a) return false;
+    e.preventDefault(); e.stopPropagation();
+    goToSession(a.getAttribute('data-goto'));
+    return true;
+  }
 
   var progDay=null, progFilled=false, progAnchor=null;
   function fillProgControls(){
@@ -1136,6 +1157,12 @@ function initApp(DATA){
         if(i>=0) L.splice(i,1); else L.push(sid);
         lsSet(K_STAR, L); renderProgramme(false); return;
       }
+      var pt=e.target.closest('button.ppr-t');
+      if(pt){
+        var ab=pt.parentNode.querySelector('.ppr-abs');
+        if(ab){ ab.hidden=!ab.hidden; pt.setAttribute('aria-expanded', String(!ab.hidden)); }
+        return;
+      }
       var h=e.target.closest('.scard-h');
       if(h){ h.parentNode.classList.toggle('open'); }
     });
@@ -1160,8 +1187,12 @@ function initApp(DATA){
         var aff=(presSet[id] && per.institution) ? ' <span class="pa-aff">('+esc(per.institution)+')</span>' : '';
         return '<span class="pa'+(presSet[id]?' pres':'')+(likedSet[id]?' on':'')+'">'+esc(per.name)+aff+'</span>';
       }).filter(Boolean).join(', ');
-      var ttl=p.aid ? '<a href="https://epc2026.eaps.nl/abstracts/'+encodeURIComponent(p.aid)+'" target="_blank" rel="noopener">'+esc(p.t)+'</a>' : esc(p.t);
-      return '<div class="ppr">'+ttl+(au?'<div class="ppres">'+au+'</div>':'')+'</div>';
+      var absTxt = p.aid ? (ABS[p.aid]||'') : '';
+      var ttl = absTxt
+        ? '<button type="button" class="ppr-t" aria-expanded="false">'+esc(p.t)+'</button>'
+        : '<span class="ppr-t plain">'+esc(p.t)+'</span>';
+      var absHtml = absTxt ? '<div class="ppr-abs" hidden>'+esc(absTxt)+'</div>' : '';
+      return '<div class="ppr">'+ttl+(au?'<div class="ppres">'+au+'</div>':'')+absHtml+'</div>';
     }).join('');
     var lead=(s.ch||[]).map(function(id){return personChip(id,likedSet);}).filter(Boolean);
     var disc=(s.di||[]).map(function(id){return personChip(id,likedSet);}).filter(Boolean);
