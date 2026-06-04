@@ -180,15 +180,11 @@
   .linkcard .lk-t { display:block; font-weight:600; font-size:14.5px; color:var(--accent); }
   .linkcard .lk-t::after { content:" ↗"; font-size:12px; opacity:.6; }
   .linkcard .lk-d { display:block; color:var(--muted); font-size:12.5px; margin-top:2px; }
-  /* gate */
-  #gate { position:fixed; inset:0; background:var(--accent); display:flex; align-items:center; justify-content:center; z-index:50; }
-  #gate .box { background:#fff; border-radius:14px; padding:28px 26px; width:330px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); text-align:center; }
-  #gate h2 { margin:0 0 4px; font-size:17px; }
-  #gate p { margin:0 0 16px; color:var(--muted); font-size:13px; }
-  #gate input { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:15px; }
-  #gate button { margin-top:12px; width:100%; padding:10px; border:0; border-radius:8px; background:var(--accent); color:#fff; font-size:15px; cursor:pointer; }
-  #gate button:disabled { opacity:.6; cursor:default; }
-  #gate .err { color:#c0341d; font-size:13px; margin-top:10px; min-height:16px; }
+  /* loading overlay */
+  #loading { position:fixed; inset:0; background:var(--accent); display:flex; align-items:center; justify-content:center; z-index:50; }
+  #loading .box { background:#fff; border-radius:14px; padding:28px 26px; width:330px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); text-align:center; }
+  #loading h2 { margin:0 0 4px; font-size:17px; }
+  #loading p { margin:0; color:var(--muted); font-size:13px; }
   #app { display:none; }
 
   /* ---- Programme / schedule view ---- */
@@ -243,15 +239,10 @@
 </head>
 <body>
 
-<div id="gate">
+<div id="loading">
   <div class="box">
     <h2>EPC2026 Participant Search</h2>
-    <p>This index is private. Enter the password to continue.</p>
-    <form id="gateForm">
-      <input id="pw" type="password" placeholder="Password" autocomplete="off" autofocus />
-      <button id="gateBtn" type="submit">Unlock</button>
-    </form>
-    <div class="err" id="gateErr"></div>
+    <p id="loadMsg">Loading the index…</p>
   </div>
 </div>
 
@@ -400,8 +391,8 @@
     <h3>6. Programme</h3>
     <p>The "Programme" tab lists the parallel scientific sessions by day and time slot. It opens at the current time in Bologna (so during the conference you land on what is on now) and you can star sessions into your own agenda. Sessions that include anyone on your "who to meet" list are flagged, and those names are highlighted inside the session. Each session's theme comes from the programme's own topic listing, read once in the same way as everything else. Ceremonies, the welcome reception and other social events are not included.</p>
 
-    <h3>7. Privacy and security</h3>
-    <p>The whole dataset is encrypted with AES-256 (key derived with PBKDF2, SHA-256, 200,000 iterations) and is decrypted only in your browser with the shared password, through the built-in WebCrypto API. The page is fully static, with no server or database. Your chosen identity, typed interests, saved shortlist and starred sessions live only in this browser's local storage.</p>
+    <h3>7. Privacy</h3>
+    <p>The dataset is built entirely from the public conference programme, so nothing here is private that was not already public. The page is fully static, with no server or database: it loads the data file once and does everything else in your browser. Your chosen identity, typed interests, saved shortlist and starred sessions live only in this browser's local storage and are never sent anywhere.</p>
 
   </div>
 
@@ -460,49 +451,23 @@
 </div>
 
 <script>
-// ---------- decryption gate ----------
-async function decryptData(b64, password){
-  var raw = atob(b64.replace(/\s+/g,''));
-  var bytes = new Uint8Array(raw.length);
-  for(var i=0;i<raw.length;i++) bytes[i] = raw.charCodeAt(i);
-  // OpenSSL format: "Salted__"(8) + salt(8) + ciphertext
-  if(String.fromCharCode.apply(null, bytes.slice(0,8)) !== "Salted__") throw new Error("bad file");
-  var salt = bytes.slice(8,16), ct = bytes.slice(16);
-  var km = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
-  var bits = await crypto.subtle.deriveBits({name:"PBKDF2", salt:salt, iterations:200000, hash:"SHA-256"}, km, 384);
-  var d = new Uint8Array(bits);
-  var key = await crypto.subtle.importKey("raw", d.slice(0,32), {name:"AES-CBC"}, false, ["decrypt"]);
-  var plain = await crypto.subtle.decrypt({name:"AES-CBC", iv:d.slice(32,48)}, key, ct);
-  return new TextDecoder().decode(plain);
-}
-
+// ---------- data loader ----------
+// The dataset is built from the public EPC2026 programme and is served as a
+// plain JSON file. No password, no decryption; the page is still fully static.
 (function(){
-  var form=document.getElementById("gateForm"), pw=document.getElementById("pw"),
-      btn=document.getElementById("gateBtn"), err=document.getElementById("gateErr");
-  var cachedCipher=null;
-  async function getCipher(){
-    if(cachedCipher!==null) return cachedCipher;
-    var r=await fetch("data.enc"); if(!r.ok) throw new Error("Could not load data.enc");
-    cachedCipher=await r.text(); return cachedCipher;
-  }
-  form.addEventListener("submit", async function(e){
-    e.preventDefault();
-    err.textContent=""; btn.disabled=true; btn.textContent="Unlocking…";
-    try{
-      var cipher=await getCipher();
-      var json=await decryptData(cipher, pw.value);
-      var data=JSON.parse(json); // throws if wrong password produced garbage
-      document.getElementById("gate").style.display="none";
-      document.getElementById("app").style.display="block";
-      initApp(data);
-    }catch(ex){
-      err.textContent="Incorrect password.";
-      btn.disabled=false; btn.textContent="Unlock"; pw.select();
-    }
+  fetch("data.json").then(function(r){
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.json();
+  }).then(function(data){
+    document.getElementById("loading").style.display="none";
+    document.getElementById("app").style.display="block";
+    initApp(data);
+  }).catch(function(ex){
+    document.getElementById("loadMsg").textContent="Could not load the index. Please reload the page.";
   });
 })();
 
-// ---------- search app (runs after successful decrypt) ----------
+// ---------- search app (runs once the data has loaded) ----------
 function initApp(DATA){
   var people = DATA.people;
   var ABS = DATA.abstracts || {};
