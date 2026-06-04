@@ -73,10 +73,19 @@
     .part .sub { font-size:12.5px; }
   }
   /* tabs */
-  nav.tabs { background:#0b2f70; display:flex; gap:2px; padding:0 12px; }
+  nav.tabs { background:#0b2f70; display:flex; gap:2px; padding:0 12px; flex-wrap:nowrap;
+    overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  nav.tabs::-webkit-scrollbar { display:none; }
   nav.tabs button { background:transparent; border:0; color:#cdd8ef; font-size:14px; font-weight:600;
-    padding:11px 16px; cursor:pointer; border-bottom:3px solid transparent; }
+    padding:11px 16px; cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; flex:0 0 auto; }
   nav.tabs button.active { color:#fff; border-bottom-color:#fff; }
+  @media (max-width:560px){
+    nav.tabs { gap:0; padding:0 4px; }
+    nav.tabs button { font-size:12.5px; padding:10px 8px; }
+  }
+  @media (max-width:380px){
+    nav.tabs button { font-size:12px; padding:10px 6px; }
+  }
   /* meet / who-to-meet */
   .me-bar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:14px; }
   .me-bar .who { font-size:14px; }
