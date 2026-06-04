@@ -867,16 +867,35 @@ function initApp(DATA){
     setTimeout(renderDeck, 300);
   }
   function attachDrag(card, s){
-    var sx=0, sy=0, dx=0, lastX=0, lastT=0, vel=0, locked=null, active=false;
+    var sx=0, sy=0, dx=0, locked=null, active=false, samples=[];
     function abort(){
       if(!active) return; active=false;
       card.classList.remove('is-dragging');
       card.style.transform=''; card.style.opacity=''; setStamps(card,0);
     }
+    // average velocity over the last ~120ms instead of the single final frame,
+    // so a tiny jitter at lift-off can't flip the sign or zero out the flick
+    function velNow(){
+      if(samples.length<2) return 0;
+      var last=samples[samples.length-1], i=samples.length-1, cutoff=last.t-120;
+      while(i>0 && samples[i-1].t>=cutoff) i--;
+      var first=samples[i], dt=last.t-first.t;
+      return dt>0 ? (last.x-first.x)/dt : 0;
+    }
+    function finish(){
+      if(!active) return; active=false;
+      card.classList.remove('is-dragging');
+      if(locked!=='x'){ card.style.transform=''; card.style.opacity=''; setStamps(card,0); return; }
+      var vel=velNow();
+      var past=Math.abs(dx)>THRESH;
+      var flick=Math.abs(vel)>V_THRESH && Math.abs(dx)>FLICK_MIN && (vel>0)===(dx>0);
+      if(past||flick){ commit(s, dx>0); return; }
+      card.style.transform=''; card.style.opacity=''; setStamps(card,0);  // smooth snap home
+    }
     card.addEventListener('pointerdown', function(e){
       if(e.target.closest('a, button')) return;   // keep link clicks working
-      active=true; locked=null; dx=0; vel=0;
-      sx=e.clientX; sy=e.clientY; lastX=e.clientX; lastT=performance.now();
+      active=true; locked=null; dx=0;
+      sx=e.clientX; sy=e.clientY; samples=[{x:e.clientX,t:performance.now()}];
       card.classList.add('is-dragging');
       card.setPointerCapture && card.setPointerCapture(e.pointerId);
     });
@@ -887,23 +906,20 @@ function initApp(DATA){
         var adx=Math.abs(ddx), ady=Math.abs(ddy);
         if(adx<10 && ady<10) return;          // 10px deadzone before committing
         locked=(ady>adx*1.4)?'y':'x';          // bias toward horizontal swipes
+        if(locked==='y'){ abort(); return; }   // vertical intent -> page scrolls
       }
-      if(locked==='y'){ abort(); return; }     // vertical intent -> page scrolls
+      if(locked!=='x') return;
+      if(e.cancelable) e.preventDefault();      // hold the gesture so the browser can't steal it
       dx=ddx;
-      var t=performance.now();
-      vel=(e.clientX-lastX)/Math.max(1,t-lastT); lastX=e.clientX; lastT=t;
+      samples.push({x:e.clientX,t:performance.now()});
+      if(samples.length>8) samples.shift();
       card.style.transform='translate('+ddx+'px,'+(ddy*0.4)+'px) rotate('+(ddx/18)+'deg)';
       setStamps(card, ddx);
-    });
-    card.addEventListener('pointercancel', abort);
-    card.addEventListener('pointerup', function(){
-      if(!active) return; active=false;
-      card.classList.remove('is-dragging');
-      var past=Math.abs(dx)>THRESH;
-      var flick=Math.abs(vel)>V_THRESH && Math.abs(dx)>FLICK_MIN && (vel>0)===(dx>0);
-      if(past||flick){ commit(s, dx>0); return; }
-      card.style.transform=''; card.style.opacity=''; setStamps(card,0);  // smooth snap home
-    });
+    }, {passive:false});
+    // if the browser tries to take over a swipe we already locked horizontally,
+    // honour it rather than snapping the card back to centre
+    card.addEventListener('pointercancel', function(){ if(locked==='x') finish(); else abort(); });
+    card.addEventListener('pointerup', finish);
   }
   document.getElementById('btn-skip').addEventListener('click', function(){ if(curS) commit(curS,false); });
   document.getElementById('btn-save').addEventListener('click', function(){ if(curS) commit(curS,true); });
