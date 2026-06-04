@@ -229,7 +229,9 @@
   .ppres { font-size:12.5px; color:var(--muted); margin-top:2px; }
   .schairs { font-size:12px; color:var(--muted); margin-top:4px; }
   .pp { color:var(--ink); }
-  .pp.on { background:var(--go-soft); color:var(--go); font-weight:600; border-radius:4px; padding:0 4px; }
+  .pa { color:var(--muted); }
+  .pa.pres { color:var(--ink); font-weight:600; }
+  .pp.on, .pa.on { background:var(--go-soft); color:var(--go); font-weight:600; border-radius:4px; padding:0 4px; }
   .prog-empty { text-align:center; color:var(--muted); padding:32px; }
   @media (max-width:560px){
     .prog-days { margin:0 -2px; }
@@ -1062,9 +1064,14 @@ function initApp(DATA){
     var mine=Object.keys(s._ids).filter(function(id){return likedSet[id];}).length;
     var isStar=!!starSet[s.id];
     var det=s.papers.map(function(p){
-      var pres=(p.pr||[]).map(function(id){return personChip(id,likedSet);}).filter(Boolean).join(', ');
+      var presSet={}; (p.pr||[]).forEach(function(id){ presSet[id]=1; });
+      var ids=(p.au&&p.au.length)?p.au:(p.pr||[]);
+      var au=ids.map(function(id){
+        var pn=byId[id]?byId[id].name:''; if(!pn) return '';
+        return '<span class="pa'+(presSet[id]?' pres':'')+(likedSet[id]?' on':'')+'">'+esc(pn)+'</span>';
+      }).filter(Boolean).join(', ');
       var ttl=p.aid ? '<a href="https://epc2026.eaps.nl/abstracts/'+encodeURIComponent(p.aid)+'" target="_blank" rel="noopener">'+esc(p.t)+'</a>' : esc(p.t);
-      return '<div class="ppr">'+ttl+(pres?'<div class="ppres">'+pres+'</div>':'')+'</div>';
+      return '<div class="ppr">'+ttl+(au?'<div class="ppres">'+au+'</div>':'')+'</div>';
     }).join('');
     var lead=(s.ch||[]).map(function(id){return personChip(id,likedSet);}).filter(Boolean);
     var disc=(s.di||[]).map(function(id){return personChip(id,likedSet);}).filter(Boolean);
