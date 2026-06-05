@@ -102,7 +102,7 @@
   .deck { position:relative; max-width:360px; margin:0 auto; touch-action:pan-y; }
   .mcard { position:relative; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 18px 16px;
     min-height:300px; box-shadow:0 6px 22px rgba(20,40,90,.08); cursor:grab; user-select:none; -webkit-user-select:none;
-    will-change:transform,opacity; transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease; }
+    touch-action:pan-y; will-change:transform,opacity; transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease; }
   .mcard.is-dragging { transition:none; cursor:grabbing; }
   .mcard .stamp { position:absolute; top:16px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-weight:700;
     font-size:21px; letter-spacing:.12em; text-transform:uppercase; padding:5px 13px; border-radius:8px;
