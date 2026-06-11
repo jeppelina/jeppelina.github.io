@@ -18,6 +18,9 @@
   .crumb{color:var(--mut);letter-spacing:.18em;font-size:11px}
   .crumb b{color:var(--cyan);font-weight:600}
   h1{font-size:26px;letter-spacing:.04em;margin:.4em 0 .2em;color:var(--yellow);text-transform:uppercase}
+  .tabs{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;width:fit-content;margin:14px 0 12px}
+  .tab{padding:8px 20px;color:var(--mut);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;font-size:11px}
+  .tab.on{background:var(--yellow);color:#0a0a0c;font-weight:700}.tab:not(.on):hover{color:var(--txt)}
   .meta{color:var(--mut);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
     border-top:1px solid var(--line);border-bottom:1px solid var(--line);
     padding:10px 0;margin:14px 0 20px;display:flex;gap:26px;flex-wrap:wrap}
@@ -63,6 +66,7 @@
 <div class="wrap">
   <div class="crumb">COPA / <b>PREDICTIONS</b> / ROUND 1</div>
   <h1>Round 1 — Growth Predictions</h1>
+  <div class="tabs"><a class="tab on" href="/copa/">Predictions</a><a class="tab" href="/copa/standings/">Standings</a></div>
   <div class="meta">
     <span>MODEL <b>Large Lindmarker Model</b></span>
     <span>PLAYERS <b>1240</b></span>
