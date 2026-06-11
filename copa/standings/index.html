@@ -35,6 +35,21 @@
  .pl .cb{display:inline-block;background:var(--yellow);color:#0a0a0c;font-size:8px;font-weight:700;border-radius:2px;padding:0 3px;margin-left:3px;vertical-align:middle}
  .brk{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;color:var(--mut);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
  .brk b{color:var(--txt)}.brk .tt b{color:var(--yellow)}
+ @media (max-width:640px){
+   body{font-size:12px}.wrap{padding:16px 10px 60px}h1{font-size:19px}
+   .meta{gap:14px}
+   .grid{grid-template-columns:28px 1fr auto;gap:6px}
+   .capcol{display:none}
+   .tot{font-size:14px}.bar{display:none}
+   .ow{font-size:10px}
+   .pcap{font-size:9px}
+   .pitch{padding:10px 4px;background-image:repeating-linear-gradient(#12492f,#12492f 24px,#0f4129 24px,#0f4129 48px)}
+   .body{padding:6px 3px 16px}
+   .line{gap:6px;margin:7px 0}
+   .pl{width:30%;min-width:96px;padding:6px 4px}
+   .pl .nm{font-size:10px}.pl .g{font-size:12px}.pl .sub{font-size:9px}
+   .brk{gap:12px;font-size:10px}
+ }
 </style></head><body><div class="wrap">
  <div class="crumb">COPA / <b>MODEL STANDINGS</b></div>
  <h1>Model-Predicted Round 1 Standings</h1>
@@ -44,7 +59,7 @@
    <b>predicted value increase = Σ player growth + captain bonus + 1% bank interest</b>.
    Click a team to open its pitch. Caveat: my own entry tops its own model by construction
    (it's the model's optimum) — the fair signal is the ordering of <i>everyone else</i>.</div>
- <div class="grid thead"><div>#</div><div>Team</div><div class="r">Captain</div><div class="r">Predicted value increase of team</div></div>
+ <div class="grid thead"><div>#</div><div>Team</div><div class="r capcol">Captain</div><div class="r">Predicted value increase of team</div></div>
  <div id="list"></div>
 </div>
 <script>
@@ -73,7 +88,7 @@ document.getElementById('list').innerHTML=T.map(t=>`
    <div class="head grid">
      <div class="rk ${t.rank<=3?'top':''}">${String(t.rank).padStart(2,'0')}</div>
      <div><div class="tn">${t.name}</div><div class="ow">${t.owner} · ${t.formation}</div></div>
-     <div class="cap">C: <b>${t.players.find(p=>p.captain)?.name||'?'}</b></div>
+     <div class="cap capcol">C: <b>${t.players.find(p=>p.captain)?.name||'?'}</b></div>
      <div class="tot">${t.total}k<div class="bar" style="width:${Math.max(8,t.total/maxT*120)}px"></div></div>
    </div>
    <div class="body">${pitch(t)}</div>

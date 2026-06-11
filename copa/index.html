@@ -60,6 +60,21 @@
   .rules code{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:1px 6px;color:var(--yellow)}
   .rules .note{color:var(--mut)}
   .tag{display:inline-block;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:2px 8px;color:var(--cyan);margin:2px 4px 2px 0;font-size:11px}
+  @media (max-width:640px){
+    body{font-size:12px}
+    .wrap{padding:16px 10px 60px}
+    h1{font-size:19px}
+    .meta{gap:14px}
+    thead th,tbody td{padding:7px 5px}
+    /* keep Pos, Player, Team, xG, Pred growth — hide Opp, Price, P(start), xA, Own%, 80% range */
+    th:nth-child(4),td:nth-child(4),th:nth-child(5),td:nth-child(5),
+    th:nth-child(6),td:nth-child(6),th:nth-child(8),td:nth-child(8),
+    th:nth-child(9),td:nth-child(9),th:nth-child(11),td:nth-child(11){display:none}
+    .controls{gap:8px}
+    select,input{flex:1 1 100%;min-width:0}
+    .count{margin-left:0;width:100%}
+    .seg button{padding:7px 11px}
+  }
 </style>
 </head>
 <body>
