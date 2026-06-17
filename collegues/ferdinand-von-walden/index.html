@@ -427,6 +427,68 @@
   .seal a { border-bottom: 1px solid var(--hair); }
   .seal a:hover { border-bottom-color: var(--ink); }
 
+
+  /* ---------- Royal Portrait ---------- */
+  .portrait-frame {
+    margin: 0 auto 1.6rem;
+    width: clamp(160px, 28vw, 220px);
+    height: clamp(160px, 28vw, 220px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .portrait-frame::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+  }
+  .portrait-frame::after {
+    content: "";
+    position: absolute;
+    inset: -14px;
+    border: 1px solid var(--gold-light);
+    border-radius: 50%;
+  }
+  .portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--burgundy);
+    filter: sepia(15%) contrast(1.05);
+    transition: filter 0.4s ease;
+  }
+  .portrait-img:hover {
+    filter: sepia(0%) contrast(1);
+  }
+  .portrait-caption {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    text-align: center;
+    margin-top: 0.6rem;
+  }
+  .portrait-fallback {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid var(--burgundy);
+    background: var(--parchment);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 7vw, 3.8rem);
+    font-weight: 700;
+    color: var(--burgundy);
+    letter-spacing: 0.04em;
+  }
+
   /* ---------- Responsive ---------- */
   @media (max-width: 760px) {
     body { font-size: 18px; }
@@ -455,8 +517,15 @@
 
 <header class="masthead">
   <div class="wrap">
-    <span class="royal-crest" aria-hidden="true">&#x1F3F0;</span>
     <span class="gazette-label">The Royal Gazette of Muscle Science &middot; Summer Party Special Edition</span>
+    <div class="portrait-frame">
+      <img class="portrait-img"
+           src="portrait.jpg"
+           alt="His Excellency Ferdinand von Walden"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="portrait-fallback" style="display:none;" aria-hidden="true">FvW</div>
+    </div>
+    <p class="portrait-caption">Official Portrait &middot; Reproduced by Royal Decree</p>
     <h1>
       Ferdinand
       <span class="von">von Walden</span>
