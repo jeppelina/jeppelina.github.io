@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>von Walden Lab — Skeletal Muscle Physiology, Karolinska Institutet</title>
+<meta name="description" content="The von Walden Lab studies how skeletal muscle grows, remembers and recovers — from ribosome biogenesis to children's movement. Karolinska Institutet & Astrid Lindgren Children's Hospital, Stockholm.">
+<meta name="author" content="Ferdinand von Walden">
+<link rel="canonical" href="https://jeppelina.github.io/von-walden-lab/">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="von Walden Lab — Skeletal Muscle Physiology">
+<meta property="og:description" content="How muscle grows, remembers and recovers — from the molecule to the child. Karolinska Institutet, Stockholm.">
+<meta property="og:url" content="https://jeppelina.github.io/von-walden-lab/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#b5172b" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1015" media="(prefers-color-scheme: dark)">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23b5172b'/><text x='50' y='71' font-size='58' font-family='Georgia,serif' fill='%23fff' text-anchor='middle'>W</text></svg>">
+
+<style>
+/* ============================ TOKENS ============================ */
+:root {
+  --bg:        #fbfafa;
+  --bg-soft:   #f3efec;
+  --surface:   #ffffff;
+  --ink:       #1a1714;
+  --ink-soft:  #5d564e;
+  --ink-faint: #8a8178;
+  --line:      #e7e0d8;
+  --line-soft: #efeae3;
+
+  --crimson:   #b5172b;   /* myoglobin red — muscle */
+  --crimson-d: #8d1322;
+  --teal:      #0c8b86;   /* ribosome / molecular */
+  --teal-d:    #0a6f6b;
+  --amber:     #d98a1f;   /* pediatric / movement warmth */
+  --violet:    #6b3fb0;
+
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans:  "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --mono:  "JetBrains Mono", ui-monospace, monospace;
+
+  --radius: 18px;
+  --radius-s: 12px;
+  --shadow: 0 1px 2px rgba(26,23,20,.04), 0 12px 30px -18px rgba(26,23,20,.28);
+  --shadow-lift: 0 2px 4px rgba(26,23,20,.05), 0 26px 50px -24px rgba(26,23,20,.40);
+  --maxw: 1120px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #0e1015;
+    --bg-soft:   #14171e;
+    --surface:   #171b23;
+    --ink:       #f0ece6;
+    --ink-soft:  #b3ada4;
+    --ink-faint: #7d776e;
+    --line:      #262b34;
+    --line-soft: #1d222a;
+    --crimson:   #ff6378;
+    --crimson-d: #ff8595;
+    --teal:      #3fd0c9;
+    --teal-d:    #6fe0da;
+    --amber:     #f0ab48;
+    --violet:    #a585e8;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.7);
+    --shadow-lift: 0 2px 4px rgba(0,0,0,.5), 0 30px 60px -26px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0e1015; --bg-soft:#14171e; --surface:#171b23; --ink:#f0ece6; --ink-soft:#b3ada4;
+  --ink-faint:#7d776e; --line:#262b34; --line-soft:#1d222a;
+  --crimson:#ff6378; --crimson-d:#ff8595; --teal:#3fd0c9; --teal-d:#6fe0da; --amber:#f0ab48; --violet:#a585e8;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.7);
+  --shadow-lift: 0 2px 4px rgba(0,0,0,.5), 0 30px 60px -26px rgba(0,0,0,.85);
+}
+
+/* ============================ BASE ============================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 84px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+a { color: inherit; text-decoration: none; }
+img, svg { max-width: 100%; display: block; }
+::selection { background: var(--crimson); color: #fff; }
+:focus-visible { outline: 2.5px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(20px, 5vw, 44px); }
+.eyebrow {
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--crimson); font-weight: 500; display: inline-flex; align-items: center; gap: .6em;
+}
+.eyebrow::before { content: ""; width: 26px; height: 1.5px; background: var(--crimson); display: inline-block; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--bg); padding: 10px 16px; z-index: 200; border-radius: 0 0 8px 0; }
+.skip:focus { left: 0; }
+
+/* ============================ READING PROGRESS ============================ */
+#progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--crimson), var(--amber), var(--teal));
+  z-index: 120; transition: width .1s linear;
+}
+
+/* ============================ NAV ============================ */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s, background .3s;
+}
+.nav.scrolled { border-bottom-color: var(--line); }
+.nav-inner { display: flex; align-items: center; gap: 1.5rem; height: 66px; }
+.brand { display: flex; align-items: center; gap: .7rem; font-family: var(--serif); font-weight: 600; font-size: 1.12rem; letter-spacing: -.01em; margin-right: auto; }
+.brand .mark {
+  width: 34px; height: 34px; border-radius: 9px; flex: none;
+  background: linear-gradient(140deg, var(--crimson), var(--crimson-d));
+  color: #fff; display: grid; place-items: center; font-size: .82rem; font-weight: 700;
+  box-shadow: 0 4px 12px -3px color-mix(in srgb, var(--crimson) 55%, transparent);
+}
+.nav-links { display: flex; gap: .3rem; }
+.nav-links a {
+  font-size: .86rem; font-weight: 500; color: var(--ink-soft); padding: .5rem .7rem; border-radius: 8px;
+  position: relative; transition: color .2s, background .2s;
+}
+.nav-links a:hover { color: var(--ink); background: var(--bg-soft); }
+.nav-links a.active { color: var(--crimson); }
+.nav-links a.active::after {
+  content: ""; position: absolute; left: .7rem; right: .7rem; bottom: .15rem; height: 2px;
+  background: var(--crimson); border-radius: 2px;
+}
+.theme-toggle {
+  width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink-soft); cursor: pointer; flex: none;
+  display: grid; place-items: center; transition: color .2s, border-color .2s, transform .2s;
+}
+.theme-toggle:hover { color: var(--crimson); border-color: var(--crimson); transform: rotate(-12deg); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .moon, @media (prefers-color-scheme: dark) { }
+.nav-cta {
+  font-size: .84rem; font-weight: 600; padding: .55rem 1rem; border-radius: 10px;
+  background: var(--ink); color: var(--bg); transition: transform .2s, box-shadow .2s;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+@media (max-width: 860px) { .nav-links, .nav-cta { display: none; } }
+
+/* ============================ HERO ============================ */
+.hero { position: relative; padding: clamp(3.5rem, 11vw, 8rem) 0 clamp(3rem, 8vw, 6rem); overflow: hidden; }
+.hero-mesh {
+  position: absolute; inset: -20% -10% 0 -10%; z-index: -2; filter: blur(8px); opacity: .9;
+  background:
+    radial-gradient(40% 50% at 18% 22%, color-mix(in srgb, var(--crimson) 38%, transparent), transparent 70%),
+    radial-gradient(38% 46% at 82% 18%, color-mix(in srgb, var(--teal) 34%, transparent), transparent 72%),
+    radial-gradient(46% 50% at 65% 78%, color-mix(in srgb, var(--amber) 26%, transparent), transparent 75%),
+    radial-gradient(50% 60% at 30% 88%, color-mix(in srgb, var(--violet) 22%, transparent), transparent 78%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-mesh { animation: drift 22s ease-in-out infinite alternate; }
+  @keyframes drift { from { transform: translate3d(-1.5%, -1%, 0) scale(1.02); } to { transform: translate3d(2%, 1.5%, 0) scale(1.06); } }
+}
+.hero::after { /* grain */
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .5; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+.hero-grid { display: grid; grid-template-columns: 1.35fr .9fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: .55em; font-family: var(--mono); font-size: .72rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft);
+  background: var(--surface); border: 1px solid var(--line); padding: .4rem .8rem; border-radius: 100px; margin-bottom: 1.6rem;
+}
+.hero-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 60%, transparent); }
+@media (prefers-reduced-motion: no-preference) { .hero-tag .dot { animation: pulse 2.4s infinite; } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb,var(--teal) 55%,transparent);} 70%{ box-shadow: 0 0 0 8px transparent;} 100%{ box-shadow:0 0 0 0 transparent;} }
+.hero h1 { font-size: clamp(2.5rem, 6.4vw, 4.6rem); font-weight: 600; letter-spacing: -.02em; }
+.hero h1 .accent {
+  font-style: italic; font-weight: 500;
+  background: linear-gradient(100deg, var(--crimson), var(--amber) 60%, var(--teal));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero .lede { font-size: clamp(1.05rem, 2vw, 1.22rem); color: var(--ink-soft); max-width: 52ch; margin-top: 1.6rem; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2.2rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .55em; font-size: .94rem; font-weight: 600;
+  padding: .82rem 1.4rem; border-radius: 12px; cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s, background .2s; border: 1px solid transparent;
+}
+.btn-primary { background: var(--crimson); color: #fff; box-shadow: 0 10px 24px -12px var(--crimson); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -12px var(--crimson); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--ink); transform: translateY(-2px); }
+.btn svg { width: 16px; height: 16px; }
+
+/* hero portrait / monogram */
+.hero-card {
+  position: relative; aspect-ratio: 4/5; border-radius: 24px; overflow: hidden;
+  background: linear-gradient(160deg, var(--bg-soft), var(--surface));
+  border: 1px solid var(--line); box-shadow: var(--shadow-lift);
+}
+.hero-card .portrait { position: absolute; inset: 0; display: grid; place-items: center; }
+.hero-card .mono-xl {
+  font-family: var(--serif); font-weight: 600; font-size: clamp(4rem, 14vw, 8rem);
+  color: color-mix(in srgb, var(--crimson) 22%, transparent); letter-spacing: -.04em;
+}
+.hero-card .caption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 1.1rem 1.3rem;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--ink) 86%, transparent));
+  color: #fff;
+}
+.hero-card .caption .nm { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; }
+.hero-card .caption .rl { font-size: .8rem; opacity: .82; margin-top: .15rem; }
+.hero-card .photo-note {
+  position: absolute; top: .8rem; right: .8rem; font-family: var(--mono); font-size: .58rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-faint); background: color-mix(in srgb, var(--surface) 80%, transparent);
+  padding: .3rem .55rem; border-radius: 6px; border: 1px solid var(--line);
+}
+.hero-stats { display: flex; gap: clamp(1.2rem, 4vw, 3rem); margin-top: 3.2rem; flex-wrap: wrap; }
+.stat .n { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 600; color: var(--crimson); }
+.stat .l { font-size: .8rem; color: var(--ink-soft); max-width: 18ch; }
+
+/* ============================ SECTION SHELL ============================ */
+section { padding-block: clamp(3.5rem, 9vw, 7rem); position: relative; }
+.section-head { max-width: 62ch; margin-bottom: clamp(2rem, 5vw, 3.4rem); }
+.section-head h2 { font-size: clamp(1.9rem, 4.5vw, 3rem); margin-top: .9rem; }
+.section-head p { color: var(--ink-soft); font-size: 1.08rem; margin-top: 1rem; }
+.alt { background: var(--bg-soft); }
+.alt::before, .alt::after { content:""; position:absolute; left:0; right:0; height: 40px; pointer-events:none; }
+
+/* reveal */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: .08s; } .reveal.d2 { transition-delay: .16s; } .reveal.d3 { transition-delay: .24s; } .reveal.d4 { transition-delay: .32s; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* ============================ RESEARCH THEMES ============================ */
+.themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1.1rem; }
+.theme {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem;
+  display: flex; flex-direction: column; gap: .8rem; position: relative; overflow: hidden;
+  transition: transform .3s var(--ease), box-shadow .3s, border-color .3s;
+}
+.theme:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.theme::before { content:""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease); }
+.theme:hover::before { transform: scaleX(1); }
+.theme .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); }
+.theme .ico svg { width: 24px; height: 24px; }
+.theme h3 { font-size: 1.3rem; }
+.theme .plain { font-size: .92rem; color: var(--ink); font-weight: 500; }
+.theme .detail { font-size: .9rem; color: var(--ink-soft); }
+.theme .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: auto; padding-top: .4rem; }
+.theme .tags span { font-family: var(--mono); font-size: .64rem; letter-spacing: .04em; color: var(--ink-soft); border: 1px solid var(--line); padding: .25rem .5rem; border-radius: 6px; }
+.theme.t1 { --accent: var(--teal); } .theme.t2 { --accent: var(--violet); } .theme.t3 { --accent: var(--crimson); } .theme.t4 { --accent: var(--amber); }
+
+/* ============================ RIBOSOME EXPLAINER ============================ */
+.explainer { background: var(--ink); color: #f4f1ec; border-radius: 28px; padding: clamp(1.8rem, 5vw, 3.4rem); overflow: hidden; position: relative; }
+:root[data-theme="dark"] .explainer, @media (prefers-color-scheme: dark) { }
+.explainer .eyebrow { color: var(--amber); } .explainer .eyebrow::before { background: var(--amber); }
+.explainer h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); margin: .8rem 0 .6rem; color: #fff; }
+.explainer .intro { color: #c9c2b8; max-width: 60ch; }
+.pathway { display: grid; grid-template-columns: repeat(5, 1fr); gap: .6rem; margin-top: 2.6rem; counter-reset: step; }
+@media (max-width: 820px) { .pathway { grid-template-columns: 1fr; gap: .8rem; } }
+.step {
+  position: relative; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 1.2rem 1rem;
+  opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease), transform .6s var(--ease), background .3s;
+}
+.step.in { opacity: 1; transform: none; }
+.step:hover { background: rgba(255,255,255,.08); }
+.step .num { font-family: var(--mono); font-size: .7rem; color: var(--amber); letter-spacing: .1em; }
+.step .glyph { font-size: 1.9rem; margin: .5rem 0 .4rem; }
+.step h4 { color: #fff; font-size: 1.05rem; }
+.step p { font-size: .82rem; color: #b8b1a7; margin-top: .35rem; line-height: 1.5; }
+.step .arrow { position: absolute; right: -.55rem; top: 50%; transform: translateY(-50%); color: var(--amber); z-index: 2; }
+@media (max-width: 820px) { .step .arrow { right: 50%; top: auto; bottom: -.7rem; transform: translateX(50%) rotate(90deg); } }
+.step:last-child .arrow { display: none; }
+.explainer .footnote { margin-top: 1.8rem; font-size: .82rem; color: #9b948a; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { .step { opacity: 1; transform: none; } }
+
+/* ============================ METHODS ============================ */
+.methods { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 215px), 1fr)); gap: .8rem; }
+.method { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 1.15rem 1.2rem; transition: border-color .25s, transform .25s; }
+.method:hover { border-color: var(--teal); transform: translateY(-3px); }
+.method .k { font-family: var(--mono); font-size: .64rem; color: var(--teal); letter-spacing: .06em; text-transform: uppercase; }
+.method h4 { font-size: 1.02rem; margin: .35rem 0 .3rem; font-family: var(--sans); font-weight: 600; letter-spacing: 0; }
+.method p { font-size: .84rem; color: var(--ink-soft); }
+
+/* ============================ PEOPLE ============================ */
+.pi-card {
+  display: grid; grid-template-columns: 130px 1fr; gap: 1.6rem; align-items: start;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.7rem; box-shadow: var(--shadow);
+}
+@media (max-width: 620px) { .pi-card { grid-template-columns: 1fr; } }
+.avatar {
+  width: 100%; aspect-ratio: 1; max-width: 130px; border-radius: 16px; display: grid; place-items: center;
+  font-family: var(--serif); font-weight: 600; font-size: 2.4rem; color: #fff; letter-spacing: -.02em;
+}
+.pi-card h3 { font-size: 1.55rem; }
+.pi-card .role { color: var(--crimson); font-weight: 600; font-size: .95rem; margin-top: .2rem; }
+.pi-card .aff { color: var(--ink-soft); font-size: .9rem; margin-top: .1rem; }
+.pi-card .bio { margin-top: .9rem; color: var(--ink-soft); font-size: .96rem; max-width: 60ch; }
+.pi-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.1rem; }
+.pi-links a { font-size: .8rem; font-weight: 500; color: var(--ink-soft); border: 1px solid var(--line); padding: .35rem .75rem; border-radius: 8px; transition: color .2s, border-color .2s; }
+.pi-links a:hover { color: var(--crimson); border-color: var(--crimson); }
+
+.people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 168px), 1fr)); gap: .9rem; margin-top: 1.4rem; }
+.person { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 1.1rem; text-align: center; transition: transform .25s, box-shadow .25s; }
+.person:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.person .avatar { margin: 0 auto .8rem; max-width: 64px; font-size: 1.3rem; border-radius: 14px; }
+.person .nm { font-weight: 600; font-size: .95rem; }
+.person .rl { font-size: .78rem; color: var(--ink-soft); margin-top: .15rem; }
+.subhead { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); margin: 2.4rem 0 0; }
+.collab-list, .alumni-list { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+.collab-list span, .alumni-list span { font-size: .85rem; color: var(--ink-soft); background: var(--surface); border: 1px solid var(--line); padding: .4rem .8rem; border-radius: 100px; }
+.collab-list span b { color: var(--ink); font-weight: 600; }
+
+/* ============================ PUBLICATIONS ============================ */
+.pub-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
+.chip {
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .04em; padding: .45rem .85rem; border-radius: 100px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); color: var(--ink-soft); transition: all .2s;
+}
+.chip:hover { border-color: var(--ink-faint); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.pub-list { display: flex; flex-direction: column; }
+.pub {
+  display: grid; grid-template-columns: 64px 1fr auto; gap: 1.1rem; align-items: baseline;
+  padding: 1.15rem 0; border-top: 1px solid var(--line-soft); transition: opacity .35s, transform .35s;
+}
+@media (max-width: 640px) { .pub { grid-template-columns: 1fr; gap: .35rem; } }
+.pub .yr { font-family: var(--mono); font-size: .82rem; color: var(--crimson); font-weight: 500; }
+.pub .ttl { font-family: var(--serif); font-size: 1.12rem; font-weight: 500; line-height: 1.32; }
+.pub .meta { font-size: .85rem; color: var(--ink-soft); margin-top: .3rem; }
+.pub .meta em { color: var(--ink); font-style: italic; }
+.pub .feat { display: inline-block; font-family: var(--mono); font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); border: 1px solid color-mix(in srgb,var(--amber) 50%, transparent); padding: .1rem .4rem; border-radius: 5px; margin-left: .5rem; vertical-align: middle; }
+.pub .ptags { margin-top: .45rem; display: flex; gap: .4rem; flex-wrap: wrap; }
+.pub .ptags span { font-family: var(--mono); font-size: .62rem; color: var(--ink-faint); }
+.pub .link { white-space: nowrap; font-size: .8rem; font-weight: 600; color: var(--teal-d); display: inline-flex; align-items: center; gap: .3em; align-self: center; }
+.pub .link:hover { color: var(--crimson); }
+.pub.hide { display: none; }
+.pub-note { font-size: .82rem; color: var(--ink-faint); margin-top: 1.4rem; }
+
+/* ============================ NEWS ============================ */
+.news { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1.1rem; }
+.news-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; position: relative; transition: transform .25s, box-shadow .25s; }
+.news-item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.news-item .date { font-family: var(--mono); font-size: .72rem; color: var(--amber); letter-spacing: .06em; }
+.news-item h4 { font-size: 1.18rem; margin: .55rem 0 .5rem; }
+.news-item p { font-size: .9rem; color: var(--ink-soft); }
+.news-item a.more { font-size: .82rem; font-weight: 600; color: var(--teal-d); margin-top: .8rem; display: inline-block; }
+
+/* ============================ JOIN ============================ */
+.join { background: linear-gradient(140deg, var(--crimson-d), var(--crimson)); color: #fff; border-radius: 28px; padding: clamp(2rem, 6vw, 4rem); position: relative; overflow: hidden; }
+.join::after { content:""; position:absolute; inset:0; background: radial-gradient(60% 80% at 85% 10%, rgba(255,255,255,.18), transparent 60%); pointer-events:none; }
+:root[data-theme="dark"] .join, @media (prefers-color-scheme: dark) { }
+.join h2 { color: #fff; font-size: clamp(1.9rem, 5vw, 3rem); }
+.join .lede { color: rgba(255,255,255,.9); max-width: 56ch; margin-top: 1rem; font-size: 1.06rem; }
+.join-roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1rem; margin: 2.2rem 0; }
+.join-role { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; padding: 1.3rem; backdrop-filter: blur(4px); }
+.join-role h4 { color: #fff; font-size: 1.15rem; }
+.join-role p { color: rgba(255,255,255,.86); font-size: .88rem; margin-top: .4rem; }
+.join .btn-white { background: #fff; color: var(--crimson-d); }
+.join .btn-white:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -12px rgba(0,0,0,.5); }
+
+/* ============================ CONTACT / FOOTER ============================ */
+.contact-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1.5rem, 5vw, 3.5rem); align-items: start; }
+@media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-row { display: flex; gap: .9rem; align-items: flex-start; padding: 1rem 0; border-top: 1px solid var(--line-soft); }
+.contact-row:first-of-type { border-top: none; }
+.contact-row .ci { width: 38px; height: 38px; flex: none; border-radius: 10px; background: color-mix(in srgb, var(--teal) 12%, transparent); color: var(--teal); display: grid; place-items: center; }
+.contact-row .ci svg { width: 18px; height: 18px; }
+.contact-row .k { font-size: .74rem; font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+.contact-row .v { font-size: .98rem; color: var(--ink); }
+.contact-row a.v { color: var(--teal-d); font-weight: 500; }
+.map-card { aspect-ratio: 4/3; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--bg-soft); position: relative; box-shadow: var(--shadow); }
+.map-card .pin { position: absolute; inset: 0; display: grid; place-items: center; }
+.map-card a { position: absolute; bottom: .8rem; left: .8rem; font-size: .78rem; font-weight: 600; background: var(--surface); border: 1px solid var(--line); padding: .4rem .8rem; border-radius: 8px; color: var(--ink); }
+
+footer { border-top: 1px solid var(--line); padding-block: 2.6rem 3rem; margin-top: clamp(2rem, 6vw, 4rem); }
+.foot-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.2rem; align-items: center; }
+.foot-grid .brand { font-size: 1rem; }
+.foot-note { font-size: .8rem; color: var(--ink-faint); max-width: 52ch; margin-top: 1.4rem; line-height: 1.55; }
+.foot-note a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top"><span class="mark">vW</span> von&nbsp;Walden Lab</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#research">Research</a>
+      <a href="#mechanism">Mechanism</a>
+      <a href="#methods">Methods</a>
+      <a href="#people">People</a>
+      <a href="#publications">Publications</a>
+      <a href="#news">News</a>
+      <a href="#join">Join</a>
+    </nav>
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <a class="nav-cta" href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" aria-labelledby="hero-h">
+  <div class="hero-mesh" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-tag"><span class="dot"></span> Karolinska Institutet · Stockholm</span>
+        <h1 id="hero-h">How muscle <span class="accent">grows, remembers</span> and recovers — from the molecule to the child.</h1>
+        <p class="lede">We are a clinical muscle-physiology group studying the molecular machinery of skeletal muscle adaptation: how mechanical load builds new ribosomes, how muscle keeps a memory of past training, and how this biology shapes movement in children with cerebral palsy.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#research">Explore the science
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#join">Join the lab</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat reveal"><div class="n">rDNA→protein</div><div class="l">Ribosome biogenesis as a control point for muscle mass</div></div>
+          <div class="stat reveal d1"><div class="n">Bench↔cot</div><div class="l">From mouse overload models to children's muscle biopsies</div></div>
+          <div class="stat reveal d2"><div class="n">10&nbsp;MSEK</div><div class="l">Promobilia-funded inclusive physical-activity programme</div></div>
+        </div>
+      </div>
+      <div class="hero-card reveal d1">
+        <div class="portrait" aria-hidden="true"><span class="mono-xl">FvW</span></div>
+        <span class="photo-note">portrait placeholder</span>
+        <div class="caption">
+          <div class="nm">Ferdinand von Walden, MD, PhD</div>
+          <div class="rl">Docent · Principal Investigator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RESEARCH ============================ -->
+<section id="research" aria-labelledby="research-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Research programme</span>
+      <h2 id="research-h">Four questions, one tissue</h2>
+      <p>Skeletal muscle is remarkably plastic: it grows under load, wastes in disease, and carries traces of its history. We work across the whole arc — from the transcription of ribosomal DNA to a child crossing a finish line.</p>
+    </div>
+    <div class="themes">
+      <article class="theme t1 reveal">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="8" r="3"/><circle cx="16" cy="15" r="4"/><path d="M9.5 9.8l4 3"/></svg></div>
+        <h3>Ribosome biogenesis</h3>
+        <p class="plain">To build muscle, you first have to build the factories that build muscle.</p>
+        <p class="detail">Mechanical loading switches on an RNA-Polymerase-I programme (the Pol I / c-Myc / UBF axis) that transcribes ribosomal DNA and assembles new ribosomes. We study this translational-capacity step as a rate-limiting control point for hypertrophy.</p>
+        <div class="tags"><span>Pol I regulon</span><span>rRNA</span><span>hypertrophy</span></div>
+      </article>
+      <article class="theme t2 reveal d1">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M5 8c4 0 4 4 7 4s3-4 7-4M5 16c4 0 4-4 7-4"/></svg></div>
+        <h3>Muscle memory</h3>
+        <p class="plain">Muscle that has trained before grows back faster. We ask why — and where the memory lives.</p>
+        <p class="detail">Epigenetic marks (DNA methylation) and structural adaptations appear to record prior training. Understanding this molecular memory reframes how we think about detraining, rehabilitation and lifelong activity.</p>
+        <div class="tags"><span>epigenetics</span><span>methylation</span><span>detraining</span></div>
+      </article>
+      <article class="theme t3 reveal d2">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 21c0-4 3-6 3-9M19 21c0-4-3-6-3-9M8 6a4 4 0 018 0c0 3-2 4-4 4s-4-1-4-4z"/></svg></div>
+        <h3>Muscle in cerebral palsy</h3>
+        <p class="plain">In children with cerebral palsy, muscle becomes short and stiff. We study the biology behind contracture.</p>
+        <p class="detail">Contracted muscle shows extracellular-matrix expansion, pro-inflammatory signalling and reduced ribosomal-RNA synthesis. Mapping this pathophysiology is the first step toward better, muscle-targeted treatment.</p>
+        <div class="tags"><span>contracture</span><span>ECM</span><span>paediatric</span></div>
+      </article>
+      <article class="theme t4 reveal d3">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="2.4"/><path d="M12 8v6l-3 5M12 14l3 5M7 11l5-1 5 1"/></svg></div>
+        <h3>Inclusive exercise</h3>
+        <p class="plain">Everyone deserves to feel like an athlete. We measure — and expand — what movement is possible.</p>
+        <p class="detail">Working with frame running and field-based cardiopulmonary testing, we quantify exercise capacity in people with motor impairments and partner with sports clubs to widen participation across the lifespan.</p>
+        <div class="tags"><span>frame running</span><span>CPET</span><span>participation</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MECHANISM EXPLAINER ============================ -->
+<section id="mechanism" aria-labelledby="mech-h">
+  <div class="wrap">
+    <div class="explainer reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 id="mech-h">From a strand of DNA to a bigger muscle</h2>
+      <p class="intro">A muscle cell can only make protein as fast as its ribosomes allow. When you load a muscle, it responds by building more ribosomes. Here is that pathway, one step at a time.</p>
+      <div class="pathway" id="pathway">
+        <div class="step"><div class="num">STEP 01</div><div class="glyph">🏋️</div><h4>Mechanical load</h4><p>Resistance exercise stresses the muscle fibre and triggers growth signalling.</p><span class="arrow" aria-hidden="true">→</span></div>
+        <div class="step"><div class="num">STEP 02</div><div class="glyph">🧬</div><h4>Pol I switches on</h4><p>The c-Myc / UBF programme drives RNA Polymerase I to transcribe ribosomal DNA.</p><span class="arrow" aria-hidden="true">→</span></div>
+        <div class="step"><div class="num">STEP 03</div><div class="glyph">📜</div><h4>45S pre-rRNA</h4><p>A large rRNA precursor is made and processed — the raw material of new ribosomes.</p><span class="arrow" aria-hidden="true">→</span></div>
+        <div class="step"><div class="num">STEP 04</div><div class="glyph">⚙️</div><h4>Ribosomes assemble</h4><p>Translational capacity rises: the cell now has more machinery to make protein.</p><span class="arrow" aria-hidden="true">→</span></div>
+        <div class="step"><div class="num">STEP 05</div><div class="glyph">💪</div><h4>The muscle grows</h4><p>More protein synthesis means larger fibres — hypertrophy you can measure.</p><span class="arrow" aria-hidden="true">→</span></div>
+      </div>
+      <p class="footnote">This ribosome-biogenesis step sits upstream of the better-known mTOR signalling story, and it is where much of our lab's mechanistic work is focused — in both human muscle biopsies and pre-clinical overload models.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ METHODS ============================ -->
+<section id="methods" class="alt" aria-labelledby="methods-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">In the lab &amp; clinic</span>
+      <h2 id="methods-h">How we measure muscle</h2>
+      <p>We pair human physiology with molecular mechanism — the same question asked at the level of a whole child and a single gene.</p>
+    </div>
+    <div class="methods">
+      <div class="method reveal"><div class="k">Tissue</div><h4>Muscle microbiopsy</h4><p>Minimally-invasive sampling tolerable in children as well as adults.</p></div>
+      <div class="method reveal d1"><div class="k">Transcriptome</div><h4>RNA-seq &amp; qPCR</h4><p>Gene-expression and rRNA-synthesis profiling of adapting muscle.</p></div>
+      <div class="method reveal d2"><div class="k">Capacity</div><h4>Ribosome &amp; rRNA assays</h4><p>Quantifying translational capacity and Pol I activity.</p></div>
+      <div class="method reveal d3"><div class="k">Epigenome</div><h4>DNA methylation</h4><p>Reading the molecular record of prior training and disuse.</p></div>
+      <div class="method reveal"><div class="k">Architecture</div><h4>Diffusion-tensor MRI</h4><p>In-vivo muscle architecture and sarcomere-length imaging.</p></div>
+      <div class="method reveal d1"><div class="k">Whole-body</div><h4>Frame-running CPET</h4><p>Field-based cardiopulmonary exercise testing for motor impairment.</p></div>
+      <div class="method reveal d2"><div class="k">Model</div><h4>Overload models</h4><p>Mechanistic studies of hypertrophy in pre-clinical systems.</p></div>
+      <div class="method reveal d3"><div class="k">Histology</div><h4>Immunohistochemistry</h4><p>Fibre typing, ECM and inflammation in contracted muscle.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PEOPLE ============================ -->
+<section id="people" aria-labelledby="people-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The team</span>
+      <h2 id="people-h">People</h2>
+    </div>
+
+    <div class="pi-card reveal">
+      <div class="avatar" style="background:linear-gradient(150deg,var(--crimson),var(--crimson-d))">FvW</div>
+      <div>
+        <h3>Ferdinand von Walden</h3>
+        <div class="role">MD, PhD · Docent · Principal Investigator</div>
+        <div class="aff">Dept. of Women's &amp; Children's Health, Division of Paediatric Neurology, Karolinska Institutet · Clinician-scientist (paediatrics), Astrid Lindgren Children's Hospital</div>
+        <p class="bio">Ferdinand is a clinician-scientist trained at Karolinska Institutet (MD 2009, PhD 2015), appointed Docent in 2025. His work bridges human exercise physiology and the molecular biology of muscle growth, with a translational focus on muscle in children with cerebral palsy. He combines clinical practice in paediatrics with a laboratory programme on ribosome biogenesis and muscle adaptation.</p>
+        <div class="pi-links">
+          <a href="https://ki.se/en/people/ferdinand-von-walden" target="_blank" rel="noopener">KI profile ↗</a>
+          <a href="https://pubmed.ncbi.nlm.nih.gov/?term=von+Walden+F" target="_blank" rel="noopener">PubMed ↗</a>
+          <a href="mailto:ferdinand.von.walden@ki.se">Email</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="subhead reveal">Group members</p>
+    <div class="people-grid">
+      <div class="person reveal"><div class="avatar" style="background:linear-gradient(150deg,#0c8b86,#0a6f6b)">SE</div><div class="nm">Sebastian Edman</div><div class="rl">Postdoctoral researcher</div></div>
+      <div class="person reveal d1"><div class="avatar" style="background:linear-gradient(150deg,#6b3fb0,#4a2c80)">BJ</div><div class="nm">Baptiste Jude</div><div class="rl">Postdoctoral researcher</div></div>
+      <div class="person reveal d2"><div class="avatar" style="background:linear-gradient(150deg,#d98a1f,#a8650f)">EH</div><div class="nm">Emma Hjalmarsson</div><div class="rl">PT · PhD student</div></div>
+      <div class="person reveal d3"><div class="avatar" style="background:linear-gradient(150deg,#b5172b,#8d1322)">LC</div><div class="nm">Linnéa Corell</div><div class="rl">MD · PhD student</div></div>
+      <div class="person reveal"><div class="avatar" style="background:linear-gradient(150deg,#0c8b86,#0a6f6b)">MC</div><div class="nm">Minying Cui</div><div class="rl">MD · PhD student</div></div>
+    </div>
+
+    <p class="subhead reveal">Selected collaborators</p>
+    <div class="collab-list reveal">
+      <span><b>Jessica Norrbom</b> · KI</span>
+      <span><b>Eva Pontén</b> · KI paediatric orthopaedics</span>
+      <span><b>Gustavo Nader</b> · Penn State</span>
+      <span><b>Kevin Murach</b> · Univ. of Arkansas</span>
+      <span><b>Per Stål</b> · Umeå</span>
+      <span>+ the Amsterdam frame-running group</span>
+    </div>
+
+    <p class="pub-note reveal" style="margin-top:1.6rem">Three further PhD students are based at Linköping University. The lab spans Karolinska Institutet and Astrid Lindgren Children's Hospital.</p>
+  </div>
+</section>
+
+<!-- ============================ PUBLICATIONS ============================ -->
+<section id="publications" class="alt" aria-labelledby="pubs-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Selected work</span>
+      <h2 id="pubs-h">Publications</h2>
+      <p>A selection from the group's work on ribosome biogenesis, muscle adaptation and paediatric muscle physiology. Filter by theme; each entry links to PubMed.</p>
+    </div>
+    <div class="pub-controls reveal" id="pubControls" role="group" aria-label="Filter publications">
+      <button class="chip" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" data-filter="featured" aria-pressed="false">★ Featured</button>
+      <button class="chip" data-filter="ribosome" aria-pressed="false">Ribosome biogenesis</button>
+      <button class="chip" data-filter="cp" aria-pressed="false">Cerebral palsy</button>
+      <button class="chip" data-filter="exercise" aria-pressed="false">Exercise &amp; methods</button>
+    </div>
+    <div class="pub-list reveal" id="pubList"><!-- rendered from JSON --></div>
+    <p class="pub-note">Citation counts and a full bibliography are best viewed on PubMed. This list is curated and not exhaustive.</p>
+  </div>
+</section>
+
+<!-- ============================ NEWS ============================ -->
+<section id="news" aria-labelledby="news-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Latest</span>
+      <h2 id="news-h">News</h2>
+    </div>
+    <div class="news">
+      <article class="news-item reveal">
+        <div class="date">2025</div>
+        <h4>Appointed Docent at Karolinska Institutet</h4>
+        <p>Ferdinand von Walden was promoted to Docent (Associate Professor), recognising an independent research programme in clinical muscle physiology.</p>
+      </article>
+      <article class="news-item reveal d1">
+        <div class="date">Funding</div>
+        <h4>Promobilia Foundation backs inclusive activity project</h4>
+        <p>A 10 MSEK grant (with Jessica Norrbom) supports work on health and physical activity for children and adults with motor impairments, partnering with local sports clubs.</p>
+        <a class="more" href="https://news.ki.se/promobilia-foundation-supports-ki-project-on-health-of-disabled-children-and-adolescents" target="_blank" rel="noopener">Read on KI News ↗</a>
+      </article>
+      <article class="news-item reveal d2">
+        <div class="date">2026</div>
+        <h4>New work on ribosome dynamics in muscle repair</h4>
+        <p>A recent study examines how ribosome content changes during skeletal-muscle repair and regeneration across mouse and human tissue.</p>
+        <a class="more" href="https://pubmed.ncbi.nlm.nih.gov/?term=von+Walden+F" target="_blank" rel="noopener">Find on PubMed ↗</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ JOIN ============================ -->
+<section id="join" aria-labelledby="join-h">
+  <div class="wrap">
+    <div class="join reveal">
+      <span class="eyebrow">Join us</span>
+      <h2 id="join-h">Come build muscle science with us</h2>
+      <p class="lede">We look for curious, rigorous people who want to connect molecular mechanism to real clinical questions. Backgrounds in physiology, molecular biology, medicine, physiotherapy or biomedical engineering all fit here.</p>
+      <div class="join-roles">
+        <div class="join-role"><h4>PhD students</h4><p>For projects spanning human muscle biopsy work, ribosome biology and paediatric exercise physiology.</p></div>
+        <div class="join-role"><h4>Postdocs</h4><p>Bring a molecular-muscle or epigenetics background and an appetite for translation. Fellowship co-applications welcome.</p></div>
+        <div class="join-role"><h4>Clinical &amp; project students</h4><p>Medical and physiotherapy students looking for a research project, thesis or summer placement.</p></div>
+      </div>
+      <a class="btn btn-white" href="mailto:ferdinand.von.walden@ki.se?subject=Joining%20the%20lab">Get in touch
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTACT ============================ -->
+<section id="contact" class="alt" aria-labelledby="contact-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Find us</span>
+      <h2 id="contact-h">Contact</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-row">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <div><div class="k">Email</div><a class="v" href="mailto:ferdinand.von.walden@ki.se">ferdinand.von.walden@ki.se</a></div>
+        </div>
+        <div class="contact-row">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <div><div class="k">Visit</div><div class="v">Astrid Lindgren Children's Hospital, Q2:07<br>171 76 Stockholm, Sweden</div></div>
+        </div>
+        <div class="contact-row">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 21V8l9-5 9 5v13M3 21h18M9 21v-6h6v6"/></svg></span>
+          <div><div class="k">Institution</div><div class="v">Karolinska Institutet — Dept. of Women's &amp; Children's Health, Division of Paediatric Neurology</div></div>
+        </div>
+        <div class="contact-row">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg></span>
+          <div><div class="k">Online</div><a class="v" href="https://ki.se/en/people/ferdinand-von-walden" target="_blank" rel="noopener">ki.se/people/ferdinand-von-walden ↗</a></div>
+        </div>
+      </div>
+      <a class="map-card reveal d1" href="https://www.openstreetmap.org/?mlat=59.3470&mlon=18.0270#map=16/59.3470/18.0270" target="_blank" rel="noopener" aria-label="Open map of Karolinska / Solna campus">
+        <div class="pin" aria-hidden="true">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="var(--crimson)" stroke="#fff" stroke-width="1.2"><path d="M12 22s7-6 7-12a7 7 0 10-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="10" r="2.6" fill="#fff" stroke="none"/></svg>
+        </div>
+        <span>Solna campus · open map ↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="brand" href="#top"><span class="mark">vW</span> von&nbsp;Walden Lab</a>
+      <div class="pi-links" style="margin:0">
+        <a href="https://ki.se/en/people/ferdinand-von-walden" target="_blank" rel="noopener">KI ↗</a>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/?term=von+Walden+F" target="_blank" rel="noopener">PubMed ↗</a>
+        <a href="mailto:ferdinand.von.walden@ki.se">Email</a>
+      </div>
+    </div>
+    <p class="foot-note">
+      Skeletal muscle physiology · Karolinska Institutet &amp; Astrid Lindgren Children's Hospital, Stockholm.
+      This is an independently built showcase site, not an official Karolinska Institutet page; for the authoritative profile see
+      <a href="https://ki.se/en/people/ferdinand-von-walden" target="_blank" rel="noopener">ki.se</a>.
+      A portrait placeholder is shown pending a photo from the PI.
+    </p>
+  </div>
+</footer>
+
+<!-- ============================ STRUCTURED DATA ============================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://jeppelina.github.io/von-walden-lab/#pi",
+      "name": "Ferdinand von Walden",
+      "honorificSuffix": "MD, PhD",
+      "jobTitle": "Docent (Associate Professor), Clinical Muscle Physiology",
+      "email": "ferdinand.von.walden@ki.se",
+      "affiliation": { "@type": "CollegeOrUniversity", "name": "Karolinska Institutet" },
+      "worksFor": { "@type": "MedicalOrganization", "name": "Astrid Lindgren Children's Hospital" },
+      "knowsAbout": ["Skeletal muscle physiology","Ribosome biogenesis","Muscle hypertrophy","Cerebral palsy","Exercise physiology"],
+      "sameAs": ["https://ki.se/en/people/ferdinand-von-walden"]
+    },
+    {
+      "@type": "ResearchOrganization",
+      "name": "von Walden Lab",
+      "url": "https://jeppelina.github.io/von-walden-lab/",
+      "parentOrganization": { "@type": "CollegeOrUniversity", "name": "Karolinska Institutet" },
+      "member": { "@id": "https://jeppelina.github.io/von-walden-lab/#pi" },
+      "description": "Clinical muscle-physiology group studying ribosome biogenesis, muscle memory and paediatric muscle adaptation."
+    }
+  ]
+}
+</script>
+
+<!-- ============================ SCRIPT ============================ -->
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- Theme toggle (respects OS, remembers choice) ---- */
+  var root = document.documentElement, btn = document.getElementById("themeBtn");
+  try {
+    var saved = localStorage.getItem("vw-theme");
+    if (saved) root.setAttribute("data-theme", saved);
+  } catch (e) {}
+  function currentDark() {
+    var t = root.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function setIcon() {
+    btn.innerHTML = currentDark()
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A8.5 8.5 0 1111.2 3a6.5 6.5 0 009.8 9.8z"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  }
+  setIcon();
+  btn.addEventListener("click", function () {
+    var next = currentDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("vw-theme", next); } catch (e) {}
+    setIcon();
+  });
+
+  /* ---- Nav state + reading progress ---- */
+  var nav = document.getElementById("nav"), progress = document.getElementById("progress");
+  function onScroll() {
+    var y = window.scrollY || window.pageYOffset;
+    nav.classList.toggle("scrolled", y > 8);
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
+  }
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ---- Scroll-spy nav highlight ---- */
+  var links = Array.prototype.slice.call(document.querySelectorAll(".nav-links a"));
+  var map = {};
+  links.forEach(function (a) { var id = a.getAttribute("href").slice(1); var s = document.getElementById(id); if (s) map[id] = a; });
+  var spy = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) {
+        links.forEach(function (a) { a.classList.remove("active"); });
+        if (map[en.target.id]) map[en.target.id].classList.add("active");
+      }
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  Object.keys(map).forEach(function (id) { spy.observe(document.getElementById(id)); });
+
+  /* ---- Reveal on scroll ---- */
+  var revealEls = document.querySelectorAll(".reveal, .step");
+  if (reduce) {
+    revealEls.forEach(function (el) { el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    revealEls.forEach(function (el) { io.observe(el); });
+    /* stagger the mechanism steps */
+    var steps = document.querySelectorAll("#pathway .step");
+    steps.forEach(function (s, i) { s.style.transitionDelay = (i * 0.12) + "s"; });
+  }
+
+  /* ---- Publications (data-driven, inline) ---- */
+  var PUBS = [
+    { y:2012, t:"Mechanical loading induces the expression of a Pol I regulon at the onset of skeletal muscle hypertrophy", j:"Am J Physiol Cell Physiol", role:"First author", tags:["ribosome","exercise"], featured:true },
+    { y:2015, t:"Ribosome biogenesis adaptation in resistance training-induced human skeletal muscle hypertrophy", j:"Am J Physiol Endocrinol Metab", role:"", tags:["ribosome","exercise"], featured:true },
+    { y:2018, t:"Muscle contractures in cerebral palsy and acquired brain injury are associated with ECM expansion, pro-inflammatory gene expression and reduced rRNA synthesis", j:"Muscle & Nerve", role:"First author", tags:["cp","ribosome"], featured:true },
+    { y:2012, t:"Altered autophagy gene expression and persistent atrophy suggest impaired remodeling in chronic hemiplegic human skeletal muscle", j:"Muscle & Nerve", role:"First author", tags:["cp"], featured:false },
+    { y:2026, t:"Ribosome dynamics during skeletal muscle repair and regeneration in mice and humans", j:"Am J Physiol Cell Physiol", role:"Senior author", tags:["ribosome"], featured:true },
+    { y:2026, t:"Microscopic and molecular aspects of skeletal muscle alterations in cerebral palsy", j:"Dev Med Child Neurol", role:"Senior author", tags:["cp"], featured:false },
+    { y:2026, t:"Disproportional ventilatory response to incremental exercise in individuals with cerebral palsy", j:"Dev Med Child Neurol", role:"Senior author", tags:["cp","exercise"], featured:false },
+    { y:2026, t:"Skeletal muscle microbiopsies in children and adults — tolerability, sample yield and analyzability", j:"Muscle & Nerve", role:"", tags:["exercise","cp"], featured:false },
+    { y:2025, t:"The 6-minute frame running test: a field-based cardiopulmonary exercise test for individuals with cerebral palsy", j:"J Vis Exp (JoVE)", role:"", tags:["exercise","cp"], featured:false },
+    { y:2025, t:"Making sense of MYC in skeletal muscle: location, duration and magnitude", j:"Am J Physiol Cell Physiol", role:"Review", tags:["ribosome"], featured:false },
+    { y:2025, t:"miRNA-1 regulation is necessary for mechanical overload-induced muscle hypertrophy in male mice", j:"Physiol Rep", role:"", tags:["ribosome","exercise"], featured:false },
+    { y:2022, t:"Physiological response to the 6-minute frame running test in children and adults with cerebral palsy", j:"Pediatr Phys Ther", role:"", tags:["exercise","cp"], featured:false },
+    { y:2016, t:"Humanin skeletal muscle protein levels increase after resistance training in men with impaired glucose metabolism", j:"Physiol Rep", role:"", tags:["exercise"], featured:false },
+    { y:2016, t:"Muscle wasting in end-stage renal disease: mechanisms and treatment strategies", j:"Nephrol Dial Transplant", role:"", tags:["ribosome"], featured:false }
+  ];
+  var TAGLABEL = { ribosome:"ribosome biogenesis", cp:"cerebral palsy", exercise:"exercise / methods" };
+  var listEl = document.getElementById("pubList");
+  PUBS.sort(function (a, b) { return b.y - a.y; });
+  listEl.innerHTML = PUBS.map(function (p) {
+    var pm = "https://pubmed.ncbi.nlm.nih.gov/?term=" + encodeURIComponent(p.t.split("—")[0].slice(0, 90));
+    var cls = p.tags.concat(p.featured ? ["featured"] : []).join(" ");
+    var tagHtml = p.tags.map(function (t) { return "<span>#" + (TAGLABEL[t] || t) + "</span>"; }).join("");
+    return '<article class="pub" data-tags="' + cls + '">' +
+      '<div class="yr">' + p.y + '</div>' +
+      '<div><div class="ttl">' + p.t + (p.featured ? '<span class="feat">★ Featured</span>' : '') + '</div>' +
+      '<div class="meta"><em>' + p.j + '</em>' + (p.role ? ' · ' + p.role : '') + '</div>' +
+      '<div class="ptags">' + tagHtml + '</div></div>' +
+      '<a class="link" href="' + pm + '" target="_blank" rel="noopener">PubMed ↗</a></article>';
+  }).join("");
+
+  /* ---- Publication filtering ---- */
+  var chips = document.querySelectorAll("#pubControls .chip");
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      chips.forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+      chip.setAttribute("aria-pressed", "true");
+      var f = chip.getAttribute("data-filter");
+      document.querySelectorAll("#pubList .pub").forEach(function (pub) {
+        var tags = pub.getAttribute("data-tags");
+        var show = (f === "all") || tags.indexOf(f) !== -1;
+        pub.classList.toggle("hide", !show);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
