@@ -40,6 +40,7 @@
   --teal-d:    #0a6f6b;
   --amber:     #d98a1f;   /* pediatric / movement warmth */
   --violet:    #6b3fb0;
+  --green:     #2f9e5f;   /* early intervention / development */
 
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans:  "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -68,6 +69,7 @@
     --teal-d:    #6fe0da;
     --amber:     #f0ab48;
     --violet:    #a585e8;
+    --green:     #46c97f;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.7);
     --shadow-lift: 0 2px 4px rgba(0,0,0,.5), 0 30px 60px -26px rgba(0,0,0,.85);
   }
@@ -75,7 +77,7 @@
 :root[data-theme="dark"] {
   --bg:#0e1015; --bg-soft:#14171e; --surface:#171b23; --ink:#f0ece6; --ink-soft:#b3ada4;
   --ink-faint:#7d776e; --line:#262b34; --line-soft:#1d222a;
-  --crimson:#ff6378; --crimson-d:#ff8595; --teal:#3fd0c9; --teal-d:#6fe0da; --amber:#f0ab48; --violet:#a585e8;
+  --crimson:#ff6378; --crimson-d:#ff8595; --teal:#3fd0c9; --teal-d:#6fe0da; --amber:#f0ab48; --violet:#a585e8; --green:#46c97f;
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.7);
   --shadow-lift: 0 2px 4px rgba(0,0,0,.5), 0 30px 60px -26px rgba(0,0,0,.85);
 }
@@ -266,7 +268,24 @@ section { padding-block: clamp(3.5rem, 9vw, 7rem); position: relative; }
 .theme .detail { font-size: .9rem; color: var(--ink-soft); }
 .theme .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: auto; padding-top: .4rem; }
 .theme .tags span { font-family: var(--mono); font-size: .64rem; letter-spacing: .04em; color: var(--ink-soft); border: 1px solid var(--line); padding: .25rem .5rem; border-radius: 6px; }
-.theme.t1 { --accent: var(--teal); } .theme.t2 { --accent: var(--violet); } .theme.t3 { --accent: var(--crimson); } .theme.t4 { --accent: var(--amber); }
+.theme.t1 { --accent: var(--teal); } .theme.t2 { --accent: var(--violet); } .theme.t3 { --accent: var(--crimson); } .theme.t4 { --accent: var(--amber); } .theme.t5 { --accent: var(--green); }
+
+/* ---- PhD project spotlight ---- */
+.spotlight {
+  margin-top: 2.4rem; background: var(--surface); border: 1px solid var(--line);
+  border-left: 4px solid var(--green); border-radius: var(--radius); padding: 1.7rem; box-shadow: var(--shadow);
+}
+.spotlight .eyebrow { color: var(--green); } .spotlight .eyebrow::before { background: var(--green); }
+.spotlight h3 { font-size: 1.45rem; margin: .7rem 0 .5rem; }
+.spotlight .lead { color: var(--ink-soft); font-size: .98rem; max-width: 66ch; }
+.spotlight .credit { font-size: .88rem; margin-top: .7rem; color: var(--ink); }
+.spotlight .credit b { font-weight: 600; }
+.spotlight .studies { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-top: 1.3rem; }
+@media (max-width: 620px) { .spotlight .studies { grid-template-columns: 1fr; } }
+.study { background: var(--bg-soft); border: 1px solid var(--line-soft); border-radius: var(--radius-s); padding: 1.1rem 1.2rem; }
+.study .nm { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--green); }
+.study h4 { font-family: var(--sans); font-weight: 600; font-size: 1.02rem; margin: .35rem 0 .35rem; letter-spacing: 0; }
+.study p { font-size: .85rem; color: var(--ink-soft); }
 
 /* ============================ RIBOSOME EXPLAINER ============================ */
 .explainer { background: var(--ink); color: #f4f1ec; border-radius: 28px; padding: clamp(1.8rem, 5vw, 3.4rem); overflow: hidden; position: relative; }
@@ -463,7 +482,7 @@ footer { border-top: 1px solid var(--line); padding-block: 2.6rem 3rem; margin-t
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Research programme</span>
-      <h2 id="research-h">Four questions, one tissue</h2>
+      <h2 id="research-h">Five questions, one mission</h2>
       <p>Skeletal muscle is remarkably plastic: it grows under load, wastes in disease, and carries traces of its history. We work across the whole arc — from the transcription of ribosomal DNA to a child crossing a finish line.</p>
     </div>
     <div class="themes">
@@ -494,6 +513,13 @@ footer { border-top: 1px solid var(--line); padding-block: 2.6rem 3rem; margin-t
         <p class="plain">Everyone deserves to feel like an athlete. We measure — and expand — what movement is possible.</p>
         <p class="detail">Working with frame running and field-based cardiopulmonary testing, we quantify exercise capacity in people with motor impairments and partner with sports clubs to widen participation across the lifespan.</p>
         <div class="tags"><span>frame running</span><span>CPET</span><span>participation</span></div>
+      </article>
+      <article class="theme t5 reveal d4">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21c-4 0-6-3-6-7s2-7 6-7 6 3 6 7-2 7-6 7z"/><circle cx="10" cy="11" r="1"/><circle cx="14" cy="11" r="1"/><path d="M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg></div>
+        <h3>Early intervention</h3>
+        <p class="plain">The developing brain is most plastic in the first year. The earlier we help a child move, the more can change.</p>
+        <p class="detail">In infants and young children at risk of cerebral palsy, we test goal-directed early-intervention programmes — delivered remotely to families and through playful, mobility-focused group training — and track motor development, physical activity and muscle growth.</p>
+        <div class="tags"><span>plasticity</span><span>telerehab</span><span>motor development</span></div>
       </article>
     </div>
   </div>
@@ -569,6 +595,26 @@ footer { border-top: 1px solid var(--line); padding-block: 2.6rem 3rem; margin-t
       <div class="person reveal d2"><div class="avatar" style="background:linear-gradient(150deg,#d98a1f,#a8650f)">EH</div><div class="nm">Emma Hjalmarsson</div><div class="rl">PT · PhD student</div></div>
       <div class="person reveal d3"><div class="avatar" style="background:linear-gradient(150deg,#b5172b,#8d1322)">LC</div><div class="nm">Linnéa Corell</div><div class="rl">MD · PhD student</div></div>
       <div class="person reveal"><div class="avatar" style="background:linear-gradient(150deg,#0c8b86,#0a6f6b)">MC</div><div class="nm">Minying Cui</div><div class="rl">MD · PhD student</div></div>
+      <div class="person reveal d1"><div class="avatar" style="background:linear-gradient(150deg,#2f9e5f,#1f7a47)">JL</div><div class="nm">Josefin Löwing</div><div class="rl">PT · PhD student</div></div>
+    </div>
+
+    <div class="spotlight reveal">
+      <span class="eyebrow">Featured PhD project</span>
+      <h3>Early intervention in children at risk of cerebral palsy</h3>
+      <p class="lead">When can we change the course of a child's development — and how early? This doctoral project tests two early-intervention strategies for infants and young children at high risk of cerebral palsy, connecting motor development, physical activity and the growth of skeletal muscle itself.</p>
+      <div class="studies">
+        <div class="study">
+          <div class="nm">Study · Small Step 2.0</div>
+          <h4>Play, delivered to the home</h4>
+          <p>An individualised, goal-directed early-intervention programme for infants under 12 months, coached remotely so parents become their child's everyday trainer.</p>
+        </div>
+        <div class="study">
+          <div class="nm">Study · Full Speed Ahead</div>
+          <h4>Mobility that builds muscle</h4>
+          <p>A playful, frame-running group programme for children aged 2–5, measuring motor function, accelerometer-tracked activity and ultrasound muscle size.</p>
+        </div>
+      </div>
+      <p class="credit"><b>Josefin Löwing</b>, PT · PhD student — main supervisor Ferdinand von Walden, with Ann-Christin Eliasson &amp; Elisabet Rodby-Bousquet.</p>
     </div>
 
     <p class="subhead reveal">Selected collaborators</p>
@@ -732,8 +778,11 @@ footer { border-top: 1px solid var(--line); padding-block: 2.6rem 3rem; margin-t
       "name": "von Walden Lab",
       "url": "https://jeppelina.github.io/von-walden-lab/",
       "parentOrganization": { "@type": "CollegeOrUniversity", "name": "Karolinska Institutet" },
-      "member": { "@id": "https://jeppelina.github.io/von-walden-lab/#pi" },
-      "description": "Clinical muscle-physiology group studying ribosome biogenesis, muscle memory and paediatric muscle adaptation."
+      "member": [
+        { "@id": "https://jeppelina.github.io/von-walden-lab/#pi" },
+        { "@type": "Person", "name": "Josefin Löwing", "jobTitle": "PhD student (physiotherapist)", "affiliation": { "@type": "CollegeOrUniversity", "name": "Karolinska Institutet" }, "knowsAbout": ["Early intervention","Cerebral palsy","Motor development","Physical activity"] }
+      ],
+      "description": "Clinical muscle-physiology group studying ribosome biogenesis, muscle memory, paediatric muscle adaptation and early intervention in cerebral palsy."
     }
   ]
 }
