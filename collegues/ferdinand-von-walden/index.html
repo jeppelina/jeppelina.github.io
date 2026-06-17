@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>His Excellency Ferdinand von Walden</title>
+<meta name="description" content="The definitive, completely unbiased, and entirely authorized profile of His Most Illustrious Excellency, Docent Ferdinand von Walden, MD, PhD.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cinzel:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1F3F0;</text></svg>">
+<style>
+  :root {
+    --cream: #FBF8F1;
+    --parchment: #F3EDE0;
+    --gold: #C6A94E;
+    --gold-deep: #9E832A;
+    --gold-light: #E8D9A0;
+    --burgundy: #6B1D2A;
+    --burgundy-deep: #4A1019;
+    --ink: #2A2118;
+    --ink-soft: #5C5347;
+    --rule: #C6A94E;
+    --hair: #D9CEBC;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --display: "Cinzel", "Times New Roman", serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--burgundy); text-decoration: none; border-bottom: 1px solid rgba(107,29,42,0.3); transition: all 0.15s ease; }
+  a:hover { color: var(--burgundy-deep); border-bottom-color: var(--burgundy-deep); }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: #fff; padding: 10px 16px; z-index: 50; font-size: 14px; }
+  .skip:focus { left: 12px; top: 12px; }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Royal Masthead ---------- */
+  .masthead {
+    text-align: center;
+    padding: clamp(3rem, 8vw, 5rem) 0 clamp(2rem, 5vw, 3rem);
+    border-bottom: 3px double var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--gold) 0, var(--gold) 8px, transparent 8px, transparent 16px);
+  }
+
+  .royal-crest { font-size: clamp(3rem, 8vw, 5rem); line-height: 1; margin-bottom: 0.5rem; display: block; }
+  .gazette-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    display: inline-block;
+    border: 1px solid var(--gold);
+    padding: 4px 14px;
+    margin-bottom: 1.4rem;
+  }
+  .masthead h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 7vw, 3.8rem);
+    line-height: 1.08;
+    letter-spacing: 0.03em;
+    color: var(--burgundy);
+  }
+  .masthead .von {
+    display: block;
+    font-size: clamp(3rem, 10vw, 5.4rem);
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+
+  .full-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 50ch;
+    margin: 1.2rem auto 0;
+    line-height: 1.5;
+  }
+  .full-title strong { font-style: normal; color: var(--burgundy); font-weight: 600; }
+
+  .ribbon {
+    margin-top: 1.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 20px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  .ribbon span::before { content: "\2726 "; color: var(--gold); }
+
+  /* ---------- Sections ---------- */
+  .section { padding: clamp(2.5rem, 6vw, 3.5rem) 0; }
+  .section + .section { border-top: 1px solid var(--hair); }
+
+  .kicker {
+    font-family: var(--display);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1.2rem;
+  }
+  .kicker::after { content: ""; flex: 1; height: 0; border-top: 1px solid var(--gold-light); }
+  .kicker .num { color: var(--burgundy); font-variant-numeric: tabular-nums; }
+
+  h2.head {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: 0.02em;
+    color: var(--burgundy);
+    margin-bottom: 0.5rem;
+  }
+  .standfirst {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 48ch;
+    margin-bottom: 1.6rem;
+  }
+
+  /* ---------- Proclamation ---------- */
+  .proclamation {
+    column-count: 2;
+    column-gap: 36px;
+    column-rule: 1px solid var(--hair);
+    text-align: justify;
+    hyphens: auto;
+  }
+  .proclamation p { margin-bottom: 1em; }
+  .proclamation p:last-child { margin-bottom: 0; }
+
+  .dropcap::first-letter { font-family: var(--display); font-weight: 700; color: var(--burgundy); margin-right: 0.04em; }
+  @supports (initial-letter: 3) { .dropcap::first-letter { initial-letter: 3; } }
+  @supports not (initial-letter: 3) {
+    .dropcap::first-letter { font-size: 3.5em; line-height: 0.82; float: left; margin: 0.04em 0.08em 0 0; }
+  }
+
+  /* ---------- Dominions ---------- */
+  .dominions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 2px solid var(--gold);
+  }
+  .dominion {
+    padding: 24px 22px;
+    border-bottom: 1px solid var(--gold-light);
+    position: relative;
+  }
+  .dominion:not(:nth-child(3n)) { border-right: 1px solid var(--gold-light); }
+  .dominion:nth-last-child(-n+3) { border-bottom: 0; }
+  .dominion-icon { font-size: 1.8rem; margin-bottom: 0.5rem; display: block; }
+  .dominion .d-title {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--burgundy);
+    margin-bottom: 0.4rem;
+  }
+  .dominion .d-real {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    color: var(--gold-deep);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .dominion p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ---------- Numbers ---------- */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 2px solid var(--burgundy);
+    background: var(--burgundy);
+    text-align: center;
+  }
+  .metric-cell { background: var(--parchment); padding: 24px 16px; }
+  .metric-cell + .metric-cell { border-left: 2px solid var(--burgundy); }
+  .metric-cell .m-num {
+    font-family: var(--display);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--burgundy);
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .metric-cell .m-label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .metric-cell .m-joke { font-size: 0.82rem; font-style: italic; color: var(--gold-deep); line-height: 1.3; }
+
+  /* ---------- Sacred Texts ---------- */
+  .scroll {
+    border: 1px solid var(--gold);
+    background: var(--parchment);
+    margin-bottom: 16px;
+  }
+  .scroll-header {
+    background: var(--burgundy);
+    color: var(--gold-light);
+    padding: 10px 20px;
+    font-family: var(--display);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .scroll-body { padding: 20px; }
+  .scroll-body h3 { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; line-height: 1.3; margin-bottom: 0.3rem; color: var(--ink); }
+  .scroll-body .authors { font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .scroll-body .commentary {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--burgundy);
+    padding-left: 16px;
+    border-left: 2px solid var(--gold);
+    margin-top: 0.6rem;
+  }
+
+  /* ---------- Awards ---------- */
+  .awards-list { list-style: none; }
+  .award {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hair);
+    align-items: start;
+  }
+  .award:last-child { border-bottom: 0; }
+  .award-badge {
+    width: 52px; height: 52px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    background: var(--parchment);
+  }
+  .award h3 { font-family: var(--display); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; color: var(--burgundy); margin-bottom: 0.15rem; }
+  .award .a-year { font-family: var(--mono); font-size: 0.6rem; color: var(--gold-deep); letter-spacing: 0.1em; display: block; margin-bottom: 0.3rem; }
+  .award p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.45; }
+
+  /* ---------- Vassals ---------- */
+  .vassals { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .vassal {
+    background: var(--parchment);
+    border: 1px solid var(--gold-light);
+    padding: 16px 18px;
+    position: relative;
+  }
+  .vassal .v-name { font-family: var(--display); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; color: var(--ink); }
+  .vassal .v-title { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; }
+  .vassal .v-real { font-family: var(--mono); font-size: 0.58rem; color: var(--gold-deep); margin-top: 0.3rem; display: block; }
+
+  /* ---------- Meter ---------- */
+  .meter-box { border: 2px solid var(--burgundy); background: var(--parchment); overflow: hidden; }
+  .meter-header {
+    background: var(--burgundy);
+    color: var(--gold-light);
+    padding: 12px 22px;
+    font-family: var(--display);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+  .meter-inner { padding: 28px 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .meter-viz { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .muscle-bar-container { width: 100%; max-width: 280px; }
+  .muscle-bar-bg { height: 32px; background: var(--cream); border: 1px solid var(--gold); position: relative; overflow: hidden; }
+  .muscle-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--burgundy));
+    transition: width 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+  }
+  .muscle-bar-fill span { font-family: var(--mono); font-size: 0.65rem; color: #fff; font-weight: 500; }
+  .muscle-verdict {
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--burgundy);
+    text-align: center;
+    margin-top: 12px;
+    min-height: 2.4em;
+    line-height: 1.2;
+  }
+  .meter-controls { display: flex; flex-direction: column; gap: 16px; }
+  .meter-controls label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .meter-controls input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .meter-controls input[type="range"]::-webkit-slider-runnable-track { height: 4px; background: var(--gold); }
+  .meter-controls input[type="range"]::-moz-range-track { height: 4px; background: var(--gold); }
+  .meter-controls input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 24px;
+    margin-top: -10px;
+    background: var(--burgundy);
+    border: 1px solid var(--burgundy-deep);
+    border-radius: 0;
+  }
+  .meter-controls input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 24px;
+    background: var(--burgundy);
+    border: 1px solid var(--burgundy-deep);
+    border-radius: 0;
+  }
+  .meter-note {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.4;
+    border-top: 1px solid var(--gold-light);
+    padding-top: 12px;
+    margin-top: 8px;
+  }
+  .meter-caption {
+    border-top: 2px solid var(--burgundy);
+    padding: 10px 22px;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+  .meter-caption strong {
+    font-family: var(--display);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--burgundy);
+  }
+
+  /* ---------- Contact ---------- */
+  .contact-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 36px; align-items: start; }
+  .contact-lede { font-size: 1.1rem; line-height: 1.55; }
+  .contact-lede .pull { font-style: italic; color: var(--burgundy); }
+  .contact-list { list-style: none; border-top: 3px solid var(--burgundy); }
+  .contact-list li { border-bottom: 1px solid var(--hair); padding: 14px 0; }
+  .contact-list li:last-child { border-bottom: 0; }
+  .contact-list .ct-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .contact-list .ct-value { font-size: 1rem; }
+
+  /* ---------- Footer ---------- */
+  .seal { text-align: center; padding: 2.5rem 0; border-top: 3px double var(--gold); }
+  .seal-emoji { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; }
+  .seal p {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    line-height: 1.8;
+  }
+  .seal a { border-bottom: 1px solid var(--hair); }
+  .seal a:hover { border-bottom-color: var(--ink); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 760px) {
+    body { font-size: 18px; }
+    .wrap { padding: 0 20px; }
+    .proclamation { column-count: 1; text-align: left; }
+    .dominions { grid-template-columns: 1fr; }
+    .dominion:not(:nth-child(3n)) { border-right: 0; }
+    .dominion { border-bottom: 1px solid var(--gold-light) !important; }
+    .dominion:last-child { border-bottom: 0 !important; }
+    .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    .metric-cell + .metric-cell { border-left: 0; }
+    .metric-cell:nth-child(odd) { border-right: 2px solid var(--burgundy); }
+    .metric-cell:nth-child(-n+2) { border-bottom: 2px solid var(--burgundy); }
+    .vassals { grid-template-columns: 1fr; }
+    .meter-inner { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="royal-crest" aria-hidden="true">&#x1F3F0;</span>
+    <span class="gazette-label">The Royal Gazette of Muscle Science &middot; Summer Party Special Edition</span>
+    <h1>
+      Ferdinand
+      <span class="von">von Walden</span>
+    </h1>
+    <p class="full-title">
+      <strong>MD, PhD, Docent</strong> &mdash; Baron of Biceps, Keeper of the Sarcomere,
+      Lord Protector of Ribosomal Sovereignty, Patron Saint of Children Who Didn't Ask to Be in a Study,
+      and Sweden's Foremost Whisperer of Ribosomes
+    </p>
+    <div class="ribbon">
+      <span>Karolinska Institutet</span>
+      <span>Astrid Lindgren Children's Hospital</span>
+      <span>Department of Women's and Children's Health</span>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+  <!-- ===== I. THE PROCLAMATION ===== -->
+  <section class="section" aria-labelledby="proc-head">
+    <p class="kicker"><span class="num">I</span> The Proclamation</p>
+    <h2 class="head" id="proc-head">Let it be known throughout the land</h2>
+    <p class="standfirst">A formal introduction to his most distinguished personage.</p>
+
+    <div class="proclamation">
+      <p class="dropcap">Hear ye, hear ye. Let the record show that Ferdinand von Walden &mdash; holder of both a medical degree and a doctorate from Karolinska Institutet, because apparently one was not enough &mdash; has devoted his considerable talents to the noble pursuit of understanding why muscles do what muscles do. Where lesser mortals see a bicep, von Walden sees an entire universe of ribosomes assembling proteins, and he will not rest until every last one of those ribosomes has been catalogued, interrogated, and published about.</p>
+      <p>By day, he is a resident in pediatrics at Astrid Lindgren Children's Hospital, tending to small humans with the patience of a saint. By night (and also by day, and also on weekends), he leads a research team of eight brave souls investigating skeletal muscle physiology, ribosome biogenesis, and the systemic effects of exercise. One might say he has two full-time jobs, but that would imply he occasionally sleeps.</p>
+      <p>His academic trajectory is the sort that makes other researchers quietly close their laptops. MD in 2009. PhD in 2015, with a thesis on &mdash; and this is real &mdash; <em>Ribosome Biogenesis During Skeletal Muscle Hypertrophy</em>. Docent in 2025. Somewhere in there he found time to amass over sixty publications, publish in <em>Cell</em>, and maintain what we can only assume is a punishing gym routine. For research purposes, of course.</p>
+      <p>His name, <em>von Walden</em>, evokes a Bavarian count surveying his estates from horseback. In reality, he surveys Western blots from a lab bench in Solna, which is basically the same thing.</p>
+    </div>
+  </section>
+
+  <!-- ===== II. DOMINIONS ===== -->
+  <section class="section" aria-labelledby="dom-head">
+    <p class="kicker"><span class="num">II</span> Domains of Dominion</p>
+    <h2 class="head" id="dom-head">The territories under his scientific reign</h2>
+    <p class="standfirst">Each conquered through years of pipetting, publishing, and presumably sighing.</p>
+
+    <div class="dominions">
+      <article class="dominion">
+        <span class="dominion-icon" aria-hidden="true">&#x1F9EC;</span>
+        <div class="d-title">The Kingdom of Ribosome Biogenesis</div>
+        <span class="d-real">his core obsession since 2012</span>
+        <p>Ribosomes: the tiny molecular machines that build proteins. Ferdinand studies how muscles make more of them when you exercise. He has written more words about ribosomal RNA than most people have written about anything, ever. His doctoral thesis was literally called &ldquo;Ribosome Biogenesis During Skeletal Muscle Hypertrophy.&rdquo; At parties, this is what he talks about. At <em>this</em> party, we are talking about it too. You are welcome.</p>
+      </article>
+
+      <article class="dominion">
+        <span class="dominion-icon" aria-hidden="true">&#x1F4AA;</span>
+        <div class="d-title">The Duchy of Skeletal Muscle</div>
+        <span class="d-real">molecular muscle physiology in health &amp; disease</span>
+        <p>Why do muscles grow? Why do they waste away? What does MYC have to do with anything? Ferdinand's team showed that 24 hours of molecular data after resistance exercise implicate the MYC oncogene as a key driver of muscle growth &mdash; and that overexpressing MYC alone is sufficient for hypertrophy. Published in <em>EMBO Reports</em>. Casual.</p>
+      </article>
+
+      <article class="dominion">
+        <span class="dominion-icon" aria-hidden="true">&#x1F6B4;</span>
+        <div class="d-title">The Province of Pediatric Exercise</div>
+        <span class="d-real">making children run, for science</span>
+        <p>Ferdinand's team developed and validated the 6-Minute Frame Running Test for individuals with cerebral palsy, published the protocol in <em>JoVE</em> (yes, a video journal &mdash; the man has range), and demonstrated that RaceRunning training promotes skeletal muscle hypertrophy in young individuals with CP. He is, in the most literal sense, helping kids build muscle.</p>
+      </article>
+
+      <article class="dominion">
+        <span class="dominion-icon" aria-hidden="true">&#x1F9EA;</span>
+        <div class="d-title">The Barony of Epigenetics</div>
+        <span class="d-real">DNA methylation &amp; muscle memory</span>
+        <p>Muscles remember. Ferdinand has published on myonuclear DNA methylation and the concept of epigenetic &ldquo;muscle memory&rdquo; &mdash; the idea that your muscles retain a molecular record of previous training. Your biceps are keeping a diary, and Ferdinand is reading it.</p>
+      </article>
+
+      <article class="dominion">
+        <span class="dominion-icon" aria-hidden="true">&#x1FA7A;</span>
+        <div class="d-title">The Principality of Clinical Pediatrics</div>
+        <span class="d-real">actual medical doctor, astrid lindgren hospital</span>
+        <p>Lest we forget: between all the pipetting and publishing, Ferdinand is also an actual doctor who sees actual patients at one of Sweden's most beloved children's hospitals, named after the woman who wrote Pippi Longstocking. There is no known connection between his research and Pippi's superhuman strength, but we are not ruling it out.</p>
+      </article>
+
+      <article class="dominion">
+        <span class="dominion-icon" aria-hidden="true">&#x1F30D;</span>
+        <div class="d-title">The Colony of International Collaboration</div>
+        <span class="d-real">UAB, Arkansas, Amsterdam, Copenhagen, &amp; beyond</span>
+        <p>Ferdinand's publication list reads like a United Nations roll call. Collaborators from the University of Arkansas, UAB, Amsterdam, Copenhagen, and beyond. He gave a seminar at UAB in October 2025 on &ldquo;Skeletal Muscle Biology in Health and Disease.&rdquo; Alabama was never the same.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== III. BY THE SACRED NUMBERS ===== -->
+  <section class="section" aria-labelledby="numbers-head">
+    <p class="kicker"><span class="num">III</span> By the Sacred Numbers</p>
+    <h2 class="head" id="numbers-head">A quantitative accounting of the estate</h2>
+    <p class="standfirst">Each number verified by at least one extremely tired postdoc.</p>
+
+    <div class="metrics-row">
+      <div class="metric-cell">
+        <span class="m-num">62+</span>
+        <span class="m-label">Publications</span>
+        <span class="m-joke">&ldquo;Sacred texts&rdquo;</span>
+      </div>
+      <div class="metric-cell">
+        <span class="m-num">8</span>
+        <span class="m-label">Team members</span>
+        <span class="m-joke">&ldquo;Sworn vassals&rdquo;</span>
+      </div>
+      <div class="metric-cell">
+        <span class="m-num">1</span>
+        <span class="m-label">Cell paper</span>
+        <span class="m-joke">&ldquo;One does not simply publish in Cell&rdquo;</span>
+      </div>
+      <div class="metric-cell">
+        <span class="m-num">17</span>
+        <span class="m-label">Years at KI</span>
+        <span class="m-joke">&ldquo;Practically feudal tenure&rdquo;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== IV. THE SACRED TEXTS ===== -->
+  <section class="section" aria-labelledby="texts-head">
+    <p class="kicker"><span class="num">IV</span> The Sacred Texts</p>
+    <h2 class="head" id="texts-head">Selected works from the von Walden canon</h2>
+    <p class="standfirst">Ranked not by impact factor, but by how impressive they sound at dinner.</p>
+
+    <div class="scroll">
+      <div class="scroll-header">
+        <span>Magnum Opus</span>
+        <span>Cell &middot; 2025</span>
+      </div>
+      <div class="scroll-body">
+        <h3>Systems-level immunomonitoring in children with solid tumors to enable precision medicine</h3>
+        <p class="authors">Chen Q, Zhao B, Tan Z, &hellip; von Walden F, &hellip; Brodin P &mdash; <em>Cell</em>, 2025; 188(5): 1425&ndash;1440</p>
+        <p class="commentary">Published in <em>Cell</em>. The journal so prestigious that merely appearing in its table of contents causes your h-index to visibly twitch. Ferdinand's contribution to pediatric precision medicine at its finest.</p>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="scroll-header">
+        <span>The MYC Manifesto</span>
+        <span>EMBO Reports &middot; 2024</span>
+      </div>
+      <div class="scroll-body">
+        <h3>The 24-hour molecular landscape after exercise in humans reveals MYC is sufficient for muscle growth</h3>
+        <p class="authors">Edman S, Jones RG III, Jannig PR, &hellip; von Walden F &mdash; <em>EMBO Reports</em>, 2024; 25(12): 5810&ndash;5837</p>
+        <p class="commentary">The paper that proved MYC alone is sufficient for muscle hypertrophy. Twenty-seven pages of molecular evidence that your muscles have an oncogene-powered growth button. Ferdinand: &ldquo;We found it.&rdquo; Everyone else: &ldquo;Please stop pressing it.&rdquo;</p>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="scroll-header">
+        <span>The Origin Story</span>
+        <span>Am J Physiol &middot; 2012</span>
+      </div>
+      <div class="scroll-body">
+        <h3>Mechanical loading induces the expression of a Pol I regulon at the onset of skeletal muscle hypertrophy</h3>
+        <p class="authors">von Walden F, Casagrande V, Farrants A-KO, Nader GA &mdash; <em>Am J Physiol Cell Physiol</em>, 2012; 302(10): C1523&ndash;C1530</p>
+        <p class="commentary">The paper that started it all. Ferdinand proved that lifting heavy things activates RNA Polymerase I and kicks off ribosome production. In other words: he was the first to explain what happens inside your cells when you pick up a dumbbell. The scientific equivalent of an origin story.</p>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="scroll-header">
+        <span>Does Time Tick Faster?</span>
+        <span>FASEB J &middot; 2026</span>
+      </div>
+      <div class="scroll-body">
+        <h3>Does Time Tick Faster in Cerebral Palsy? Accelerated Aging as a Framework for Skeletal Muscle Dysfunction</h3>
+        <p class="authors">Horwath O, Edman S, Dayanidhi S, Englund D, Peterson MD, von Walden F &mdash; <em>FASEB Journal</em>, 2026; 40(6): e71653</p>
+        <p class="commentary">A title so evocative it could be a novel. Ferdinand's team proposes that skeletal muscle in cerebral palsy ages faster than expected, reframing the entire field. Bold, compassionate, and beautifully written for a research paper.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== V. THE INTERACTIVE ===== -->
+  <section class="section" aria-labelledby="meter-head">
+    <p class="kicker"><span class="num">V</span> The Royal Instrument</p>
+    <h2 class="head" id="meter-head">The von Walden Impressiveness Meter</h2>
+    <p class="standfirst">A rigorous, peer-reviewed tool for measuring academic overachievement.</p>
+
+    <div class="meter-box">
+      <div class="meter-header">
+        <span>Interactive Figure</span>
+        <span>Calibrated to Ferdinand</span>
+      </div>
+      <div class="meter-inner">
+        <div class="meter-viz">
+          <div class="muscle-bar-container">
+            <div class="muscle-bar-bg">
+              <div class="muscle-bar-fill" id="meterFill" style="width:50%">
+                <span id="meterPct">50%</span>
+              </div>
+            </div>
+          </div>
+          <div class="muscle-verdict" id="meterVerdict">Distinguished</div>
+        </div>
+        <div class="meter-controls">
+          <div>
+            <label for="pubSlider">Publications authored (0&ndash;100)</label>
+            <input type="range" id="pubSlider" min="0" max="100" value="62">
+          </div>
+          <div>
+            <label for="degSlider">Degrees held (0&ndash;5)</label>
+            <input type="range" id="degSlider" min="0" max="5" value="3">
+          </div>
+          <div>
+            <label for="jobSlider">Simultaneous careers (0&ndash;4)</label>
+            <input type="range" id="jobSlider" min="0" max="4" value="2">
+          </div>
+          <p class="meter-note">Default values are set to Ferdinand's actual numbers. Adjust the sliders to compare yourself (prepare for disappointment).</p>
+        </div>
+      </div>
+      <p class="meter-caption">
+        <strong>Methodology note.</strong> This instrument has not been validated, calibrated, or approved by any ethics committee. The von Walden Impressiveness Meter (vWIM) is presented for entertainment purposes only and should not be cited in grant applications.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VI. ORDERS & HONOURS ===== -->
+  <section class="section" aria-labelledby="awards-head">
+    <p class="kicker"><span class="num">VI</span> Orders &amp; Honours</p>
+    <h2 class="head" id="awards-head">Decorations of the realm</h2>
+    <p class="standfirst">A selection of achievements, real and editorially enhanced.</p>
+
+    <ul class="awards-list">
+      <li class="award">
+        <div class="award-badge" aria-hidden="true">&#x1F393;</div>
+        <div>
+          <h3>Docent of Clinical Muscle Physiology</h3>
+          <span class="a-year">Karolinska Institutet &middot; 2025</span>
+          <p>Awarded the title of Docent &mdash; the Swedish academic rank that roughly translates to &ldquo;we formally acknowledge you know an unreasonable amount about this subject.&rdquo; Ferdinand's subject: clinical muscle physiology. His students: warned.</p>
+        </div>
+      </li>
+      <li class="award">
+        <div class="award-badge" aria-hidden="true">&#x1F4D6;</div>
+        <div>
+          <h3>Published in Cell</h3>
+          <span class="a-year">2025 &middot; Impact Factor: ~65</span>
+          <p>Publishing in <em>Cell</em> is the academic equivalent of getting a five-star Michelin review. Most researchers dream about it. Ferdinand did it while also being a practicing pediatrician. Naturally.</p>
+        </div>
+      </li>
+      <li class="award">
+        <div class="award-badge" aria-hidden="true">&#x1F3C3;</div>
+        <div>
+          <h3>Pioneer of Frame Running Science</h3>
+          <span class="a-year">Ongoing since ~2018</span>
+          <p>Frame running &mdash; a sport designed for people with balance impairments &mdash; now has a validated exercise test, physiological benchmarks, and training evidence, largely because Ferdinand decided it should. He and his team have published at least seven papers on the topic. Frame running has a champion, and it is him.</p>
+        </div>
+      </li>
+      <li class="award">
+        <div class="award-badge" aria-hidden="true">&#x1F9EC;</div>
+        <div>
+          <h3>The MYC Discovery</h3>
+          <span class="a-year">2024</span>
+          <p>Demonstrated that a single gene (MYC) is sufficient to drive muscle growth. The paper spawned an editorial, a follow-up, and presumably several confused gym-goers Googling &ldquo;how to activate MYC.&rdquo;</p>
+        </div>
+      </li>
+      <li class="award">
+        <div class="award-badge" aria-hidden="true">&#x2694;&#xFE0F;</div>
+        <div>
+          <h3>Dual Wielder of Medicine and Science</h3>
+          <span class="a-year">Since 2009</span>
+          <p>Simultaneously maintains a clinical residency in pediatrics and an active research lab. This is the academic equivalent of playing two instruments in the same orchestra at the same time, while also conducting.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ===== VII. THE SWORN VASSALS ===== -->
+  <section class="section" aria-labelledby="team-head">
+    <p class="kicker"><span class="num">VII</span> The Sworn Vassals</p>
+    <h2 class="head" id="team-head">The von Walden research court</h2>
+    <p class="standfirst">The brave scholars who have pledged their pipettes to the cause.</p>
+
+    <div class="vassals">
+      <div class="vassal">
+        <div class="v-name">Emma Hjalmarsson</div>
+        <div class="v-title">Chief of Frame Running Operations</div>
+        <span class="v-real">PT, PhD student</span>
+      </div>
+      <div class="vassal">
+        <div class="v-name">Linn&eacute;a Corell</div>
+        <div class="v-title">Ventilatory Response Specialist</div>
+        <span class="v-real">MD/PhD student</span>
+      </div>
+      <div class="vassal">
+        <div class="v-name">Minying Cui</div>
+        <div class="v-title">Ribosome Cartographer</div>
+        <span class="v-real">MD, PhD student</span>
+      </div>
+      <div class="vassal">
+        <div class="v-name">Baptiste Jude</div>
+        <div class="v-title">Postdoctoral Knight</div>
+        <span class="v-real">Postdoc</span>
+      </div>
+      <div class="vassal">
+        <div class="v-name">Sebastian Edman</div>
+        <div class="v-title">24-Hour Molecular Landscape Surveyor</div>
+        <span class="v-real">Postdoc</span>
+      </div>
+      <div class="vassal">
+        <div class="v-name">Kajsa Thulin</div>
+        <div class="v-title">Envoy to Link&ouml;ping</div>
+        <span class="v-real">MD, PhD student &mdash; Link&ouml;ping University</span>
+      </div>
+      <div class="vassal">
+        <div class="v-name">Emil Rydell H&ouml;gelin</div>
+        <div class="v-title">Minister of Microbiopsies</div>
+        <span class="v-real">MD, PhD student &mdash; Link&ouml;ping University</span>
+      </div>
+      <div class="vassal">
+        <div class="v-name">Abraham Nilsson</div>
+        <div class="v-title">Keeper of the Anticoagulant Protocols</div>
+        <span class="v-real">MD, PhD student &mdash; Link&ouml;ping University</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VIII. CONTACT ===== -->
+  <section class="section" aria-labelledby="contact-head">
+    <p class="kicker"><span class="num">VIII</span> Petitions &amp; Correspondence</p>
+    <h2 class="head" id="contact-head">Address the court</h2>
+    <p class="standfirst">Audiences may be requested through the following channels.</p>
+
+    <div class="contact-grid">
+      <p class="contact-lede">
+        Petitions regarding ribosome biogenesis, skeletal muscle physiology, pediatric exercise science,
+        or frame running may be directed to His Excellency's official channels.
+        <span class="pull">Flattery, while not required, is appreciated and may expedite response times.</span>
+      </p>
+      <ul class="contact-list">
+        <li>
+          <span class="ct-label">Official Correspondence</span>
+          <span class="ct-value"><a href="mailto:ferdinand.von.walden@ki.se">ferdinand.von.walden@ki.se</a></span>
+        </li>
+        <li>
+          <span class="ct-label">Royal Court</span>
+          <span class="ct-value"><a href="https://ki.se/en/people/ferdinand-von-walden" rel="noopener">Karolinska Institutet Profile</a></span>
+        </li>
+        <li>
+          <span class="ct-label">Sacred Archives</span>
+          <span class="ct-value"><a href="https://scholar.google.com/citations?user=71ixU-oAAAAJ&hl=en" rel="noopener">Google Scholar</a></span>
+        </li>
+        <li>
+          <span class="ct-label">Town Crier</span>
+          <span class="ct-value"><a href="https://x.com/FerdinandvW" rel="noopener">@FerdinandvW on X</a></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="seal">
+  <div class="wrap">
+    <span class="seal-emoji" aria-hidden="true">&#x1F396;&#xFE0F;</span>
+    <p>
+      Issued under the seal of the Royal Gazette of Muscle Science<br>
+      Summer Party Edition &middot; June 2026<br>
+      Composed with admiration and mild envy by <a href="https://www.jesperlindmarker.com" target="_blank" rel="noopener">Jesper Lindmarker</a><br>
+      Built from publicly available information and an unreasonable amount of Google Scholar scrolling<br><br>
+      <em>&ldquo;In ribosomes we trust&rdquo;</em>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var pubSlider = document.getElementById("pubSlider");
+  var degSlider = document.getElementById("degSlider");
+  var jobSlider = document.getElementById("jobSlider");
+  var fill      = document.getElementById("meterFill");
+  var pctEl     = document.getElementById("meterPct");
+  var verdict   = document.getElementById("meterVerdict");
+
+  var verdicts = [
+    [0,  "Mortal"],
+    [15, "Promising Undergraduate"],
+    [30, "Respectable Researcher"],
+    [45, "Distinguished"],
+    [60, "Formidable"],
+    [75, "Approaching von Walden Levels"],
+    [85, "Dangerously Close to Overachievement"],
+    [95, "Ferdinand? Is that you?"],
+    [100,"BEYOND MORTAL COMPREHENSION"]
+  ];
+
+  function render() {
+    var pubs = Number(pubSlider.value);
+    var degs = Number(degSlider.value);
+    var jobs = Number(jobSlider.value);
+    var score = Math.min(100, Math.round(
+      (pubs / 100) * 50 + (degs / 5) * 25 + (jobs / 4) * 25
+    ));
+    fill.style.width = score + "%";
+    pctEl.textContent = score + "%";
+    var label = verdicts[0][1];
+    for (var i = 0; i < verdicts.length; i++) {
+      if (score >= verdicts[i][0]) label = verdicts[i][1];
+    }
+    verdict.textContent = label;
+  }
+
+  pubSlider.addEventListener("input", render);
+  degSlider.addEventListener("input", render);
+  jobSlider.addEventListener("input", render);
+  render();
+})();
+</script>
+</body>
+</html>
