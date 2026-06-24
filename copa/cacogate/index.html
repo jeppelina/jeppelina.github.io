@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copa — Caco-gate: the case of the shifting predictions</title>
+<style>
+ :root{--bg:#0a0a0c;--panel:#101117;--line:rgba(255,255,255,.09);--txt:#e6e7ea;--mut:#7e8492;--yellow:#f5e000;--cyan:#28d3d8;--green:#37d67a;--red:#ff6a78;}
+ *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:"JetBrains Mono","SF Mono",ui-monospace,Menlo,monospace;font-size:13px;line-height:1.5}
+ .wrap{max-width:980px;margin:0 auto;padding:28px 18px 80px}
+ .crumb{color:var(--mut);letter-spacing:.18em;font-size:11px}.crumb b{color:var(--cyan)}
+ h1{font-size:24px;letter-spacing:.04em;margin:.4em 0 .2em;color:var(--yellow);text-transform:uppercase}
+ .tabs{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;width:fit-content;margin:14px 0 12px;flex-wrap:wrap}
+ .tab{padding:8px 18px;color:var(--mut);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;font-size:11px}
+ .tab.on{background:var(--yellow);color:#0a0a0c;font-weight:700}.tab:not(.on):hover{color:var(--txt)}
+ .lede{color:#c7cad2;font-size:13px;max-width:820px;margin:10px 0 18px}
+ .lede b{color:var(--yellow)}
+ .stamp{display:inline-block;border:1px dashed var(--cyan);color:var(--cyan);border-radius:5px;padding:3px 10px;font-size:11px;letter-spacing:.08em;transform:rotate(-2deg);margin:2px 6px 2px 0}
+ .cards{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0 18px}
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;flex:1 1 150px}
+ .card .big{font-size:26px;font-weight:700;color:var(--yellow)}
+ .card .lbl{color:var(--mut);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+ .fair{border-left:2px solid var(--cyan);background:var(--panel);padding:10px 14px;color:#c7cad2;font-size:12px;margin:6px 0 20px;max-width:820px}
+ table{width:100%;border-collapse:collapse;margin-top:6px}
+ th{position:sticky;top:0;background:var(--bg);text-align:right;color:var(--mut);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:10px;padding:9px 8px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+ th.l{text-align:left}td{padding:8px;border-bottom:1px solid rgba(255,255,255,.05);text-align:right;white-space:nowrap}td.l{text-align:left}
+ tbody tr:hover{background:rgba(245,224,0,.05)}
+ .posted{color:var(--mut)}.now{color:var(--txt);font-weight:600}
+ .up{color:var(--green)}.dn{color:var(--red)}
+ .toward{font-size:10px;letter-spacing:.05em}
+ .foot{color:var(--mut);font-size:11px;margin-top:24px;border-top:1px solid var(--line);padding-top:14px;max-width:820px}
+ @media (max-width:640px){.wrap{padding:16px 10px 60px}h1{font-size:18px}th,td{padding:6px 5px}.hidem{display:none}}
+</style></head><body><div class="wrap">
+ <div class="crumb">COPA / <b>CACO-GATE</b></div>
+ <h1>Caco-gate — the case of the shifting predictions</h1>
+ <div class="tabs"><a class="tab" href="/copa/">Predictions</a><a class="tab" href="/copa/standings/">Standings</a><a class="tab" href="/copa/evaluate/">Evaluation</a><a class="tab on" href="/copa/cacogate/">Caco-gate</a></div>
+
+ <div class="lede">A committed prediction is supposed to be, well, <i>committed</i>. Luckily, when Caco Model
+ posted his Round-1 numbers, <b>LLM downloaded the receipts</b> — so we can now show exactly how much those
+ "Round-1 predictions" have quietly drifted since the matches were played.
+ <span class="stamp" id="s1">posted</span><span class="stamp" id="s2">re-pulled</span></div>
+
+ <div class="cards" id="cards"></div>
+ <div class="fair" id="fair"></div>
+
+ <table><thead><tr>
+   <th class="l" data-k="name">Player</th><th class="l hidem" data-k="nat">Nation</th>
+   <th data-k="orig">Posted</th><th data-k="rev">Now</th><th data-k="change">Δ change</th>
+   <th data-k="actual">Actual</th><th data-k="toward" class="hidem">Closer?</th>
+ </tr></thead><tbody id="tb"></tbody></table>
+
+ <div class="foot">Method: "Posted" = Caco Model's prediction as captured from the public
+   <a href="https://dashboard-rho-ten-40.vercel.app/evaluate">Copa Analytics</a> dashboard at R1-commit time;
+   "Now" = the same dashboard re-pulled later. Both are Caco's own published numbers — we just kept a timestamped copy.
+   In fairness, the changes don't systematically chase the result (about half landed closer to the actual, half further),
+   so this looks more like a model/data update than hindsight — but a number you've <i>committed</i> as a prediction
+   shouldn't move after kickoff. LLM's R1 predictions are frozen + checked into git, for the record. 🧾</div>
+</div>
+<script>
+const S={"n": 43, "n_changed": 39, "pct_changed": 91, "avg_abs_change": 65, "max_change": 147, "pct_toward_actual": 46, "captured": "2026-06-11", "repulled": "2026-06-24"}, R=[{"name": "Erling Haaland", "nat": "Norway", "orig": 119, "rev": 266, "change": 147, "actual": 407, "toward": true}, {"name": "Jamal Musiala", "nat": "Germany", "orig": 24, "rev": 152, "change": 128, "actual": 214, "toward": true}, {"name": "Mehdi Taremi", "nat": "Iran", "orig": 21, "rev": 136, "change": 115, "actual": 16, "toward": false}, {"name": "Scott McTominay", "nat": "Scotland", "orig": 15, "rev": 127, "change": 112, "actual": 42, "toward": false}, {"name": "Joshua Kimmich", "nat": "Germany", "orig": 19, "rev": 130, "change": 111, "actual": 204, "toward": true}, {"name": "Kai Havertz", "nat": "Germany", "orig": 46, "rev": 152, "change": 106, "actual": 377, "toward": true}, {"name": "Ricardo Pepi", "nat": "USA", "orig": -5, "rev": 101, "change": 106, "actual": 34, "toward": false}, {"name": "Florian Wirtz", "nat": "Germany", "orig": 30, "rev": 132, "change": 102, "actual": 154, "toward": true}, {"name": "Kylian Mbappe", "nat": "France", "orig": 82, "rev": 172, "change": 90, "actual": 324, "toward": true}, {"name": "Leroy Sane", "nat": "Germany", "orig": 73, "rev": 162, "change": 89, "actual": 94, "toward": false}, {"name": "Federico Valverde", "nat": "Uruguay", "orig": 14, "rev": 96, "change": 82, "actual": 67, "toward": true}, {"name": "Che Adams", "nat": "Scotland", "orig": 10, "rev": 90, "change": 80, "actual": 52, "toward": true}, {"name": "Ferran Torres", "nat": "Spain", "orig": 29, "rev": 107, "change": 78, "actual": 22, "toward": false}, {"name": "Patrik Schick", "nat": "Czechia", "orig": 56, "rev": 134, "change": 78, "actual": 9, "toward": false}, {"name": "Lionel Messi", "nat": "Argentina", "orig": 120, "rev": 197, "change": 77, "actual": 620, "toward": true}, {"name": "Darwin Nunez", "nat": "Uruguay", "orig": 4, "rev": 81, "change": 77, "actual": 4, "toward": false}, {"name": "Nico Schlotterbeck", "nat": "Germany", "orig": 78, "rev": 155, "change": 77, "actual": 319, "toward": true}, {"name": "Deniz Undav", "nat": "Germany", "orig": 59, "rev": 136, "change": 77, "actual": 307, "toward": true}, {"name": "Lawrence Shankland", "nat": "Scotland", "orig": 29, "rev": 106, "change": 77, "actual": 42, "toward": false}, {"name": "Jonathan Tah", "nat": "Germany", "orig": 27, "rev": 101, "change": 74, "actual": 74, "toward": true}, {"name": "Lamine Yamal", "nat": "Spain", "orig": 52, "rev": 124, "change": 72, "actual": 12, "toward": false}, {"name": "Ousmane Dembele", "nat": "France", "orig": 45, "rev": 116, "change": 71, "actual": 42, "toward": false}, {"name": "Pedri", "nat": "Spain", "orig": 20, "rev": 83, "change": 63, "actual": 2, "toward": false}, {"name": "Alexander Sørloth", "nat": "Norway", "orig": 47, "rev": 108, "change": 61, "actual": 44, "toward": false}, {"name": "Michael Olise", "nat": "France", "orig": 72, "rev": 131, "change": 59, "actual": 167, "toward": true}, {"name": "Mikel Oyarzabal", "nat": "Spain", "orig": 111, "rev": 168, "change": 57, "actual": 22, "toward": false}, {"name": "Dani Olmo", "nat": "Spain", "orig": 34, "rev": 88, "change": 54, "actual": 12, "toward": false}, {"name": "Viktor Gyökeres", "nat": "Sweden", "orig": 61, "rev": 113, "change": 52, "actual": 269, "toward": true}, {"name": "Cody Gakpo", "nat": "Netherlands", "orig": 23, "rev": 75, "change": 52, "actual": 34, "toward": false}, {"name": "Donyell Malen", "nat": "Netherlands", "orig": 39, "rev": 90, "change": 51, "actual": 44, "toward": false}, {"name": "Enzo Fernandez", "nat": "Argentina", "orig": 35, "rev": 77, "change": 42, "actual": 62, "toward": true}, {"name": "Alexander Isak", "nat": "Sweden", "orig": 49, "rev": 90, "change": 41, "actual": 392, "toward": true}, {"name": "Virgil van Dijk", "nat": "Netherlands", "orig": 22, "rev": 63, "change": 41, "actual": 224, "toward": true}, {"name": "Jonathan David", "nat": "Canada", "orig": 57, "rev": 98, "change": 41, "actual": 14, "toward": false}, {"name": "Raphinha", "nat": "Brazil", "orig": 31, "rev": 69, "change": 38, "actual": 24, "toward": false}, {"name": "Vinicius Junior", "nat": "Brazil", "orig": 27, "rev": 64, "change": 37, "actual": 192, "toward": true}, {"name": "Kevin De Bruyne", "nat": "Belgium", "orig": 9, "rev": 45, "change": 36, "actual": 24, "toward": false}, {"name": "Lautaro Martinez", "nat": "Argentina", "orig": 95, "rev": 123, "change": 28, "actual": 52, "toward": false}, {"name": "Heung-Min Son", "nat": "South Korea", "orig": 47, "rev": 34, "change": -13, "actual": 44, "toward": false}, {"name": "Mohamed Salah", "nat": "Egypt", "orig": 58, "rev": 54, "change": -4, "actual": 84, "toward": false}, {"name": "Omar Marmoush", "nat": "Egypt", "orig": 41, "rev": 37, "change": -4, "actual": 24, "toward": true}, {"name": "Jeremy Doku", "nat": "Belgium", "orig": 40, "rev": 44, "change": 4, "actual": 14, "toward": false}, {"name": "Julian Alvarez", "nat": "Argentina", "orig": 40, "rev": 43, "change": 3, "actual": 52, "toward": true}];
+document.getElementById('s1').textContent='posted '+S.captured;
+document.getElementById('s2').textContent='re-pulled '+S.repulled;
+document.getElementById('cards').innerHTML=[
+  [S.pct_changed+'%','of predictions changed'],
+  ['+'+S.avg_abs_change+'k','average revision'],
+  [(S.max_change>0?'+':'')+S.max_change+'k','biggest single change'],
+  [S.n,'marquee players audited'],
+].map(([b,l])=>`<div class="card"><div class="big">${b}</div><div class="lbl">${l}</div></div>`).join('');
+document.getElementById('fair').innerHTML='<b>For the record:</b> '+S.pct_toward_actual+'% of the revisions moved <i>closer</i> to the real result — basically a coin-flip, so we\'re not crying rigged. The point is simpler: these were posted as Round-1 predictions, and Round-1 predictions shouldn\'t change after Round 1.';
+let sk='change',sd=-1;
+function row(r){
+  const cc=r.change>0?'up':(r.change<0?'dn':'');
+  return `<tr><td class="l">${r.name}</td><td class="l hidem" style="color:var(--mut)">${r.nat}</td>
+   <td class="posted">${r.orig}k</td><td class="now">${r.rev}k</td>
+   <td class="${cc}">${r.change>0?'+':''}${r.change}k</td>
+   <td style="color:var(--yellow);font-weight:700">${r.actual}k</td>
+   <td class="hidem toward" style="color:${r.toward?'var(--green)':'var(--mut)'}">${r.toward?'closer':'further'}</td></tr>`;
+}
+function draw(){R.sort((a,b)=>{const u=a[sk],v=b[sk];return typeof u==='string'?sd*u.localeCompare(v):sd*(Math.abs(u)-Math.abs(v));});
+  document.getElementById('tb').innerHTML=R.map(row).join('');}
+document.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sk===k)sd*=-1;else{sk=k;sd=-1;}draw();});
+draw();
+</script></body></html>
