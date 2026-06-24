@@ -38,8 +38,22 @@
  }
 </style></head><body><div class="wrap">
  <div class="crumb">COPA / <b>EVALUATION</b></div>
- <h1>Round 1 — Model Evaluation: LLM vs Caco Model</h1>
+ <h1>Model Evaluation — LLM vs Caco Model</h1>
  <div class="tabs"><a class="tab" href="/copa/">Predictions</a><a class="tab" href="/copa/standings/">Standings</a><a class="tab on" href="/copa/evaluate/">Evaluation</a></div>
+ <div class="hero" style="border-color:var(--cyan)">
+   <div class="htag" style="background:var(--cyan);color:#0a0a0c">ROUND 2 — LLM self-evaluation (742 players)</div>
+   <div class="hrow"><span>MAE — median (p50) point</span><b>44.5k</b></div>
+   <div class="hrow"><span>MAE — mean point</span><b>45.0k</b></div>
+   <div class="hrow"><span>CRPS</span><b>34.2k</b></div>
+   <div class="hrow"><span>Rank — Spearman &#961;</span><b>0.44</b></div>
+   <div class="hrow"><span>NDCG@40</span><b>0.56</b></div>
+   <div class="hrow"><span>80% interval coverage</span><b>54% <span style="color:var(--mut)">(R1 was 43%)</span></b></div>
+   <div class="hnote">R2 validated the upgrades: the <b>median point beat the mean</b> on MAE
+     (44.5k vs 45.0k, the Gneiting loss-matching fix); interval coverage rose
+     43% &#8594; 54% (still short of 80% &#8212; widening the distribution is the next fix);
+     rank skill held at &#961;=0.44. Caco has not published Round-2 predictions yet, so R2 is a self-evaluation of the LLM only. Head-to-head resumes when Caco posts R2.</div>
+ </div>
+ <h2 style="margin-top:30px">Round 1 — head-to-head vs Caco Model</h2>
  <div class="meta"><span class="live" id="live"></span><span>PLAYERS SCORED <b id="ne"></b></span><span>COMMITTED <b>2026-06-11</b></span></div>
  <div class="note">Both models scored against the same live actuals (players whose match has been played).
    <b>Caco Model</b> = the public <a href="https://dashboard-rho-ten-40.vercel.app/evaluate">Copa Analytics</a> dashboard ("Ours" column there);
