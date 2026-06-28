@@ -41,6 +41,16 @@
  <h1>Model Evaluation — LLM vs Caco Model</h1>
  <div class="tabs"><a class="tab" href="/copa/">Predictions</a><a class="tab" href="/copa/standings/">Standings</a><a class="tab on" href="/copa/evaluate/">Evaluation</a><a class="tab" href="/copa/cacogate/">Caco-gate</a></div>
  <div class="hero" style="border-color:var(--cyan)">
+   <div class="htag" style="background:var(--cyan);color:#0a0a0c">ROUND 3 — LLM self-evaluation (732 players)</div>
+   <div class="hrow"><span>MAE — mean / median</span><b>44.6k / 45.2k</b></div>
+   <div class="hrow"><span>CRPS</span><b>34.1k</b></div>
+   <div class="hrow"><span>Rank — Spearman &#961;</span><b>0.36</b></div>
+   <div class="hrow"><span>80% interval coverage</span><b>59% <span style="color:var(--mut)">(R1 43% &#8594; R2 54% &#8594; R3)</span></b></div>
+   <div class="hnote">R3 was the knockout-adjacent round: heavy dead-rubber rotation and freak hauls (Dembélé 602k) cut
+     rank skill to &#961;=0.36 and the median didn't beat the mean (the rotation dampener pushed p50 too low for
+     stars who ended up playing, e.g. Messi). Interval coverage kept climbing to 59% &#8212; widening the
+     predictive distribution remains the top model fix.</div>
+ </div><div class="hero" style="border-color:var(--cyan)">
    <div class="htag" style="background:var(--cyan);color:#0a0a0c">ROUND 2 — LLM self-evaluation (742 players)</div>
    <div class="hrow"><span>MAE — median (p50) point</span><b>44.5k</b></div>
    <div class="hrow"><span>MAE — mean point</span><b>45.0k</b></div>
