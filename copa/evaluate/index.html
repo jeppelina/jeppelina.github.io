@@ -40,18 +40,31 @@
  <div class="crumb">COPA / <b>EVALUATION</b></div>
  <h1>Model Evaluation — LLM vs Caco Model</h1>
  <div class="tabs"><a class="tab" href="/copa/">Predictions</a><a class="tab" href="/copa/standings/">Standings</a><a class="tab on" href="/copa/evaluate/">Evaluation</a><a class="tab" href="/copa/cacogate/">Caco-gate</a></div>
- <div class="hero" style="border-color:var(--green)">
-   <div class="htag" style="background:var(--green);color:#0a0a0c">ROUND OF 32 — LLM self-evaluation (497 players)</div>
-   <div class="hrow"><span>MAE — mean / median</span><b>37.3k / 36.2k</b></div>
-   <div class="hrow"><span>CRPS</span><b>27.6k</b></div>
-   <div class="hrow"><span>Rank — Spearman &#961;</span><b>0.53</b></div>
-   <div class="hrow"><span>NDCG@40</span><b>0.63</b></div>
-   <div class="hrow"><span>Direction accuracy</span><b>70%</b></div>
-   <div class="hrow"><span>80% interval coverage</span><b>69% <span style="color:var(--mut)">(R1 43% &#8594; R2 54% &#8594; R3 59% &#8594; R32)</span></b></div>
-   <div class="hnote"><b>Best round yet.</b> The knockout upgrades landed: start-rate weighting (R1/R2 over dead-rubber R3)
-     and difficulty-adjusted goal shares lifted rank skill to &#961;=0.53 and coverage to 69% &#8212;
-     the four-round climb 43% &#8594; 54% &#8594; 59% &#8594; 69% shows the widened distribution finally
-     catching real dispersion. MAE held at 36.2k median despite the higher-variance single-leg format.</div>
+ <div class="hero" style="border-color:var(--yellow)">
+   <div class="htag" style="background:var(--yellow);color:#0a0a0c">ROUND OF 16 — LLM self-evaluation (177 starters)</div>
+   <div class="hrow"><span>MAE — mean / median</span><b>51.5k / 28.8k</b></div>
+   <div class="hrow"><span>CRPS</span><b>36.6k</b></div>
+   <div class="hrow"><span>Rank — Spearman &#961;</span><b>0.42 <span style="color:var(--mut)">(R32 was 0.62)</span></b></div>
+   <div class="hrow"><span>NDCG@40</span><b>0.51</b></div>
+   <div class="hrow"><span>Direction accuracy</span><b>63%</b></div>
+   <div class="hrow"><span>80% interval coverage</span><b>73% <span style="color:var(--mut)">(R32 was 72%)</span></b></div>
+   <div class="hnote"><b>The upset round.</b> Brazil lost to Norway, Belgium put four past the USA, and Ounahi (405k)
+     and De Ketelaere (447k) hauled from midfield — outcomes no odds-derived model foresaw. Rank skill fell to
+     &#961;=0.42 (from 0.62) and R&#178; to 0.11: the ordering was genuinely hard. What held
+     was the <b>distribution</b> &#8212; 73% interval coverage, in line with R32 &#8212; so the wide predictive
+     bands still contained the chaos even when the point ranking missed.</div>
+ </div><div class="hero" style="border-color:var(--green)">
+   <div class="htag" style="background:var(--green);color:#0a0a0c">ROUND OF 32 — LLM self-evaluation (411 starters)</div>
+   <div class="hrow"><span>MAE — mean / median</span><b>40.6k / 20.5k</b></div>
+   <div class="hrow"><span>CRPS</span><b>29.1k</b></div>
+   <div class="hrow"><span>Rank — Spearman &#961;</span><b>0.62</b></div>
+   <div class="hrow"><span>NDCG@40</span><b>0.64</b></div>
+   <div class="hrow"><span>Direction accuracy</span><b>63%</b></div>
+   <div class="hrow"><span>80% interval coverage</span><b>72%</b></div>
+   <div class="hnote">The knockout upgrades landed: start-rate weighting (R1/R2 over dead-rubber R3) and
+     difficulty-adjusted goal shares gave the model its cleanest read of the tournament &#8212; rank skill
+     &#961;=0.62, coverage 72%. (R32 &amp; R16 are scored on the same basis: projected
+     starters, p_play &#8805; 0.5.)</div>
  </div><div class="hero" style="border-color:var(--cyan)">
    <div class="htag" style="background:var(--cyan);color:#0a0a0c">ROUND 3 — LLM self-evaluation (732 players)</div>
    <div class="hrow"><span>MAE — mean / median</span><b>44.6k / 45.2k</b></div>
