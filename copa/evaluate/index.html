@@ -40,7 +40,19 @@
  <div class="crumb">COPA / <b>EVALUATION</b></div>
  <h1>Model Evaluation — LLM vs Caco Model</h1>
  <div class="tabs"><a class="tab" href="/copa/">Predictions</a><a class="tab" href="/copa/standings/">Standings</a><a class="tab on" href="/copa/evaluate/">Evaluation</a><a class="tab" href="/copa/cacogate/">Caco-gate</a></div>
- <div class="hero" style="border-color:var(--yellow)">
+ <div class="hero" style="border-color:var(--green)">
+   <div class="htag" style="background:var(--green);color:#0a0a0c">QUARTER-FINAL — LLM self-evaluation (86 starters)</div>
+   <div class="hrow"><span>MAE — mean / median</span><b>34.7k / 15.2k</b></div>
+   <div class="hrow"><span>CRPS</span><b>25.4k</b></div>
+   <div class="hrow"><span>Rank — Spearman &#961;</span><b>0.71 <span style="color:var(--mut)">(R16 was 0.42)</span></b></div>
+   <div class="hrow"><span>NDCG@40</span><b>0.74</b></div>
+   <div class="hrow"><span>Direction accuracy</span><b>77%</b></div>
+   <div class="hrow"><span>80% interval coverage</span><b>88%</b></div>
+   <div class="hnote"><b>Best round of the tournament.</b> With only eight teams and clear favourites, the QF was
+     the model's cleanest read: rank skill &#961;=0.71, direction 77%, and interval
+     coverage 88%. A clean rebound from the upset-driven R16 &#8212; the field reverted to form and the
+     odds-derived projections tracked it closely. (Semi-final skipped &#8212; no predictions were generated that round.)</div>
+ </div><div class="hero" style="border-color:var(--yellow)">
    <div class="htag" style="background:var(--yellow);color:#0a0a0c">ROUND OF 16 — LLM self-evaluation (177 starters)</div>
    <div class="hrow"><span>MAE — mean / median</span><b>51.5k / 28.8k</b></div>
    <div class="hrow"><span>CRPS</span><b>36.6k</b></div>
