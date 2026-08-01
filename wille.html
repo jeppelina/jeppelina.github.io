@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wille före KTH</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Archivo:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================ TEMAN ============================ */
+body[data-theme=regatta]{
+  --bg:#F2E7D3; --ink:#143A5C; --soft:#5C7A96; --rule:#C9B694;
+  --accent:#CE3B2E; --accent2:#E3A72F; --water:#BBD4E0; --card:#FBF5E9;
+  --filter:sepia(.2) saturate(1.05) hue-rotate(172deg) contrast(.97);
+}
+body[data-theme=solnedgang]{
+  --bg:#FBEBD2; --ink:#4A2A33; --soft:#8A6152; --rule:#D9B78F;
+  --accent:#E2622C; --accent2:#F0A741; --water:#F3CFA3; --card:#FFF6E6;
+  --filter:sepia(.5) saturate(1.3) hue-rotate(-12deg) contrast(.95);
+}
+body[data-theme=natt]{
+  --bg:#0C1B2A; --ink:#E8E2D2; --soft:#7E9AAE; --rule:#274357;
+  --accent:#34A0A4; --accent2:#E3A72F; --water:#0A1721; --card:#132A3D;
+  --filter:none;
+}
+body[data-theme=signal]{
+  --bg:#F5F3EE; --ink:#0B3C74; --soft:#5E7893; --rule:#C4CBD4;
+  --accent:#D22B2B; --accent2:#F2C230; --water:#C6DCEC; --card:#FFFFFF;
+  --filter:saturate(.5) contrast(1.04);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font-family:'Archivo',system-ui,sans-serif;color:var(--ink);background:var(--bg);
+  overflow:hidden;overscroll-behavior:none;transition:background .25s ease,color .25s ease}
+
+#map{position:fixed;inset:0;background:var(--water)}
+#map.off{display:none}
+.leaflet-tile-pane{filter:var(--filter)}
+.leaflet-control-attribution{font:400 9px 'JetBrains Mono',monospace;background:rgba(255,255,255,.75);color:#333}
+.leaflet-container{background:var(--water)}
+
+#paper{position:fixed;inset:0;background:
+  repeating-linear-gradient(135deg,transparent 0 26px,color-mix(in srgb,var(--rule) 34%,transparent) 26px 27px),
+  var(--bg)}
+#paper.off{display:none}
+
+.cartouche{position:fixed;top:0;left:0;right:0;z-index:600;
+  padding:calc(env(safe-area-inset-top) + 10px) 14px 0;
+  background:linear-gradient(180deg,var(--bg) 70%,transparent);pointer-events:none}
+.cartouche.off{display:none}
+.eyebrow{font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--soft);display:flex;justify-content:space-between;gap:10px}
+.cartouche .prompt{font-family:'Big Shoulders Display',sans-serif;font-weight:800;
+  font-size:clamp(24px,7.4vw,34px);line-height:.98;margin:8px 0 0;text-transform:uppercase}
+.stripe{height:7px;margin-top:9px;background:
+  linear-gradient(90deg,var(--accent) 0 33.3%,var(--bg) 33.3% 66.6%,var(--accent2) 66.6% 100%);
+  border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+
+.console{position:fixed;left:0;right:0;bottom:0;z-index:700;background:var(--bg);
+  border-top:2px solid var(--ink);box-shadow:0 -2px 0 var(--ink),0 -16px 36px rgba(0,0,0,.22);
+  padding:16px 16px calc(env(safe-area-inset-bottom) + 16px);max-height:84vh;overflow-y:auto;
+  animation:rise .32s cubic-bezier(.22,1,.36,1) both}
+@keyframes rise{from{transform:translateY(102%)}to{transform:translateY(0)}}
+
+.label{font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-bottom:9px}
+h1.mark{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(46px,15vw,74px);
+  line-height:.82;margin:0 0 8px;text-transform:uppercase}
+h1.mark em{font-style:normal;color:var(--accent)}
+h2.mid{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(28px,9vw,42px);
+  line-height:.92;margin:0 0 10px;text-transform:uppercase}
+.sub{font-size:14px;line-height:1.45;color:var(--soft);margin:0 0 18px;max-width:34em}
+.hint{font-size:13px;color:var(--soft);margin:11px 0 0;line-height:1.4}
+
+input[type=text],input[type=number]{width:100%;font:400 17px 'Archivo',sans-serif;color:var(--ink);
+  padding:13px 14px;background:var(--card);border:2px solid var(--ink);border-radius:0;margin-bottom:10px;-webkit-appearance:none}
+input::placeholder{color:var(--soft);opacity:.75}
+input:focus{outline:3px solid var(--accent);outline-offset:2px}
+input.code{font:700 22px 'JetBrains Mono',monospace;letter-spacing:.3em;text-transform:uppercase}
+.pair{display:flex;gap:10px}
+
+button{width:100%;font:700 15px 'Archivo',sans-serif;letter-spacing:.03em;padding:15px;
+  border:2px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:0;cursor:pointer;margin-top:6px;
+  transition:transform .08s ease}
+button:active{transform:translateY(2px)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+button.ghost{background:transparent;color:var(--ink)}
+button.go{background:var(--accent);border-color:var(--ink);color:#fff}
+button[disabled]{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:10px}
+.row button{flex:1;margin-top:6px}
+
+.themes{display:flex;gap:8px;margin:14px 0 2px}
+.theme{width:auto;flex:1;margin:0;padding:0;border:2px solid var(--ink);background:transparent;
+  height:40px;position:relative;overflow:hidden;cursor:pointer}
+.theme span{position:absolute;inset:0;display:block}
+.theme .a{background:var(--t1)}
+.theme .b{background:var(--t2);clip-path:polygon(0 100%,100% 0,100% 100%)}
+.theme[aria-pressed=true]{outline:3px solid var(--accent);outline-offset:2px}
+.theme .nm{position:absolute;bottom:3px;left:5px;inset:auto auto 3px 5px;font:700 8px 'JetBrains Mono',monospace;
+  letter-spacing:.08em;text-transform:uppercase;color:#fff;mix-blend-mode:difference;z-index:2;background:none}
+
+.readout{font:400 12px 'JetBrains Mono',monospace;color:var(--soft);letter-spacing:.04em;margin:8px 0 2px}
+.big{font:700 28px 'JetBrains Mono',monospace;margin:4px 0 10px;text-align:center;line-height:1.22;color:var(--accent)}
+
+.kinds{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.kind{font:700 11px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;
+  padding:10px 11px;border:1.5px solid var(--soft);color:var(--soft);background:transparent;width:auto;margin:0;cursor:pointer}
+.kind[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+.roster{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 14px;min-height:26px}
+.chip{font:700 11px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;
+  padding:6px 15px 6px 9px;border:1.5px solid var(--ink);color:var(--ink);background:var(--card);
+  clip-path:polygon(0 0,100% 0,calc(100% - 8px) 50%,100% 100%,0 100%)}
+
+.opts{list-style:none;padding:0;margin:0 0 6px}
+.opts li{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);background:var(--card);
+  padding:13px 14px;margin-bottom:8px;cursor:pointer;font-size:16px}
+.opts li[aria-selected=true]{background:var(--ink);color:var(--bg)}
+.opts li .n{font:700 12px 'JetBrains Mono',monospace;color:var(--soft);flex:none;width:1.5em}
+.opts li[aria-selected=true] .n{color:var(--bg)}
+.opts li .txt{flex:1}
+.opts li .mv{display:flex;gap:4px;flex:none}
+.opts li .mv button{width:36px;padding:8px 0;margin:0;font-size:14px}
+
+.scale{margin:12px 0 4px}
+.scale input[type=range]{width:100%;-webkit-appearance:none;background:transparent;margin:0}
+.scale input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--ink)}
+.scale input[type=range]::-moz-range-track{height:3px;background:var(--ink)}
+.scale input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:32px;
+  background:var(--accent);border:2px solid var(--ink);margin-top:-15px;cursor:grab}
+.scale input[type=range]::-moz-range-thumb{width:20px;height:32px;background:var(--accent);border:2px solid var(--ink);cursor:grab}
+.ticks{display:flex;justify-content:space-between;font:400 11px 'JetBrains Mono',monospace;color:var(--soft);margin-top:7px}
+
+/* kurslinjen — allas årtal utsatta som vimplar */
+.tl{position:relative;margin:4px 0 16px}
+.tl-body{position:relative}
+.tl-line{position:absolute;left:0;right:0;bottom:14px;height:0;border-bottom:2px dashed var(--ink)}
+.tl-ends{display:flex;justify-content:space-between;font:400 11px 'JetBrains Mono',monospace;color:var(--soft);margin-top:3px}
+.tl-m{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap}
+.tl-m .flag{display:block;font:700 10px 'JetBrains Mono',monospace;letter-spacing:.05em;
+  padding:4px 13px 4px 6px;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);
+  clip-path:polygon(0 0,100% 0,calc(100% - 7px) 50%,100% 100%,0 100%)}
+.tl-m .stem{display:block;width:1.5px;background:var(--ink);margin:0 auto}
+.tl-m.true .flag{background:var(--accent);color:#fff}
+.tl-m.true .stem{background:var(--accent);width:2.5px}
+.tl-m.me .flag{background:var(--ink);color:var(--bg)}
+
+.board{list-style:none;padding:0;margin:2px 0 6px}
+.board li{display:flex;align-items:baseline;gap:8px;padding:11px 0;border-bottom:1px solid var(--rule);
+  opacity:0;transform:translateY(6px);animation:settle .4s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes settle{to{opacity:1;transform:none}}
+.board .rank{font:700 11px 'JetBrains Mono',monospace;color:var(--soft);width:1.7em;flex:none}
+.board .who{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.board .dots{flex:1;border-bottom:1.5px dotted var(--rule);transform:translateY(-4px);min-width:12px}
+.board .off{font:700 12px 'JetBrains Mono',monospace;white-space:nowrap;color:var(--soft)}
+.board .pts{font:700 15px 'JetBrains Mono',monospace;width:4.4em;text-align:right;flex:none}
+.board li:first-child .who,.board li:first-child .pts{color:var(--accent)}
+
+.qlist{list-style:none;padding:0;margin:0 0 12px}
+.qlist>li{padding:10px 0;border-bottom:1px solid var(--rule);font-size:14px;display:flex;gap:9px;align-items:baseline}
+.qlist .tags{font:700 9px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.qlist .x{margin:0;width:auto;padding:3px 7px;font-size:11px;background:transparent;color:var(--soft);border:none;flex:none}
+
+.part{border-left:3px solid var(--accent2);padding:8px 0 8px 12px;margin:0 0 14px}
+.part h3{font:700 12px 'Archivo',sans-serif;margin:0 0 8px;text-transform:uppercase;letter-spacing:.08em;color:var(--soft)}
+
+.pin{font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
+  background:var(--card);border:1.5px solid var(--ink);padding:4px 11px 4px 6px;white-space:nowrap;
+  transform:translate(-50%,-130%);clip-path:polygon(0 0,100% 0,calc(100% - 7px) 50%,100% 100%,0 100%)}
+.pin::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:9px;background:var(--ink);transform:translateX(-50%)}
+.pin.you{background:var(--ink);color:var(--bg)}
+.pin.target{background:var(--accent);color:#fff}
+.pin.target::after{background:var(--accent);height:11px}
+.ring{border:2px solid var(--accent);border-radius:50%;animation:ping 2.6s cubic-bezier(.16,.9,.3,1) forwards;pointer-events:none}
+@keyframes ping{0%{transform:scale(.04);opacity:0}12%{opacity:.85}100%{transform:scale(1);opacity:0}}
+
+.err{font:400 13px 'Archivo',sans-serif;color:#fff;background:var(--accent);padding:11px 13px;margin:12px 0 0;line-height:1.4}
+.ok{font:700 14px 'JetBrains Mono',monospace;color:var(--ink);background:var(--accent2);padding:12px 13px;margin:12px 0 0;line-height:1.4}
+.hidden{display:none !important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body data-theme="regatta">
+
+<div id="paper"></div>
+<div id="map" class="off"></div>
+
+<div class="cartouche off" id="cartouche">
+  <div class="eyebrow"><span id="cart-left"></span><span id="cart-right"></span></div>
+  <div class="prompt" id="cart-prompt"></div>
+  <div class="stripe"></div>
+</div>
+
+<div class="console" id="s-home">
+  <div class="label">Svensexa · Wille Löwing</div>
+  <h1 class="mark">Wille<br>före <em>KTH</em></h1>
+  <p class="sub">Frågorna läses högt. Ni svarar här. Rätt svar är låst tills det avslöjas.</p>
+  <div class="label">Ditt namn</div>
+  <input type="text" id="name" placeholder="t.ex. Anton" maxlength="14" autocomplete="off">
+  <div class="label" style="margin-top:16px">Kod till quizet</div>
+  <input type="text" id="join-code" class="code" placeholder="KOD" maxlength="4" autocomplete="off" autocapitalize="characters">
+  <button class="go" id="btn-join">Gå med</button>
+  <div class="row">
+    <button class="ghost" id="btn-build">Bygg quiz</button>
+    <button class="ghost" id="btn-open-saved">Öppna sparat</button>
+  </div>
+  <div class="label" style="margin-top:20px">Tema</div>
+  <div class="themes" id="themes"></div>
+  <div class="err hidden" id="home-err"></div>
+</div>
+
+<div class="console hidden" id="s-build">
+  <div class="label">Fråga <span id="q-num">1</span></div>
+  <input type="text" id="q-prompt" placeholder="Frågan (valfritt — du läser den ändå högt)" maxlength="140" autocomplete="off">
+  <div class="label" style="margin-top:12px">Delar i frågan</div>
+  <ol class="qlist" id="partlist"></ol>
+  <div class="kinds" id="kinds"></div>
+  <div id="author-body"></div>
+  <button id="btn-add-part">Lägg till delen</button>
+  <button class="ghost" id="btn-add-q">Klar med frågan</button>
+  <div class="label" style="margin-top:22px">Quizet så här långt</div>
+  <ol class="qlist" id="qlist"></ol>
+  <div class="row">
+    <button class="ghost" id="btn-save">Spara quizet</button>
+    <button class="go" id="btn-launch" disabled>Kör quizet nu</button>
+  </div>
+  <button class="ghost" id="btn-build-home">Tillbaka</button>
+  <div class="ok hidden" id="build-ok"></div>
+  <div class="err hidden" id="build-err"></div>
+</div>
+
+<div class="console hidden" id="s-saved">
+  <div class="label">Kod till sparat quiz</div>
+  <input type="text" id="draft-code" class="code" placeholder="KOD" maxlength="4" autocomplete="off" autocapitalize="characters">
+  <button class="go" id="btn-load">Hämta</button>
+  <button class="ghost" id="btn-saved-home">Tillbaka</button>
+  <div class="err hidden" id="saved-err"></div>
+</div>
+
+<div class="console hidden" id="s-lobby">
+  <div class="label">Kod — säg den högt</div>
+  <h1 class="mark" id="room-code" style="font-size:clamp(52px,19vw,86px);letter-spacing:.05em"></h1>
+  <div class="label" style="margin-top:14px">Ombord</div>
+  <div class="roster" id="lobby-roster"></div>
+  <button class="go hidden" id="btn-start">Starta quizet</button>
+  <p class="hint" id="lobby-hint">Väntar på att quizet ska börja.</p>
+  <div class="label" style="margin-top:18px">Tema</div>
+  <div class="themes" id="themes2"></div>
+</div>
+
+<div class="console hidden" id="s-play">
+  <div id="play-body"></div>
+  <button class="go" id="btn-submit" disabled>Lås mina svar</button>
+  <div class="err hidden" id="play-err"></div>
+</div>
+
+<div class="console hidden" id="s-wait">
+  <h2 class="mid" id="wait-title">Låst.</h2>
+  <div class="label" style="margin-top:8px">Svar inne — <span id="wait-count">0</span></div>
+  <div class="roster" id="wait-roster"></div>
+  <button class="go hidden" id="btn-reveal">Visa rätt svar</button>
+  <p class="hint" id="wait-hint">Luta dig tillbaka.</p>
+</div>
+
+<div class="console hidden" id="s-reveal">
+  <div id="reveal-body"></div>
+  <div class="label" style="margin-top:14px">Ställning</div>
+  <ol class="board" id="board"></ol>
+  <div class="row hidden" id="host-next">
+    <button class="go" id="btn-next">Nästa</button>
+    <button class="ghost" id="btn-end">Avsluta</button>
+  </div>
+  <p class="hint" id="reveal-hint"></p>
+</div>
+
+<div class="console hidden" id="s-final">
+  <div class="label">Slutställning</div>
+  <h1 class="mark" id="winner" style="font-size:clamp(34px,11vw,52px)"></h1>
+  <ol class="board" id="final-board"></ol>
+  <button class="ghost" id="btn-restart">Till startsidan</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* Supabase: familjemello-projektet. Anon-nyckeln är publik med flit —
+   row level security håller rätt svaren låsta tills du avslöjar dem. */
+const SUPABASE_URL = "https://bhurxoknmyfqymtiaycx.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJodXJ4b2tubXlmcXltdGlheWN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NzI5NTAsImV4cCI6MjA5NzU0ODk1MH0.YbblDF0jfZNzdIMy8rMF3t19b7b6onD91VVLi9N8kYg";
+
+const HDR = { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY, "Content-Type": "application/json" };
+const REST = SUPABASE_URL + "/rest/v1/";
+async function db(p, o = {}) {
+  const r = await fetch(REST + p, { ...o, headers: { ...HDR, ...(o.headers || {}) } });
+  if (!r.ok) throw new Error(await r.text() || r.statusText);
+  return r.status === 204 ? null : r.json();
+}
+const get   = p => db(p);
+const post  = (p, b) => db(p, { method: "POST", body: JSON.stringify(b), headers: { Prefer: "return=representation" } });
+const patch = (p, b) => db(p, { method: "PATCH", body: JSON.stringify(b) });
+const rpc   = (f, b) => db("rpc/" + f, { method: "POST", body: JSON.stringify(b) });
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const code4 = () => Array.from({ length: 4 }, () => "ABCDEFGHJKLMNPRSTUVXYZ"[Math.floor(Math.random() * 22)]).join("");
+const shuffle = a => { const x = a.slice(); for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; };
+function fail(id, m) { const e = $(id); e.textContent = m; e.classList.remove("hidden"); setTimeout(() => e.classList.add("hidden"), 7000); }
+function okmsg(id, m) { const e = $(id); e.textContent = m; e.classList.remove("hidden"); }
+
+/* ============================ KARTA ============================ */
+const map = L.map("map", { zoomControl: false, worldCopyJump: true }).setView([59.3, 15.5], 4);
+let layers = [], tiles = null;
+const draw = l => { l.addTo(map); layers.push(l); return l; };
+const clearMap = () => { layers.forEach(l => map.removeLayer(l)); layers = []; };
+const tag = (cls, t) => L.divIcon({ className: "", html: `<div class="pin ${cls}">${t}</div>`, iconSize: [0, 0] });
+function mapOn(on) { $("map").classList.toggle("off", !on); $("paper").classList.toggle("off", on); if (on) setTimeout(() => map.invalidateSize(), 80); }
+
+/* ============================ TEMAN ============================ */
+const THEMES = [
+  { id: "regatta",    nm: "Regatta", t1: "#143A5C", t2: "#CE3B2E" },
+  { id: "solnedgang", nm: "Solned",  t1: "#E2622C", t2: "#F0A741" },
+  { id: "natt",       nm: "Natt",    t1: "#0C1B2A", t2: "#34A0A4" },
+  { id: "signal",     nm: "Signal",  t1: "#0B3C74", t2: "#F2C230" }
+];
+let theme = "regatta";
+function paintThemeBar(el) {
+  el.innerHTML = THEMES.map(t =>
+    `<button class="theme" data-t="${t.id}" aria-pressed="${t.id === theme}" aria-label="${t.nm}"
+      style="--t1:${t.t1};--t2:${t.t2}"><span class="a"></span><span class="b"></span><span class="nm">${t.nm}</span></button>`).join("");
+  el.onclick = e => { const b = e.target.closest(".theme"); if (b) setTheme(b.dataset.t); };
+}
+function setTheme(id) {
+  theme = id;
+  document.body.dataset.theme = id;
+  paintThemeBar($("themes")); paintThemeBar($("themes2"));
+  const url = id === "natt" ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                            : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+  if (tiles) map.removeLayer(tiles);
+  tiles = L.tileLayer(url, { maxZoom: 19, subdomains: "abcd", attribution: "&copy; OpenStreetMap &copy; CARTO" }).addTo(map);
+  tiles.bringToBack();
+}
+setTheme("regatta");
+
+/* ============================ FORMAT ============================ */
+const KINDS = { pin: "Karta", timeline: "Årtal", number: "Antal", choice: "Flerval", order: "Ordning" };
+
+function errorOf(kind, v, ans) {
+  if (v == null) return null;
+  if (kind === "pin")      return haversine(v, ans);
+  if (kind === "timeline" || kind === "number") return Math.abs(v - ans);
+  if (kind === "choice")   return v === ans ? 0 : 1;
+  if (kind === "order")    return v.reduce((s, it, p) => s + Math.abs(it - p), 0);
+  return null;
+}
+function scaleOf(part, worst) {
+  const k = part.kind;
+  if (k === "choice") return 1;
+  const floor = k === "pin" ? 200
+              : k === "timeline" ? 15
+              : k === "number" ? Math.max(Math.abs(Number(part.answer)) * 0.2, 1)
+              : Math.max((part.options.items || []).length / 2, 2);
+  return Math.max(worst, floor);
+}
+function fmtErr(kind, e) {
+  if (kind === "choice")   return e === 0 ? "rätt" : "fel";
+  if (kind === "pin")      return fmtKm(e);
+  if (kind === "timeline") return e === 0 ? "prick" : e + " år";
+  if (kind === "number")   return e === 0 ? "prick" : round2(e) + " fel";
+  return e === 0 ? "perfekt" : e + " platser";
+}
+function fmtAnswer(part) {
+  const a = part.answer;
+  if (part.kind === "pin")      return a.lat.toFixed(3) + "°, " + a.lng.toFixed(3) + "°";
+  if (part.kind === "timeline") return String(a);
+  if (part.kind === "number")   return round2(a) + (part.options.unit ? " " + part.options.unit : "");
+  if (part.kind === "choice")   return part.options.choices[a];
+  return (part.options.items || []).join(" → ");
+}
+const round2 = n => Math.round(n * 100) / 100;
+function haversine(a, b) {
+  const R = 6371, r = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * r, dLng = (b.lng - a.lng) * r;
+  const x = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(x));
+}
+const fmtKm = km => km < 1 ? Math.round(km * 1000) + " m"
+                  : km < 100 ? km.toFixed(1).replace(".", ",") + " km"
+                  : Math.round(km).toLocaleString("sv-SE") + " km";
+
+/* ============================ STATE ============================ */
+const S = { role: null, name: "", code: "", draft: [], parts: [], kind: "pin",
+            qs: [], idx: 0, phase: "", poll: null, values: [], sent: false, shown: "" };
+
+const SCREENS = ["home", "build", "saved", "lobby", "play", "wait", "reveal", "final"];
+function show(id) { SCREENS.forEach(x => $("s-" + x).classList.toggle("hidden", x !== id)); }
+function cart(l, r, p) { $("cartouche").classList.remove("off"); $("cart-left").textContent = l; $("cart-right").textContent = r; $("cart-prompt").textContent = p; }
+const cartOff = () => $("cartouche").classList.add("off");
+
+/* ============================ BYGGA ============================ */
+$("kinds").innerHTML = Object.entries(KINDS)
+  .map(([k, v]) => `<button class="kind" data-k="${k}" aria-pressed="${k === "pin"}">${v}</button>`).join("");
+$("kinds").onclick = e => {
+  const b = e.target.closest(".kind"); if (!b) return;
+  S.kind = b.dataset.k;
+  [...$("kinds").children].forEach(c => c.setAttribute("aria-pressed", c === b));
+  renderAuthor();
+};
+
+let authorPin = null;
+function renderAuthor() {
+  const k = S.kind, body = $("author-body");
+  map.off("click"); clearMap(); authorPin = null;
+  mapOn(k === "pin");
+  if (k === "pin") {
+    body.innerHTML = `<div class="label">Tryck på kartan där rätt svar ligger</div><div class="readout" id="a-read">Inget satt än</div>`;
+    map.on("click", e => {
+      clearMap(); authorPin = e.latlng;
+      draw(L.marker(e.latlng, { icon: tag("target", "✕") }));
+      $("a-read").textContent = "Rätt svar " + e.latlng.lat.toFixed(3) + "°, " + e.latlng.lng.toFixed(3) + "°";
+    });
+  } else if (k === "timeline") {
+    body.innerHTML = `<div class="label">Skalan de får dra i</div>
+      <div class="pair"><input type="number" id="a-min" placeholder="Från" value="1985">
+      <input type="number" id="a-max" placeholder="Till" value="2015"></div>
+      <div class="label">Rätt årtal</div><input type="number" id="a-year" placeholder="t.ex. 1997">`;
+  } else if (k === "number") {
+    body.innerHTML = `<div class="label">Rätt antal</div><input type="number" id="a-num" placeholder="t.ex. 14" step="any">
+      <div class="label">Enhet (valfritt)</div><input type="text" id="a-unit" placeholder="t.ex. stycken, kr, cm" maxlength="14">`;
+  } else if (k === "choice") {
+    body.innerHTML = `<div class="label">Alternativ — det översta är rätt</div>` +
+      [1, 2, 3, 4].map(i => `<input type="text" class="a-opt" placeholder="${i === 1 ? "Rätt svar" : "Alternativ " + i}" maxlength="60">`).join("") +
+      `<p class="hint">De ser dem blandade.</p>`;
+  } else {
+    body.innerHTML = `<div class="label">Sakerna i rätt ordning, överst först</div>` +
+      ["1:a", "2:a", "3:e", "4:e (valfritt)", "5:e (valfritt)"].map(p => `<input type="text" class="a-item" placeholder="${p}" maxlength="60">`).join("") +
+      `<p class="hint">De ser dem blandade och sorterar med pilarna.</p>`;
+  }
+}
+
+function readAuthor() {
+  const k = S.kind;
+  if (k === "pin") {
+    if (!authorPin) { fail("build-err", "Tryck på kartan där rätt svar ligger."); return null; }
+    return { kind: k, answer: { lat: authorPin.lat, lng: authorPin.lng }, options: {} };
+  }
+  if (k === "timeline") {
+    const min = +$("a-min").value, max = +$("a-max").value, y = +$("a-year").value;
+    if ($("a-year").value === "" || !(min < max)) { fail("build-err", "Kolla skalan och rätt årtal."); return null; }
+    if (y < min || y > max) { fail("build-err", "Rätt årtal ligger utanför skalan."); return null; }
+    return { kind: k, answer: y, options: { min, max } };
+  }
+  if (k === "number") {
+    if ($("a-num").value === "") { fail("build-err", "Fyll i rätt antal."); return null; }
+    return { kind: k, answer: +$("a-num").value, options: { unit: $("a-unit").value.trim() } };
+  }
+  if (k === "choice") {
+    const c = [...document.querySelectorAll(".a-opt")].map(i => i.value.trim()).filter(Boolean);
+    if (c.length < 2) { fail("build-err", "Minst två alternativ."); return null; }
+    return { kind: k, answer: 0, options: { choices: c } };
+  }
+  const items = [...document.querySelectorAll(".a-item")].map(i => i.value.trim()).filter(Boolean);
+  if (items.length < 3) { fail("build-err", "Minst tre saker att sortera."); return null; }
+  return { kind: k, answer: items.map((_, i) => i), options: { items } };
+}
+
+$("btn-add-part").onclick = () => { const p = readAuthor(); if (!p) return; S.parts.push(p); renderParts(); renderAuthor(); };
+function renderParts() {
+  $("partlist").innerHTML = S.parts.map((p, i) =>
+    `<li><span class="tags">${KINDS[p.kind]}</span><span style="flex:1">${esc(fmtAnswer(p)).slice(0, 46)}</span>
+     <button class="x" data-i="${i}">ta bort</button></li>`).join("");
+}
+$("partlist").onclick = e => { const b = e.target.closest(".x"); if (!b) return; S.parts.splice(+b.dataset.i, 1); renderParts(); };
+
+$("btn-add-q").onclick = () => {
+  if (!S.parts.length) return fail("build-err", "Frågan behöver minst en del.");
+  S.draft.push({ prompt: $("q-prompt").value.trim(), parts: S.parts });
+  S.parts = []; $("q-prompt").value = "";
+  renderParts(); renderAuthor(); renderDraft();
+};
+function renderDraft() {
+  $("q-num").textContent = S.draft.length + 1;
+  $("qlist").innerHTML = S.draft.map((q, i) =>
+    `<li><span class="tags">${i + 1}</span><span style="flex:1">${esc(q.prompt || "Fråga " + (i + 1))}
+     <br><span class="tags">${q.parts.map(p => KINDS[p.kind]).join(" · ")}</span></span>
+     <button class="x" data-i="${i}">ta bort</button></li>`).join("");
+  $("btn-launch").disabled = S.draft.length === 0;
+}
+$("qlist").onclick = e => { const b = e.target.closest(".x"); if (!b) return; S.draft.splice(+b.dataset.i, 1); renderDraft(); };
+
+$("btn-build").onclick = () => {
+  if (!$("name").value.trim()) return fail("home-err", "Skriv ditt namn först.");
+  S.name = $("name").value.trim(); S.role = "host";
+  show("build"); renderParts(); renderDraft(); renderAuthor();
+};
+$("btn-build-home").onclick = () => { map.off("click"); clearMap(); mapOn(false); show("home"); };
+$("btn-saved-home").onclick = () => show("home");
+$("btn-open-saved").onclick = () => {
+  if (!$("name").value.trim()) return fail("home-err", "Skriv ditt namn först.");
+  S.name = $("name").value.trim(); S.role = "host"; show("saved");
+};
+
+$("btn-save").onclick = async () => {
+  if (!S.draft.length) return fail("build-err", "Bygg minst en fråga först.");
+  try {
+    const id = code4();
+    await post("quiz_drafts", { id, name: "Wille före KTH", spec: S.draft });
+    okmsg("build-ok", "Sparat. Kod: " + id + " — skriv upp den.");
+  } catch (e) { fail("build-err", "Kunde inte spara. " + e.message); }
+};
+$("btn-load").onclick = async () => {
+  const c = $("draft-code").value.trim().toUpperCase();
+  if (c.length !== 4) return fail("saved-err", "Koden är fyra bokstäver.");
+  try {
+    const d = await get(`quiz_drafts?id=eq.${c}&select=spec`);
+    if (!d.length) return fail("saved-err", "Hittar inget sparat quiz med den koden.");
+    S.draft = d[0].spec; S.parts = [];
+    show("build"); renderParts(); renderDraft(); renderAuthor();
+  } catch (e) { fail("saved-err", "Kunde inte hämta. " + e.message); }
+};
+$("draft-code").addEventListener("input", e => { e.target.value = e.target.value.toUpperCase(); });
+
+$("btn-launch").onclick = async () => {
+  $("btn-launch").disabled = true;
+  try {
+    const code = code4();
+    await post("quiz_games", { id: code, title: "Wille före KTH", phase: "lobby", q_index: 0 });
+    await post("quiz_questions", S.draft.map((q, i) => ({
+      game_id: code, idx: i, kind: "multi", prompt: q.prompt || "", options: {},
+      parts: q.parts.map(p => ({ kind: p.kind, options: p.options })), revealed: false })));
+    await post("quiz_secrets", S.draft.map((q, i) => ({ game_id: code, idx: i, answer: q.parts.map(p => p.answer) })));
+    S.code = code;
+    map.off("click"); clearMap(); mapOn(false);
+    $("room-code").textContent = code;
+    $("btn-start").classList.remove("hidden");
+    $("lobby-hint").textContent = "Vänta in gänget och tryck sen på start.";
+    show("lobby"); startPolling();
+  } catch (e) { $("btn-launch").disabled = false; fail("build-err", "Kunde inte starta. " + e.message); }
+};
+$("btn-start").onclick = async () => { await patch(`quiz_games?id=eq.${S.code}`, { phase: "ask", q_index: 0 }); tick(); };
+
+/* ============================ GÅ MED ============================ */
+$("btn-join").onclick = async () => {
+  const n = $("name").value.trim(), c = $("join-code").value.trim().toUpperCase();
+  if (!n) return fail("home-err", "Skriv ditt namn först.");
+  if (c.length !== 4) return fail("home-err", "Koden är fyra bokstäver.");
+  try {
+    const g = await get(`quiz_games?id=eq.${c}&select=id`);
+    if (!g.length) return fail("home-err", `Hittar inget quiz med koden ${c}.`);
+    S.name = n; S.role = "player"; S.code = c;
+    await post("quiz_players", { game_id: c, name: n });
+    $("room-code").textContent = c;
+    show("lobby"); startPolling();
+  } catch (e) { fail("home-err", "Kunde inte gå med. " + e.message); }
+};
+$("join-code").addEventListener("input", e => { e.target.value = e.target.value.toUpperCase(); });
+
+/* ============================ POLLNING ============================ */
+function startPolling() { clearInterval(S.poll); S.poll = setInterval(tick, 1600); tick(); }
+async function tick() {
+  try {
+    const g = (await get(`quiz_games?id=eq.${S.code}&select=phase,q_index`))[0];
+    if (!g) return;
+    S.phase = g.phase; S.idx = g.q_index;
+    if (g.phase === "lobby") {
+      const p = await get(`quiz_players?game_id=eq.${S.code}&select=name`);
+      $("lobby-roster").innerHTML = p.map(x => `<span class="chip">${esc(x.name)}</span>`).join("");
+      if (S.role === "player") show("lobby");
+      return;
+    }
+    if (!S.qs.length) S.qs = await get(`quiz_questions?game_id=eq.${S.code}&select=*&order=idx.asc`);
+    const q = S.qs[S.idx];
+    if (!q) return;
+    if (g.phase === "ask") {
+      if (S.shown !== "ask" + S.idx) { S.shown = "ask" + S.idx; S.values = q.parts.map(() => null); S.sent = false; openQuestion(q); }
+      if (S.sent || S.role === "host") await refreshWaiting();
+    } else if (g.phase === "reveal") {
+      if (S.shown !== "rev" + S.idx) { S.shown = "rev" + S.idx; await revealQuestion(q); }
+    } else if (g.phase === "final") {
+      if (S.shown !== "final") { S.shown = "final"; await finish(); }
+    }
+  } catch (e) { /* nästa varv */ }
+}
+
+/* ============================ SVARA ============================ */
+let orderStates = {};
+function checkReady() { $("btn-submit").disabled = S.values.some(v => v === null); }
+
+function openQuestion(q) {
+  const head = q.prompt || "Fråga " + (S.idx + 1);
+  const kindLine = q.parts.map(p => KINDS[p.kind]).join(" · ");
+  if (S.role === "host") {
+    cart("Fråga " + (S.idx + 1) + " av " + S.qs.length, kindLine, head);
+    mapOn(false); clearMap();
+    $("wait-title").textContent = head;
+    $("btn-reveal").classList.remove("hidden"); $("btn-reveal").disabled = false;
+    $("wait-hint").textContent = "Visa svaret när alla hunnit med.";
+    show("wait");
+    return;
+  }
+  cart("Fråga " + (S.idx + 1) + " av " + S.qs.length, kindLine, head);
+  const pinPart = q.parts.findIndex(p => p.kind === "pin");
+  map.off("click"); clearMap(); mapOn(pinPart >= 0);
+  orderStates = {};
+  $("play-body").innerHTML = q.parts.map((p, i) =>
+    `<div class="part"><h3>${q.parts.length > 1 ? String.fromCharCode(97 + i) + ") " : ""}${KINDS[p.kind]}</h3>
+     <div id="pb-${i}"></div></div>`).join("");
+  q.parts.forEach((p, i) => renderPlayPart(p, i, i === pinPart));
+  checkReady();
+  show("play");
+}
+
+function renderPlayPart(p, i, activePin) {
+  const box = $("pb-" + i), k = p.kind;
+  if (k === "pin") {
+    box.innerHTML = `<div class="readout" id="pr-${i}">Tryck på kartan</div>`;
+    if (activePin) map.on("click", e => {
+      clearMap(); draw(L.marker(e.latlng, { icon: tag("you", esc(S.name)) }));
+      S.values[i] = { lat: e.latlng.lat, lng: e.latlng.lng };
+      $("pr-" + i).textContent = "Din nål " + e.latlng.lat.toFixed(3) + "°, " + e.latlng.lng.toFixed(3) + "°";
+      checkReady();
+    });
+  } else if (k === "timeline") {
+    const min = p.options.min, max = p.options.max, mid = Math.round((min + max) / 2);
+    box.innerHTML = `<div class="big" id="py-${i}">${mid}</div>
+      <div class="scale"><input type="range" id="pr-${i}" min="${min}" max="${max}" value="${mid}" step="1">
+      <div class="ticks"><span>${min}</span><span>${max}</span></div></div>`;
+    S.values[i] = mid;
+    $("pr-" + i).oninput = e => { S.values[i] = +e.target.value; $("py-" + i).textContent = e.target.value; checkReady(); };
+  } else if (k === "number") {
+    box.innerHTML = `<input type="number" id="pr-${i}" placeholder="${p.options.unit ? esc(p.options.unit) : "0"}" step="any" inputmode="decimal">`;
+    $("pr-" + i).oninput = e => { S.values[i] = e.target.value === "" ? null : +e.target.value; checkReady(); };
+  } else if (k === "choice") {
+    const ord = shuffle(p.options.choices.map((c, j) => ({ c, j })));
+    box.innerHTML = `<ul class="opts" id="pr-${i}">` +
+      ord.map(o => `<li data-j="${o.j}" aria-selected="false"><span class="txt">${esc(o.c)}</span></li>`).join("") + `</ul>`;
+    $("pr-" + i).onclick = e => {
+      const li = e.target.closest("li"); if (!li) return;
+      [...$("pr-" + i).children].forEach(x => x.setAttribute("aria-selected", x === li));
+      S.values[i] = +li.dataset.j; checkReady();
+    };
+  } else {
+    orderStates[i] = shuffle(p.options.items.map((t, j) => ({ t, j })));
+    box.innerHTML = `<ul class="opts" id="pr-${i}"></ul>`;
+    paintOrder(i);
+    S.values[i] = orderStates[i].map(o => o.j);
+  }
+}
+function paintOrder(i) {
+  const st = orderStates[i];
+  $("pr-" + i).innerHTML = st.map((o, p) =>
+    `<li><span class="n">${p + 1}</span><span class="txt">${esc(o.t)}</span>
+     <span class="mv"><button data-d="-1" data-p="${p}" ${p === 0 ? "disabled" : ""} aria-label="Upp">↑</button>
+     <button data-d="1" data-p="${p}" ${p === st.length - 1 ? "disabled" : ""} aria-label="Ner">↓</button></span></li>`).join("");
+  $("pr-" + i).onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const p = +b.dataset.p, n = p + (+b.dataset.d);
+    if (n < 0 || n >= st.length) return;
+    [st[p], st[n]] = [st[n], st[p]];
+    S.values[i] = st.map(o => o.j); paintOrder(i); checkReady();
+  };
+}
+
+$("btn-submit").onclick = async () => {
+  $("btn-submit").disabled = true;
+  try {
+    await post("quiz_answers", { game_id: S.code, idx: S.idx, player: S.name, value: S.values });
+    S.sent = true; map.off("click"); mapOn(false); cartOff();
+    $("wait-title").textContent = "Låst.";
+    $("btn-reveal").classList.add("hidden");
+    $("wait-hint").textContent = "Väntar på att svaret ska visas.";
+    show("wait");
+  } catch (e) { $("btn-submit").disabled = false; fail("play-err", "Kom inte fram. " + e.message); }
+};
+async function refreshWaiting() {
+  const names = await rpc("quiz_who", { g: S.code, i: S.idx });
+  $("wait-count").textContent = names.length;
+  $("wait-roster").innerHTML = names.map(n => `<span class="chip">${esc(n)}</span>`).join("");
+}
+
+/* ============================ AVSLÖJANDE ============================ */
+$("btn-reveal").onclick = async () => {
+  $("btn-reveal").disabled = true;
+  try {
+    await patch(`quiz_questions?game_id=eq.${S.code}&idx=eq.${S.idx}`, { revealed: true });
+    await patch(`quiz_games?id=eq.${S.code}`, { phase: "reveal" });
+    tick();
+  } catch (e) { $("btn-reveal").disabled = false; }
+};
+
+async function revealQuestion(q) {
+  const [secret, answers] = await Promise.all([
+    get(`quiz_secrets?game_id=eq.${S.code}&idx=eq.${S.idx}&select=answer`),
+    get(`quiz_answers?game_id=eq.${S.code}&idx=eq.${S.idx}&select=player,value`)
+  ]);
+  if (!secret.length) return;
+  const parts = q.parts.map((p, i) => ({ ...p, answer: secret[0].answer[i] }));
+  cartOff();
+
+  $("reveal-body").innerHTML = parts.map((p, i) => `
+    <div class="part">
+      <h3>${parts.length > 1 ? String.fromCharCode(97 + i) + ") " : ""}${KINDS[p.kind]}</h3>
+      <div class="big">${esc(fmtAnswer(p))}</div>
+      <div id="rv-${i}"></div>
+    </div>`).join("");
+
+  parts.forEach((p, i) => {
+    if (p.kind !== "timeline") return;
+    const marks = answers.map(a => ({ v: (a.value || [])[i], nm: a.player, me: a.player === S.name }))
+                         .filter(m => typeof m.v === "number").sort((a, b) => a.v - b.v);
+    $("rv-" + i).innerHTML = timelineHTML(p, marks);
+  });
+
+  const pinIdx = parts.findIndex(p => p.kind === "pin");
+  if (pinIdx >= 0) {
+    mapOn(true); clearMap();
+    const T = parts[pinIdx].answer;
+    const guesses = answers.map(a => ({ p: a.player, ll: (a.value || [])[pinIdx] }))
+                           .filter(g => g.ll && typeof g.ll.lat === "number");
+    draw(L.marker(T, { icon: tag("target", "✕ Rätt") }));
+    const worst = guesses.length ? Math.max(...guesses.map(g => haversine(g.ll, T))) : 100;
+    const inkNow = getComputedStyle(document.body).getPropertyValue("--ink").trim();
+    [0.45, 0.75, 1].forEach((f, j) => {
+      const ring = draw(L.circle(T, { radius: worst * 1000 * f, className: "ring", fill: false, weight: 2 }));
+      if (ring._path) ring._path.style.animationDelay = j * 0.28 + "s";
+    });
+    guesses.forEach((g, j) => setTimeout(() => {
+      draw(L.polyline([T, g.ll], { color: inkNow, weight: 1.5, dashArray: "3 5", opacity: .75 }));
+      draw(L.marker(g.ll, { icon: tag(g.p === S.name ? "you" : "", esc(g.p)) }));
+    }, 380 + j * 230));
+    setTimeout(() => map.fitBounds(L.latLngBounds([T, ...guesses.map(g => g.ll)]).pad(0.35)), 240);
+  } else { mapOn(false); }
+
+  paintBoard("board", await standings(), parts, answers);
+  $("host-next").classList.toggle("hidden", S.role !== "host");
+  $("btn-next").textContent = S.idx >= S.qs.length - 1 ? "Slutställning" : "Nästa";
+  $("reveal-hint").textContent = S.role === "host" ? "" : "Väntar på nästa fråga.";
+  show("reveal");
+}
+
+/* kurslinjen: rätt årtal plus varje spelares gissning, sparad och utsatt */
+function timelineHTML(part, marks) {
+  const min = part.options.min, max = part.options.max, span = Math.max(max - min, 1);
+  const all = [{ v: part.answer, nm: String(part.answer), truth: true },
+               ...marks.map(m => ({ v: m.v, nm: m.nm, me: m.me }))];
+  const rowEnd = [];
+  all.forEach(m => {
+    m.pct = ((m.v - min) / span) * 100;
+    let r = 0;
+    while (rowEnd[r] != null && m.pct - rowEnd[r] < 18) r++;
+    rowEnd[r] = m.pct; m.row = r;
+  });
+  const depth = Math.max(...all.map(m => m.row)) + 1;
+  const body = all.map(m =>
+    `<div class="tl-m ${m.truth ? "true" : ""} ${m.me ? "me" : ""}"
+      style="left:${Math.min(94, Math.max(6, m.pct))}%;bottom:14px">
+      <span class="flag">${esc(m.nm)}${m.truth ? "" : " · " + m.v}</span>
+      <span class="stem" style="height:${m.row * 28 + 8}px"></span></div>`).join("");
+  return `<div class="tl"><div class="tl-body" style="height:${depth * 28 + 30}px">
+    <div class="tl-line"></div>${body}</div>
+    <div class="tl-ends"><span>${min}</span><span>${max}</span></div></div>`;
+}
+
+/* ============================ POÄNG ============================ */
+async function standings() {
+  const [secrets, answers] = await Promise.all([
+    get(`quiz_secrets?game_id=eq.${S.code}&select=idx,answer`),
+    get(`quiz_answers?game_id=eq.${S.code}&select=idx,player,value`)
+  ]);
+  const totals = {};
+  secrets.forEach(sec => {
+    const q = S.qs[sec.idx]; if (!q) return;
+    const rows = answers.filter(a => a.idx === sec.idx);
+    q.parts.forEach((p, i) => {
+      const part = { ...p, answer: sec.answer[i] };
+      const errs = rows.map(r => ({ p: r.player, e: errorOf(part.kind, (r.value || [])[i], part.answer) }))
+                       .filter(x => x.e != null);
+      if (!errs.length) return;
+      const den = scaleOf(part, Math.max(...errs.map(x => x.e)));
+      errs.forEach(x => { totals[x.p] = (totals[x.p] || 0) + Math.max(0, Math.round(1000 * (1 - x.e / den))); });
+    });
+  });
+  return totals;
+}
+
+function paintBoard(target, totals, parts, answers) {
+  const note = {};
+  if (parts && answers) answers.forEach(a => {
+    note[a.player] = parts.map((p, i) => {
+      const e = errorOf(p.kind, (a.value || [])[i], p.answer);
+      return e == null ? "—" : fmtErr(p.kind, e);
+    }).join(" · ");
+  });
+  const rows = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+  $(target).innerHTML = rows.map(([p, t], i) =>
+    `<li style="animation-delay:${140 + i * 120}ms">
+      <span class="rank">${i + 1}</span><span class="who">${esc(p)}</span><span class="dots"></span>
+      <span class="off">${note[p] || ""}</span><span class="pts">${t}</span></li>`).join("")
+    || `<li><span class="who">Inga svar kom in.</span></li>`;
+}
+
+$("btn-next").onclick = async () => {
+  $("btn-next").disabled = true;
+  try {
+    if (S.idx >= S.qs.length - 1) await patch(`quiz_games?id=eq.${S.code}`, { phase: "final" });
+    else await patch(`quiz_games?id=eq.${S.code}`, { phase: "ask", q_index: S.idx + 1 });
+    tick();
+  } finally { $("btn-next").disabled = false; }
+};
+$("btn-end").onclick = async () => { await patch(`quiz_games?id=eq.${S.code}`, { phase: "final" }); tick(); };
+
+async function finish() {
+  cartOff(); mapOn(false); clearMap();
+  const totals = await standings();
+  const rows = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+  $("winner").innerHTML = rows.length ? esc(rows[0][0]) + " <em>vinner</em>" : "Ingen spelade";
+  paintBoard("final-board", totals, null, null);
+  show("final");
+}
+$("btn-restart").onclick = () => location.reload();
+</script>
+</body>
+</html>
