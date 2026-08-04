@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coach — it knows your body</title>
+<meta name="description" content="A strength coach that learns your goals, your lifts, and your injuries. Show up at the gym and it tells you exactly what to train today.">
+<link rel="canonical" href="https://www.jesperlindmarker.com/coach/">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta property="og:title" content="Coach — it knows your body">
+<meta property="og:description" content="Learns your goals, your lifts, and your injuries. Show up and it tells you exactly what to train today.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.jesperlindmarker.com/coach/">
+<meta property="og:image" content="https://www.jesperlindmarker.com/coach/icon.png">
+<meta name="twitter:card" content="summary">
+<style>
+  :root{
+    --bg:#0b1120; --bg-2:#0f172a; --card:#172033; --card-2:#1e293b;
+    --line:rgba(148,163,184,.13); --line-2:rgba(148,163,184,.22);
+    --txt:#e7ecf4; --mut:#93a1b5; --dim:#5f6c81;
+    --accent:#6366f1; --accent-2:#818cf8;
+    --fresh:#10b981; --ready:#84cc16; --working:#f59e0b; --smashed:#f43f5e; --idle:#334155;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(22px,5vw,48px)}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);font-weight:600;margin:0}
+  h1,h2{letter-spacing:-.03em;font-weight:800;margin:0}
+  h2{font-size:clamp(28px,4vw,40px);line-height:1.06}
+  .muted{color:var(--mut)}
+
+  /* top bar */
+  .top{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);
+    background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
+  .top-inner{max-width:var(--maxw);margin:0 auto;padding:13px clamp(22px,5vw,48px);display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;text-decoration:none}
+  .brand img{width:26px;height:26px;border-radius:7px}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;padding:13px 22px;
+    border-radius:13px;text-decoration:none;border:1px solid transparent;transition:transform .15s,background .2s,border-color .2s}
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px -12px rgba(99,102,241,.75)}
+  .btn-primary:hover{background:#5457e6}
+  .btn-ghost{border-color:var(--line-2);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--accent-2)}
+  .btn-sm{padding:9px 16px;font-size:13.5px;border-radius:11px}
+
+  /* hero */
+  .hero{position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:-25% -10% auto -10%;height:560px;
+    background:radial-gradient(58% 60% at 68% 0%,rgba(99,102,241,.20),transparent 70%);pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:86px 0 92px;position:relative}
+  h1{font-size:clamp(44px,6.4vw,68px);line-height:1}
+  .lead{font-size:19px;color:var(--mut);margin:22px 0 0;max-width:32ch}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+
+  /* device / shot frames */
+  .phone{justify-self:center;width:300px;max-width:100%;border-radius:40px;padding:11px;
+    background:linear-gradient(160deg,#212c42,#0c1322);border:1px solid var(--line-2);
+    box-shadow:0 44px 90px -34px rgba(0,0,0,.85)}
+  .phone-screen{position:relative;background:var(--bg);border-radius:30px;overflow:hidden;border:1px solid var(--line);padding:20px 16px 18px}
+  .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:98px;height:20px;background:#05080f;border-radius:0 0 14px 14px;z-index:2}
+  .scr-top{display:flex;align-items:baseline;justify-content:space-between;margin:14px 2px 4px}
+  .scr-top .h{font-size:17px;font-weight:700}
+  .scr-top .s{font-size:11.5px;color:var(--dim)}
+  .scr-sub{font-size:12px;color:var(--mut);margin:0 2px 8px}
+  .phone .map{width:100%;display:block;margin:2px 0 4px}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:center;margin-top:6px}
+  .legend span{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--mut)}
+  .legend i{width:8px;height:8px;border-radius:50%}
+  .scr-cta{margin-top:14px;background:var(--accent);color:#fff;text-align:center;font-weight:600;font-size:13.5px;padding:11px;border-radius:12px}
+
+  /* framed screenshot */
+  .shot{justify-self:center;width:300px;max-width:100%;border-radius:30px;overflow:hidden;
+    border:1px solid var(--line-2);background:var(--bg);
+    box-shadow:0 44px 90px -34px rgba(0,0,0,.85);line-height:0}
+  .shot img{width:100%;display:block}
+
+  /* feature rows */
+  .feature{padding:74px 0}
+  .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .feature.reverse .feature-grid{direction:rtl}
+  .feature.reverse .feature-grid>*{direction:ltr}
+  .feature h2{margin-top:14px}
+  .feature p{color:var(--mut);font-size:17px;margin:18px 0 0;max-width:42ch}
+  .metarow{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .pill{font-size:12.5px;color:var(--mut);border:1px solid var(--line-2);border-radius:999px;padding:5px 12px}
+  .pill b{color:var(--txt);font-weight:600}
+
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
+
+  /* programmes list */
+  .splitlist{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .splitrow{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 16px}
+  .splitrow .nm{font-weight:600;font-size:14.5px}
+  .splitrow .cad{font-size:12px;color:var(--dim)}
+  .splitrow.on{border-color:rgba(99,102,241,.4);background:linear-gradient(90deg,rgba(99,102,241,.10),var(--card))}
+  .splitrow.on .tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);font-weight:700}
+
+  /* exercise catalog motif */
+  .catalog{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .cx{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 14px}
+  .cx .thumb{width:44px;height:44px;flex:none;border-radius:9px;display:grid;place-items:center;font-size:20px;
+    background:var(--card-2);border:1px solid var(--line)}
+  .cx .nm{font-weight:600;font-size:14.5px}
+  .cx .tg{font-size:12px;color:var(--dim);margin-top:2px}
+
+  /* intelligence grid */
+  .under{padding:82px 0}
+  .under .intro{color:var(--mut);max-width:52ch;margin:16px 0 0;font-size:17px}
+  .icards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+  .icard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .icard .n{font-size:13px;letter-spacing:.02em;color:var(--accent-2);font-weight:700}
+  .icard h3{margin:10px 0 7px;font-size:16px;letter-spacing:-.01em;font-weight:700}
+  .icard p{margin:0;color:var(--mut);font-size:13.7px;line-height:1.5}
+
+  /* final */
+  .final{text-align:center;padding:96px 0}
+  .final h2{max-width:16ch;margin:0 auto}
+  .final p{color:var(--mut);margin:16px auto 0;max-width:40ch;font-size:17px}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--dim);font-size:13px}
+  .foot-inner{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+  footer a{color:var(--mut);text-decoration:none}
+  footer a:hover{color:var(--txt)}
+
+  @media(max-width:760px){
+    .hero-grid{grid-template-columns:1fr;gap:44px;padding:56px 0 68px;text-align:center}
+    .lead{margin-inline:auto}.cta-row{justify-content:center}
+    .phone{order:-1}
+    .feature{padding:56px 0}
+    .feature-grid{grid-template-columns:1fr;gap:36px}
+    .feature.reverse .feature-grid{direction:ltr}
+    .feature p{margin-inline:auto}.metarow{justify-content:flex-start}
+    .icards{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-inner">
+    <a class="brand" href="#top"><img src="icon.png" alt="">Coach</a>
+    <a class="btn btn-primary btn-sm" href="https://workout-coach-delta.vercel.app/">Open app</a>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Your strength coach</p>
+      <h1 style="margin-top:16px">It knows<br>your body.</h1>
+      <p class="lead">Coach learns your goals, your lifts, and the injuries you train around. Walk into the gym and it tells you exactly what to do today.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://workout-coach-delta.vercel.app/">
+          Open Coach
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#what">What it does</a>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="scr-top"><span class="h">This week</span><span class="s">Wed · Push day</span></div>
+        <p class="scr-sub">Chest and quads still smashed. Back and hamstrings ready.</p>
+        <img class="map" src="bodymap.svg" alt="Body map with each muscle coloured by how recovered it is">
+        <div class="legend">
+          <span><i style="background:var(--fresh)"></i>fresh</span>
+          <span><i style="background:var(--ready)"></i>ready</span>
+          <span><i style="background:var(--working)"></i>working</span>
+          <span><i style="background:var(--smashed)"></i>smashed</span>
+          <span><i style="background:var(--idle)"></i>idle</span>
+        </div>
+        <div class="scr-cta">Plan today's session</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 1 · the core promise -->
+<section class="feature band" id="what">
+  <div class="wrap feature-grid">
+    <div>
+      <p class="eyebrow">At the gym</p>
+      <h2>Exactly what to do,<br>in order.</h2>
+      <p>Open the app and today's session is already built: the right exercises for your goals, the sets and reps, the effort to aim for, sequenced for the workout. You just lift.</p>
+      <div class="metarow">
+        <span class="pill">sets · reps · <b>target RPE</b></span>
+        <span class="pill">built from <b>your recovery</b></span>
+        <span class="pill"><b>no</b> planning</span>
+      </div>
+    </div>
+    <div class="shot"><img src="img/session.png" alt="Today's session: a list of exercises, each with a demonstration image, sets, reps and target effort"></div>
+  </div>
+</section>
+
+<!-- 2 · the niche: injuries -->
+<section class="feature reverse">
+  <div class="wrap feature-grid">
+    <div>
+      <p class="eyebrow">The part most apps skip</p>
+      <h2>It trains around<br>your injuries.</h2>
+      <p>Tell Coach where it bothers you. It translates that into the exact movements and loads to avoid, then rebuilds every session around them: dropping what provokes the pain, keeping the muscle worked, easing effort where it needs to.</p>
+      <div class="metarow">
+        <span class="pill"><b>34</b> movement stressors</span>
+        <span class="pill"><b>11</b> body regions</span>
+        <span class="pill">graded by <b>severity</b></span>
+      </div>
+    </div>
+    <div class="shot"><img src="img/injury.png" alt="Injury assessment asking where it bothers you, with a grid of body regions"></div>
+  </div>
+</section>
+
+<!-- 3 · exercise library -->
+<section class="feature band">
+  <div class="wrap feature-grid">
+    <div>
+      <p class="eyebrow">The library</p>
+      <h2>700+ lifts,<br>every one illustrated.</h2>
+      <p>Each exercise carries a demonstration image, the muscles it works, and coaching cues. Swap any lift and Coach ranks the alternatives that actually fit: your goals, your gym, and what you have trained recently.</p>
+      <div class="metarow">
+        <span class="pill"><b>700+</b> strength exercises</span>
+        <span class="pill"><b>43</b> muscles mapped</span>
+        <span class="pill">smart <b>swap</b> &amp; search</span>
+      </div>
+    </div>
+    <div>
+      <div class="catalog">
+        <div class="cx"><span class="thumb">🏋️</span><div><div class="nm">Barbell Squat</div><div class="tg">Quads · Glutes · Core</div></div></div>
+        <div class="cx"><span class="thumb">💪</span><div><div class="nm">Romanian Deadlift</div><div class="tg">Hamstrings · Glutes</div></div></div>
+        <div class="cx"><span class="thumb">🤸</span><div><div class="nm">Pull-up</div><div class="tg">Lats · Biceps</div></div></div>
+        <div class="cx"><span class="thumb">🏋️</span><div><div class="nm">Incline Bench Press</div><div class="tg">Chest · Front delts · Triceps</div></div></div>
+      </div>
+      <p style="font-size:13px;color:var(--dim);margin:14px 2px 0">Every entry: image, muscle involvement, cues, and how to progress it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · programmes -->
+<section class="feature reverse">
+  <div class="wrap feature-grid">
+    <div>
+      <p class="eyebrow">The plan</p>
+      <h2>A programme that adapts, not a PDF.</h2>
+      <p>Pick how often you train. Coach fits a proven split and scales the volume to match, tracks your hard sets per muscle against evidence-based ranges, and schedules a lighter week before you stall.</p>
+    </div>
+    <div>
+      <div class="splitlist">
+        <div class="splitrow on"><div><div class="nm">Full body 3×/week</div><div class="cad">A / B / C rotation</div></div><span class="tag">Yours</span></div>
+        <div class="splitrow"><div><div class="nm">Upper / Lower 4×/week</div><div class="cad">2× frequency per muscle</div></div><span class="cad">4 days</span></div>
+        <div class="splitrow"><div><div class="nm">Push / Pull / Legs 6×/week</div><div class="cad">advanced, high frequency</div></div><span class="cad">6 days</span></div>
+        <div class="splitrow"><div><div class="nm">Full body 2×/week</div><div class="cad">volume auto-scaled up</div></div><span class="cad">2 days</span></div>
+      </div>
+      <p style="font-size:13px;color:var(--dim);margin:14px 2px 0">Seven templates. Deload scheduled roughly every six weeks, earlier if you are grinding.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · intelligence -->
+<section class="under">
+  <div class="wrap">
+    <p class="eyebrow">Under the hood</p>
+    <h2>Not a workout randomiser.</h2>
+    <p class="intro">Every session is the output of a real model of your training, not a shuffle of exercises. A few of the moving parts:</p>
+    <div class="icards">
+      <div class="icard"><div class="n">Recovery model</div><h3>It tracks 43 muscles</h3><p>Freshness and weekly volume per muscle, not a blunt "chest day". That heatmap on the home screen is the state it plans from.</p></div>
+      <div class="icard"><div class="n">Volume science</div><h3>Between too little and too much</h3><p>Each muscle is steered inside its productive weekly range, from the minimum that grows to the most you can recover from.</p></div>
+      <div class="icard"><div class="n">Injury routing</div><h3>34 movement stressors</h3><p>Pain becomes mechanical stressors, then every candidate lift is checked against them and excluded, substituted, or eased.</p></div>
+      <div class="icard"><div class="n">Mesocycles</div><h3>Deloads before you stall</h3><p>Rising effort or repeated stalls trigger a lighter week automatically, halving volume and capping the effort.</p></div>
+      <div class="icard"><div class="n">Selection</div><h3>Every lift is scored</h3><p>Goal fit, equipment, recency, and your own more/less feedback combine into the pick, so it rotates without drifting.</p></div>
+      <div class="icard"><div class="n">Progression</div><h3>It reads your last sets</h3><p>The next set is suggested from how the recent ones actually went, nudging weight or reps and flagging anything odd.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final band">
+  <div class="wrap">
+    <h2>Show up. It handles the rest.</h2>
+    <p>Open Coach, glance at the map, and start. The thinking is already done.</p>
+    <div class="cta-row" style="justify-content:center;margin-top:30px">
+      <a class="btn btn-primary" href="https://workout-coach-delta.vercel.app/">
+        Open Coach
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>Coach is a personal project by <a href="https://www.jesperlindmarker.com/">Jesper Lindmarker</a>. Invite only for now.</span>
+    <a href="https://www.jesperlindmarker.com/">← jesperlindmarker.com</a>
+  </div>
+</footer>
+
+</body>
+</html>
