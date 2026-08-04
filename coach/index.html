@@ -112,6 +112,30 @@
   .cx .nm{font-weight:600;font-size:14.5px}
   .cx .tg{font-size:12px;color:var(--dim);margin-top:2px}
 
+  /* exercise view / progression motif */
+  .ex-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:14px 2px 2px}
+  .ex-head .nm{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .ex-head .st{font-size:11.5px;color:var(--dim);flex:none}
+  .ex-prev{font-size:11.5px;color:var(--mut);margin:0 2px 12px}
+  .ex-sug{background:linear-gradient(180deg,rgba(99,102,241,.16),rgba(99,102,241,.04));
+    border:1px solid rgba(99,102,241,.42);border-radius:14px;padding:13px 14px}
+  .ex-sug .lb{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);font-weight:700}
+  .ex-sug .wt{display:flex;align-items:baseline;gap:7px;margin-top:5px}
+  .ex-sug .kg{font-size:29px;font-weight:800;letter-spacing:-.03em;line-height:1}
+  .ex-sug .rp{font-size:13.5px;color:var(--mut);font-weight:600}
+  .ex-sug .delta{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--fresh)}
+  .ex-why{font-size:11.5px;color:var(--mut);line-height:1.45;margin:11px 2px 0}
+  .ex-why b{color:var(--txt);font-weight:600}
+  .ex-sets{display:flex;flex-direction:column;gap:6px;margin-top:13px}
+  .ex-set{display:flex;align-items:center;gap:9px;font-size:12px;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+  .ex-set .ix{color:var(--dim);width:36px;flex:none}
+  .ex-set .ld{font-weight:600}
+  .ex-set .rpe{margin-left:auto;color:var(--mut);font-size:11px}
+  .ex-set.done .rpe::after{content:" ✓";color:var(--fresh)}
+  .ex-set.now{border-color:rgba(99,102,241,.45);background:linear-gradient(90deg,rgba(99,102,241,.12),var(--card))}
+  .ex-set.now .ld{color:var(--accent-2)}
+
   /* intelligence grid */
   .under{padding:82px 0}
   .under .intro{color:var(--mut);max-width:52ch;margin:16px 0 0;font-size:17px}
@@ -134,7 +158,6 @@
   @media(max-width:760px){
     .hero-grid{grid-template-columns:1fr;gap:44px;padding:56px 0 68px;text-align:center}
     .lead{margin-inline:auto}.cta-row{justify-content:center}
-    .phone{order:-1}
     .feature{padding:56px 0}
     .feature-grid{grid-template-columns:1fr;gap:36px}
     .feature.reverse .feature-grid{direction:ltr}
@@ -148,7 +171,7 @@
 <div class="top">
   <div class="top-inner">
     <a class="brand" href="#top"><img src="icon.png" alt="">Coach</a>
-    <a class="btn btn-primary btn-sm" href="https://workout-coach-delta.vercel.app/">Open app</a>
+    <a class="btn btn-primary btn-sm" href="https://workout-coach-delta.vercel.app/">Early access</a>
   </div>
 </div>
 
@@ -265,7 +288,42 @@
   </div>
 </section>
 
-<!-- 5 · intelligence -->
+<!-- 5 · smart progression -->
+<section class="feature band" id="progression">
+  <div class="wrap feature-grid">
+    <div>
+      <p class="eyebrow">Smart progression</p>
+      <h2>It puts the number<br>on the bar.</h2>
+      <p>No more guessing at the rack or repeating last week by default. Coach reads your history with the lift, where you sit in the rep range, the effort you logged, and the direction you have been trending, then suggests the weight for the set in front of you.</p>
+      <div class="metarow">
+        <span class="pill">your <b>training history</b></span>
+        <span class="pill">the <b>rep range</b></span>
+        <span class="pill">logged <b>RPE</b></span>
+        <span class="pill"><b>progression trend</b></span>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="ex-head"><span class="nm">Barbell Squat</span><span class="st">Set 3 of 4</span></div>
+        <p class="ex-prev">Last time: 82.5 kg × 8 at RPE 7.5</p>
+        <div class="ex-sug">
+          <div class="lb">Suggested</div>
+          <div class="wt"><span class="kg">85</span><span class="rp">kg × 8 · RPE 8</span><span class="delta">+2.5 kg</span></div>
+        </div>
+        <p class="ex-why">Last session came in <b>under target effort</b> and you are mid rep range, so the load steps up rather than the reps.</p>
+        <div class="ex-sets">
+          <div class="ex-set done"><span class="ix">Set 1</span><span class="ld">82.5 kg × 8</span><span class="rpe">RPE 7</span></div>
+          <div class="ex-set done"><span class="ix">Set 2</span><span class="ld">85 kg × 8</span><span class="rpe">RPE 7.5</span></div>
+          <div class="ex-set now"><span class="ix">Set 3</span><span class="ld">85 kg × 8</span><span class="rpe">now</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · intelligence -->
 <section class="under">
   <div class="wrap">
     <p class="eyebrow">Under the hood</p>
