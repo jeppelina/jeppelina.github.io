@@ -734,6 +734,16 @@ img {
     margin-bottom: var(--space-sm);
 }
 
+.paper-authors a {
+    color: rgba(255,255,255,0.72);
+    border-bottom: 1px dotted rgba(255,255,255,0.35);
+    transition: color var(--transition), border-color var(--transition);
+}
+.paper-authors a:hover {
+    color: #fff;
+    border-bottom-color: rgba(255,255,255,0.75);
+}
+
 .paper-links {
     margin-top: var(--space-sm);
 }
@@ -929,6 +939,20 @@ img {
     width: 100%;
     box-shadow: 0 8px 30px rgba(0,0,0,0.06);
 }
+
+/* Pointer to /cv/ from the Background section. Unused while the CV is unlinked. */
+.timeline-more {
+    margin-top: var(--space-lg);
+    padding-left: 40px;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+.timeline-more a {
+    color: var(--color-accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition);
+}
+.timeline-more a:hover { border-bottom-color: var(--color-accent); }
 
 /* --- Teaching --- */
 .teaching {
