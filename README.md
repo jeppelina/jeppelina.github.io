@@ -15,6 +15,9 @@ Research on assortative mating and ethnic boundaries in Sweden, lecture material
 │   ├── css/style.css       # All styles
 │   ├── js/main.js          # Interactions & animations
 │   └── images/             # Photos and graphics
+├── xkcd/                   # /xkcd: a comic a day, see xkcd/README.md
+│   ├── index.html          # Self-contained page, embeddable via ?embed=1
+│   └── img/                # 37 xkcd comics, CC BY-NC 2.5, Randall Munroe
 ├── teaching/
 │   └── sds-ii/             # SDS II lecture slides (Quarto/reveal.js)
 │       ├── Lecture_*.html   # Lecture presentations

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6.0] - 2026-10-27
+
+### Added
+- **New page: "xkcd of the day"** at `/xkcd/` — one comic a day from the 37 used in the SDS II course, plus a button for a random one. Unlisted and `noindex`: not linked from the site and not in the sitemap, reachable by typing the address.
+  - **Daily pick is deterministic**: days since the epoch modulo the list length, over a fixed shuffled order, so everyone sees the same comic on a given day, it turns over at the viewer's local midnight, and all 37 appear once before any repeats
+  - **Random button** never lands on the comic already showing; **R** does the same from the keyboard, and a "Back to today's" button appears once you have wandered off
+  - **Embeddable**: `?embed=1` drops the heading and tightens the padding, and the page posts its height to the parent on every comic change so a host iframe can size itself. Comic capped at 560px tall in embedded mode. `?n=2048` deep-links one comic, `?theme=dark|light` overrides the system setting
+  - Single self-contained file, no build step, site CSS tokens inlined so it also works embedded on other sites. Images served locally from `xkcd/img/` rather than hot-linked, with natural dimensions baked in to reserve layout space and to stop the small older comics being upscaled
+  - Comics are Randall Munroe's under CC BY-NC 2.5, shown unaltered with per-comic attribution linking to the original. The licence is non-commercial only, so putting ads on the site would end it
+
 ## [2.5.0] - 2026-05-06
 
 ### Changed

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>xkcd of the day</title>
+<meta name="description" content="One xkcd comic a day, picked from a set used in a statistics course. Press the button for a random one.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-bg: #FAF9F7;
+  --color-surface: #FFFFFF;
+  --color-text: #1a1a1a;
+  --color-text-muted: #70706A;
+  --color-accent: #B44A2D;
+  --color-accent-light: #F5EBE7;
+  --color-border: #e5e3de;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #141414;
+    --color-surface: #1c1c1c;
+    --color-text: #f2f1ee;
+    --color-text-muted: #9a9a93;
+    --color-accent: #E0785A;
+    --color-accent-light: #2a1e1a;
+    --color-border: #2e2e2e;
+  }
+}
+:root[data-theme="dark"] {
+  --color-bg: #141414;
+  --color-surface: #1c1c1c;
+  --color-text: #f2f1ee;
+  --color-text-muted: #9a9a93;
+  --color-accent: #E0785A;
+  --color-accent-light: #2a1e1a;
+  --color-border: #2e2e2e;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 2.5rem 16px 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.01em;
+}
+.tagline {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin: 0 0 2rem;
+  max-width: 46ch;
+}
+
+figure { margin: 0; width: 100%; }
+.frame {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  transition: opacity var(--transition);
+}
+.frame.loading { opacity: 0.25; }
+.frame a { display: block; line-height: 0; }
+#comic {
+  display: block;
+  height: auto;
+  max-height: 68vh;
+  width: 100%;
+  object-fit: contain;
+}
+figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-top: 0.9rem;
+  line-height: 1.5;
+}
+figcaption .title { color: var(--color-text); }
+a { color: var(--color-accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+a:hover { border-bottom-color: var(--color-accent); }
+
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+button {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+button:hover { background: var(--color-accent-light); border-color: var(--color-accent); color: var(--color-accent); }
+button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+#today[hidden] { display: none; }
+.hint { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.75rem; }
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+  background: var(--color-surface);
+}
+.licence {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 2.5rem;
+  max-width: 54ch;
+  line-height: 1.6;
+}
+
+/* Embedded mode: drop the page furniture, keep the comic and the buttons. */
+body.embed .wrap { padding: 12px 12px 16px; }
+body.embed h1, body.embed .tagline, body.embed .hint { display: none; }
+body.embed .licence { margin-top: 1.25rem; }
+body.embed #comic { max-height: 560px; }
+/* A px cap, not a vh one: inside an auto-resizing iframe a vh cap and the
+   reported height chase each other downwards. */
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>xkcd of the day</h1>
+  <p class="tagline">A comic a day from the set I use when teaching statistics. New one every morning.</p>
+
+  <figure>
+    <div class="frame" id="frame">
+      <a id="link" href="https://xkcd.com/" rel="noopener">
+        <img id="comic" alt="" width="740" height="260">
+      </a>
+    </div>
+    <figcaption>
+      <a id="credit" href="https://xkcd.com/" rel="noopener"><span class="title"></span></a>
+      by Randall Munroe
+    </figcaption>
+  </figure>
+
+  <div class="controls">
+    <button id="random" type="button">Random comic</button>
+    <button id="today" type="button" hidden>Back to today&rsquo;s</button>
+  </div>
+  <p class="hint">Press <kbd>R</kbd> for another one.</p>
+
+  <p class="licence">
+    Comics by <a href="https://xkcd.com/" rel="noopener">Randall Munroe</a>, used under
+    <a href="https://creativecommons.org/licenses/by-nc/2.5/" rel="noopener">CC BY-NC 2.5</a>.
+    They are his work, not mine, and are shown here unaltered. The mouseover text is usually
+    the punchline, so follow the link to read it on the original page.
+  </p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  // Cycle order is fixed and shuffled, so the daily pick walks through every
+  // comic before it repeats and consecutive days are unrelated.
+  var COMICS = [
+    {n:881,t:"Probability",f:"xkcd_0881_probability.png",w:740,h:260},
+    {n:2323,t:"Modeling Study",f:"xkcd_2323_modeling_study.png",w:726,h:824},
+    {n:1827,t:"Survivorship Bias",f:"xkcd_1827_survivorship_bias.png",w:635,h:945},
+    {n:2533,t:"Slope Hypothesis Testing",f:"xkcd_2533_slope_hypothesis_testing.png",w:1480,h:484},
+    {n:1725,t:"Linear Regression",f:"xkcd_1725_linear_regression.png",w:959,h:624},
+    {n:507,t:"Experimentation",f:"xkcd_0507_experimentation.png",w:200,h:346},
+    {n:833,t:"Convincing",f:"xkcd_0833_convincing.png",w:740,h:239},
+    {n:2755,t:"Effect Size",f:"xkcd_2755_effect_size.png",w:555,h:732},
+    {n:2080,t:"Cohort and Age Effects",f:"xkcd_2080_cohort_and_age_effects.png",w:720,h:637},
+    {n:882,t:"Significant",f:"xkcd_0882_significant.png",w:540,h:1498},
+    {n:2169,t:"Predictive Models",f:"xkcd_2169_predictive_models.png",w:546,h:778},
+    {n:2400,t:"Statistics",f:"xkcd_2400_statistics.png",w:592,h:767},
+    {n:1295,t:"New Study",f:"xkcd_1295_new_study.png",w:480,h:690},
+    {n:2560,t:"Confounding Variables",f:"xkcd_2560_confounding_variables.png",w:1288,h:556},
+    {n:925,t:"Cell Phones",f:"xkcd_0925_cell_phones.png",w:740,h:241},
+    {n:2440,t:"Epistemic Uncertainty",f:"xkcd_2440_epistemic_uncertainty.png",w:794,h:756},
+    {n:1838,t:"Machine Learning",f:"xkcd_1838_machine_learning.png",w:742,h:877},
+    {n:1138,t:"Heatmap",f:"xkcd_1138_heatmap.png",w:1000,h:1085},
+    {n:795,t:"Conditional Risk",f:"xkcd_0795_conditional_risk.png",w:543,h:460},
+    {n:2001,t:"Clickbait-Corrected p-Value",f:"xkcd_2001_clickbait_corrected_p_value.png",w:616,h:720},
+    {n:1478,t:"P-Values",f:"xkcd_1478_p_values.png",w:519,h:729},
+    {n:3101,t:"Good Science",f:"xkcd_3101_good_science.png",w:773,h:1666},
+    {n:892,t:"Null Hypothesis",f:"xkcd_0892_null_hypothesis.png",w:231,h:348},
+    {n:552,t:"Correlation",f:"xkcd_0552_correlation.png",w:918,h:371},
+    {n:1252,t:"Increased Risk",f:"xkcd_1252_increased_risk.png",w:635,h:968},
+    {n:1945,t:"Scientific Paper Graph Quality",f:"xkcd_1945_scientific_paper_graph_quality.png",w:720,h:481},
+    {n:2337,t:"Asterisk Corrections",f:"xkcd_2337_asterisk_corrections.png",w:540,h:833},
+    {n:2652,t:"Proxy Variable",f:"xkcd_2652_proxy_variable.png",w:909,h:572},
+    {n:2311,t:"Confidence Interval",f:"xkcd_2311_confidence_interval.png",w:448,h:822},
+    {n:2048,t:"Curve-Fitting",f:"xkcd_2048_curve_fitting.png",w:1241,h:1968},
+    {n:2701,t:"Change in Slope",f:"xkcd_2701_change_in_slope.png",w:1312,h:741},
+    {n:605,t:"Extrapolating",f:"xkcd_0605_extrapolating.png",w:461,h:295},
+    {n:2618,t:"Selection Bias",f:"xkcd_2618_selection_bias.png",w:556,h:547},
+    {n:1999,t:"Selection Effect",f:"xkcd_1999_selection_effect.png",w:510,h:730},
+    {n:1950,t:"Chicken Pox and Name Statistics",f:"xkcd_1950_chicken_pox_and_name_statistics.png",w:800,h:1492},
+    {n:2110,t:"Error Bars",f:"xkcd_2110_error_bars.png",w:672,h:642},
+    {n:2726,t:"Methodology Trial",f:"xkcd_2726_methodology_trial.png",w:678,h:918}
+  ];
+
+  var img = document.getElementById("comic");
+  var frame = document.getElementById("frame");
+  var link = document.getElementById("link");
+  var credit = document.getElementById("credit");
+  var creditTitle = credit.querySelector(".title");
+  var randomBtn = document.getElementById("random");
+  var todayBtn = document.getElementById("today");
+
+  var params = new URLSearchParams(location.search);
+  if (params.has("embed")) document.body.classList.add("embed");
+  if (params.get("theme") === "dark" || params.get("theme") === "light") {
+    document.documentElement.setAttribute("data-theme", params.get("theme"));
+  }
+
+  // Days since the epoch in the viewer's own date, so the comic turns over at
+  // their local midnight rather than at UTC.
+  function dayNumber() {
+    var now = new Date();
+    return Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+  }
+
+  function todayIndex() {
+    return ((dayNumber() % COMICS.length) + COMICS.length) % COMICS.length;
+  }
+
+  var current = -1;
+
+  function show(i, isToday) {
+    if (i === current) return;
+    current = i;
+    var c = COMICS[i];
+    var page = "https://xkcd.com/" + c.n + "/";
+
+    frame.classList.add("loading");
+    img.width = c.w;
+    img.height = c.h;
+    // Never upscale past the file's own resolution: a few of the older
+    // comics are only a couple of hundred pixels wide.
+    img.style.maxWidth = "min(100%, " + c.w + "px)";
+    img.alt = "xkcd comic " + c.n + ", " + c.t;
+    img.src = "img/" + c.f;
+    link.href = page;
+    credit.href = page;
+    creditTitle.textContent = "xkcd " + c.n + ": " + c.t;
+    todayBtn.hidden = !!isToday;
+  }
+
+  img.addEventListener("load", function () {
+    frame.classList.remove("loading");
+    reportHeight();
+  });
+  img.addEventListener("error", function () {
+    frame.classList.remove("loading");
+  });
+
+  function showToday() {
+    show(todayIndex(), true);
+    history.replaceState(null, "", location.pathname + (params.has("embed") ? "?embed=1" : ""));
+  }
+
+  function showRandom() {
+    if (COMICS.length < 2) return;
+    var i;
+    do { i = Math.floor(Math.random() * COMICS.length); } while (i === current);
+    show(i, false);
+  }
+
+  randomBtn.addEventListener("click", showRandom);
+  todayBtn.addEventListener("click", showToday);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "r" || e.key === "R") showRandom();
+  });
+
+  // Lets a host page size the iframe to the content.
+  function reportHeight() {
+    if (window.parent === window) return;
+    var h = document.documentElement.scrollHeight;
+    parent.postMessage({ type: "xkcd-height", height: h }, "*");
+  }
+  window.addEventListener("resize", reportHeight);
+
+  // ?n=552 deep-links one comic; anything else falls back to the day's.
+  var asked = parseInt(params.get("n"), 10);
+  var found = -1;
+  for (var k = 0; k < COMICS.length; k++) {
+    if (COMICS[k].n === asked) { found = k; break; }
+  }
+  if (found >= 0) show(found, found === todayIndex());
+  else show(todayIndex(), true);
+})();
+</script>
+</body>
+</html>
