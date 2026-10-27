@@ -19,7 +19,7 @@ Research on assortative mating and ethnic boundaries in Sweden, lecture material
 │   ├── index.html          # Self-contained page, embeddable via ?embed=1
 │   └── img/                # 37 xkcd comics, CC BY-NC 2.5, Randall Munroe
 ├── teaching/
-│   └── sds-ii/             # SDS II lecture slides (Quarto/reveal.js)
+│   └── sds-ii-2025/        # SDS II lecture slides, 2025 round (Quarto/reveal.js)
 │       ├── Lecture_*.html   # Lecture presentations
 │       ├── Lab_*.html       # Lab sessions
 │       └── data/            # Simulated datasets and R scripts
@@ -39,7 +39,7 @@ To point a custom domain (`www.jesperlindmarker.com`):
 
 ## Teaching materials
 
-The `teaching/sds-ii/` directory contains reveal.js lecture slides generated with Quarto for the Statistics & Data Science II course. Each `.html` file has a companion `_files/` directory with JS/CSS dependencies. These are self-contained and render directly in the browser.
+The `teaching/sds-ii-2025/` directory contains reveal.js lecture slides generated with Quarto for the Statistics & Data Science II course. Each `.html` file has a companion `_files/` directory with JS/CSS dependencies. These are self-contained and render directly in the browser.
 
 ## Tech stack
 

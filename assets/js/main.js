@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Scroll-triggered fade-in animations ---
     const animateElements = () => {
         const targets = document.querySelectorAll(
-            '.research-simulation-inline, .paper-item, .timeline-item, .teaching-card, .papers-note, .contact-link'
+            '.research-simulation-inline, .paper-item, .timeline-item, .course, .papers-note, .contact-link'
         );
         targets.forEach(el => {
             if (!el.classList.contains('fade-in')) {
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     };
-    staggerElements('.teaching-card', '.teaching-grid');
+    staggerElements('.course', '.course-list');
     staggerElements('.timeline-item', '.timeline');
 
 });

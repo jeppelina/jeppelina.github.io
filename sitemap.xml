@@ -37,51 +37,9 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Lecture_0_Introduction.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Lecture_1.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Lecture_2.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Lecture_3.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Lecture_4.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Lecture_5.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Lecture_6.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.jesperlindmarker.com/teaching/sds-ii/Week_7_Causal_Approaches.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
+    <loc>https://www.jesperlindmarker.com/sds2/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

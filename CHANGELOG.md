@@ -12,6 +12,18 @@ All notable changes to this project will be documented in this file.
   - Single self-contained file, no build step, site CSS tokens inlined so it also works embedded on other sites. Images served locally from `xkcd/img/` rather than hot-linked, with natural dimensions baked in to reserve layout space and to stop the small older comics being upscaled
   - Comics are Randall Munroe's under CC BY-NC 2.5, shown unaltered with per-comic attribution linking to the original. The licence is non-commercial only, so putting ads on the site would end it
 
+### Changed
+- **New page: the SDS II course page** at `/sds2/`, a student-facing home for the course that is deliberately not about me. Its own stylesheet, palette and type follow the 2026 slide theme (Source Serif 4 / Source Sans 3, the three strand colours) so the page and the slides read as one thing. The only route back to the personal site is one quiet line at the bottom of a hamburger menu.
+  - **Weeks**: all eight listed, Week 1 live, the rest marked not posted
+  - **Lectures**: Week 1 slides served from `/sds2/lectures/`, copied from the course repo
+  - **Tools**: the two line widgets lifted out of the Week 1 lecture and rebuilt as standalone, responsive canvases in `/sds2/tools/line-tools.js`. The first is a bare intercept and slope on an empty grid, the second puts the same line over the 495 simulated students with residual whiskers, a best-line overlay and a live sum of squared residuals. Hover or touch to read a point off the line
+  - **Earlier rounds**: one line saying 2025 material is not available
+- **SDS II teaching section on the homepage is now a course summary, not a slide index.** The Teaching nav still scrolls to it; it lists Statistics and Data Science II (2025 to 2026, with a link to the course page) and Behavioural Mechanisms (2023 to 2024), and nothing else.
+  - `teaching/sds-ii/` renamed to `teaching/sds-ii-2025/`, which frees `teaching/sds-ii/` for the new round and makes the old lecture URLs 404
+  - The eight lecture URLs are dropped from `sitemap.xml`, `/sds2/` is added, and the homepage `lastmod` is bumped
+  - The CV's teaching entry now points at the course page rather than the homepage anchor
+
+
 ## [2.5.0] - 2026-05-06
 
 ### Changed

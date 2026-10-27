@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistics and Data Science II</title>
+<meta name="description" content="Course page for Statistics and Data Science II (771A17 and 771A18), MSc programme in Computational Social Science, Linköping University. Lecture slides, material and tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="course.css?v=4">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+    <div class="bar-inner">
+        <span class="bar-code">771A17 &middot; 771A18</span>
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">
+            <span class="menu-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="sr">Menu</span>
+        </button>
+    </div>
+    <nav class="menu" id="menu" hidden>
+        <a href="#weeks">Weeks</a>
+        <a href="#tools">Tools</a>
+        <a href="mailto:jesper.lindmarker@liu.se">jesper.lindmarker@liu.se</a>
+        <a href="https://www.jesperlindmarker.com/" class="menu-away">Jesper Lindmarker's site</a>
+    </nav>
+</header>
+
+<main id="main">
+
+    <section class="hero">
+        <p class="eyebrow">Autumn 2026</p>
+        <h1>Statistics and Data Science II</h1>
+        <p class="lede">MSc programme in Computational Social Science, Linköping University. The course
+            works from reading a scatterplot through to saying what would settle an argument about cause.</p>
+    </section>
+
+    <section class="block" id="weeks">
+        <h2>Weeks</h2>
+        <p class="block-note">Slides go up here after each lecture.</p>
+
+        <ol class="weeks">
+            <li class="week">
+                <span class="week-no">Week 0</span>
+                <span class="week-title">Course introduction</span>
+                <span class="week-state">Not posted</span>
+            </li>
+            <li class="week is-live">
+                <span class="week-no">Week 1</span>
+                <span class="week-title">From correlation to regression</span>
+                <a class="week-link" href="lectures/Lecture_1.html">Slides</a>
+            </li>
+            <li class="week">
+                <span class="week-no">Week 2</span>
+                <span class="week-title">Reading a regression properly</span>
+                <span class="week-state">Not posted</span>
+            </li>
+            <li class="week">
+                <span class="week-no">Week 3</span>
+                <span class="week-title">Adding variables</span>
+                <span class="week-state">Not posted</span>
+            </li>
+            <li class="week">
+                <span class="week-no">Week 4</span>
+                <span class="week-title">Interrogating an association</span>
+                <span class="week-state">Not posted</span>
+            </li>
+            <li class="week">
+                <span class="week-no">Week 5</span>
+                <span class="week-title">When the association differs</span>
+                <span class="week-state">Not posted</span>
+            </li>
+            <li class="week">
+                <span class="week-no">Week 6</span>
+                <span class="week-title">Binary outcomes</span>
+                <span class="week-state">Not posted</span>
+            </li>
+            <li class="week">
+                <span class="week-no">Week 7</span>
+                <span class="week-title">What would settle the argument</span>
+                <span class="week-state">Not posted</span>
+            </li>
+        </ol>
+    </section>
+
+    <section class="block" id="tools">
+        <h2>Tools</h2>
+
+        <article class="tool">
+            <h3>Straight line equation</h3>
+            <p>Move the intercept and the slope, and see what each one does to the line.</p>
+
+            <div class="knobs">
+                <div class="canvas-wrap"><canvas id="toolLineCv"></canvas></div>
+                <p class="eq">y = <span id="toolLineEq"></span>x</p>
+                <div class="knob-row">
+                    <span class="knob">
+                        <label for="toolLineA">intercept <i>a</i></label>
+                        <input id="toolLineA" type="range" min="0" max="100" step="1">
+                    </span>
+                    <span class="knob">
+                        <label for="toolLineB">slope <i>b</i></label>
+                        <input id="toolLineB" type="range" min="-5" max="5" step="0.05">
+                    </span>
+                    <button type="button" class="reset" id="toolLineReset">Reset</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="tool">
+            <h3>Regression line</h3>
+            <p>Fit a line to the data and see how the sum of squared residuals change. Compare with the
+                regression line.</p>
+
+            <div class="knobs">
+                <div class="canvas-wrap"><canvas id="toolFitCv"></canvas></div>
+                <p class="eq">&#375; = <span id="toolFitEq"></span>hours studied</p>
+                <div class="knob-row">
+                    <span class="knob">
+                        <label for="toolFitA">intercept <i>a</i></label>
+                        <input id="toolFitA" type="range" min="60" max="140" step="0.5">
+                    </span>
+                    <span class="knob">
+                        <label for="toolFitB">slope <i>b</i></label>
+                        <input id="toolFitB" type="range" min="-2" max="3" step="0.01">
+                    </span>
+                    <button type="button" class="reset" id="toolFitReset">Reset</button>
+                </div>
+                <div class="knob-row knob-checks">
+                    <label><input id="toolFitLine" type="checkbox"> regression line</label>
+                    <label><input id="toolFitSsr" type="checkbox"> sum of squared residuals</label>
+                    <span class="stat" id="toolFitStat"></span>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="block" id="archive">
+        <h2>Earlier rounds</h2>
+        <p class="archive-line"><span>2025</span> Material not available.</p>
+    </section>
+
+</main>
+
+<footer class="foot">
+    <p>Statistics and Data Science II &middot; Institute for Analytical Sociology, Linköping University</p>
+    <p><a href="mailto:jesper.lindmarker@liu.se">jesper.lindmarker@liu.se</a></p>
+</footer>
+
+<script>
+(function () {
+    var btn = document.getElementById("menuBtn");
+    var menu = document.getElementById("menu");
+
+    function setOpen(open) {
+        btn.setAttribute("aria-expanded", String(open));
+        menu.hidden = !open;
+        document.body.classList.toggle("menu-open", open);
+    }
+
+    btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        setOpen(menu.hidden);
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!menu.hidden && !menu.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !menu.hidden) { setOpen(false); btn.focus(); }
+    });
+
+    menu.addEventListener("click", function (e) {
+        if (e.target.tagName === "A") setOpen(false);
+    });
+})();
+</script>
+<script src="tools/line-tools.js?v=2"></script>
+
+</body>
+</html>
