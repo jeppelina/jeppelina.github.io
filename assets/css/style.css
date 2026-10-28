@@ -57,6 +57,8 @@
 
 html {
     scroll-behavior: smooth;
+    /* clear the fixed nav when jumping to an anchor */
+    scroll-padding-top: 80px;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
 }

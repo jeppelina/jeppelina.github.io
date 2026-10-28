@@ -24,6 +24,11 @@ All notable changes to this project will be documented in this file.
   - The CV's teaching entry now points at the course page rather than the homepage anchor
 
 
+### Fixed
+- **Nav anchors landed in the wrong section.** Clicking Teaching parked you on GreenCup in the history timeline rather than on Courses. The two timeline images carried no intrinsic dimensions, so they measured zero height when the anchor jump was computed and then pushed everything below them down as they loaded. All four images now declare `width` and `height`, which reserves the right box before the bytes arrive and removes the layout shift generally.
+- `scroll-padding-top: 80px` on `html`, so an anchor jump clears the 65px fixed nav instead of hiding the section heading behind it. Every section now settles 80px from the top.
+
+
 ## [2.5.0] - 2026-05-06
 
 ### Changed
