@@ -29,6 +29,9 @@ All notable changes to this project will be documented in this file.
 - `scroll-padding-top: 80px` on `html`, so an anchor jump clears the 65px fixed nav instead of hiding the section heading behind it. Every section now settles 80px from the top.
 
 
+- **The cookbook route map showed "API KEY REQUIRED" instead of a map.** CARTO's basemap CDN now wants a key and answers every anonymous tile request with the same watermark PNG, whatever the coordinates. The map moved to OpenStreetMap's own tiles, which need no key, with a light `saturate(0.6)` on the tile pane so the rust route line stays the loudest thing on the map and the basemap keeps the quiet feel CARTO was giving.
+
+
 ## [2.5.0] - 2026-05-06
 
 ### Changed
