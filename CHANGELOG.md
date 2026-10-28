@@ -24,12 +24,20 @@ All notable changes to this project will be documented in this file.
   - The CV's teaching entry now points at the course page rather than the homepage anchor
 
 
+### Added
+- **Photographs on the cookbook route map.** Each of the twelve countries now opens with a picture pulled from the book itself, so the map shows the journey rather than only listing it.
+  - The photo runs edge to edge across the top of the marker popup; the sidebar carries the same picture as a small thumbnail beside each country name
+  - Picks lean on what the chapter is actually about: the sign outside the old post office in Prague, Johnica at his pot in the Parang mountains, the table laid to break Ramadan with Ziya in Giresun, the Darvaza gas crater in Turkmenistan, a bazaar in Uzbekistan, a horse on the Kazakh steppe, the petrol station borscht, the open steppe outside Ulan Bator
+  - Eleven of the twelve are the authors' own, per the book's photo references; Azerbaijan's chapter has no author photograph that works on its own, so its sunset over the Caspian is The Fire Fairies' and is credited in the popup
+  - Lifted straight out of the print PDF as the underlying bitmaps, so no caption or page number comes with them, then cropped to 4:3 and saved as WebP at 760px (popup) and 200px (thumbnail). 788 KB for all twenty-four files, all lazily loaded
+
 ### Fixed
 - **Nav anchors landed in the wrong section.** Clicking Teaching parked you on GreenCup in the history timeline rather than on Courses. The two timeline images carried no intrinsic dimensions, so they measured zero height when the anchor jump was computed and then pushed everything below them down as they loaded. All four images now declare `width` and `height`, which reserves the right box before the bytes arrive and removes the layout shift generally.
 - `scroll-padding-top: 80px` on `html`, so an anchor jump clears the 65px fixed nav instead of hiding the section heading behind it. Every section now settles 80px from the top.
 
 
-- **The cookbook route map showed "API KEY REQUIRED" instead of a map.** CARTO's basemap CDN now wants a key and answers every anonymous tile request with the same watermark PNG, whatever the coordinates. The map moved to OpenStreetMap's own tiles, which need no key, with a light `saturate(0.6)` on the tile pane so the rust route line stays the loudest thing on the map and the basemap keeps the quiet feel CARTO was giving.
+- **The cookbook route map was invisible on phones.** `#map` kept `flex: 1` from the desktop rule inside a column layout of indefinite height, so its flex basis of zero won over `height: 50vh` and the map collapsed to nothing below 768px. It now opts out of flexing and stands 60vh tall, and popups cap their height and letterbox their photo so they cannot outgrow the map that clips them.
+- - **The cookbook route map showed "API KEY REQUIRED" instead of a map.** CARTO's basemap CDN now wants a key and answers every anonymous tile request with the same watermark PNG, whatever the coordinates. The map moved to OpenStreetMap's own tiles, which need no key, with a light `saturate(0.6)` on the tile pane so the rust route line stays the loudest thing on the map and the basemap keeps the quiet feel CARTO was giving.
 
 
 ## [2.5.0] - 2026-05-06

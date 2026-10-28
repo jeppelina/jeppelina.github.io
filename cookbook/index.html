@@ -125,16 +125,29 @@
         }
         .country-item:hover { background: #f5f4f0; }
         .country-item.active { background: #FFF0EC; }
+        .country-head {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .country-thumb {
+            width: 68px;
+            height: 51px;
+            flex-shrink: 0;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #eceae5;
+        }
         .country-name {
             font-family: var(--font-serif);
             font-size: 1rem;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
         }
         .country-distance {
             font-family: var(--font-mono);
             font-size: 0.7rem;
             color: var(--color-text-muted);
-            margin-bottom: 0.5rem;
         }
         .recipe-list {
             list-style: none;
@@ -168,9 +181,42 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.12);
             font-family: var(--font-sans);
         }
+        /* The photo runs edge to edge at the top of the popup, so the padding
+           moves off the content wrapper and onto .popup-body below it. */
         .leaflet-popup-content {
-            margin: 14px 16px;
+            margin: 0;
             line-height: 1.5;
+        }
+        .popup-photo {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+            background: #eceae5;
+        }
+        .popup-body { padding: 12px 16px 14px; }
+
+        /* The close button now sits on the photo, so it needs to read against
+           a bright sky as well as a dark one. */
+        .leaflet-container a.leaflet-popup-close-button {
+            width: 22px;
+            height: 22px;
+            margin: 7px 7px 0 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.45);
+            color: #fff;
+            font: 16px/21px var(--font-sans);
+            text-align: center;
+        }
+        .leaflet-container a.leaflet-popup-close-button:hover {
+            background: var(--color-accent);
+            color: #fff;
+        }
+        .popup-credit {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: #aaa;
+            margin-top: 10px;
         }
         .popup-country {
             font-family: var(--font-serif);
@@ -209,7 +255,22 @@
                 height: auto;
             }
             #map {
-                height: 50vh;
+                /* flex: 1 from the desktop rule means flex-basis: 0, and in a
+                   column with no definite height that collapses the map to
+                   nothing. Opt out of flexing so the height below applies. */
+                flex: none;
+                height: 60vh;
+            }
+            /* A popup is clipped by the map it sits in, and on a phone that is
+               not much room. The photo becomes a letterbox strip, and the
+               content scrolls on the shortest screens. */
+            .popup-photo {
+                height: 110px;
+                object-fit: cover;
+            }
+            .leaflet-popup-content {
+                max-height: calc(60vh - 80px);
+                overflow-y: auto;
             }
             .sidebar {
                 width: 100%;
@@ -252,6 +313,8 @@
     const stops = [
         {
             country: "Sweden",
+            photo: "sweden",
+            alt: "New potatoes scattered on a concrete slab",
             lat: 59.33, lng: 18.07,
             distance: "0 km",
             story: "The journey began in Stockholm on June 12, 2012. Three friends, a Hyundai Getz, and a vague plan to reach Mongolia.",
@@ -263,6 +326,8 @@
         },
         {
             country: "Germany",
+            photo: "germany",
+            alt: "A split bratwurst with sauerkraut and grain mustard",
             lat: 52.52, lng: 13.41,
             distance: "1,083 km",
             story: "The autobahn experience was humbling — the Getz was outpaced by everything. In Berlin, they made bratwurst from scratch with their hosts Daniel and Mui.",
@@ -272,6 +337,8 @@
         },
         {
             country: "Czech Republic",
+            photo: "czechia",
+            alt: "The wrought-iron sign of U Staré Pošty, the old post office in Prague",
             lat: 50.08, lng: 14.44,
             distance: "1,429 km",
             story: "In Prague, they found a pub that used to be a post office with a massive underground cellar kitchen, and cooked a Czech classic.",
@@ -281,6 +348,8 @@
         },
         {
             country: "Romania",
+            photo: "romania",
+            alt: "A cook lifting corn from a steaming pot at the roadside",
             lat: 45.65, lng: 24.35,
             distance: "2,983 km",
             story: "Crossing the Transalpina mountain pass, they met Johnica — a construction worker with a passion for Japanese gardening — who cooked a mountain stew. On the coast at Vama Veche, a fisherman grilled turbot basted in lemon and beer.",
@@ -292,6 +361,8 @@
         },
         {
             country: "Turkey",
+            photo: "turkey",
+            alt: "A table laid with the dishes cooked with Ziya to break Ramadan",
             lat: 41.01, lng: 28.98,
             distance: "~4,000 km",
             story: "Istanbul brought Sultan's Delight and köfte. Along the Black Sea coast in Giresun — cherry capital of the world — they learned to braise cherries and forage wild mushrooms.",
@@ -304,6 +375,8 @@
         },
         {
             country: "Georgia",
+            photo: "georgia",
+            alt: "Khinkali dumplings plated with peppers and dill",
             lat: 41.72, lng: 44.79,
             distance: "~5,500 km",
             story: "Tbilisi delivered khinkali — Georgian dumplings — made in what they describe as a dungeon-like cellar kitchen.",
@@ -313,6 +386,9 @@
         },
         {
             country: "Azerbaijan",
+            photo: "azerbaijan",
+            alt: "Sunset over the Caspian Sea",
+            credit: "The Fire Fairies",
             lat: 40.41, lng: 49.87,
             distance: "~6,000 km",
             story: "Somewhere between the Georgian border and Baku, roadside stops yielded a warming chicken soup and a quick omelette — simple food from generous strangers.",
@@ -323,6 +399,8 @@
         },
         {
             country: "Turkmenistan",
+            photo: "turkmenistan",
+            alt: "Flames across the floor of the Darvaza gas crater, the Door to Hell",
             lat: 40.0, lng: 57.5,
             distance: "~7,500 km",
             story: "The Karakum Desert crossing meant navigating unreliable fuel supplies and intense heat. In Erbent, an oasis town, they found steamed dumplings with yogurt and proper shashlik kebabs. Somewhere in the Dashoguz region, flatbread was baked in a clay oven.",
@@ -334,6 +412,8 @@
         },
         {
             country: "Uzbekistan",
+            photo: "uzbekistan",
+            alt: "Open sacks of grain and spice at a bazaar",
             lat: 41.31, lng: 69.28,
             distance: "~8,500 km",
             story: "The Silk Road cities of Khiva, Bukhara, and Samarkand. Plov — the Uzbek national dish — was cooked in a huge kazan between Khiva and Gazli. Shashlik by Yuliya somewhere on the road to Samarkand.",
@@ -345,6 +425,8 @@
         },
         {
             country: "Kazakhstan",
+            photo: "kazakhstan",
+            alt: "A horse grazing on the steppe below distant mountains",
             lat: 48.0, lng: 68.0,
             distance: "~10,000 km",
             story: "The vast Kazakh steppe. They tried qurut — dried fermented cheese balls — somewhere between Balqash and Karagandy (with a warning label). Beshbarmak, the horselord's dish, was the real prize.",
@@ -355,6 +437,8 @@
         },
         {
             country: "Russia",
+            photo: "russia",
+            alt: "A bowl of borscht with beef, soured cream and parsley",
             lat: 52.52, lng: 83.97,
             distance: "~12,000 km",
             story: "Crossing into Siberia at Novoaltaysk, near the Altai Mountains. A petrol station served surprisingly good borscht.",
@@ -364,6 +448,8 @@
         },
         {
             country: "Mongolia",
+            photo: "mongolia",
+            alt: "Dirt tracks running out across the open Mongolian steppe",
             lat: 47.92, lng: 106.92,
             distance: "~15,000 km",
             story: "The final destination. In Ulan Bator they learned khuushuur (fried meat pies) and khorkhog (meat cooked with hot stones). Out on the steppe, a countryside soup was made in a yurt.",
@@ -487,19 +573,35 @@
             `<div class="popup-recipe">${r.name}</div><div class="popup-story" style="font-size:0.7rem;color:#999;">${r.location}</div>`
         ).join('');
 
+        // Photo banner. The width/height attributes are the file's real
+        // dimensions: the CSS scales it down, and the ratio stops the popup
+        // from jumping about while the image loads.
+        const photoHtml = `
+            <img class="popup-photo" src="photos/${stop.photo}.webp" alt="${stop.alt}"
+                 width="760" height="570" loading="lazy">
+        `;
+
+        const creditHtml = stop.credit
+            ? `<div class="popup-credit">Photo by ${stop.credit}</div>`
+            : '';
+
         const popupContent = `
-            <div class="popup-country">${stop.country}</div>
-            <div class="popup-location">${stop.distance} from Stockholm</div>
-            <div class="popup-story">${stop.story}</div>
-            <div style="margin-top:10px;padding-top:8px;border-top:1px solid #eee;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#B44A2D;margin-bottom:6px;">Recipes</div>
-                ${recipesHtml}
+            ${photoHtml}
+            <div class="popup-body">
+                <div class="popup-country">${stop.country}</div>
+                <div class="popup-location">${stop.distance} from Stockholm</div>
+                <div class="popup-story">${stop.story}</div>
+                <div style="margin-top:10px;padding-top:8px;border-top:1px solid #eee;">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#B44A2D;margin-bottom:6px;">Recipes</div>
+                    ${recipesHtml}
+                </div>
+                ${creditHtml}
             </div>
         `;
 
         const marker = L.marker([stop.lat, stop.lng], { icon: createIcon(i) })
             .addTo(map)
-            .bindPopup(popupContent, { maxWidth: 300 });
+            .bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
 
         markers.push(marker);
 
@@ -507,8 +609,14 @@
         const el = document.createElement('div');
         el.className = 'country-item';
         el.innerHTML = `
-            <div class="country-name">${i + 1}. ${stop.country}</div>
-            <div class="country-distance">${stop.distance} from Stockholm</div>
+            <div class="country-head">
+                <img class="country-thumb" src="photos/${stop.photo}-thumb.webp" alt=""
+                     width="200" height="150" loading="lazy">
+                <div>
+                    <div class="country-name">${i + 1}. ${stop.country}</div>
+                    <div class="country-distance">${stop.distance} from Stockholm</div>
+                </div>
+            </div>
             <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#B44A2D;margin:8px 0 4px;">Recipes</div>
             <ul class="recipe-list">
                 ${stop.recipes.map(r => `<li>${r.name} <span class="recipe-location">${r.location}</span></li>`).join('')}
