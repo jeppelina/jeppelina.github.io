@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file.
 - **Photographs on the cookbook route map.** Each of the twelve countries now opens with a picture pulled from the book itself, so the map shows the journey rather than only listing it.
   - The photo runs edge to edge across the top of the marker popup; the sidebar carries the same picture as a small thumbnail beside each country name
   - Picks lean on what the chapter is actually about: the sign outside the old post office in Prague, Johnica at his pot in the Parang mountains, the table laid to break Ramadan with Ziya in Giresun, the Darvaza gas crater in Turkmenistan, a bazaar in Uzbekistan, a horse on the Kazakh steppe, the petrol station borscht, the open steppe outside Ulan Bator
-  - Eleven of the twelve are the authors' own, per the book's photo references; Azerbaijan's chapter has no author photograph that works on its own, so its sunset over the Caspian is The Fire Fairies' and is credited in the popup
+  - Eleven of the twelve are the authors' own, per the book's photo references; Azerbaijan's chapter has no author photograph that works on its own, so its sunset over the Caspian is The Fire Fairies', used uncredited on the page as the book's own credits already carry it
   - Lifted straight out of the print PDF as the underlying bitmaps, so no caption or page number comes with them, then cropped to 4:3 and saved as WebP at 760px (popup) and 200px (thumbnail). 788 KB for all twenty-four files, all lazily loaded
 
 ### Fixed
@@ -36,7 +36,12 @@ All notable changes to this project will be documented in this file.
 - `scroll-padding-top: 80px` on `html`, so an anchor jump clears the 65px fixed nav instead of hiding the section heading behind it. Every section now settles 80px from the top.
 
 
-- **The cookbook route map was invisible on phones.** `#map` kept `flex: 1` from the desktop rule inside a column layout of indefinite height, so its flex basis of zero won over `height: 50vh` and the map collapsed to nothing below 768px. It now opts out of flexing and stands 60vh tall, and popups cap their height and letterbox their photo so they cannot outgrow the map that clips them.
+- **The cookbook route map was invisible on phones.** `#map` kept `flex: 1` from the desktop rule inside a column layout of indefinite height, so its flex basis of zero won over `height: 50vh` and the map collapsed to nothing below 768px. It now opts out of flexing and stands 60vh tall.
+- **Popup cards ran out past the edge of the map, where they could not be read or closed.** A popup is clipped by the map it sits in, and with a photograph on top the cards had outgrown both the 500px homepage iframe and a phone.
+  - The card's height and width now follow the map's own, measured in script and passed to the stylesheet as two custom properties: the photo shrinks with the room available, from a 240px banner down to an 80px strip, and the text scrolls below it. Re-measured whenever the map changes size, so the iframe and a turned phone are covered
+  - Clicking a country in the sidebar flies to a view that leaves the whole card visible, the pin low and the card filling the space above it, instead of centring the pin and letting the card hang off the top. The card opens when the flight lands rather than while it is still moving, with a fallback that goes straight there if the flight never reports back
+  - Clicking a pin checks the card once the view is at rest and brings the view to where all of it shows
+  - Leaflet's own auto-pan is off. It moves only as far as it must, which is not far enough for a card this tall, and its `_adjustPan` throws on a popup that has just been replaced, which killed the animation frame loop and left the map unable to move at all. The opening `fitBounds` is no longer animated either, so an early click cannot interrupt it
 - - **The cookbook route map showed "API KEY REQUIRED" instead of a map.** CARTO's basemap CDN now wants a key and answers every anonymous tile request with the same watermark PNG, whatever the coordinates. The map moved to OpenStreetMap's own tiles, which need no key, with a light `saturate(0.6)` on the tile pane so the rust route line stays the loudest thing on the map and the basemap keeps the quiet feel CARTO was giving.
 
 

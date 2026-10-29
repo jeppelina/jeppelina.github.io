@@ -182,15 +182,25 @@
             font-family: var(--font-sans);
         }
         /* The photo runs edge to edge at the top of the popup, so the padding
-           moves off the content wrapper and onto .popup-body below it. */
+           moves off the content wrapper and onto .popup-body below it.
+
+           A popup is clipped by the map it sits in, and that map is anything
+           from a full window to a short iframe on the homepage. The two
+           variables are measured in script below: the photo shrinks with the
+           room available and the text scrolls, rather than the card running
+           off the top of the map where it cannot be read or closed. */
         .leaflet-popup-content {
             margin: 0;
             line-height: 1.5;
+            max-height: var(--popup-max-h, 420px);
+            overflow-y: auto;
+            overscroll-behavior: contain;
         }
         .popup-photo {
             display: block;
-            max-width: 100%;
-            height: auto;
+            width: 100%;
+            height: var(--popup-photo-h, auto);
+            object-fit: cover;
             border-radius: 10px 10px 0 0;
             background: #eceae5;
         }
@@ -211,12 +221,6 @@
         .leaflet-container a.leaflet-popup-close-button:hover {
             background: var(--color-accent);
             color: #fff;
-        }
-        .popup-credit {
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            color: #aaa;
-            margin-top: 10px;
         }
         .popup-country {
             font-family: var(--font-serif);
@@ -260,17 +264,6 @@
                    nothing. Opt out of flexing so the height below applies. */
                 flex: none;
                 height: 60vh;
-            }
-            /* A popup is clipped by the map it sits in, and on a phone that is
-               not much room. The photo becomes a letterbox strip, and the
-               content scrolls on the shortest screens. */
-            .popup-photo {
-                height: 110px;
-                object-fit: cover;
-            }
-            .leaflet-popup-content {
-                max-height: calc(60vh - 80px);
-                overflow-y: auto;
             }
             .sidebar {
                 width: 100%;
@@ -388,7 +381,6 @@
             country: "Azerbaijan",
             photo: "azerbaijan",
             alt: "Sunset over the Caspian Sea",
-            credit: "The Fire Fairies",
             lat: 40.41, lng: 49.87,
             distance: "~6,000 km",
             story: "Somewhere between the Georgian border and Baku, roadside stops yielded a warming chicken soup and a quick omelette — simple food from generous strangers.",
@@ -567,6 +559,49 @@
     const countryListEl = document.getElementById('country-list');
     const markers = [];
 
+    // Where the view has to sit for the whole card to show: the stop itself
+    // near the bottom edge, the card filling the room above it. Centring the
+    // stop instead, as the map used to, leaves a card this tall hanging off
+    // the top where it can be neither read nor closed.
+    const aimAt = (stop, zoom) => {
+        const drop = Math.max(0, map.getContainer().clientHeight / 2 - 32);
+        return map.unproject(map.project([stop.lat, stop.lng], zoom).subtract([0, drop]), zoom);
+    };
+
+    // Measuring a card, or reading the zoom, while the view is still moving
+    // gives numbers that are about to change, so anything that depends on
+    // where things have ended up waits for this to go quiet.
+    let viewMoving = false;
+    map.on('movestart', () => { viewMoving = true; });
+    map.on('moveend', () => { viewMoving = false; });
+
+    // Clicking a country in the sidebar flies there and opens its card.
+    let flightId = 0;
+    const flyToStop = (stop, marker) => {
+        const id = ++flightId;
+        const zoom = 7;
+
+        // Open it when the flight has actually landed, not on a timer that
+        // can come up a frame early and leave the card being dragged along
+        // by the rest of the flight.
+        const land = () => {
+            map.off('moveend', land);
+            if (id === flightId) marker.openPopup();   // a newer click wins
+        };
+
+        map.flyTo(aimAt(stop, zoom), zoom, { duration: 1 });
+        map.on('moveend', land);
+
+        // And if that event never arrives, go straight there without the
+        // flight rather than leave the click unanswered.
+        setTimeout(() => {
+            if (id !== flightId || marker.isPopupOpen()) return;
+            map.off('moveend', land);
+            map.setView(aimAt(stop, zoom), zoom, { animate: false });
+            marker.openPopup();
+        }, 1400);
+    };
+
     stops.forEach((stop, i) => {
         // Popup content
         const recipesHtml = stop.recipes.map(r =>
@@ -581,10 +616,6 @@
                  width="760" height="570" loading="lazy">
         `;
 
-        const creditHtml = stop.credit
-            ? `<div class="popup-credit">Photo by ${stop.credit}</div>`
-            : '';
-
         const popupContent = `
             ${photoHtml}
             <div class="popup-body">
@@ -595,13 +626,31 @@
                     <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#B44A2D;margin-bottom:6px;">Recipes</div>
                     ${recipesHtml}
                 </div>
-                ${creditHtml}
             </div>
         `;
 
         const marker = L.marker([stop.lat, stop.lng], { icon: createIcon(i) })
             .addTo(map)
-            .bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
+            .bindPopup(popupContent, { maxWidth: 320, minWidth: 320, autoPan: false });
+
+        // A pin click opens the card where the pin happens to be, which
+        // with a card this tall usually means part of it hangs outside the
+        // map. So once the view is at rest, check the card and, if any of it
+        // is out, take the view to where all of it shows.
+        const bringCardIntoView = () => {
+            if (!marker.isPopupOpen()) return;
+            const box = map.getContainer().getBoundingClientRect();
+            const card = marker.getPopup().getElement().getBoundingClientRect();
+            const inside = card.top >= box.top && card.bottom <= box.bottom
+                && card.left >= box.left && card.right <= box.right;
+            if (!inside) map.panTo(aimAt(stop, map.getZoom()), { duration: 0.4 });
+        };
+
+        marker.on('click', () => {
+            if (!marker.isPopupOpen()) return;
+            if (viewMoving) map.once('moveend', bringCardIntoView);
+            else bringCardIntoView();
+        });
 
         markers.push(marker);
 
@@ -623,16 +672,46 @@
             </ul>
         `;
         el.addEventListener('click', () => {
-            map.flyTo([stop.lat, stop.lng], 7, { duration: 1 });
-            marker.openPopup();
+            flyToStop(stop, marker);
             document.querySelectorAll('.country-item').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
         });
         countryListEl.appendChild(el);
     });
 
-    // Fit bounds to route
-    map.fitBounds(routeCoords, { padding: [30, 30] });
+    // Hand the stylesheet the room the map actually has. The height drives
+    // the scroll cap and the photo, the width keeps the card inside a narrow
+    // map; both are re-measured when the map changes size, which covers the
+    // homepage iframe as well as a turned phone.
+    const fitPopups = () => {
+        const box = map.getContainer();
+        // Room left for the card once the tip below it and a margin at both
+        // ends are accounted for.
+        const room = Math.max(170, box.clientHeight - 72);
+        const width = Math.max(220, Math.min(320, box.clientWidth - 40));
+        const photoH = Math.round(Math.max(80, Math.min(240, room * 0.36)));
+
+        box.style.setProperty('--popup-max-h', room + 'px');
+        box.style.setProperty('--popup-photo-h', photoH + 'px');
+
+        markers.forEach(m => {
+            const popup = m.getPopup();
+            popup.options.maxWidth = width;
+            popup.options.minWidth = width;
+            if (popup.isOpen()) popup.update();
+        });
+    };
+
+    fitPopups();
+    if (window.ResizeObserver) {
+        new ResizeObserver(fitPopups).observe(map.getContainer());
+    } else {
+        window.addEventListener('resize', fitPopups);
+    }
+    // Fit bounds to route. Not animated: an animation here can be cut off by
+    // a click that lands while it runs, and Leaflet does not always recover
+    // from that, after which nothing on the map moves again.
+    map.fitBounds(routeCoords, { padding: [30, 30], animate: false });
     </script>
     <script data-goatcounter="https://jeppelina.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
