@@ -637,13 +637,25 @@
         // with a card this tall usually means part of it hangs outside the
         // map. So once the view is at rest, check the card and, if any of it
         // is out, take the view to where all of it shows.
-        const bringCardIntoView = () => {
-            if (!marker.isPopupOpen()) return;
+        const cardIsInside = () => {
             const box = map.getContainer().getBoundingClientRect();
             const card = marker.getPopup().getElement().getBoundingClientRect();
-            const inside = card.top >= box.top && card.bottom <= box.bottom
+            return card.top >= box.top && card.bottom <= box.bottom
                 && card.left >= box.left && card.right <= box.right;
-            if (!inside) map.panTo(aimAt(stop, map.getZoom()), { duration: 0.4 });
+        };
+
+        const bringCardIntoView = () => {
+            if (!marker.isPopupOpen() || cardIsInside()) return;
+            map.panTo(aimAt(stop, map.getZoom()), { duration: 0.4 });
+
+            // And if that pan did not happen, which it will not in a tab
+            // nobody is looking at, go there outright rather than leave the
+            // card hanging outside the map.
+            setTimeout(() => {
+                if (!marker.isPopupOpen() || cardIsInside()) return;
+                const zoom = map.getZoom();
+                map.setView(aimAt(stop, zoom), zoom, { animate: false });
+            }, 600);
         };
 
         marker.on('click', () => {
