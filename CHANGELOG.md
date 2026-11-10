@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
   - **Guest list** at `/party/admin.html`, gated by a key kept in the gitignored `.party-admin-key`. Shows headcounts, diets and messages, keeps only the latest answer per email/phone, and exports CSV
 - **Design concepts** at `/party/concepts/`: five directions (rings, cut-outs, numbers, night, faces) built on one shared component, `head.js`
   - A black-and-white paper-cut head of Jesper in a doctoral hat, animated in stop motion. As you scroll it falls step by step onto a robe, becomes the data point on an interactive "how much doctor" plot, and lands at the RSVP in a party hat
+  - After each flip or fall the head comes to rest on a weighted random face (neutral most often, the smiles and sunglasses regularly, the crown profile and turned-away head now and then), and each flip is a fresh shuffle
   - Head frames in `concepts/heads/`. `inline_head.py` embeds the script and smaller frames into each page, so the pages also work when opened as plain files
 
 ## [2.6.0] - 2026-10-27

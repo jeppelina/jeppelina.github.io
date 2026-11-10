@@ -160,7 +160,22 @@ footer { padding:40px 16px 56px; text-align:center; font-size:15px; }
     f01_0: { crown: [72.02, 7.88], roll: -16.5, noHat: true },
     f18_3: { crown: [25.29, 15.0], roll: 12.3 }
   };
-  const CLIP = ['f26_0', 'f27_0', 'f02_0', 'f01_0', 'f18_3', 'f27_0', 'f00_0'];
+  // Where the head comes to rest after a flip or a fall: mostly the neutral face, but not always.
+  const REST = [['f00_0', 5], ['f26_0', 2.2], ['f27_0', 2.2], ['f02_0', 1.6], ['f01_0', 0.9], ['f18_3', 0.6]];
+  const FACES = Object.keys(HEADS);
+  function pickRest(prev) {
+    const opts = REST.filter(([n]) => n === 'f00_0' || n !== prev);   // only the neutral face may repeat
+    let r = Math.random() * opts.reduce((t, [, w]) => t + w, 0);
+    for (const [n, w] of opts) if ((r -= w) < 0) return n;
+    return 'f00_0';
+  }
+  function clipSequence(from) {          // 4-6 shuffled faces, never the same twice in a row, ending on a weighted pick
+    const seq = []; let last = from;
+    const len = 4 + Math.floor(Math.random() * 3);
+    while (seq.length < len) { const n = FACES[Math.floor(Math.random() * FACES.length)]; if (n !== last) { seq.push(n); last = n; } }
+    let end = pickRest(last); if (end === last) end = 'f00_0';
+    seq.push(end); return seq;
+  }
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const src = (n, v) => (window.PDP_HEADS && window.PDP_HEADS[`${n}_${v}`]) || `${BASE}heads/${n}_${v}.webp`;
   Object.keys(HEADS).forEach(n => [0, 1, 2].forEach(v => { const i = new Image(); i.src = src(n, v); }));
@@ -335,7 +350,7 @@ footer { padding:40px 16px 56px; text-align:center; font-size:15px; }
       if (k >= Math.floor(frames.length / 2)) hatType = nextHat;
       paint();
       if (++k < frames.length) timer = setTimeout(step, 85);
-      else { moving = false; Object.assign(cur, target(at)); paint(); const a = activeIndex(); if (a !== at) travel(a); }
+      else { moving = false; if (!busy) name = pickRest(name); Object.assign(cur, target(at)); paint(); const a = activeIndex(); if (a !== at) travel(a); }
     })();
   }
 
@@ -357,10 +372,10 @@ footer { padding:40px 16px 56px; text-align:center; font-size:15px; }
   setInterval(() => { if (!busy && !moving) { v = (v + 1) % 3; wob++; paint(); } }, 260);   // the boil
   function clip() {
     if (busy || moving) return; busy = true;
-    let i = 0;
+    const seq = clipSequence(name); let i = 0;
     (function step() {
-      name = CLIP[i]; v = i % 3; wob++; paint();
-      if (++i < CLIP.length) setTimeout(step, 340); else { name = 'f00_0'; busy = false; paint(); }
+      name = seq[i]; v = i % 3; wob++; paint();
+      if (++i < seq.length) setTimeout(step, 340); else { busy = false; }
     })();
   }
   el.addEventListener('click', clip);
