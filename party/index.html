@@ -183,7 +183,6 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
         <input type="text" name="plus_one_name" maxlength="120" data-tp="plusP" placeholder="Leave empty if it's just you"></label>
       <label class="f" id="dietWrap"><span data-t="dietL">Allergies or dietary needs</span>
         <input type="text" name="diet" maxlength="500" data-tp="dietP" placeholder="e.g. vegetarian, gluten-free (for both of you)"></label>
-      <label class="tick" id="costWrap"><input type="checkbox" name="accepts_cost"><span data-t="costL">I'm fine paying for my own dinner (about 500–700 kr) and drinks.</span></label>
       <label class="f"><span data-t="msgL">Anything else?</span>
         <textarea name="message" maxlength="1000" data-tp="msgP" placeholder="A greeting, a song request, a question…"></textarea></label>
       <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -234,11 +233,10 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       nameL: 'Your name', contactL: 'Email or phone', contactH: 'So I can send you the address.',
       plusL: 'Bringing someone? Their name', plusP: "Leave empty if it's just you",
       dietL: 'Allergies or dietary needs', dietP: 'e.g. vegetarian, gluten-free (for both of you)',
-      costL: "I'm fine paying for my own dinner (about 500–700 kr) and drinks.",
       msgL: 'Anything else?', msgP: 'A greeting, a song request, a question…',
       send: 'Send RSVP', sending: 'Sending…',
       eAttend: "Pick whether you're coming.", eName: 'Please write your name.', eContact: 'Please add an email or phone number.',
-      eCost: 'Please tick the box about paying for dinner.', eNet: 'Something went wrong. Try again, or tell Jesper directly.',
+      eNet: 'Something went wrong. Try again, or tell Jesper directly.',
       yayDinner: 'Yay!', msgDinner: "You're on the list! I'll send the address as soon as the place is booked.",
       yayLater: 'Nice!', msgLater: "See you later in the evening. I'll let you know where we are.",
       yayNo: 'Oh no!', msgNo: "Sorry you can't make it. Thanks for letting me know!",
@@ -267,11 +265,10 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       nameL: 'Ditt namn', contactL: 'Mejl eller telefon', contactH: 'Så att jag kan skicka adressen.',
       plusL: 'Tar du med någon? Hens namn', plusP: 'Lämna tomt om det bara är du',
       dietL: 'Allergier eller specialkost', dietP: 't.ex. vegetarisk, glutenfri (för er båda)',
-      costL: 'Jag är med på att betala min egen middag (ca 500–700 kr) och dryck.',
       msgL: 'Något mer?', msgP: 'En hälsning, en låtönskning, en fråga…',
       send: 'Skicka OSA', sending: 'Skickar…',
       eAttend: 'Välj om du kommer.', eName: 'Skriv ditt namn.', eContact: 'Fyll i mejl eller telefonnummer.',
-      eCost: 'Kryssa i rutan om att betala middagen.', eNet: 'Något gick fel. Försök igen, eller säg till Jesper direkt.',
+      eNet: 'Något gick fel. Försök igen, eller säg till Jesper direkt.',
       yayDinner: 'Jippi!', msgDinner: 'Du är med på listan! Jag skickar adressen så fort stället är bokat.',
       yayLater: 'Toppen!', msgLater: 'Vi ses senare på kvällen. Jag hör av mig om var vi är.',
       yayNo: 'Åh nej!', msgNo: 'Tråkigt att du inte kan. Tack för att du svarade!',
@@ -311,7 +308,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     $$('[data-attend]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.attend === v)));
     $('#fields').hidden = false;
     const dinner = v === 'dinner';
-    $('#dietWrap').hidden = !dinner; $('#costWrap').hidden = !dinner;
+    $('#dietWrap').hidden = !dinner;
     $('#plusWrap').hidden = v === 'no';
     $('.later').textContent = v === 'later' ? t('laterOn') : t('later');
     $('#err').hidden = true;
@@ -335,14 +332,12 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     if (!name) return fail(t('eName'), f.name);
     if (contact.length < 3) return fail(t('eContact'), f.contact);
     const dinner = state.attending === 'dinner';
-    if (dinner && !f.accepts_cost.checked) return fail(t('eCost'), f.accepts_cost);
     const plusName = state.attending === 'no' ? '' : f.plus_one_name.value.trim();
     const reply = {
       p_name: name, p_contact: contact, p_attending: state.attending,
       p_plus_one: !!plusName, p_plus_one_name: plusName || null,
       p_diet: dinner ? f.diet.value.trim() : null,
       p_message: f.message.value.trim(),
-      p_accepts_cost: dinner && f.accepts_cost.checked,
       p_lang: lang
     };
     const btn = $('#submit'); btn.disabled = true; btn.textContent = t('sending'); $('#err').hidden = true;
@@ -377,7 +372,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     const r = lastReply, f = $('#form');
     if (r) {
       f.name.value = r.p_name; f.contact.value = r.p_contact; f.message.value = r.p_message || '';
-      f.diet.value = r.p_diet || ''; f.plus_one_name.value = r.p_plus_one_name || ''; f.accepts_cost.checked = !!r.p_accepts_cost;
+      f.diet.value = r.p_diet || ''; f.plus_one_name.value = r.p_plus_one_name || '';
       setAttending(r.p_attending);
     }
   });
