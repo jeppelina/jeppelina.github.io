@@ -40,7 +40,7 @@
   const st = document.createElement('style');
   st.textContent = `
   .pdp-station { aspect-ratio:1; }
-  .pdp-traveler { position:absolute; left:0; top:0; width:120px; aspect-ratio:1; z-index:40; cursor:pointer; transform-origin:50% 62%; -webkit-tap-highlight-color:transparent; }
+  .pdp-traveler { position:absolute; left:0; top:0; width:120px; aspect-ratio:1; z-index:40; cursor:pointer; transform-origin:50% 50%; -webkit-tap-highlight-color:transparent; }
   .pdp-traveler img { position:absolute; inset:0; width:100%; height:100%; user-select:none; -webkit-user-drag:none;
     filter:drop-shadow(0 3px 0 rgba(0,0,0,.18)) drop-shadow(0 10px 14px rgba(0,0,0,.18)); }
   .pdp-traveler .hat { position:absolute; pointer-events:none; filter:drop-shadow(0 2px 0 rgba(0,0,0,.2)); }
@@ -49,6 +49,11 @@
   @media (min-width:720px) { .letter-row { grid-template-columns:1fr 210px; gap:40px; } }
   .pdp-robe { position:relative; width:min(190px,52vw); justify-self:center; }
   .pdp-robe::before { content:""; display:block; padding-top:85%; } /* head room, % of the robe's own width */
+  html, body { overflow-x:clip; }
+  @media (max-width:719px) {   /* phones: the robe leans in from outside the right edge, next to the letter */
+    .letter-row { grid-template-columns:1fr 64px; gap:6px; align-items:center; }
+    .letter-row .pdp-robe { width:134px; justify-self:start; margin-left:14px; transform:rotate(-11deg); transform-origin:50% 100%; }
+  }
   .pdp-robe .slot { position:absolute; left:-6%; width:112%; aspect-ratio:1; top:0; margin-top:16%; }
   .pdp-robe svg { display:block; width:100%; height:auto; filter:drop-shadow(0 3px 0 rgba(0,0,0,.15)) drop-shadow(0 10px 14px rgba(0,0,0,.15)); }
   .pdp-plot { --plot-ink:#1b1b1f; --plot-accent:#e8458b; --plot-band:#e8458b; position:relative; }
@@ -90,7 +95,7 @@
   // Drawn in a 640-unit-wide viewBox; text sizes are set in screen pixels and converted, so labels stay readable on phones.
   const W = 640;
   let H = 300, L = 30, R = 30, T = 40, B = 60, PW = 0, PH = 0, k = 1;
-  const f = x => 0.06 + 0.86 * Math.pow(x, 1.8);
+  const f = x => 0.06 + 0.86 * Math.pow(x, 1.8) - 0.16 * Math.exp(-Math.pow((x - 0.6) / 0.06, 2));
   const X = x => L + x * PW, Y = y => T + (1 - y) * PH;
   let plot = null, head = null;
   const PT = {
@@ -215,8 +220,11 @@
   function target(i) {
     const s = stations[i];
     if (s.hasAttribute('data-plot') && plot) { const p = plot.point(); return { x: p.x - p.w * 0.5, y: p.y - p.w * 0.56, w: p.w, rot: 0 }; }
-    const box = (s.querySelector('[data-slot]') || s).getBoundingClientRect();
-    return { x: box.left + scrollX, y: box.top + scrollY, w: box.width, rot: 0 };
+    const box = s.querySelector('[data-slot]') || s, r = box.getBoundingClientRect();
+    const m = getComputedStyle(s).transform, mm = m && m !== 'none' ? m.match(/matrix\(([^)]+)\)/) : null;
+    const rot = mm ? Math.atan2(+mm[1].split(',')[1], +mm[1].split(',')[0]) * 180 / Math.PI : 0;
+    const w = box.offsetWidth || r.width, cx = r.left + r.width / 2 + scrollX, cy = r.top + r.height / 2 + scrollY;
+    return { x: cx - w / 2, y: cy - w / 2, w, rot };
   }
 
   function activeIndex() {
@@ -242,9 +250,9 @@
     const N = 7, frames = [];
     for (let k = 1; k <= N; k++) {
       const u = k / N, e = down ? u * u : 1 - (1 - u) * (1 - u);
-      frames.push({ x: from.x + (t.x - from.x) * u, y: from.y + (t.y - from.y) * e, w: from.w + (t.w - from.w) * u, rot: dir * Math.sin(u * Math.PI) * 24 });
+      frames.push({ x: from.x + (t.x - from.x) * u, y: from.y + (t.y - from.y) * e, w: from.w + (t.w - from.w) * u, rot: from.rot + (t.rot - from.rot) * u + dir * Math.sin(u * Math.PI) * 24 });
     }
-    if (down) frames.push({ ...t, y: t.y - t.w * 0.06, rot: -dir * 4 }, { ...t });
+    if (down) frames.push({ ...t, y: t.y - t.w * 0.06, rot: t.rot - dir * 4 }, { ...t });
     moving = true;
     let k = 0;
     (function step() {
