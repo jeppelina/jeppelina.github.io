@@ -93,9 +93,19 @@
   const f = x => 0.06 + 0.86 * Math.pow(x, 1.8);
   const X = x => L + x * PW, Y = y => T + (1 - y) * PH;
   let plot = null, head = null;
+  const PT = {
+    en: { x: 'How much doctor (x) →', doctor: 'doctor', pred: 'Predicted', done: 'A doctor. Time to party.', party: '19 Dec: party',
+      good: ['Happiness and success', 'Humility', 'Kindness', 'Curiosity', 'Generosity', 'Patience', 'Gratitude', 'Calm', 'Wisdom', 'Modesty'],
+      bad: ['Megalomania', 'Pretentiousness', 'Smugness', 'Self-importance', 'Jargon', 'Vanity'] },
+    sv: { x: 'Hur mycket doktor (x) →', doctor: 'doktor', pred: 'Förväntad', done: 'Doktor. Dags att festa.', party: '19 dec: fest',
+      good: ['Lycka och framgång', 'Ödmjukhet', 'Vänlighet', 'Nyfikenhet', 'Generositet', 'Tålamod', 'Tacksamhet', 'Lugn', 'Visdom', 'Blygsamhet'],
+      bad: ['Storhetsvansinne', 'Pretentiöshet', 'Självgodhet', 'Självupptagenhet', 'Jargong', 'Fåfänga'] }
+  };
+  let LANG = (document.documentElement.lang || 'en').slice(0, 2) === 'sv' ? 'sv' : 'en';
+  window.PDP_setLang = l => { LANG = l === 'sv' ? 'sv' : 'en'; if (plot) plot.redraw(); };
   document.querySelectorAll('[data-plot]').forEach(el => {
     el.innerHTML = `<div class="plotbox"></div>
-    <div class="ctl"><label for="pdpx">x = <b class="xv">20%</b> doctor</label>
+    <div class="ctl"><label for="pdpx">x = <b class="xv">20%</b> <span class="xd">${PT[LANG].doctor}</span></label>
       <input id="pdpx" type="range" min="0" max="100" step="1" value="20">
       <output class="yv"></output></div>`;
     const box = el.querySelector('.plotbox'), input = el.querySelector('input');
@@ -126,10 +136,10 @@
         <g fill="var(--plot-ink)" opacity=".38">${dots}</g>
         <path d="${line}" fill="none" stroke="var(--plot-accent)" stroke-width="${px(3)}" stroke-linecap="round"/>
         <path d="M${X(1)} ${T} V${T + PH}" stroke="var(--plot-ink)" stroke-width="${px(1)}" stroke-dasharray="${px(3)} ${px(4)}" opacity=".6"/>
-        <text x="${X(1) - px(6)}" y="${T + PH - px(8)}" text-anchor="end" font-size="${fsNote}" font-weight="700" fill="var(--plot-ink)">19 Dec: party</text>
+        <text x="${X(1) - px(6)}" y="${T + PH - px(8)}" text-anchor="end" font-size="${fsNote}" font-weight="700" fill="var(--plot-ink)">${PT[LANG].party}</text>
         <text x="${X(1)}" y="${T - fsLab * 0.75}" text-anchor="end" font-size="${fsNote}" fill="var(--plot-ink)" opacity=".7">n = 1</text>
         <text class="ylab" x="${L - px(2)}" y="${T - fsLab * 0.75}" font-size="${fsLab}" font-weight="700" fill="var(--plot-ink)"></text>
-        <text x="${L + PW / 2}" y="${H - fsLab * 0.4}" text-anchor="middle" font-size="${fsLab}" font-weight="700" fill="var(--plot-ink)">How much doctor (x) →</text>
+        <text x="${L + PW / 2}" y="${H - fsLab * 0.4}" text-anchor="middle" font-size="${fsLab}" font-weight="700" fill="var(--plot-ink)">${PT[LANG].x}</text>
         <circle class="pt" r="${px(4)}" fill="none" stroke="var(--plot-accent)" stroke-width="${px(2)}"/>
       </svg>`;
       svg = box.querySelector('svg'); pt = box.querySelector('.pt'); ylab = box.querySelector('.ylab');
@@ -137,25 +147,26 @@
     }
 
     plot = {
-      x: 0.2, trait: 'Happiness and success',
+      x: 0.2, kind: 'good', ti: 0,
+      get trait() { return PT[LANG][this.kind][this.ti]; },
+      redraw() { drawnFor = 0; draw(); el.querySelector('.xd').textContent = PT[LANG].doctor; },
       point() { const r = svg.getBoundingClientRect(); return { x: r.left + scrollX + X(this.x) / W * r.width, y: r.top + scrollY + Y(f(this.x)) / H * r.height, w: Math.max(84, Math.min(130, r.width * 0.2)) }; },
       update() {
         pt.setAttribute('cx', X(this.x)); pt.setAttribute('cy', Y(f(this.x)));
         xv.textContent = Math.round(this.x * 100) + '%';
-        yv.textContent = this.x >= 1 ? `y = 0.92 ${this.trait.toLowerCase()}. A doctor. Time to party.` : `Predicted ${this.trait.toLowerCase()}: y = ${f(this.x).toFixed(2)}`;
+        yv.textContent = this.x >= 1 ? `y = 0.92 ${this.trait.toLowerCase()}. ${PT[LANG].done}` : `${PT[LANG].pred} ${this.trait.toLowerCase()}: y = ${f(this.x).toFixed(2)}`;
       }
     };
     draw();
     addEventListener('resize', () => { draw(); if (head) head.follow(); });
     input.addEventListener('input', () => { plot.x = input.value / 100; plot.update(); if (head) head.follow(); });
     // The y axis keeps changing its mind: a short blink of something bad, then it lands on something good.
-    const GOOD = ['Happiness and success', 'Humility', 'Kindness', 'Curiosity', 'Generosity', 'Patience', 'Gratitude', 'Calm', 'Wisdom', 'Modesty'];
-    const BAD = ['Megalomania', 'Pretentiousness', 'Smugness', 'Self-importance', 'Jargon', 'Vanity'];
-    const setTrait = t => { plot.trait = t; ylab.textContent = '↑ ' + t + ' (y)'; plot.update(); };
-    const any = a => a[Math.floor(Math.random() * a.length)];
+    const setTrait = (kind, i) => { plot.kind = kind; plot.ti = i; ylab.textContent = '↑ ' + plot.trait + ' (y)'; plot.update(); };
+    const rnd = n => Math.floor(Math.random() * n);
+    let lastGood = 0;
     if (!reduce) setInterval(() => {
-      setTrait(any(BAD));
-      setTimeout(() => { let g; do { g = any(GOOD); } while (g === plot.trait); setTrait(g); }, 420 + Math.random() * 260);
+      setTrait('bad', rnd(PT.en.bad.length));
+      setTimeout(() => { let g; do { g = rnd(PT.en.good.length); } while (g === lastGood); lastGood = g; setTrait('good', g); }, 420 + Math.random() * 260);
     }, 3400);
   });
 

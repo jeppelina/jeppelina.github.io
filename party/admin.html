@@ -85,11 +85,12 @@ ul { padding-left: 20px; }
     const cur = rows.filter(r => !r._old);
     const dinner = cur.filter(r => r.attending === 'dinner');
     const dinnerPeople = dinner.reduce((n, r) => n + 1 + (r.plus_one ? 1 : 0), 0);
-    const later = cur.filter(r => r.attending === 'later').length;
+    const laterRows = cur.filter(r => r.attending === 'later');
+    const later = laterRows.reduce((n, r) => n + 1 + (r.plus_one ? 1 : 0), 0);
     const no = cur.filter(r => r.attending === 'no').length;
     $('#stats').innerHTML = `
       <div class="stat"><b>${dinnerPeople}</b>at dinner (incl. ${dinnerPeople - dinner.length} plus-ones)</div>
-      <div class="stat"><b>${later}</b>joining later</div>
+      <div class="stat"><b>${later}</b>joining later (incl. ${later - laterRows.length} plus-ones)</div>
       <div class="stat"><b>${dinnerPeople + later}</b>total in the evening</div>
       <div class="stat"><b>${no}</b>can't come</div>`;
     const label = { dinner: 'Dinner', later: 'Later', no: 'No' };

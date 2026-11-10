@@ -5,474 +5,208 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>PARTY DOCTOR PARTY</title>
-<meta name="description" content="Saturday 19 December 2026, Stockholm. Dinner, and then the night continues. RSVP here.">
+<meta name="description" content="Saturday 19 December 2026, somewhere in Stockholm. Dinner, and then the night continues. RSVP here.">
 <meta property="og:title" content="PARTY DOCTOR PARTY">
-<meta property="og:description" content="Sat 19 Dec 2026, Stockholm. Dinner, then the night continues. RSVP here!">
-<meta name="theme-color" content="#FF4D9D">
+<meta property="og:description" content="Celebrate that Jesper Lindmarker got his PhD. Saturday 19 December 2026, somewhere in Stockholm. RSVP here.">
+<meta name="theme-color" content="#2552b8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink: #17131c;
-  --cream: #fff3de;
-  --paper: #ffffff;
-  --pink: #ff4d9d;
-  --cyan: #16b5e8;
-  --yellow: #ffd21f;
-  --green: #2ccf78;
-  --orange: #ff7a2f;
-  --purple: #8d5cf6;
-  --muted: #5d5566;
-  --r: 22px;
-  --line: 3px solid var(--ink);
-  --pop: 0 6px 0 var(--ink);
-  --display: 'Bagel Fat One', 'Arial Rounded MT Bold', system-ui, sans-serif;
-  --body: 'Rubik', system-ui, -apple-system, sans-serif;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: var(--body);
-  color: var(--ink);
-  background-color: var(--cream);
-  background-image: radial-gradient(rgba(23,19,28,.09) 1.4px, transparent 1.6px);
-  background-size: 18px 18px;
-  font-size: 17px;
-  line-height: 1.5;
-  overflow-x: clip;
-}
-a { color: inherit; }
-button, input, textarea { font: inherit; color: inherit; }
+/* Live RSVP page, built on concept 2 (cut-outs): cobalt + paper, pink only as the "side of the box". */
+:root { --blue:#2552b8; --paper:#f6f1e7; --pink:#f26ca7; --ink:#14224f; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Figtree',system-ui,sans-serif; background:var(--paper); color:var(--ink); line-height:1.55; font-size:17px; overflow-x:clip; }
+button, input, textarea { font:inherit; color:inherit; }
 
-/* ---------- language toggle ---------- */
-.lang {
-  position: fixed; top: 12px; right: 12px; z-index: 50;
-  display: flex; border: var(--line); border-radius: 999px; overflow: hidden;
-  background: var(--paper); box-shadow: 0 4px 0 var(--ink);
-}
-.lang button {
-  border: 0; background: transparent; cursor: pointer;
-  font-weight: 800; font-size: 18px; padding: 12px 20px; letter-spacing: .02em;
-  display: flex; align-items: center; gap: 6px;
-}
-.lang button + button { border-left: var(--line); }
-.lang button[aria-pressed="true"] { background: var(--yellow); }
-.lang .flag { font-size: 20px; line-height: 1; }
+.lang { position:fixed; top:14px; right:14px; z-index:60; display:flex; border-radius:999px; overflow:hidden; box-shadow:0 0 0 2px var(--paper); }
+.lang button { border:0; font:600 16px 'Figtree'; padding:10px 16px; cursor:pointer; background:var(--blue); color:var(--paper); }
+.lang button[aria-pressed="true"] { background:var(--paper); color:var(--blue); }
 
-/* ---------- hero ---------- */
-.hero {
-  position: relative; overflow: hidden;
-  padding: 92px 16px 56px;
-  text-align: center;
-  background: var(--pink);
-  border-bottom: var(--line);
-}
-.hero::before {
-  content: ""; position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,.28) 2px, transparent 2.4px);
-  background-size: 22px 22px;
-  pointer-events: none;
-}
-.kicker {
-  position: relative; display: inline-block;
-  background: var(--paper); border: var(--line); border-radius: 999px;
-  padding: 8px 18px; font-weight: 800; font-size: 17px;
-  box-shadow: var(--pop); transform: rotate(-2deg);
-}
-.title {
-  position: relative;
-  font-family: var(--display); font-weight: 400;
-  line-height: .86; letter-spacing: .01em;
-  margin: 26px auto 22px;
-  font-size: clamp(64px, 21vw, 168px);
-}
-.title .row { display: block; white-space: nowrap; }
-.title .row:nth-child(2) { font-size: .78em; margin: .08em 0; }
-.title .ch {
-  display: inline-block;
-  -webkit-text-stroke: .07em var(--ink); paint-order: stroke fill;
-  text-shadow: 0 .07em 0 var(--ink);
-  transform: rotate(var(--rot, 0deg)) translateY(var(--dy, 0));
-}
-.sub {
-  position: relative; max-width: 30em; margin: 0 auto;
-  font-size: 19px; font-weight: 500; color: var(--ink);
-}
-.facts {
-  position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
-  margin: 28px auto 0; max-width: 680px;
-}
-.fact {
-  background: var(--paper); border: var(--line); border-radius: 16px;
-  padding: 10px 16px; box-shadow: var(--pop); font-weight: 700; text-align: left;
-}
-.fact small { display: block; font-weight: 500; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-.fact:nth-child(1) { background: var(--yellow); transform: rotate(-2deg); }
-.fact:nth-child(2) { background: var(--cyan); transform: rotate(1.5deg); }
-.fact:nth-child(3) { transform: rotate(-1deg); }
-.hero-cta {
-  position: relative; display: inline-block; margin-top: 34px;
-  font-family: var(--display); font-size: 26px; text-decoration: none;
-  background: var(--green); border: var(--line); border-radius: 999px;
-  padding: 12px 30px; box-shadow: var(--pop);
-  transition: transform .12s, box-shadow .12s;
-}
-.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--ink); }
-.hero-cta:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
-.countdown {
-  position: absolute; z-index: 2; left: 14px; top: 14px;
-  width: 92px; height: 92px; border-radius: 50%;
-  background: var(--yellow); border: var(--line); box-shadow: 0 4px 0 var(--ink);
-  display: grid; place-items: center; text-align: center;
-  font-weight: 800; font-size: 12px; line-height: 1.05; transform: rotate(-10deg);
-}
-.countdown b { display: block; font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1; }
+.hero { position:relative; min-height:100svh; background:var(--blue); color:var(--paper); overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; padding:100px 16px 40px; }
+.hero > svg { position:absolute; inset:0; width:100%; height:100%; }
+.cut { fill:var(--paper); }
+.float { animation:float 9s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+.float.b { animation-duration:11s; animation-delay:-3s; }
+@keyframes float { 50% { transform:rotate(6deg) translateY(-6px); } }
+.hero .hd { position:absolute; z-index:1; width:min(96vw,460px); left:50%; translate:-50% 0; top:max(30px,4svh); }
+.title { position:relative; max-width:900px; }
+.title .k { font-size:15px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; }
+h1 { font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(64px,19vw,170px); line-height:.86; letter-spacing:-.01em; margin:10px 0 18px; }
+h1 i { display:block; padding-left:.6em; }
+.why { font-size:19px; margin:-6px 0 18px; max-width:22em; text-wrap:balance; }
+.spine { position:relative; display:inline-flex; flex-wrap:wrap; background:var(--pink); color:var(--ink); font-weight:600; }
+.spine span { padding:8px 10px; white-space:nowrap; font-size:14px; }
+.spine span + span { border-left:1.5px solid var(--ink); }
+.rsvp-cta { position:relative; display:block; margin-top:18px; border:0; cursor:pointer; padding:12px 30px; font:400 30px 'Instrument Serif',serif; background:var(--paper); color:var(--blue); border-radius:0 24px 0 24px; }
+@media (max-width:759px) { .hero > svg { height:56%; } }
+@media (min-width:760px) { .hero > svg { left:auto; width:56%; } .hero { padding-left:5vw; } .hero .hd { left:auto; right:12%; translate:none; top:12%; width:min(44vw,600px); } }
 
-/* ---------- decorations ---------- */
-.deco { position: absolute; pointer-events: none; z-index: 1; }
-.deco svg { display: block; width: 100%; height: auto; overflow: visible; }
-.bob { animation: bob 5s ease-in-out infinite; }
-.bob.d2 { animation-duration: 6.5s; animation-delay: -2s; }
-.bob.d3 { animation-duration: 4.4s; animation-delay: -1s; }
-.spin { animation: spin 18s linear infinite; }
-@keyframes bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
-@keyframes spin { to { rotate: 360deg; } }
+section { padding:72px 16px; }
+.w { max-width:760px; margin:0 auto; }
+.letter { font-weight:600; font-size:19px; line-height:1.5; max-width:30em; }
+.letter p + p { margin-top:18px; }
+.letter .sig { font-family:'Instrument Serif',serif; font-weight:400; font-size:30px; }
+.details { margin-top:48px; border-top:1.5px solid var(--ink); }
+.details div { display:grid; grid-template-columns:110px 1fr; gap:14px; padding:16px 0; border-bottom:1.5px solid var(--ink); }
+.details dt { font-weight:800; font-size:13px; letter-spacing:.14em; text-transform:uppercase; padding-top:3px; color:var(--blue); }
 
-/* ---------- sections ---------- */
-section { position: relative; padding: 56px 16px; }
-.wrap { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
-h2 {
-  font-family: var(--display); font-weight: 400;
-  font-size: clamp(40px, 11vw, 64px); line-height: 1; text-align: center; margin-bottom: 30px;
-}
-h2 span {
-  display: inline-block; padding: .08em .35em .14em; border: var(--line); border-radius: 18px;
-  background: var(--yellow); box-shadow: var(--pop); transform: rotate(-2deg);
-}
-.cards { display: grid; gap: 22px; }
-@media (min-width: 720px) { .cards { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
-.card {
-  position: relative; background: var(--paper); border: var(--line); border-radius: var(--r);
-  padding: 22px 20px 20px; box-shadow: 6px 6px 0 var(--ink);
-}
-.card:nth-child(1) { transform: rotate(-1.2deg); }
-.card:nth-child(2) { transform: rotate(1deg); }
-.card:nth-child(3) { transform: rotate(-.6deg); }
-.card .badge {
-  width: 54px; height: 54px; border-radius: 16px; border: var(--line);
-  display: grid; place-items: center; font-size: 28px; margin-bottom: 12px;
-  box-shadow: 0 4px 0 var(--ink);
-}
-.card:nth-child(1) .badge { background: var(--pink); }
-.card:nth-child(2) .badge { background: var(--cyan); }
-.card:nth-child(3) .badge { background: var(--green); }
-.card h3 { font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.05; margin-bottom: 8px; }
-.card p + p { margin-top: 10px; }
-.price {
-  display: inline-block; margin-top: 12px; padding: 4px 12px; border-radius: 999px;
-  background: var(--yellow); border: 2px solid var(--ink); font-weight: 800; font-size: 15px;
-}
+.model { background:var(--blue); color:var(--paper); padding:26px 16px 20px; }
+.model .w { max-width:680px; }
+.model .pdp-plot { --plot-ink:#f6f1e7; --plot-accent:#f26ca7; --plot-band:#f6f1e7; }
+.model-note { font-size:14px; opacity:.7; margin-top:10px; }
 
-/* ---------- form ---------- */
-#rsvp { background: var(--cyan); border-top: var(--line); border-bottom: var(--line); overflow: hidden; }
-#rsvp h2 span { background: var(--pink); }
-.lead { text-align: center; font-weight: 600; margin: -10px 0 26px; }
-.panel {
-  background: var(--paper); border: var(--line); border-radius: 28px;
-  padding: 26px 18px; box-shadow: 8px 8px 0 var(--ink); max-width: 620px; margin: 0 auto;
-}
-@media (min-width: 560px) { .panel { padding: 32px 30px; } }
-.q { font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.1; margin-bottom: 14px; }
-.choices { display: grid; gap: 14px; }
-@media (min-width: 520px) { .choices { grid-template-columns: 1.35fr 1fr; } }
-.piece {
-  position: relative; cursor: pointer; text-align: left;
-  border: var(--line); border-radius: 20px; padding: 16px 18px 18px;
-  box-shadow: var(--pop); transition: transform .12s, box-shadow .12s;
-  display: flex; flex-direction: column; gap: 4px;
-}
-.piece .big { font-family: var(--display); font-size: 26px; line-height: 1.05; }
-.piece .small { font-weight: 500; font-size: 15px; }
-.piece.yes { background: var(--pink); }
-.piece.no { background: #e9e3f4; }
-.piece:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--ink); }
-.piece:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
-.piece[aria-pressed="true"] { outline: 4px solid var(--ink); outline-offset: 3px; }
-.piece[aria-pressed="true"]::after {
-  content: "✓"; position: absolute; top: -14px; right: -12px;
-  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
-  background: var(--green); border: var(--line); font-weight: 800; font-size: 22px;
-  transform: rotate(8deg); animation: pop .25s ease-out;
-}
-@keyframes pop { from { scale: .3; } to { scale: 1; } }
-.later {
-  margin-top: 14px; border: 0; background: none; cursor: pointer; padding: 6px 2px;
-  font-weight: 600; font-size: 15px; color: var(--muted);
-  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px;
-}
-.later[aria-pressed="true"] {
-  color: var(--ink); text-decoration: none; background: var(--yellow);
-  border: 2px solid var(--ink); border-radius: 999px; padding: 6px 14px;
-}
-.later[aria-pressed="true"]::before { content: "✓ "; font-weight: 800; }
+.rsvp { background:var(--pink); }
+.rsvp .w { position:relative; }
+.rsvp-st { position:absolute; width:160px; right:-6px; top:-40px; }
+.rsvp h2 { font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(56px,15vw,110px); line-height:.9; margin-bottom:8px; }
+.rsvp .sub { font-weight:600; margin-bottom:28px; }
+.q { font-weight:800; font-size:15px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:12px; }
+.choices { display:grid; gap:12px; }
+@media (min-width:560px) { .choices { grid-template-columns:1.4fr 1fr; } }
+.choice { position:relative; cursor:pointer; text-align:left; border:0; padding:18px 20px; background:var(--paper); color:var(--ink); border-radius:0 28px 0 28px; }
+.choice b { display:block; font-family:'Instrument Serif',serif; font-weight:400; font-size:34px; line-height:1; margin-bottom:4px; }
+.choice.yes { background:var(--blue); color:var(--paper); }
+.choice[aria-pressed="true"] { outline:3px solid var(--ink); outline-offset:4px; }
+.choice[aria-pressed="true"]::after { content:"✓"; position:absolute; top:-12px; right:-10px; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; background:var(--ink); color:var(--paper); font-weight:800; }
+.later { display:inline-block; margin-top:14px; border:0; background:none; cursor:pointer; color:var(--ink); font-size:15px; text-decoration:underline; text-underline-offset:3px; padding:4px 0; text-align:left; }
+.later[aria-pressed="true"] { text-decoration:none; background:var(--paper); padding:6px 14px; border-radius:0 16px 0 16px; font-weight:600; }
+.fields { margin-top:8px; }
+.fields[hidden], [hidden] { display:none !important; }
+label.f { display:block; margin-top:22px; font-weight:600; font-size:15px; }
+label.f .hint { display:block; font-weight:400; font-size:14px; opacity:.75; }
+input[type="text"], textarea { width:100%; margin-top:6px; border:0; border-bottom:2px solid var(--ink); padding:10px 2px; font-size:18px; background:transparent; outline:none; border-radius:0; }
+textarea { min-height:70px; resize:vertical; }
+input[type="text"]:focus, textarea:focus { border-bottom-color:var(--blue); background:rgba(246,241,231,.35); }
+input::placeholder, textarea::placeholder { color:var(--ink); opacity:.5; }
+.tick { display:flex; gap:12px; align-items:flex-start; margin-top:24px; cursor:pointer; font-weight:600; }
+.tick input { appearance:none; -webkit-appearance:none; flex:0 0 26px; height:26px; border:2px solid var(--ink); background:var(--paper); cursor:pointer; display:grid; place-items:center; margin-top:1px; }
+.tick input:checked { background:var(--ink); }
+.tick input:checked::after { content:"✓"; color:var(--paper); font-weight:800; }
+.hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.err { margin-top:20px; background:var(--paper); border-left:4px solid var(--ink); padding:10px 14px; font-weight:600; }
+.send { margin-top:30px; border:0; cursor:pointer; padding:16px 34px; font:400 30px 'Instrument Serif',serif; background:var(--ink); color:var(--paper); border-radius:0 28px 0 28px; }
+.send:disabled { opacity:.6; cursor:progress; }
 
-.fields { display: grid; gap: 18px; margin-top: 26px; }
-.fields[hidden], .dinner-only[hidden], [hidden] { display: none !important; }
-label.f { display: grid; gap: 6px; font-weight: 700; }
-label.f .hint { font-weight: 400; font-size: 14px; color: var(--muted); margin-top: -4px; }
-input[type="text"], input[type="email"], textarea {
-  width: 100%; border: var(--line); border-radius: 14px; background: var(--cream);
-  padding: 12px 14px; font-size: 17px; outline: none;
-}
-textarea { min-height: 88px; resize: vertical; }
-input:focus, textarea:focus { background: #fff; box-shadow: 0 0 0 4px var(--yellow); }
-.seg { display: flex; flex-wrap: wrap; gap: 10px; }
-.seg button {
-  cursor: pointer; border: var(--line); border-radius: 999px; background: var(--paper);
-  padding: 9px 16px; font-weight: 700; box-shadow: 0 3px 0 var(--ink);
-}
-.seg button[aria-pressed="true"] { background: var(--yellow); }
-.tick {
-  display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
-  background: var(--cream); border: var(--line); border-radius: 16px; padding: 14px;
-  font-weight: 600;
-}
-.tick input { appearance: none; -webkit-appearance: none; flex: 0 0 28px; height: 28px; border: var(--line); border-radius: 8px; background: #fff; cursor: pointer; display: grid; place-items: center; margin-top: 1px; }
-.tick input:checked { background: var(--green); }
-.tick input:checked::after { content: "✓"; font-weight: 800; font-size: 18px; }
-.tick input:focus-visible { box-shadow: 0 0 0 4px var(--yellow); }
-.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.submit {
-  margin-top: 8px; width: 100%; cursor: pointer;
-  font-family: var(--display); font-size: 28px;
-  background: var(--green); border: var(--line); border-radius: 999px;
-  padding: 14px 20px; box-shadow: var(--pop); transition: transform .12s, box-shadow .12s;
-}
-.submit:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--ink); }
-.submit:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
-.submit:disabled { opacity: .6; cursor: progress; }
-.err {
-  background: #ffe0e9; border: 2px solid var(--ink); border-radius: 12px;
-  padding: 10px 14px; font-weight: 600;
-}
+.done .yay { font-family:'Instrument Serif',serif; font-size:clamp(64px,18vw,110px); line-height:.9; margin-bottom:10px; }
+.done p { font-weight:600; font-size:18px; max-width:28em; }
+.summary { margin:20px 0; background:var(--paper); padding:14px 16px; font-size:16px; border-radius:0 20px 0 20px; }
+.summary div + div { margin-top:4px; }
+.btns { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+.btn { cursor:pointer; text-decoration:none; border:0; padding:10px 18px; font-weight:800; background:var(--ink); color:var(--paper); border-radius:0 16px 0 16px; }
+.btn.alt { background:var(--paper); color:var(--ink); }
+.done .fine { font-size:15px; font-weight:400; margin-top:18px; }
 
-/* ---------- confirmation ---------- */
-.done { text-align: center; }
-.done .yay { font-family: var(--display); font-size: clamp(64px, 20vw, 110px); line-height: .9; margin-bottom: 10px; }
-.done .yay .ch { display: inline-block; -webkit-text-stroke: .06em var(--ink); paint-order: stroke fill; text-shadow: 0 .06em 0 var(--ink); }
-.done p { font-size: 18px; font-weight: 500; max-width: 26em; margin: 0 auto 10px; }
-.summary {
-  text-align: left; background: var(--cream); border: 2px solid var(--ink); border-radius: 16px;
-  padding: 14px 16px; margin: 18px 0; font-size: 15px;
-}
-.summary div + div { margin-top: 4px; }
-.summary b { font-weight: 700; }
-.btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 16px; }
-.btn {
-  cursor: pointer; text-decoration: none; border: var(--line); border-radius: 999px;
-  background: var(--yellow); padding: 10px 18px; font-weight: 800; box-shadow: 0 4px 0 var(--ink);
-}
-.btn.alt { background: var(--paper); }
-.done .fine { font-size: 14px; font-weight: 400; color: var(--muted); margin-top: 16px; }
-
-/* ---------- footer ---------- */
-footer { padding: 44px 16px 60px; text-align: center; position: relative; overflow: hidden; }
-footer p { position: relative; z-index: 2; max-width: 32em; margin: 0 auto 8px; font-weight: 500; }
-footer .mini { font-size: 14px; color: var(--muted); }
-
-/* confetti */
-.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
-.confetti i {
-  position: absolute; top: -20px; width: 12px; height: 16px; border: 2px solid var(--ink); border-radius: 3px;
-  animation: fall linear forwards;
-}
-@keyframes fall { to { transform: translate3d(var(--dx), 110vh, 0) rotate(var(--r)); } }
-
-.kicker, .title, .sub, .facts, .hero-cta { z-index: 2; }
-@media (max-width: 560px) {
-  .lang { left: 50%; right: auto; transform: translateX(-50%); top: 10px; }
-  .lang button { padding: 9px 13px; font-size: 15px; }
-  .countdown { width: 74px; height: 74px; font-size: 11px; left: auto; right: 10px; top: auto; bottom: 14px; transform: rotate(8deg); }
-  .countdown b { font-size: 26px; }
-  .hero { padding-top: 86px; padding-bottom: 64px; }
-  .hide-sm { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bob, .spin, .confetti i { animation: none !important; }
-  .piece, .submit, .hero-cta { transition: none; }
-}
+footer { padding:36px 16px 56px; text-align:center; font-size:15px; }
+footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
+@media (prefers-reduced-motion:reduce) { .float { animation:none; } }
 </style>
 </head>
 <body>
-
 <div class="lang" role="group" aria-label="Language / Språk">
-  <button type="button" data-lang="en" aria-pressed="true"><span class="flag" aria-hidden="true">🇬🇧</span>English</button>
-  <button type="button" data-lang="sv" aria-pressed="false"><span class="flag" aria-hidden="true">🇸🇪</span>Svenska</button>
+  <button type="button" data-lang="en" aria-pressed="true">English</button>
+  <button type="button" data-lang="sv" aria-pressed="false">Svenska</button>
 </div>
 
 <header class="hero">
-  <div class="countdown" id="countdown" hidden><span><b id="days">0</b><span data-t="daysToGo">days to go</span></span></div>
-
-  <!-- decorations -->
-  <div class="deco bob" style="width:120px; left:-18px; bottom:40px;" aria-hidden="true">
-    <svg viewBox="0 0 120 120"><path d="M60 6c24 0 52 14 54 46 2 34-22 62-56 62S4 94 6 60 34 6 60 6z" fill="#ffd21f" stroke="#17131c" stroke-width="5"/>
-      <circle cx="44" cy="54" r="11" fill="#fff" stroke="#17131c" stroke-width="4"/><circle cx="76" cy="54" r="11" fill="#fff" stroke="#17131c" stroke-width="4"/>
-      <circle cx="47" cy="56" r="4.5" fill="#17131c"/><circle cx="79" cy="56" r="4.5" fill="#17131c"/>
-      <path d="M44 80q16 14 32 0" fill="none" stroke="#17131c" stroke-width="5" stroke-linecap="round"/>
-      <path d="M22 20 60 4l38 16-38 16z" fill="#17131c"/><path d="M38 26v14q22 10 44 0V26" fill="#17131c"/><path d="M98 20v26" stroke="#17131c" stroke-width="4"/><circle cx="98" cy="50" r="6" fill="#ff7a2f" stroke="#17131c" stroke-width="3"/>
-    </svg>
+  <svg viewBox="0 0 400 700" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    <path class="cut" d="M-20 140 C 60 60, 120 220, 200 150 S 330 40, 420 120 L 420 160 C 330 90, 270 210, 200 196 S 70 110, -20 190 Z"/>
+    <g class="float" transform="translate(150 250) rotate(-14)">
+      <path class="cut" d="M-46 0 H46 C46 34 22 50 0 50 C-22 50 -46 34 -46 0 Z"/><rect class="cut" x="-4" y="48" width="8" height="54"/><ellipse class="cut" cx="0" cy="104" rx="30" ry="7"/>
+    </g>
+    <g class="float b" transform="translate(252 250) rotate(14)">
+      <path class="cut" d="M-46 0 H46 C46 34 22 50 0 50 C-22 50 -46 34 -46 0 Z"/><rect class="cut" x="-4" y="48" width="8" height="54"/><ellipse class="cut" cx="0" cy="104" rx="30" ry="7"/>
+    </g>
+    <path class="cut float" d="M201 196 l6 -22 l6 22 l22 6 l-22 6 l-6 22 l-6 -22 l-22 -6 z"/>
+    <path class="cut float b" d="M58 300 l8 -26 l8 26 l26 -8 l-18 20 l18 20 l-26 -8 l-8 26 l-8 -26 l-26 8 l18 -20 l-18 -20 z"/>
+    <path class="cut float" d="M346 330 l5 -16 l5 16 l16 -5 l-11 12 l11 12 l-16 -5 l-5 16 l-5 -16 l-16 5 l11 -12 l-11 -12 z"/>
+    <g class="float b" transform="translate(320 60) rotate(12)">
+      <path class="cut" d="M-40 0 L0 -16 L40 0 L0 16 Z"/><path class="cut" d="M-24 8 V24 Q0 36 24 24 V8 L0 17 Z"/><rect class="cut" x="32" y="0" width="3" height="26"/><circle class="cut" cx="33.5" cy="30" r="5"/>
+    </g>
+    <circle class="cut" cx="372" cy="430" r="16"/>
+  </svg>
+  <div class="pdp-station hd" data-station data-hat="#f26ca7" data-hat2="#f6f1e7"></div>
+  <div class="title">
+    <div class="k" data-t="kicker">You're invited to</div>
+    <h1>Party<i>Doctor</i>Party</h1>
+    <p class="why" data-t="why">celebrate that Jesper Lindmarker got his PhD</p>
+    <div class="spine"><span data-t="date">Sat 19 Dec</span><span data-t="where">Somewhere in Stockholm</span></div>
+    <button class="rsvp-cta" type="button" data-pdp-tour data-t="cta">RSVP ↓</button>
   </div>
-  <div class="deco spin" style="width:78px; right:6%; bottom:26px;" aria-hidden="true">
-    <svg viewBox="0 0 100 100"><path d="M50 4l12 30 32 3-24 21 8 32-28-17-28 17 8-32L6 37l32-3z" fill="#16b5e8" stroke="#17131c" stroke-width="5" stroke-linejoin="round"/></svg>
-  </div>
-  <div class="deco bob d2 hide-sm" style="width:70px; right:22%; top:76px;" aria-hidden="true">
-    <svg viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" rx="20" fill="#2ccf78" stroke="#17131c" stroke-width="5" transform="rotate(12 50 50)"/>
-      <g fill="#17131c" transform="rotate(12 50 50)"><circle cx="30" cy="30" r="8"/><circle cx="70" cy="30" r="8"/><circle cx="50" cy="50" r="8"/><circle cx="30" cy="70" r="8"/><circle cx="70" cy="70" r="8"/></g></svg>
-  </div>
-  <div class="deco bob d3 hide-sm" style="width:120px; left:14%; top:120px;" aria-hidden="true">
-    <svg viewBox="0 0 160 50"><path d="M6 30c14-24 26-24 38 0s24 24 36 0 24-24 36 0 24 24 36 0" fill="none" stroke="#17131c" stroke-width="13" stroke-linecap="round"/><path d="M6 30c14-24 26-24 38 0s24 24 36 0 24-24 36 0 24 24 36 0" fill="none" stroke="#ffd21f" stroke-width="6" stroke-linecap="round"/></svg>
-  </div>
-  <div class="deco bob d2 hide-sm" style="width:56px; right:-8px; top:46%;" aria-hidden="true">
-    <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" fill="#ff7a2f" stroke="#17131c" stroke-width="5"/><circle cx="30" cy="30" r="9" fill="#fff3de" stroke="#17131c" stroke-width="4"/></svg>
-  </div>
-
-  <div class="kicker" data-t="kicker">I'm becoming a doctor. Let's party!</div>
-  <h1 class="title" aria-label="PARTY DOCTOR PARTY">
-    <span class="row" data-colorize>PARTY</span>
-    <span class="row" data-colorize>DOCTOR</span>
-    <span class="row" data-colorize>PARTY</span>
-  </h1>
-  <p class="sub" data-t="sub">I defend my thesis on 17 December. Two days later we celebrate: first dinner, and then the night continues.</p>
-
-  <div class="facts">
-    <div class="fact"><small data-t="whenL">When</small><span data-t="when">Saturday 19 December</span></div>
-    <div class="fact"><small data-t="whereL">Where</small>Stockholm</div>
-    <div class="fact"><small data-t="placeL">Place</small><span data-t="place">Not booked yet</span></div>
-  </div>
-  <a class="hero-cta" href="#rsvp" data-t="cta">RSVP ↓</a>
 </header>
 
-<section id="plan">
-  <div class="deco bob d3" style="width:64px; right:4%; top:20px;" aria-hidden="true">
-    <svg viewBox="0 0 100 100"><path d="M50 4l12 30 32 3-24 21 8 32-28-17-28 17 8-32L6 37l32-3z" fill="#ff4d9d" stroke="#17131c" stroke-width="5" stroke-linejoin="round"/></svg>
-  </div>
-  <div class="wrap">
-    <h2><span data-t="planH">The plan</span></h2>
-    <div class="cards">
-      <article class="card">
-        <div class="badge" aria-hidden="true">🍝</div>
-        <h3 data-t="c1h">Dinner</h3>
-        <p data-t="c1p">We start with dinner together. The date is set, but the place isn't booked yet. I book once I know how many we are, which is why I need your RSVP.</p>
-        <span class="price" data-t="c1price">Food ≈ 500–700 kr, you pay your own</span>
-      </article>
-      <article class="card">
-        <div class="badge" aria-hidden="true">🪩</div>
-        <h3 data-t="c2h">Then the night continues</h3>
-        <p data-t="c2p">After dinner we move on and keep celebrating. More details once everything is booked.</p>
-      </article>
-      <article class="card">
-        <div class="badge" aria-hidden="true">✉️</div>
-        <h3 data-t="c3h">RSVP by 22 November</h3>
-        <p data-t="c3p">The sooner the better. You'll get the address by email or text as soon as it's booked.</p>
-      </article>
+<section><div class="w">
+  <div class="letter-row">
+    <div class="letter">
+      <p data-t="l1">Hi!</p>
+      <p data-t="l2">On 17 December I defend my thesis, and two days later I want to celebrate with you.</p>
+      <p data-t="l3">The plan is to have dinner together first and then keep going for the rest of the night. I haven't booked a place yet, since I need to know roughly how many we'll be. So please answer below, also if you can't come.</p>
+      <p data-t="l4">You're very welcome to bring a partner or a friend!</p>
+      <p class="sig">/Jesper</p>
     </div>
+    <div class="pdp-robe" data-station data-c1="#2552b8" data-c2="#f26ca7"><div class="slot" data-slot></div></div>
   </div>
-</section>
+  <dl class="details">
+    <div><dt data-t="dWhen">When</dt><dd data-t="vWhen">Saturday 19 December 2026. Dinner from around 18.00, and then until late.</dd></div>
+    <div><dt data-t="dWhere">Where</dt><dd data-t="vWhere">Somewhere in Stockholm. Not booked yet, I'll send you the address.</dd></div>
+    <div><dt data-t="dDinner">Dinner</dt><dd data-t="vDinner">About 500–700 kr per person for the food, and everyone pays for their own. Drinks on top of that.</dd></div>
+    <div><dt data-t="dPlus">Plus one</dt><dd data-t="vPlus">Yes! Bring a partner or a friend, just add their name in the form.</dd></div>
+    <div><dt data-t="dLater">Only later?</dt><dd data-t="vLater">If you can't make the dinner, come later in the evening. There's an option for that in the form.</dd></div>
+    <div><dt data-t="dBy">Answer by</dt><dd data-t="vBy">22 November, please. Also if you can't come.</dd></div>
+  </dl>
+</div></section>
 
-<section id="rsvp">
-  <div class="deco bob" style="width:110px; left:-26px; top:40px;" aria-hidden="true">
-    <svg viewBox="0 0 120 120"><path d="M60 8c30 0 50 22 50 52s-20 52-50 52S10 90 10 60 30 8 60 8z" fill="#ff4d9d" stroke="#17131c" stroke-width="5"/>
-      <circle cx="46" cy="52" r="10" fill="#fff" stroke="#17131c" stroke-width="4"/><circle cx="76" cy="52" r="10" fill="#fff" stroke="#17131c" stroke-width="4"/>
-      <circle cx="44" cy="50" r="4" fill="#17131c"/><circle cx="74" cy="50" r="4" fill="#17131c"/>
-      <ellipse cx="60" cy="80" rx="12" ry="9" fill="#17131c"/></svg>
-  </div>
-  <div class="deco spin" style="width:80px; right:-14px; bottom:60px;" aria-hidden="true">
-    <svg viewBox="0 0 100 100"><path d="M50 4l12 30 32 3-24 21 8 32-28-17-28 17 8-32L6 37l32-3z" fill="#ffd21f" stroke="#17131c" stroke-width="5" stroke-linejoin="round"/></svg>
-  </div>
-  <div class="wrap">
-    <h2><span data-t="rsvpH">RSVP</span></h2>
-    <p class="lead" data-t="lead">Takes a minute.</p>
+<section class="model"><div class="w">
+  <div class="pdp-plot" data-plot data-station></div>
+  <p class="model-note" data-t="note">Not peer reviewed. n = 1, and I chose the functional form after looking at the data.</p>
+</div></section>
 
-    <div class="panel">
-      <form id="form" novalidate>
-        <div class="q" data-t="q1">Are you coming?</div>
-        <div class="choices">
-          <button type="button" class="piece yes" data-attend="dinner" aria-pressed="false">
-            <span class="big" data-t="yesBig">YES!</span>
-            <span class="small" data-t="yesSmall">Dinner + the night</span>
-          </button>
-          <button type="button" class="piece no" data-attend="no" aria-pressed="false">
-            <span class="big" data-t="noBig">Sadly, no</span>
-            <span class="small" data-t="noSmall">I can't make it</span>
-          </button>
-        </div>
-        <button type="button" class="later" data-attend="later" aria-pressed="false" data-t="later">Can't make dinner? Join us later in the evening</button>
+<section class="rsvp" id="rsvp"><div class="w">
+  <div class="pdp-station rsvp-st" data-station data-hattype="party"></div>
+  <h2 data-t="rsvpH">RSVP</h2>
+  <p class="sub" data-t="rsvpSub">Please answer by 22 November, also if you can't come.</p>
 
-        <div class="fields" id="fields" hidden>
-          <label class="f"><span data-t="nameL">Your name</span>
-            <input type="text" name="name" autocomplete="name" maxlength="120" required>
-          </label>
-          <label class="f"><span data-t="contactL">Email or phone</span>
-            <span class="hint" data-t="contactH">So I can send you the address.</span>
-            <input type="text" name="contact" autocomplete="email" inputmode="email" maxlength="200" required>
-          </label>
-
-          <div class="dinner-only" id="plusWrap">
-            <div class="f" style="font-weight:700; margin-bottom:8px;" data-t="plusL">Bringing someone?</div>
-            <div class="seg" id="plusSeg">
-              <button type="button" data-plus="0" aria-pressed="true" data-t="plusNo">Just me</button>
-              <button type="button" data-plus="1" aria-pressed="false" data-t="plusYes">Yes, a plus-one</button>
-            </div>
-          </div>
-          <label class="f" id="plusNameWrap" hidden><span data-t="plusName">Their name</span>
-            <input type="text" name="plus_one_name" maxlength="120">
-          </label>
-
-          <label class="f dinner-only" id="dietWrap"><span data-t="dietL">Allergies or dietary needs</span>
-            <input type="text" name="diet" maxlength="500" data-tp="dietP" placeholder="e.g. vegetarian, gluten-free">
-          </label>
-
-          <label class="tick dinner-only" id="costWrap">
-            <input type="checkbox" name="accepts_cost">
-            <span data-t="costL">I'm fine paying for my own dinner (about 500–700 kr) and drinks.</span>
-          </label>
-
-          <label class="f"><span data-t="msgL">Anything else?</span>
-            <textarea name="message" maxlength="1000" data-tp="msgP" placeholder="A greeting, a song request, a question…"></textarea>
-          </label>
-
-          <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-
-          <div class="err" id="err" role="alert" hidden></div>
-          <button type="submit" class="submit" id="submit" data-t="send">Send RSVP</button>
-        </div>
-      </form>
-
-      <div class="done" id="done" hidden>
-        <div class="yay" id="yay"></div>
-        <p id="doneMsg"></p>
-        <div class="summary" id="summary"></div>
-        <div class="btns" id="calBtns">
-          <a class="btn" id="ics" href="#" download="party-doctor-party.ics" data-t="cal">Add to calendar</a>
-          <a class="btn alt" id="gcal" href="#" target="_blank" rel="noopener">Google Calendar</a>
-        </div>
-        <p class="fine" data-t="change">Changed your mind? Send the form again with the same email or phone. The latest answer counts.</p>
-        <div class="btns"><button type="button" class="btn alt" id="again" data-t="again">Change my answer</button></div>
-      </div>
+  <form id="form" novalidate>
+    <div class="q" data-t="q1">Are you coming?</div>
+    <div class="choices">
+      <button type="button" class="choice yes" data-attend="dinner" aria-pressed="false"><b data-t="yesBig">Yes, I'm coming</b><span data-t="yesSmall">Dinner and after</span></button>
+      <button type="button" class="choice" data-attend="no" aria-pressed="false"><b data-t="noBig">Sadly, no</b><span data-t="noSmall">Can't make it</span></button>
     </div>
+    <button type="button" class="later" data-attend="later" aria-pressed="false" data-t="later">Can't make dinner? Join us later in the evening</button>
+
+    <div class="fields" id="fields" hidden>
+      <label class="f"><span data-t="nameL">Your name</span><input type="text" name="name" autocomplete="name" maxlength="120"></label>
+      <label class="f"><span data-t="contactL">Email or phone</span><span class="hint" data-t="contactH">So I can send you the address.</span>
+        <input type="text" name="contact" autocomplete="email" inputmode="email" maxlength="200"></label>
+      <label class="f" id="plusWrap"><span data-t="plusL">Bringing someone? Their name</span>
+        <input type="text" name="plus_one_name" maxlength="120" data-tp="plusP" placeholder="Leave empty if it's just you"></label>
+      <label class="f" id="dietWrap"><span data-t="dietL">Allergies or dietary needs</span>
+        <input type="text" name="diet" maxlength="500" data-tp="dietP" placeholder="e.g. vegetarian, gluten-free (for both of you)"></label>
+      <label class="tick" id="costWrap"><input type="checkbox" name="accepts_cost"><span data-t="costL">I'm fine paying for my own dinner (about 500–700 kr) and drinks.</span></label>
+      <label class="f"><span data-t="msgL">Anything else?</span>
+        <textarea name="message" maxlength="1000" data-tp="msgP" placeholder="A greeting, a song request, a question…"></textarea></label>
+      <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="err" id="err" role="alert" hidden></div>
+      <button type="submit" class="send" id="submit" data-t="send">Send RSVP</button>
+    </div>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <div class="yay" id="yay"></div>
+    <p id="doneMsg"></p>
+    <div class="summary" id="summary"></div>
+    <div class="btns" id="calBtns">
+      <a class="btn" id="ics" href="#" download="party-doctor-party.ics" data-t="cal">Add to calendar</a>
+      <a class="btn alt" id="gcal" href="#" target="_blank" rel="noopener" data-t="gcal">Google Calendar</a>
+    </div>
+    <p class="fine" data-t="change">Changed your mind? Send the form again with the same email or phone. The latest answer counts.</p>
+    <div class="btns"><button type="button" class="btn alt" id="again" data-t="again">Change my answer</button></div>
   </div>
-</section>
+</div></section>
 
 <footer>
-  <div class="deco bob d2" style="width:44px; left:10px; top:8px;" aria-hidden="true">
-    <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" fill="#2ccf78" stroke="#17131c" stroke-width="5"/></svg>
-  </div>
-  <div class="deco bob" style="width:90px; right:6%; bottom:10px;" aria-hidden="true">
-    <svg viewBox="0 0 160 50"><path d="M6 30c14-24 26-24 38 0s24 24 36 0 24-24 36 0 24 24 36 0" fill="none" stroke="#17131c" stroke-width="13" stroke-linecap="round"/><path d="M6 30c14-24 26-24 38 0s24 24 36 0 24-24 36 0 24 24 36 0" fill="none" stroke="#ff4d9d" stroke-width="6" stroke-linecap="round"/></svg>
-  </div>
-  <p data-t="foot">Questions? Ask Jesper the same way you got this link.</p>
+  <p data-t="foot">Questions? Just ask me, the same way you got this link.</p>
   <p class="mini" data-t="privacy">Only Jesper sees your answer, and it's deleted after the party.</p>
 </footer>
 
@@ -480,69 +214,72 @@ footer .mini { font-size: 14px; color: var(--muted); }
 (() => {
   const SUPABASE_URL = 'https://bhurxoknmyfqymtiaycx.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_eVv0YIKYjdwRKQFK_DORCA_QhE4qgiB';
-  const PARTY = new Date('2026-12-19T18:00:00+01:00');
 
   const T = {
     en: {
-      daysToGo: 'days to go', kicker: "I'm becoming a doctor. Let's party!",
-      sub: 'I defend my thesis on 17 December. Two days later we celebrate: first dinner, and then the night continues.',
-      whenL: 'When', when: 'Saturday 19 December', whereL: 'Where', placeL: 'Place', place: 'Not booked yet', cta: 'RSVP ↓',
-      planH: 'The plan', c1h: 'Dinner',
-      c1p: "We start with dinner together. The date is set, but the place isn't booked yet. I book once I know how many we are, which is why I need your RSVP.",
-      c1price: 'Food ≈ 500–700 kr, you pay your own',
-      c2h: 'Then the night continues', c2p: 'After dinner we move on and keep celebrating. More details once everything is booked.',
-      c3h: 'RSVP by 22 November', c3p: "The sooner the better. You'll get the address by email or text as soon as it's booked.",
-      rsvpH: 'RSVP', lead: 'Takes a minute.', q1: 'Are you coming?',
-      yesBig: 'YES!', yesSmall: 'Dinner + the night', noBig: 'Sadly, no', noSmall: "I can't make it",
-      later: "Can't make dinner? Join us later in the evening", laterOn: "I'll join later in the evening",
+      kicker: "You're invited to", why: 'celebrate that Jesper Lindmarker got his PhD', date: 'Sat 19 Dec', where: 'Somewhere in Stockholm', cta: 'RSVP ↓',
+      l1: 'Hi!', l2: 'On 17 December I defend my thesis, and two days later I want to celebrate with you.',
+      l3: "The plan is to have dinner together first and then keep going for the rest of the night. I haven't booked a place yet, since I need to know roughly how many we'll be. So please answer below, also if you can't come.",
+      l4: "You're very welcome to bring a partner or a friend!",
+      dWhen: 'When', vWhen: 'Saturday 19 December 2026. Dinner from around 18.00, and then until late.',
+      dWhere: 'Where', vWhere: "Somewhere in Stockholm. Not booked yet, I'll send you the address.",
+      dDinner: 'Dinner', vDinner: 'About 500–700 kr per person for the food, and everyone pays for their own. Drinks on top of that.',
+      dPlus: 'Plus one', vPlus: 'Yes! Bring a partner or a friend, just add their name in the form.',
+      dLater: 'Only later?', vLater: "If you can't make the dinner, come later in the evening. There's an option for that in the form.",
+      dBy: 'Answer by', vBy: "22 November, please. Also if you can't come.",
+      note: 'Not peer reviewed. n = 1, and I chose the functional form after looking at the data.',
+      rsvpH: 'RSVP', rsvpSub: "Please answer by 22 November, also if you can't come.",
+      q1: 'Are you coming?', yesBig: "Yes, I'm coming", yesSmall: 'Dinner and after', noBig: 'Sadly, no', noSmall: "Can't make it",
+      later: "Can't make dinner? Join us later in the evening", laterOn: "✓ I'll join later in the evening",
       nameL: 'Your name', contactL: 'Email or phone', contactH: 'So I can send you the address.',
-      plusL: 'Bringing someone?', plusNo: 'Just me', plusYes: 'Yes, a plus-one', plusName: 'Their name',
+      plusL: 'Bringing someone? Their name', plusP: "Leave empty if it's just you",
       dietL: 'Allergies or dietary needs', dietP: 'e.g. vegetarian, gluten-free (for both of you)',
       costL: "I'm fine paying for my own dinner (about 500–700 kr) and drinks.",
       msgL: 'Anything else?', msgP: 'A greeting, a song request, a question…',
       send: 'Send RSVP', sending: 'Sending…',
       eAttend: "Pick whether you're coming.", eName: 'Please write your name.', eContact: 'Please add an email or phone number.',
       eCost: 'Please tick the box about paying for dinner.', eNet: 'Something went wrong. Try again, or tell Jesper directly.',
-      yayDinner: 'YAY!', msgDinner: "You're on the list! You'll get the address as soon as the place is booked.",
-      yayLater: 'NICE!', msgLater: "See you later in the evening. I'll let you know where we are.",
-      yayNo: 'AWW!', msgNo: "Sorry you can't make it. Thanks for letting me know!",
-      sName: 'Name', sAttend: 'Answer', sPlus: 'Plus-one', sDiet: 'Diet',
-      aDinner: 'Dinner + the night', aLater: 'Later in the evening', aNo: "Can't come",
-      cal: 'Add to calendar', change: 'Changed your mind? Send the form again with the same email or phone. The latest answer counts.',
-      again: 'Change my answer',
-      foot: 'Questions? Ask Jesper the same way you got this link.',
-      privacy: "Only Jesper sees your answer, and it's deleted after the party.",
+      yayDinner: 'Yay!', msgDinner: "You're on the list! I'll send the address as soon as the place is booked.",
+      yayLater: 'Nice!', msgLater: "See you later in the evening. I'll let you know where we are.",
+      yayNo: 'Oh no!', msgNo: "Sorry you can't make it. Thanks for letting me know!",
+      sName: 'Name', sAttend: 'Answer', sPlus: 'Plus one', sDiet: 'Diet',
+      aDinner: 'Dinner and after', aLater: 'Later in the evening', aNo: "Can't come",
+      cal: 'Add to calendar', gcal: 'Google Calendar',
+      change: 'Changed your mind? Send the form again with the same email or phone. The latest answer counts.', again: 'Change my answer',
+      foot: 'Questions? Just ask me, the same way you got this link.', privacy: "Only Jesper sees your answer, and it's deleted after the party.",
       icsDesc: 'Dinner, and then the night continues. Venue to be announced.'
     },
     sv: {
-      daysToGo: 'dagar kvar', kicker: 'Jag blir doktor. Det ska firas!',
-      sub: 'Jag disputerar den 17 december. Två dagar senare firar vi: först middag, och sedan fortsätter kvällen.',
-      whenL: 'När', when: 'Lördag 19 december', whereL: 'Var', placeL: 'Plats', place: 'Inte bokad än', cta: 'OSA ↓',
-      planH: 'Så här blir det', c1h: 'Middag',
-      c1p: 'Vi börjar med middag tillsammans. Datumet är satt, men platsen är inte bokad än. Jag bokar när jag vet hur många vi blir, och därför behöver jag din OSA.',
-      c1price: 'Mat ≈ 500–700 kr, var och en betalar',
-      c2h: 'Sen fortsätter kvällen', c2p: 'Efter middagen drar vi vidare och fortsätter fira. Mer info när allt är bokat.',
-      c3h: 'OSA senast 22 november', c3p: 'Ju förr desto bättre. Adressen kommer på mejl eller sms så fort den är bokad.',
-      rsvpH: 'OSA', lead: 'Tar en minut.', q1: 'Kommer du?',
-      yesBig: 'JA!', yesSmall: 'Middag + kvällen', noBig: 'Tyvärr inte', noSmall: 'Jag kan inte komma',
-      later: 'Kan du inte äta middag? Kom senare på kvällen', laterOn: 'Jag kommer senare på kvällen',
+      kicker: 'Du är inbjuden till', why: 'för att fira att Jesper Lindmarker har blivit doktor', date: 'Lör 19 dec', where: 'Någonstans i Stockholm', cta: 'OSA ↓',
+      l1: 'Hej!', l2: 'Den 17 december disputerar jag, och två dagar senare vill jag fira med dig.',
+      l3: 'Planen är att äta middag tillsammans först och sedan fortsätta resten av kvällen. Jag har inte bokat något ställe än, eftersom jag behöver veta ungefär hur många vi blir. Så svara gärna nedan, även om du inte kan komma.',
+      l4: 'Ta gärna med en partner eller en vän!',
+      dWhen: 'När', vWhen: 'Lördag 19 december 2026. Middag från ungefär 18.00, och sedan till sent.',
+      dWhere: 'Var', vWhere: 'Någonstans i Stockholm. Inte bokat än, jag skickar adressen.',
+      dDinner: 'Middag', vDinner: 'Ungefär 500–700 kr per person för maten, och var och en betalar sin egen. Dryck tillkommer.',
+      dPlus: 'Sällskap', vPlus: 'Ja! Ta med en partner eller en vän, skriv bara deras namn i formuläret.',
+      dLater: 'Bara senare?', vLater: 'Om du inte kan äta middag, kom senare på kvällen. Det finns ett val för det i formuläret.',
+      dBy: 'Svara senast', vBy: '22 november, tack. Även om du inte kan komma.',
+      note: 'Inte granskad. n = 1, och jag valde funktionsformen efter att ha tittat på datan.',
+      rsvpH: 'OSA', rsvpSub: 'Svara gärna senast 22 november, även om du inte kan komma.',
+      q1: 'Kommer du?', yesBig: 'Ja, jag kommer', yesSmall: 'Middag och efteråt', noBig: 'Tyvärr inte', noSmall: 'Jag kan inte komma',
+      later: 'Kan du inte äta middag? Kom senare på kvällen', laterOn: '✓ Jag kommer senare på kvällen',
       nameL: 'Ditt namn', contactL: 'Mejl eller telefon', contactH: 'Så att jag kan skicka adressen.',
-      plusL: 'Tar du med någon?', plusNo: 'Bara jag', plusYes: 'Ja, en till', plusName: 'Vad heter hen?',
+      plusL: 'Tar du med någon? Hens namn', plusP: 'Lämna tomt om det bara är du',
       dietL: 'Allergier eller specialkost', dietP: 't.ex. vegetarisk, glutenfri (för er båda)',
-      costL: 'Jag är med på att betala min egen middag (ca 500–700 kr) och min dryck.',
+      costL: 'Jag är med på att betala min egen middag (ca 500–700 kr) och dryck.',
       msgL: 'Något mer?', msgP: 'En hälsning, en låtönskning, en fråga…',
       send: 'Skicka OSA', sending: 'Skickar…',
       eAttend: 'Välj om du kommer.', eName: 'Skriv ditt namn.', eContact: 'Fyll i mejl eller telefonnummer.',
-      eCost: 'Kryssa i rutan om att betala middagen.', eNet: 'Något gick fel. Försök igen, eller hör av dig direkt till Jesper.',
-      yayDinner: 'JIPPI!', msgDinner: 'Du är med på listan! Adressen kommer så fort platsen är bokad.',
-      yayLater: 'TOPPEN!', msgLater: 'Vi ses senare på kvällen. Jag hör av mig om var vi är.',
-      yayNo: 'NEJ DÅ!', msgNo: 'Tråkigt att du inte kan. Tack för att du svarade!',
+      eCost: 'Kryssa i rutan om att betala middagen.', eNet: 'Något gick fel. Försök igen, eller säg till Jesper direkt.',
+      yayDinner: 'Jippi!', msgDinner: 'Du är med på listan! Jag skickar adressen så fort stället är bokat.',
+      yayLater: 'Toppen!', msgLater: 'Vi ses senare på kvällen. Jag hör av mig om var vi är.',
+      yayNo: 'Åh nej!', msgNo: 'Tråkigt att du inte kan. Tack för att du svarade!',
       sName: 'Namn', sAttend: 'Svar', sPlus: 'Sällskap', sDiet: 'Kost',
-      aDinner: 'Middag + kvällen', aLater: 'Senare på kvällen', aNo: 'Kan inte komma',
-      cal: 'Lägg till i kalendern', change: 'Ändrat dig? Skicka formuläret igen med samma mejl eller telefon. Det senaste svaret gäller.',
-      again: 'Ändra mitt svar',
-      foot: 'Frågor? Hör av dig till Jesper på samma sätt som du fick länken.',
-      privacy: 'Bara Jesper ser ditt svar, och det raderas efter festen.',
+      aDinner: 'Middag och efteråt', aLater: 'Senare på kvällen', aNo: 'Kan inte komma',
+      cal: 'Lägg till i kalendern', gcal: 'Google Kalender',
+      change: 'Ändrat dig? Skicka formuläret igen med samma mejl eller telefon. Det senaste svaret gäller.', again: 'Ändra mitt svar',
+      foot: 'Frågor? Hör av dig till mig, på samma sätt som du fick länken.', privacy: 'Bara Jesper ser ditt svar, och det raderas efter festen.',
       icsDesc: 'Middag, och sedan fortsätter kvällen. Plats meddelas.'
     }
   };
@@ -551,56 +288,31 @@ footer .mini { font-size: 14px; color: var(--muted); }
     get(k) { try { return localStorage.getItem(k); } catch { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch {} }
   };
-
-  let lang = store.get('pdp-lang') || ((navigator.language || '').toLowerCase().startsWith('sv') ? 'sv' : 'en');
-  const state = { attending: null, plus: false };
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  let lang = store.get('pdp-lang') || ((navigator.language || '').toLowerCase().startsWith('sv') ? 'sv' : 'en');
   const t = k => (T[lang] && T[lang][k]) || T.en[k] || k;
-
-  // colourful letters
-  const COLORS = ['#ffd21f', '#16b5e8', '#2ccf78', '#ff7a2f', '#ffffff', '#8d5cf6'];
-  function colorize(el, offset = 0) {
-    const text = el.textContent.trim();
-    el.textContent = '';
-    [...text].forEach((c, i) => {
-      const s = document.createElement('span');
-      s.className = 'ch';
-      s.textContent = c;
-      s.style.color = COLORS[(i + offset) % COLORS.length];
-      s.style.setProperty('--rot', `${((i * 37 + offset * 11) % 13) - 6}deg`);
-      s.style.setProperty('--dy', `${((i * 53 + offset * 7) % 7) - 3}px`);
-      s.setAttribute('aria-hidden', 'true');
-      el.appendChild(s);
-    });
-  }
-  $$('[data-colorize]').forEach((el, i) => colorize(el, i * 2));
+  const state = { attending: null };
+  let lastReply = null;
 
   function applyLang() {
     document.documentElement.lang = lang;
     $$('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
     $$('[data-tp]').forEach(el => { el.placeholder = t(el.dataset.tp); });
     $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
-    const later = $('.later');
-    later.textContent = state.attending === 'later' ? t('laterOn') : t('later');
+    $('.later').textContent = state.attending === 'later' ? t('laterOn') : t('later');
+    if (window.PDP_setLang) window.PDP_setLang(lang);
     if (!$('#done').hidden && lastReply) showDone(lastReply, false);
   }
-  $$('.lang button').forEach(b => b.addEventListener('click', () => {
-    lang = b.dataset.lang; store.set('pdp-lang', lang); applyLang();
-  }));
+  $$('.lang button').forEach(b => b.addEventListener('click', () => { lang = b.dataset.lang; store.set('pdp-lang', lang); applyLang(); }));
 
-  // countdown
-  const days = Math.ceil((PARTY - new Date()) / 86400000);
-  if (days > 0) { $('#days').textContent = days; $('#countdown').hidden = false; }
-
-  // attendance
   function setAttending(v) {
     state.attending = v;
     $$('[data-attend]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.attend === v)));
     $('#fields').hidden = false;
     const dinner = v === 'dinner';
-    $$('.dinner-only').forEach(el => { el.hidden = !dinner; });
-    $('#plusNameWrap').hidden = !(dinner && state.plus);
+    $('#dietWrap').hidden = !dinner; $('#costWrap').hidden = !dinner;
+    $('#plusWrap').hidden = v === 'no';
     $('.later').textContent = v === 'later' ? t('laterOn') : t('later');
     $('#err').hidden = true;
   }
@@ -610,19 +322,11 @@ footer .mini { font-size: 14px; color: var(--muted); }
     if (first) setTimeout(() => $('input[name="name"]').focus({ preventScroll: true }), 50);
   }));
 
-  $$('#plusSeg button').forEach(b => b.addEventListener('click', () => {
-    state.plus = b.dataset.plus === '1';
-    $$('#plusSeg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    $('#plusNameWrap').hidden = !state.plus;
-    if (state.plus) $('input[name="plus_one_name"]').focus();
-  }));
-
   function fail(msg, focusEl) {
     const e = $('#err'); e.textContent = msg; e.hidden = false;
     if (focusEl) focusEl.focus(); else e.scrollIntoView({ block: 'center', behavior: 'smooth' });
   }
 
-  let lastReply = null;
   $('#form').addEventListener('submit', async ev => {
     ev.preventDefault();
     const f = ev.target;
@@ -632,43 +336,33 @@ footer .mini { font-size: 14px; color: var(--muted); }
     if (contact.length < 3) return fail(t('eContact'), f.contact);
     const dinner = state.attending === 'dinner';
     if (dinner && !f.accepts_cost.checked) return fail(t('eCost'), f.accepts_cost);
-
+    const plusName = state.attending === 'no' ? '' : f.plus_one_name.value.trim();
     const reply = {
       p_name: name, p_contact: contact, p_attending: state.attending,
-      p_plus_one: dinner && state.plus,
-      p_plus_one_name: dinner && state.plus ? f.plus_one_name.value.trim() : null,
+      p_plus_one: !!plusName, p_plus_one_name: plusName || null,
       p_diet: dinner ? f.diet.value.trim() : null,
       p_message: f.message.value.trim(),
       p_accepts_cost: dinner && f.accepts_cost.checked,
       p_lang: lang
     };
-
     const btn = $('#submit'); btn.disabled = true; btn.textContent = t('sending'); $('#err').hidden = true;
     try {
       if (!f.website.value) {
         const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_party_rsvp`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY },
-          body: JSON.stringify(reply)
+          method: 'POST', headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY }, body: JSON.stringify(reply)
         });
         if (!r.ok) throw new Error(await r.text());
       }
-      lastReply = reply;
-      store.set('pdp-reply', JSON.stringify(reply));
+      lastReply = reply; store.set('pdp-reply', JSON.stringify(reply));
       showDone(reply, true);
-    } catch (e) {
-      console.error(e);
-      fail(t('eNet'));
-    } finally {
-      btn.disabled = false; btn.textContent = t('send');
-    }
+    } catch (e) { console.error(e); fail(t('eNet')); }
+    finally { btn.disabled = false; btn.textContent = t('send'); }
   });
 
-  function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-
-  function showDone(r, celebrate) {
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function showDone(r, scroll) {
     const key = r.p_attending === 'dinner' ? 'Dinner' : r.p_attending === 'later' ? 'Later' : 'No';
-    const yay = $('#yay'); yay.textContent = t('yay' + key); colorize(yay, 1);
+    $('#yay').textContent = t('yay' + key);
     $('#doneMsg').textContent = t('msg' + key);
     const rows = [[t('sName'), r.p_name], [t('sAttend'), t('a' + key)]];
     if (r.p_plus_one) rows.push([t('sPlus'), r.p_plus_one_name || '+1']);
@@ -676,69 +370,31 @@ footer .mini { font-size: 14px; color: var(--muted); }
     $('#summary').innerHTML = rows.map(([k, v]) => `<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join('');
     $('#calBtns').hidden = r.p_attending === 'no';
     $('#form').hidden = true; $('#done').hidden = false;
-    if (celebrate) {
-      $('#rsvp').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      if (r.p_attending !== 'no') confetti();
-    }
+    if (scroll) $('#rsvp').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
   $('#again').addEventListener('click', () => {
     $('#done').hidden = true; $('#form').hidden = false;
     const r = lastReply, f = $('#form');
     if (r) {
       f.name.value = r.p_name; f.contact.value = r.p_contact; f.message.value = r.p_message || '';
-      f.diet.value = r.p_diet || ''; f.plus_one_name.value = r.p_plus_one_name || '';
-      f.accepts_cost.checked = !!r.p_accepts_cost;
-      state.plus = !!r.p_plus_one;
-      $$('#plusSeg button').forEach(x => x.setAttribute('aria-pressed', String((x.dataset.plus === '1') === state.plus)));
+      f.diet.value = r.p_diet || ''; f.plus_one_name.value = r.p_plus_one_name || ''; f.accepts_cost.checked = !!r.p_accepts_cost;
       setAttending(r.p_attending);
     }
-    $('#rsvp').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
-  // calendar links
-  const icsText = () => [
-    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PartyDoctorParty//EN', 'BEGIN:VEVENT',
-    'UID:party-doctor-party-20261219@jesperlindmarker.com', 'DTSTAMP:20261110T120000Z',
-    'DTSTART:20261219T170000Z', 'DTEND:20261219T230000Z',
-    'SUMMARY:PARTY DOCTOR PARTY', 'LOCATION:Stockholm',
-    'DESCRIPTION:' + t('icsDesc').replace(/,/g, '\\,'), 'END:VEVENT', 'END:VCALENDAR'
-  ].join('\r\n');
-  $('#ics').addEventListener('click', ev => {
-    ev.currentTarget.href = URL.createObjectURL(new Blob([icsText()], { type: 'text/calendar' }));
-  });
+  const icsText = () => ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PartyDoctorParty//EN', 'BEGIN:VEVENT',
+    'UID:party-doctor-party-20261219@jesperlindmarker.com', 'DTSTAMP:20261110T120000Z', 'DTSTART:20261219T170000Z', 'DTEND:20261219T230000Z',
+    'SUMMARY:PARTY DOCTOR PARTY', 'LOCATION:Stockholm', 'DESCRIPTION:' + t('icsDesc').replace(/,/g, '\\,'), 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  $('#ics').addEventListener('click', ev => { ev.currentTarget.href = URL.createObjectURL(new Blob([icsText()], { type: 'text/calendar' })); });
   $('#gcal').addEventListener('click', ev => {
-    ev.currentTarget.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
-      + '&text=' + encodeURIComponent('PARTY DOCTOR PARTY')
-      + '&dates=20261219T170000Z/20261219T230000Z'
-      + '&details=' + encodeURIComponent(t('icsDesc'))
-      + '&location=Stockholm';
+    ev.currentTarget.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('PARTY DOCTOR PARTY')
+      + '&dates=20261219T170000Z/20261219T230000Z&details=' + encodeURIComponent(t('icsDesc')) + '&location=Stockholm';
   });
 
-  function confetti() {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const box = document.createElement('div'); box.className = 'confetti';
-    const cols = ['#ff4d9d', '#16b5e8', '#ffd21f', '#2ccf78', '#ff7a2f', '#8d5cf6'];
-    for (let i = 0; i < 70; i++) {
-      const p = document.createElement('i');
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.background = cols[i % cols.length];
-      p.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
-      p.style.setProperty('--r', (Math.random() * 900 - 450) + 'deg');
-      p.style.animationDuration = (1.8 + Math.random() * 1.6) + 's';
-      p.style.animationDelay = (Math.random() * .4) + 's';
-      if (i % 3 === 0) p.style.borderRadius = '50%';
-      box.appendChild(p);
-    }
-    document.body.appendChild(box);
-    setTimeout(() => box.remove(), 4200);
-  }
-
-  // returning visitor: show their last answer
   try { const saved = JSON.parse(store.get('pdp-reply') || 'null'); if (saved && saved.p_name) { lastReply = saved; showDone(saved, false); } } catch {}
-
   applyLang();
 })();
 </script>
+<script src="concepts/head.js"></script>
 </body>
 </html>

@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [2.7.0] - 2026-11-10
 
+### Changed
+- **`/party/` now uses the cut-outs design (concept 2)** with the travelling head, robe, plot and party-hat landing, plus the real form: dinner, later in the evening or no, plus-one name, diet, cost tick and message. Full Swedish/English toggle, including the plot labels. The guest list now counts plus-ones for late arrivals too.
+
 ### Added
 - **New page: PARTY DOCTOR PARTY RSVP** at `/party/`, for the defence party on Saturday 19 December 2026. Unlisted and `noindex`: not linked from the site and not in the sitemap.
   - Answers (dinner, later in the evening, or no; plus-one, diet, message) go to the `party_rsvps` table in the `familjemello` Supabase project through a public insert-only function. Nobody can read them without the admin key
