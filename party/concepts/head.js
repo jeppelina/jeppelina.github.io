@@ -13,7 +13,7 @@
     f26_0: { crown: [43.75, 13.27], roll: 1.1 },
     f27_0: { crown: [45.48, 13.08], roll: 3.0 },
     f02_0: { crown: [57.6, 16.15], roll: -7.6 },
-    f01_0: { crown: [72.02, 7.88], roll: -16.5, noHat: true },
+    f01_0: { crown: [67.98, 9.42], roll: -16.5, noHat: true },
     f18_3: { crown: [25.29, 15.0], roll: 12.3 }
   };
   // Where the head comes to rest after a flip or a fall: mostly the neutral face, but not always.
@@ -87,7 +87,7 @@
   document.querySelectorAll('.pdp-robe').forEach(r => r.insertAdjacentHTML('beforeend', robeSVG(r.dataset.c1 || '#e8458b', r.dataset.c2 || '#19a7d8')));
 
   /* ---------- plot ---------- */
-  const W = 640, H = 420, L = 70, R = 26, T = 26, B = 64, PW = W - L - R, PH = H - T - B;
+  const W = 640, H = 300, L = 64, R = 26, T = 18, B = 56, PW = W - L - R, PH = H - T - B;
   const f = x => 0.06 + 0.86 * Math.pow(x, 1.8);
   const X = x => L + x * PW, Y = y => T + (1 - y) * PH;
   let plot = null, head = null;
@@ -109,8 +109,8 @@
       <path d="M${X(1)} ${T} V${T + PH}" stroke="var(--plot-ink)" stroke-width="1.5" stroke-dasharray="5 6" opacity=".6"/>
       <text x="${X(1) - 8}" y="${T + PH - 10}" text-anchor="end" font-size="15" font-weight="700" fill="var(--plot-ink)">19 Dec: party</text>
       <text x="${L + 12}" y="${T + 14}" font-size="15" fill="var(--plot-ink)" opacity=".7">n = 1</text>
-      <text x="${L + PW / 2}" y="${H - 6}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--plot-ink)">How much doctor (x)</text>
-      <text transform="translate(20 ${T + PH / 2}) rotate(-90)" text-anchor="middle" font-size="18" font-weight="700" fill="var(--plot-ink)">Happiness and success (y)</text>
+      <text x="${L + PW / 2}" y="${H - 6}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--plot-ink)">How much doctor (x)</text>
+      <text class="ylab" transform="translate(20 ${T + PH / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="var(--plot-ink)">Happiness and success (y)</text>
       <circle class="pt" r="7" fill="none" stroke="var(--plot-accent)" stroke-width="3"/>
     </svg>
     <div class="ctl"><label for="pdpx">x = <b class="xv">20%</b> doctor</label>
@@ -119,16 +119,26 @@
     const svg = el.querySelector('svg'), pt = el.querySelector('.pt'), input = el.querySelector('input');
     const xv = el.querySelector('.xv'), yv = el.querySelector('.yv');
     plot = {
-      x: 0.2,
+      x: 0.2, trait: 'Happiness and success',
       point() { const r = svg.getBoundingClientRect(); return { x: r.left + scrollX + X(this.x) / W * r.width, y: r.top + scrollY + Y(f(this.x)) / H * r.height, w: Math.max(84, Math.min(130, r.width * 0.2)) }; },
       update() {
         pt.setAttribute('cx', X(this.x)); pt.setAttribute('cy', Y(f(this.x)));
         xv.textContent = Math.round(this.x * 100) + '%';
-        yv.textContent = this.x >= 1 ? 'y = 0.92. A doctor. Time to party.' : `Predicted happiness and success: y = ${f(this.x).toFixed(2)}`;
+        yv.textContent = this.x >= 1 ? `y = 0.92 ${this.trait.toLowerCase()}. A doctor. Time to party.` : `Predicted ${this.trait.toLowerCase()}: y = ${f(this.x).toFixed(2)}`;
       }
     };
     input.addEventListener('input', () => { plot.x = input.value / 100; plot.update(); if (head) head.follow(); });
     plot.update();
+    // The y axis keeps changing its mind: a short blink of something bad, then it lands on something good.
+    const GOOD = ['Happiness and success', 'Humility', 'Kindness', 'Curiosity', 'Generosity', 'Patience', 'Gratitude', 'Calm', 'Wisdom', 'Modesty'];
+    const BAD = ['Megalomania', 'Pretentiousness', 'Smugness', 'Self-importance', 'Jargon', 'Vanity'];
+    const ylab = el.querySelector('.ylab');
+    const setTrait = t => { plot.trait = t; ylab.textContent = t + ' (y)'; plot.update(); };
+    const any = a => a[Math.floor(Math.random() * a.length)];
+    if (!reduce) setInterval(() => {
+      setTrait(any(BAD));
+      setTimeout(() => { let g; do { g = any(GOOD); } while (g === plot.trait); setTrait(g); }, 420 + Math.random() * 260);
+    }, 3400);
   });
 
   /* ---------- the travelling head ---------- */
@@ -182,7 +192,14 @@
 
   function activeIndex() {
     let a = 0;
-    stations.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top + r.height * 0.3 < innerHeight * 0.6) a = i; });
+    const R = stations.map(s => s.getBoundingClientRect());
+    // Move on when the next stop peeks in and you're past the current one, or when the current one is nearly gone.
+    // The hero lets go as soon as the next stop peeks in; the plot holds on longer so the slider can be played with.
+    const leave = i => i === 0 ? 1 : stations[i].hasAttribute('data-plot') ? 0.28 : 0.45;
+    for (let i = 1; i < R.length; i++) {
+      const prevC = R[i - 1].top + R[i - 1].height / 2;
+      if ((R[i].top < innerHeight * 0.88 && prevC < innerHeight * leave(i - 1)) || prevC < innerHeight * 0.12) a = i;
+    }
     return a;
   }
 
@@ -212,6 +229,35 @@
 
   function snap() { if (moving) return; Object.assign(cur, target(at)); paint(); }
   head = { follow() { if (stations[at].hasAttribute('data-plot')) snap(); } };
+
+  // RSVP button: scroll down slowly, stopping at each station so the fall can be watched.
+  let touring = false, stop = false;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const glide = (y, ms) => new Promise(res => {
+    const y0 = scrollY, d = y - y0, t0 = performance.now();
+    (function f(t) {
+      if (stop) return res();
+      const u = Math.min(1, (t - t0) / ms), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      scrollTo(0, y0 + d * e); u < 1 ? requestAnimationFrame(f) : res();
+    })(t0);
+  });
+  async function tour(ev) {
+    if (ev) ev.preventDefault();
+    if (touring) return;
+    const last = stations[stations.length - 1].closest('section') || stations[stations.length - 1];
+    if (reduce) { last.scrollIntoView(); return; }
+    touring = true; stop = false;
+    for (let i = at + 1; i < stations.length && !stop; i++) {
+      const r = (stations[i].querySelector('[data-slot]') || stations[i]).getBoundingClientRect();
+      const y = i === stations.length - 1 ? scrollY + last.getBoundingClientRect().top - 20 : scrollY + r.top - innerHeight * 0.3;
+      await glide(Math.max(0, y), 1500);
+      for (let w = 0; w < 30 && !stop && (moving || at < i); w++) await sleep(80);   // wait for the landing
+      if (i < stations.length - 1) await sleep(700);
+    }
+    touring = false;
+  }
+  ['wheel', 'touchstart', 'keydown'].forEach(e => addEventListener(e, () => { if (touring) stop = true; }, { passive: true }));
+  document.querySelectorAll('[data-pdp-tour]').forEach(b => b.addEventListener('click', tour));
 
   at = activeIndex(); hatType = hatFor(at); Object.assign(cur, target(at)); paint();
   let ticking = false;

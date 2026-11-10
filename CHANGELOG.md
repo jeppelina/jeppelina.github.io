@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file.
 - **Design concepts** at `/party/concepts/`: five directions (rings, cut-outs, numbers, night, faces) built on one shared component, `head.js`
   - A black-and-white paper-cut head of Jesper in a doctoral hat, animated in stop motion. As you scroll it falls step by step onto a robe, becomes the data point on an interactive "how much doctor" plot, and lands at the RSVP in a party hat
   - After each flip or fall the head comes to rest on a weighted random face (neutral most often, the smiles and sunglasses regularly, the crown profile and turned-away head now and then), and each flip is a fresh shuffle
+  - The plot is its own narrow coloured band with no heading. Its y axis keeps changing: a short blink of something bad (megalomania, pretentiousness) before it lands on something good (humility, kindness), and the readout follows
+  - An RSVP button in each hero scrolls down slowly, stopping at each station so the fall can be watched. The head now leaves a station early, so it falls ahead of the reader
+  - The crown profile is re-cut from the full photo, so the whole crown and the back of the head are in
   - Head frames in `concepts/heads/`. `inline_head.py` embeds the script and smaller frames into each page, so the pages also work when opened as plain files
 
 ## [2.6.0] - 2026-10-27
