@@ -14,3 +14,6 @@ showcase/
 .Rproj.user/
 *.Rproj
 .Rhistory
+
+# Party RSVP admin key (never commit)
+.party-admin-key

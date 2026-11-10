@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.7.0] - 2026-11-10
+
+### Added
+- **New page: PARTY DOCTOR PARTY RSVP** at `/party/`, for the defence party on Saturday 19 December 2026. Unlisted and `noindex`: not linked from the site and not in the sitemap.
+  - Answers (dinner, later in the evening, or no; plus-one, diet, message) go to the `party_rsvps` table in the `familjemello` Supabase project through a public insert-only function. Nobody can read them without the admin key
+  - Swedish/English toggle, defaulting to the browser language
+  - **Guest list** at `/party/admin.html`, gated by a key kept in the gitignored `.party-admin-key`. Shows headcounts, diets and messages, keeps only the latest answer per email/phone, and exports CSV
+- **Design concepts** at `/party/concepts/`: five directions (rings, cut-outs, numbers, night, faces) built on one shared component, `head.js`
+  - A black-and-white paper-cut head of Jesper in a doctoral hat, animated in stop motion. As you scroll it falls step by step onto a robe, becomes the data point on an interactive "how much doctor" plot, and lands at the RSVP in a party hat
+  - Head frames in `concepts/heads/`. `inline_head.py` embeds the script and smaller frames into each page, so the pages also work when opened as plain files
+
 ## [2.6.0] - 2026-10-27
 
 ### Added

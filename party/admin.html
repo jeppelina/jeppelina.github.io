@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>PDP guest list</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#17131c; --cream:#fff3de; --pink:#ff4d9d; --cyan:#16b5e8; --yellow:#ffd21f; --green:#2ccf78; --muted:#5d5566; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Rubik', system-ui, sans-serif; background: var(--cream); color: var(--ink); padding: 24px 16px 60px; line-height: 1.45; }
+.wrap { max-width: 1000px; margin: 0 auto; }
+h1 { font-family: 'Bagel Fat One', system-ui, sans-serif; font-weight: 400; font-size: 40px; margin-bottom: 18px; }
+.login, .box { background: #fff; border: 3px solid var(--ink); border-radius: 18px; padding: 18px; box-shadow: 5px 5px 0 var(--ink); }
+.login { display: flex; gap: 10px; flex-wrap: wrap; max-width: 520px; }
+input { flex: 1 1 220px; font: inherit; border: 3px solid var(--ink); border-radius: 12px; padding: 10px 12px; background: var(--cream); }
+button { font: inherit; font-weight: 800; cursor: pointer; border: 3px solid var(--ink); border-radius: 999px; padding: 9px 18px; background: var(--yellow); box-shadow: 0 3px 0 var(--ink); }
+button.alt { background: #fff; }
+.err { margin-top: 12px; font-weight: 600; color: #b0003a; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 22px 0; }
+.stat { border: 3px solid var(--ink); border-radius: 16px; padding: 14px; box-shadow: 4px 4px 0 var(--ink); }
+.stat b { display: block; font-family: 'Bagel Fat One', system-ui, sans-serif; font-weight: 400; font-size: 44px; line-height: 1; }
+.stat:nth-child(1) { background: var(--pink); } .stat:nth-child(2) { background: var(--cyan); } .stat:nth-child(3) { background: var(--green); } .stat:nth-child(4) { background: #fff; }
+.bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.bar .note { color: var(--muted); font-size: 14px; }
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 2px solid #eadfcd; vertical-align: top; }
+th { font-weight: 800; border-bottom: 3px solid var(--ink); white-space: nowrap; }
+tr.old td { color: #a59cab; text-decoration: line-through; }
+.tag { display: inline-block; padding: 1px 9px; border-radius: 999px; border: 2px solid var(--ink); font-weight: 700; font-size: 12px; white-space: nowrap; }
+.tag.dinner { background: var(--pink); } .tag.later { background: var(--cyan); } .tag.no { background: #e9e3f4; }
+h2 { font-size: 18px; margin: 26px 0 10px; }
+ul { padding-left: 20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Guest list 🎓</h1>
+
+  <form class="login" id="login">
+    <input type="password" id="key" placeholder="Admin key" autocomplete="current-password">
+    <button type="submit">Open</button>
+    <div class="err" id="err" hidden></div>
+  </form>
+
+  <div id="list" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="bar">
+      <button type="button" id="refresh">Refresh</button>
+      <button type="button" class="alt" id="csv">Download CSV</button>
+      <button type="button" class="alt" id="logout">Lock</button>
+      <span class="note">Struck-through rows were replaced by a newer answer from the same email/phone.</span>
+    </div>
+    <div class="box tablewrap"><table id="table"></table></div>
+    <h2>Diets and allergies (dinner)</h2>
+    <ul id="diets"></ul>
+    <h2>Messages</h2>
+    <ul id="msgs"></ul>
+  </div>
+</div>
+<script>
+(() => {
+  const URL_ = 'https://bhurxoknmyfqymtiaycx.supabase.co/rest/v1/rpc/party_rsvp_list';
+  const KEY = 'sb_publishable_eVv0YIKYjdwRKQFK_DORCA_QhE4qgiB';
+  const $ = s => document.querySelector(s);
+  const ls = { get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+               set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} } };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  const norm = c => String(c).toLowerCase().replace(/[\s\-()]/g, '').replace(/^\+46/, '0');
+  let rows = [];
+
+  async function load(adminKey) {
+    const r = await fetch(URL_, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: KEY }, body: JSON.stringify({ p_key: adminKey }) });
+    if (!r.ok) throw new Error(r.status === 401 || r.status === 403 || r.status === 400 ? 'Wrong key' : 'Could not load (' + r.status + ')');
+    return r.json();
+  }
+
+  function render() {
+    const seen = new Set();
+    rows.forEach(r => { const k = norm(r.contact); r._old = seen.has(k); seen.add(k); }); // rows arrive newest first
+    const cur = rows.filter(r => !r._old);
+    const dinner = cur.filter(r => r.attending === 'dinner');
+    const dinnerPeople = dinner.reduce((n, r) => n + 1 + (r.plus_one ? 1 : 0), 0);
+    const later = cur.filter(r => r.attending === 'later').length;
+    const no = cur.filter(r => r.attending === 'no').length;
+    $('#stats').innerHTML = `
+      <div class="stat"><b>${dinnerPeople}</b>at dinner (incl. ${dinnerPeople - dinner.length} plus-ones)</div>
+      <div class="stat"><b>${later}</b>joining later</div>
+      <div class="stat"><b>${dinnerPeople + later}</b>total in the evening</div>
+      <div class="stat"><b>${no}</b>can't come</div>`;
+    const label = { dinner: 'Dinner', later: 'Later', no: 'No' };
+    $('#table').innerHTML = '<tr><th>When</th><th>Name</th><th>Answer</th><th>Plus-one</th><th>Contact</th><th>Diet</th><th>Message</th><th>Lang</th></tr>' +
+      rows.map(r => `<tr class="${r._old ? 'old' : ''}">
+        <td>${esc(new Date(r.created_at).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' }))}</td>
+        <td><b>${esc(r.name)}</b></td>
+        <td><span class="tag ${r.attending}">${label[r.attending]}</span></td>
+        <td>${r.plus_one ? esc(r.plus_one_name || '+1') : ''}</td>
+        <td>${esc(r.contact)}</td><td>${esc(r.diet)}</td><td>${esc(r.message)}</td><td>${esc(r.lang)}</td></tr>`).join('');
+    $('#diets').innerHTML = dinner.filter(r => r.diet).map(r => `<li><b>${esc(r.name)}${r.plus_one ? ' + ' + esc(r.plus_one_name || '1') : ''}:</b> ${esc(r.diet)}</li>`).join('') || '<li>None yet</li>';
+    $('#msgs').innerHTML = cur.filter(r => r.message).map(r => `<li><b>${esc(r.name)}:</b> ${esc(r.message)}</li>`).join('') || '<li>None yet</li>';
+  }
+
+  async function open(k) {
+    $('#err').hidden = true;
+    try {
+      rows = await load(k);
+      ls.set('pdp-admin', k);
+      $('#login').hidden = true; $('#list').hidden = false;
+      render();
+    } catch (e) { $('#err').textContent = e.message; $('#err').hidden = false; $('#login').hidden = false; $('#list').hidden = true; }
+  }
+
+  $('#login').addEventListener('submit', e => { e.preventDefault(); open($('#key').value.trim()); });
+  $('#refresh').addEventListener('click', () => open(ls.get('pdp-admin')));
+  $('#logout').addEventListener('click', () => { ls.set('pdp-admin', null); location.reload(); });
+  $('#csv').addEventListener('click', () => {
+    const cols = ['created_at','name','attending','plus_one','plus_one_name','contact','diet','message','accepts_cost','lang'];
+    const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const csv = [cols.concat('replaced').join(',')].concat(rows.map(r => cols.map(c => q(r[c])).concat(q(r._old ? 'yes' : '')).join(','))).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' }));
+    a.download = 'party-rsvps.csv'; a.click();
+  });
+  const saved = ls.get('pdp-admin'); if (saved) open(saved);
+})();
+</script>
+</body>
+</html>
