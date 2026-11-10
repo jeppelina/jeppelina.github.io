@@ -87,37 +87,55 @@
   document.querySelectorAll('.pdp-robe').forEach(r => r.insertAdjacentHTML('beforeend', robeSVG(r.dataset.c1 || '#e8458b', r.dataset.c2 || '#19a7d8')));
 
   /* ---------- plot ---------- */
-  const W = 640, H = 300, L = 64, R = 26, T = 18, B = 56, PW = W - L - R, PH = H - T - B;
+  // Drawn in a 640-unit-wide viewBox; text sizes are set in screen pixels and converted, so labels stay readable on phones.
+  const W = 640;
+  let H = 300, L = 30, R = 30, T = 40, B = 60, PW = 0, PH = 0, k = 1;
   const f = x => 0.06 + 0.86 * Math.pow(x, 1.8);
   const X = x => L + x * PW, Y = y => T + (1 - y) * PH;
   let plot = null, head = null;
   document.querySelectorAll('[data-plot]').forEach(el => {
-    let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    const gauss = () => { let s = 0; for (let i = 0; i < 6; i++) s += rnd(); return (s - 3) / 1.1; };
-    const xs = Array.from({ length: 101 }, (_, i) => i / 100);
-    const line = xs.map((x, i) => `${i ? 'L' : 'M'}${X(x).toFixed(1)} ${Y(f(x)).toFixed(1)}`).join('');
-    const band = xs.map((x, i) => `${i ? 'L' : 'M'}${X(x).toFixed(1)} ${Y(Math.min(1, f(x) + 0.05 + 0.08 * (1 - x))).toFixed(1)}`).join('')
-      + xs.slice().reverse().map(x => `L${X(x).toFixed(1)} ${Y(Math.max(0, f(x) - 0.05 - 0.08 * (1 - x))).toFixed(1)}`).join('') + 'Z';
-    const dots = Array.from({ length: 34 }, () => { const x = rnd() * 0.96 + 0.02; const y = Math.min(.98, Math.max(.02, f(x) + gauss() * 0.075)); return `<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="4.5"/>`; }).join('');
-    const ticks = [0, .25, .5, .75, 1].map(t => `<path d="M${X(t)} ${T + PH} v7"/><text x="${X(t)}" y="${T + PH + 26}" text-anchor="middle" stroke="none">${Math.round(t * 100)}%</text>`).join('');
-    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Plot: happiness and success rises with how much doctor">
-      <g fill="none" stroke="var(--plot-ink)" stroke-width="2.5"><path d="M${L} ${T - 6} V${T + PH} H${L + PW + 6}"/></g>
-      <g stroke="var(--plot-ink)" stroke-width="2" fill="var(--plot-ink)" font-size="16">${ticks}</g>
-      <path d="${band}" fill="var(--plot-band)" opacity=".16"/>
-      <g fill="var(--plot-ink)" opacity=".38">${dots}</g>
-      <path d="${line}" fill="none" stroke="var(--plot-accent)" stroke-width="5" stroke-linecap="round"/>
-      <path d="M${X(1)} ${T} V${T + PH}" stroke="var(--plot-ink)" stroke-width="1.5" stroke-dasharray="5 6" opacity=".6"/>
-      <text x="${X(1) - 8}" y="${T + PH - 10}" text-anchor="end" font-size="15" font-weight="700" fill="var(--plot-ink)">19 Dec: party</text>
-      <text x="${L + 12}" y="${T + 14}" font-size="15" fill="var(--plot-ink)" opacity=".7">n = 1</text>
-      <text x="${L + PW / 2}" y="${H - 6}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--plot-ink)">How much doctor (x)</text>
-      <text class="ylab" transform="translate(20 ${T + PH / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="var(--plot-ink)">Happiness and success (y)</text>
-      <circle class="pt" r="7" fill="none" stroke="var(--plot-accent)" stroke-width="3"/>
-    </svg>
+    el.innerHTML = `<div class="plotbox"></div>
     <div class="ctl"><label for="pdpx">x = <b class="xv">20%</b> doctor</label>
       <input id="pdpx" type="range" min="0" max="100" step="1" value="20">
       <output class="yv"></output></div>`;
-    const svg = el.querySelector('svg'), pt = el.querySelector('.pt'), input = el.querySelector('input');
+    const box = el.querySelector('.plotbox'), input = el.querySelector('input');
     const xv = el.querySelector('.xv'), yv = el.querySelector('.yv');
+    let svg, pt, ylab, drawnFor = 0;
+
+    function draw() {
+      const cw = el.clientWidth || 600;
+      if (Math.abs(cw - drawnFor) < 2) return; drawnFor = cw;
+      k = W / cw;                                   // viewBox units per screen pixel
+      const px = p => +(p * k).toFixed(1);
+      const fsTick = px(cw < 520 ? 13 : 14), fsLab = px(cw < 520 ? 14 : 15), fsNote = px(cw < 520 ? 12 : 13);
+      H = cw < 520 ? Math.round(W * 0.62) : 300;    // a little taller on phones
+      L = fsTick * 1.1; R = fsTick * 1.6; T = fsLab * 2.1; B = fsTick * 1.9 + fsLab * 1.7;
+      PW = W - L - R; PH = H - T - B;
+      let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const gauss = () => { let s = 0; for (let i = 0; i < 6; i++) s += rnd(); return (s - 3) / 1.1; };
+      const xs = Array.from({ length: 101 }, (_, i) => i / 100);
+      const line = xs.map((x, i) => `${i ? 'L' : 'M'}${X(x).toFixed(1)} ${Y(f(x)).toFixed(1)}`).join('');
+      const band = xs.map((x, i) => `${i ? 'L' : 'M'}${X(x).toFixed(1)} ${Y(Math.min(1, f(x) + 0.05 + 0.08 * (1 - x))).toFixed(1)}`).join('')
+        + xs.slice().reverse().map(x => `L${X(x).toFixed(1)} ${Y(Math.max(0, f(x) - 0.05 - 0.08 * (1 - x))).toFixed(1)}`).join('') + 'Z';
+      const dots = Array.from({ length: 34 }, () => { const x = rnd() * 0.96 + 0.02; const y = Math.min(.98, Math.max(.02, f(x) + gauss() * 0.075)); return `<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="${px(3)}"/>`; }).join('');
+      const ticks = [0, .25, .5, .75, 1].map(t => `<path d="M${X(t)} ${T + PH} v${px(4)}"/><text x="${X(t)}" y="${T + PH + fsTick * 1.45}" text-anchor="middle" stroke="none">${Math.round(t * 100)}%</text>`).join('');
+      box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Plot: the y axis rises with how much doctor">
+        <g fill="none" stroke="var(--plot-ink)" stroke-width="${px(1.6)}"><path d="M${L} ${T - px(6)} V${T + PH} H${L + PW + px(4)}"/></g>
+        <g stroke="var(--plot-ink)" stroke-width="${px(1.2)}" fill="var(--plot-ink)" font-size="${fsTick}">${ticks}</g>
+        <path d="${band}" fill="var(--plot-band)" opacity=".16"/>
+        <g fill="var(--plot-ink)" opacity=".38">${dots}</g>
+        <path d="${line}" fill="none" stroke="var(--plot-accent)" stroke-width="${px(3)}" stroke-linecap="round"/>
+        <path d="M${X(1)} ${T} V${T + PH}" stroke="var(--plot-ink)" stroke-width="${px(1)}" stroke-dasharray="${px(3)} ${px(4)}" opacity=".6"/>
+        <text x="${X(1) - px(6)}" y="${T + PH - px(8)}" text-anchor="end" font-size="${fsNote}" font-weight="700" fill="var(--plot-ink)">19 Dec: party</text>
+        <text x="${X(1)}" y="${T - fsLab * 0.75}" text-anchor="end" font-size="${fsNote}" fill="var(--plot-ink)" opacity=".7">n = 1</text>
+        <text class="ylab" x="${L - px(2)}" y="${T - fsLab * 0.75}" font-size="${fsLab}" font-weight="700" fill="var(--plot-ink)"></text>
+        <text x="${L + PW / 2}" y="${H - fsLab * 0.4}" text-anchor="middle" font-size="${fsLab}" font-weight="700" fill="var(--plot-ink)">How much doctor (x) →</text>
+        <circle class="pt" r="${px(4)}" fill="none" stroke="var(--plot-accent)" stroke-width="${px(2)}"/>
+      </svg>`;
+      svg = box.querySelector('svg'); pt = box.querySelector('.pt'); ylab = box.querySelector('.ylab');
+      if (plot) { ylab.textContent = '↑ ' + plot.trait + ' (y)'; plot.update(); }
+    }
+
     plot = {
       x: 0.2, trait: 'Happiness and success',
       point() { const r = svg.getBoundingClientRect(); return { x: r.left + scrollX + X(this.x) / W * r.width, y: r.top + scrollY + Y(f(this.x)) / H * r.height, w: Math.max(84, Math.min(130, r.width * 0.2)) }; },
@@ -127,13 +145,13 @@
         yv.textContent = this.x >= 1 ? `y = 0.92 ${this.trait.toLowerCase()}. A doctor. Time to party.` : `Predicted ${this.trait.toLowerCase()}: y = ${f(this.x).toFixed(2)}`;
       }
     };
+    draw();
+    addEventListener('resize', () => { draw(); if (head) head.follow(); });
     input.addEventListener('input', () => { plot.x = input.value / 100; plot.update(); if (head) head.follow(); });
-    plot.update();
     // The y axis keeps changing its mind: a short blink of something bad, then it lands on something good.
     const GOOD = ['Happiness and success', 'Humility', 'Kindness', 'Curiosity', 'Generosity', 'Patience', 'Gratitude', 'Calm', 'Wisdom', 'Modesty'];
     const BAD = ['Megalomania', 'Pretentiousness', 'Smugness', 'Self-importance', 'Jargon', 'Vanity'];
-    const ylab = el.querySelector('.ylab');
-    const setTrait = t => { plot.trait = t; ylab.textContent = t + ' (y)'; plot.update(); };
+    const setTrait = t => { plot.trait = t; ylab.textContent = '↑ ' + t + ' (y)'; plot.update(); };
     const any = a => a[Math.floor(Math.random() * a.length)];
     if (!reduce) setInterval(() => {
       setTrait(any(BAD));
