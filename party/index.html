@@ -50,6 +50,7 @@ section { padding:72px 16px; }
 .letter .sig { font-family:'Instrument Serif',serif; font-weight:400; font-size:30px; }
 .details { margin-top:48px; border-top:1.5px solid var(--ink); }
 .details div { display:grid; grid-template-columns:110px 1fr; gap:14px; padding:16px 0; border-bottom:1.5px solid var(--ink); }
+.details dd b { font-weight:800; }
 .details dt { font-weight:800; font-size:13px; letter-spacing:.14em; text-transform:uppercase; padding-top:3px; color:var(--blue); }
 
 .model { background:var(--blue); color:var(--paper); padding:26px 16px 20px; }
@@ -141,19 +142,19 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     <div class="letter">
       <p data-t="l1">Hi!</p>
       <p data-t="l2">On 17 December I defend my thesis, and two days later I want to celebrate with you.</p>
-      <p data-t="l3">The plan is to have dinner together first and then keep going for the rest of the night. I haven't booked a place yet, since I need to know roughly how many we'll be. So please answer below.</p>
+      <p data-t="l3">The plan is that I book a restaurant and event space where we eat together and celebrate. Then we can continue into the night. I haven't booked anything yet, since I need to know roughly how many we'll be. So please answer below.</p>
       <p data-t="l4">You're very welcome to bring a partner or a friend!</p>
       <p class="sig">/Jesper</p>
     </div>
     <div class="pdp-robe" data-station data-c1="#2552b8" data-c2="#f26ca7"><div class="slot" data-slot></div></div>
   </div>
   <dl class="details">
-    <div><dt data-t="dWhen">When</dt><dd data-t="vWhen">Saturday 19 December 2026. Dinner from around 18.00, and then until late.</dd></div>
-    <div><dt data-t="dWhere">Where</dt><dd data-t="vWhere">Somewhere in Stockholm. Not booked yet, I'll send you the address.</dd></div>
-    <div><dt data-t="dDinner">Dinner</dt><dd data-t="vDinner">About 500–700 kr per person for the food, and everyone pays for their own. Drinks on top of that.</dd></div>
-    <div><dt data-t="dPlus">Plus one</dt><dd data-t="vPlus">Yes! Bring a partner or a friend, just add their name in the form.</dd></div>
-    <div><dt data-t="dLater">Only later?</dt><dd data-t="vLater">If you can't make the dinner, come later in the evening. There's an option for that in the form.</dd></div>
-    <div><dt data-t="dBy">Answer by</dt><dd data-t="vBy">22 November, please.</dd></div>
+    <div><dt data-t="dWhen">When</dt><dd data-th="vWhen"><b>Saturday 19 December</b> 2026. Dinner from <b>around 18.00</b>, and then until late.</dd></div>
+    <div><dt data-t="dWhere">Where</dt><dd data-th="vWhere"><b>Restaurant somewhere in Stockholm.</b> Not booked yet, I'll send you the address.</dd></div>
+    <div><dt data-t="dDinner">Price</dt><dd data-th="vDinner"><b>About 500 kr per person</b> for the food, and everyone pays for their own. Drinks on top of that.</dd></div>
+    <div><dt data-t="dPlus">Plus one</dt><dd data-th="vPlus"><b>Yes!</b> Bring a partner or a friend, just add their name in the form.</dd></div>
+    <div><dt data-t="dLater">Only later?</dt><dd data-th="vLater">If you can't make the dinner, <b>come later in the evening</b>. There's an option for that in the form.</dd></div>
+    <div><dt data-t="dBy">Answer by</dt><dd data-th="vBy"><b>22 November</b>, please.</dd></div>
   </dl>
 </div></section>
 
@@ -206,7 +207,6 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
 
 <footer>
   <p data-t="foot">Questions? Just ask me, the same way you got this link.</p>
-  <p class="mini" data-t="privacy">Only Jesper sees your answer, and it's deleted after the party.</p>
 </footer>
 
 <script>
@@ -218,14 +218,14 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     en: {
       kicker: "You're invited to", why: 'celebrate that Jesper Lindmarker got his PhD', date: 'Sat 19 Dec', where: 'Somewhere in Stockholm', cta: 'RSVP ↓',
       l1: 'Hi!', l2: 'On 17 December I defend my thesis, and two days later I want to celebrate with you.',
-      l3: "The plan is to have dinner together first and then keep going for the rest of the night. I haven't booked a place yet, since I need to know roughly how many we'll be. So please answer below.",
+      l3: "The plan is that I book a restaurant and event space where we eat together and celebrate. Then we can continue into the night. I haven't booked anything yet, since I need to know roughly how many we'll be. So please answer below.",
       l4: "You're very welcome to bring a partner or a friend!",
-      dWhen: 'When', vWhen: 'Saturday 19 December 2026. Dinner from around 18.00, and then until late.',
-      dWhere: 'Where', vWhere: "Somewhere in Stockholm. Not booked yet, I'll send you the address.",
-      dDinner: 'Dinner', vDinner: 'About 500–700 kr per person for the food, and everyone pays for their own. Drinks on top of that.',
-      dPlus: 'Plus one', vPlus: 'Yes! Bring a partner or a friend, just add their name in the form.',
-      dLater: 'Only later?', vLater: "If you can't make the dinner, come later in the evening. There's an option for that in the form.",
-      dBy: 'Answer by', vBy: "22 November, please.",
+      dWhen: 'When', vWhen: "<b>Saturday 19 December</b> 2026. Dinner from <b>around 18.00</b>, and then until late.",
+      dWhere: 'Where', vWhere: "<b>Restaurant somewhere in Stockholm.</b> Not booked yet, I'll send you the address.",
+      dDinner: "Price", vDinner: "<b>About 500 kr per person</b> for the food, and everyone pays for their own. Drinks on top of that.",
+      dPlus: 'Plus one', vPlus: "<b>Yes!</b> Bring a partner or a friend, just add their name in the form.",
+      dLater: 'Only later?', vLater: "If you can't make the dinner, <b>come later in the evening</b>. There's an option for that in the form.",
+      dBy: 'Answer by', vBy: "<b>22 November</b>, please.",
       note: 'Not peer reviewed. n = 1, and I chose the functional form after looking at the data.',
       rsvpH: 'RSVP', rsvpSub: "Please answer by 22 November.",
       q1: 'Are you coming?', yesBig: "Yes, I'm coming to dinner", yesSmall: 'and the rest of the night', noBig: 'Sadly, no', noSmall: "Can't make it",
@@ -244,20 +244,20 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       aDinner: 'Dinner and after', aLater: 'Later in the evening', aNo: "Can't come",
       cal: 'Add to calendar', gcal: 'Google Calendar',
       change: 'Changed your mind? Send the form again with the same email or phone. The latest answer counts.', again: 'Change my answer',
-      foot: 'Questions? Just ask me, the same way you got this link.', privacy: "Only Jesper sees your answer, and it's deleted after the party.",
+      foot: 'Questions? Just ask me, the same way you got this link.',
       icsDesc: 'Dinner, and then the night continues. Venue to be announced.'
     },
     sv: {
       kicker: 'Du är inbjuden till', why: 'för att fira att Jesper Lindmarker har blivit doktor', date: 'Lör 19 dec', where: 'Någonstans i Stockholm', cta: 'OSA ↓',
       l1: 'Hej!', l2: 'Den 17 december disputerar jag, och två dagar senare vill jag fira med dig.',
-      l3: 'Planen är att äta middag tillsammans först och sedan fortsätta resten av kvällen. Jag har inte bokat något ställe än, eftersom jag behöver veta ungefär hur många vi blir. Så svara gärna nedan.',
+      l3: "Planen är att jag bokar en restaurang och festlokal där vi äter tillsammans och firar. Sedan kan vi fortsätta in i natten. Jag har inte bokat något än, eftersom jag behöver veta ungefär hur många vi blir. Så svara gärna nedan.",
       l4: 'Ta gärna med en partner eller en vän!',
-      dWhen: 'När', vWhen: 'Lördag 19 december 2026. Middag från ungefär 18.00, och sedan till sent.',
-      dWhere: 'Var', vWhere: 'Någonstans i Stockholm. Inte bokat än, jag skickar adressen.',
-      dDinner: 'Middag', vDinner: 'Ungefär 500–700 kr per person för maten, och var och en betalar sin egen. Dryck tillkommer.',
-      dPlus: 'Sällskap', vPlus: 'Ja! Ta med en partner eller en vän, skriv bara deras namn i formuläret.',
-      dLater: 'Bara senare?', vLater: 'Om du inte kan äta middag, kom senare på kvällen. Det finns ett val för det i formuläret.',
-      dBy: 'Svara senast', vBy: '22 november, tack.',
+      dWhen: 'När', vWhen: "<b>Lördag 19 december</b> 2026. Middag från <b>ungefär 18.00</b>, och sedan till sent.",
+      dWhere: 'Var', vWhere: "<b>Restaurang någonstans i Stockholm.</b> Inte bokat än, jag skickar adressen.",
+      dDinner: "Pris", vDinner: "<b>Ungefär 500 kr per person</b> för maten, och var och en betalar sin egen. Dryck tillkommer.",
+      dPlus: 'Sällskap', vPlus: "<b>Ja!</b> Ta med en partner eller en vän, skriv bara deras namn i formuläret.",
+      dLater: 'Bara senare?', vLater: "Om du inte kan äta middag, <b>kom senare på kvällen</b>. Det finns ett val för det i formuläret.",
+      dBy: 'Svara senast', vBy: "<b>22 november</b>, tack.",
       note: 'Inte granskad. n = 1, och jag valde funktionsformen efter att ha tittat på datan.',
       rsvpH: 'OSA', rsvpSub: 'Svara gärna senast 22 november.',
       q1: 'Kommer du?', yesBig: 'Ja, jag kommer på middagen', yesSmall: 'och resten av kvällen', noBig: 'Tyvärr inte', noSmall: 'Jag kan inte komma',
@@ -276,7 +276,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       aDinner: 'Middag och efteråt', aLater: 'Senare på kvällen', aNo: 'Kan inte komma',
       cal: 'Lägg till i kalendern', gcal: 'Google Kalender',
       change: 'Ändrat dig? Skicka formuläret igen med samma mejl eller telefon. Det senaste svaret gäller.', again: 'Ändra mitt svar',
-      foot: 'Frågor? Hör av dig till mig, på samma sätt som du fick länken.', privacy: 'Bara Jesper ser ditt svar, och det raderas efter festen.',
+      foot: 'Frågor? Hör av dig till mig, på samma sätt som du fick länken.',
       icsDesc: 'Middag, och sedan fortsätter kvällen. Plats meddelas.'
     }
   };
@@ -295,6 +295,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
   function applyLang() {
     document.documentElement.lang = lang;
     $$('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+    $$('[data-th]').forEach(el => { el.innerHTML = t(el.dataset.th); });   // static strings with <b> for emphasis
     $$('[data-tp]').forEach(el => { el.placeholder = t(el.dataset.tp); });
     $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     $('.later').textContent = state.attending === 'later' ? t('laterOn') : t('later');
