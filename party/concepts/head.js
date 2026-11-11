@@ -17,7 +17,7 @@
     f18_3: { crown: [25.29, 15.0], roll: 12.3 }
   };
   // Where the head comes to rest after a flip or a fall: mostly the neutral face, but not always.
-  const REST = [['f00_0', 5], ['f26_0', 2.2], ['f27_0', 2.2], ['f02_0', 1.6], ['f01_0', 0.9], ['f18_3', 0.6]];
+  const REST = [['f00_0', 4.5], ['f26_0', 2.2], ['f27_0', 2.2], ['f02_0', 3.5], ['f01_0', 0.9], ['f18_3', 0.6]];
   const FACES = Object.keys(HEADS);
   function pickRest(prev) {
     const opts = REST.filter(([n]) => n === 'f00_0' || n !== prev);   // only the neutral face may repeat
