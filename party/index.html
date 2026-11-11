@@ -47,6 +47,12 @@ section { padding:72px 16px; }
 .w { max-width:760px; margin:0 auto; }
 .letter { font-weight:600; font-size:19px; line-height:1.5; max-width:30em; }
 .letter p + p { margin-top:18px; }
+.letter .plan { list-style:none; margin:14px 0 18px; padding:0; }
+.letter .plan li { position:relative; padding-left:30px; }
+.letter .plan li + li { margin-top:6px; }
+.letter .plan li::before { content:''; position:absolute; left:4px; top:.5em; width:12px; height:12px; background:var(--pink); transform:rotate(12deg); border-radius:0 6px 0 6px; }
+.letter .plan li:nth-child(even)::before { background:var(--blue); transform:rotate(-8deg); }
+.letter .plan a { color:inherit; text-decoration:underline; text-decoration-color:var(--pink); text-decoration-thickness:3px; text-underline-offset:3px; }
 .letter .sig { font-family:'Instrument Serif',serif; font-weight:400; font-size:30px; }
 .details { margin-top:48px; border-top:1.5px solid var(--ink); }
 .details div { display:grid; grid-template-columns:110px 1fr; gap:14px; padding:16px 0; border-bottom:1.5px solid var(--ink); }
@@ -142,7 +148,14 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     <div class="letter">
       <p data-t="l1">Hi!</p>
       <p data-t="l2">On 17 December I defend my thesis, and two days later I want to celebrate with you.</p>
-      <p data-t="l3">The plan is that I book a restaurant and event space where we eat together and celebrate. Then we can continue into the night. I haven't booked anything yet, since I need to know roughly how many we'll be. So please answer below.</p>
+      <p data-t="l3">The plan is that I book a restaurant and event space. The evening will go roughly like this:</p>
+      <ul class="plan">
+        <li data-th="p1">Pre-drinks</li>
+        <li data-th="p2">Sit-down dinner together</li>
+        <li data-th="p3">Celebrating, and on into the night</li>
+        <li data-th="p4">After 00.00 we go and get tattoos at <a href="https://kollektivetlivet.se/hallen/" target="_blank" rel="noopener">Hallen</a></li>
+      </ul>
+      <p data-t="l3b">I haven't booked anything yet, since I need to know roughly how many we'll be. So please answer below.</p>
       <p data-t="l4">You're very welcome to bring a partner or a friend!</p>
       <p class="sig">/Jesper</p>
     </div>
@@ -218,7 +231,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     en: {
       kicker: "You're invited to", why: 'celebrate that Jesper Lindmarker got his PhD', date: 'Sat 19 Dec', where: 'Somewhere in Stockholm', cta: 'RSVP ↓',
       l1: 'Hi!', l2: 'On 17 December I defend my thesis, and two days later I want to celebrate with you.',
-      l3: "The plan is that I book a restaurant and event space where we eat together and celebrate. Then we can continue into the night. I haven't booked anything yet, since I need to know roughly how many we'll be. So please answer below.",
+      l3: "The plan is that I book a restaurant and event space. The evening will go roughly like this:", p1: "Pre-drinks", p2: "Sit-down dinner together", p3: "Celebrating, and on into the night", p4: "After 00.00 we go and get tattoos at <a href=\"https://kollektivetlivet.se/hallen/\" target=\"_blank\" rel=\"noopener\">Hallen</a>", l3b: "I haven't booked anything yet, since I need to know roughly how many we'll be. So please answer below.",
       l4: "You're very welcome to bring a partner or a friend!",
       dWhen: 'When', vWhen: "<b>Saturday 19 December</b> 2026. Dinner from <b>around 18.00</b>, and then until late.",
       dWhere: 'Where', vWhere: "<b>Restaurant somewhere in Stockholm.</b> Not booked yet, I'll send you the address.",
@@ -250,7 +263,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     sv: {
       kicker: 'Du är inbjuden till', why: 'för att fira att Jesper Lindmarker har blivit doktor', date: 'Lör 19 dec', where: 'Någonstans i Stockholm', cta: 'OSA ↓',
       l1: 'Hej!', l2: 'Den 17 december disputerar jag, och två dagar senare vill jag fira med dig.',
-      l3: "Planen är att jag bokar en restaurang och festlokal där vi äter tillsammans och firar. Sedan kan vi fortsätta in i natten. Jag har inte bokat något än, eftersom jag behöver veta ungefär hur många vi blir. Så svara gärna nedan.",
+      l3: "Planen är att jag bokar en restaurang och festlokal. Kvällen blir ungefär så här:", p1: "Fördrink", p2: "Sittande middag tillsammans", p3: "Vi firar, och fortsätter in i natten", p4: "Efter 00.00 går vi och tatuerar oss på <a href=\"https://kollektivetlivet.se/hallen/\" target=\"_blank\" rel=\"noopener\">Hallen</a>", l3b: "Jag har inte bokat något än, eftersom jag behöver veta ungefär hur många vi blir. Så svara gärna nedan.",
       l4: 'Ta gärna med en partner eller en vän!',
       dWhen: 'När', vWhen: "<b>Lördag 19 december</b> 2026. Middag från <b>ungefär 18.00</b>, och sedan till sent.",
       dWhere: 'Var', vWhere: "<b>Restaurang någonstans i Stockholm.</b> Inte bokat än, jag skickar adressen.",
