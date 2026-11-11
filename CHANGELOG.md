@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.7.1] - 2026-11-11
+
+### Added
+- **Week 2 and Week 3 slides on the course page.** Both weeks now carry a Slides link next to the title, as Week 1 does: "Simple to multiple regression" and "Model specification and diagnostics". The decks are the self-contained renders straight from the course repo, one file each with the figures, fonts and reveal.js carried inside, so they need no asset folder beside them. That also makes them heavy, around 15 MB apiece.
+
 ## [2.7.0] - 2026-11-10
 
 ### Changed
