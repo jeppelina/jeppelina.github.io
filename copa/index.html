@@ -226,5 +226,6 @@ document.querySelectorAll("thead th").forEach(th=>th.onclick=()=>{
   const k=th.dataset.k; if(sortK===k)sortDir*=-1; else{sortK=k;sortDir=(k==="name"||k==="team"||k==="pos"||k==="opp")?1:-1;} render();});
 setMeta();render();
 </script>
+<script src="/assets/js/analytics.js" defer></script>
 </body>
 </html>

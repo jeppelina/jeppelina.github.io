@@ -77,4 +77,5 @@ function draw(){R.sort((a,b)=>{const u=a[sk],v=b[sk];return typeof u==='string'?
   document.getElementById('tb').innerHTML=R.map(row).join('');}
 document.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sk===k)sd*=-1;else{sk=k;sd=-1;}draw();});
 draw();
-</script></body></html>
+</script><script src="/assets/js/analytics.js" defer></script>
+</body></html>

@@ -51,5 +51,13 @@
         <p>This page doesn't exist. It might have been moved, or you may have followed an old link.</p>
         <a href="/">&larr; Back to the main page</a>
     </div>
+<script>
+        // Record the address that was not found, so broken links show up in GoatCounter.
+        window.goatcounter = {
+            path: function (p) { return '404: ' + p; },
+            title: 'Page not found'
+        };
+    </script>
+    <script src="/assets/js/analytics.js" defer></script>
 </body>
 </html>
