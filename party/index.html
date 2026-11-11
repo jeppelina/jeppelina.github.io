@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -138,8 +138,8 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
 </head>
 <body>
 <div class="lang" role="group" aria-label="Language / Språk">
-  <button type="button" data-lang="en" aria-pressed="true">English</button>
-  <button type="button" data-lang="sv" aria-pressed="false">Svenska</button>
+  <button type="button" data-lang="en" aria-pressed="false">English</button>
+  <button type="button" data-lang="sv" aria-pressed="true">Svenska</button>
 </div>
 
 <header class="hero">
@@ -331,7 +331,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
   };
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  let lang = store.get('pdp-lang') || ((navigator.language || '').toLowerCase().startsWith('sv') ? 'sv' : 'en');
+  let lang = store.get('pdp-lang') || 'sv';   // Swedish unless the visitor has picked English
   const t = k => (T[lang] && T[lang][k]) || T.en[k] || k;
   const state = { attending: null };
   let lastReply = null;
