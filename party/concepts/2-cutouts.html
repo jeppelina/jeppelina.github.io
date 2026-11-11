@@ -210,6 +210,10 @@ footer { padding:36px 16px 56px; text-align:center; font-size:15px; }
   .pdp-robe { position:relative; width:min(190px,52vw); justify-self:center; }
   .pdp-robe::before { content:""; display:block; padding-top:85%; } /* head room, % of the robe's own width */
   html, body { overflow-x:clip; }
+  /* the head can hang past the screen edge (leaning robe); a clipping layer keeps phones from widening the page */
+  body { position:relative; }
+  .pdp-layer { position:absolute; inset:0; overflow:clip; pointer-events:none; z-index:40; }
+  .pdp-layer .pdp-traveler { pointer-events:auto; }
   @media (max-width:719px) {   /* phones: the robe leans in from outside the right edge, next to the letter */
     .letter-row { grid-template-columns:1fr 64px; gap:6px; align-items:center; }
     .letter-row .pdp-robe { width:134px; justify-self:start; margin-left:14px; transform:rotate(-11deg); transform-origin:50% 100%; }
@@ -343,7 +347,8 @@ footer { padding:36px 16px 56px; text-align:center; font-size:15px; }
   const el = document.createElement('div');
   el.className = 'pdp-traveler';
   el.innerHTML = `<img alt="Jesper's head in a hat" draggable="false">${mortarSVG(C1)}${partySVG(C1, C2)}`;
-  document.body.appendChild(el);
+  const layer = document.createElement('div'); layer.className = 'pdp-layer';
+  layer.appendChild(el); document.body.appendChild(layer);
   const img = el.querySelector('img'), mortar = el.querySelector('.mortar'), party = el.querySelector('.party'), tassel = el.querySelector('.tassel');
 
   let name = 'f00_0', v = 0, wob = 0, busy = false, moving = false, at = 0, hatType = 'mortar';
