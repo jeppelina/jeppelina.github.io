@@ -57,6 +57,7 @@ section { padding:72px 16px; }
 .details { margin-top:48px; border-top:1.5px solid var(--ink); }
 .details div { display:grid; grid-template-columns:110px 1fr; gap:14px; padding:16px 0; border-bottom:1.5px solid var(--ink); }
 .details dd b { font-weight:800; }
+.nw { white-space:nowrap; }
 .details dt { font-weight:800; font-size:13px; letter-spacing:.14em; text-transform:uppercase; padding-top:3px; color:var(--blue); }
 
 .model { background:var(--blue); color:var(--paper); padding:26px 16px 20px; }
@@ -164,7 +165,8 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
   <dl class="details">
     <div><dt data-t="dWhen">When</dt><dd data-th="vWhen"><b>Saturday 19 December</b> 2026. Dinner from <b>around 18.00</b>, and then until late.</dd></div>
     <div><dt data-t="dWhere">Where</dt><dd data-th="vWhere"><b>Restaurant somewhere in Stockholm.</b> Not booked yet, I'll send you the address.</dd></div>
-    <div><dt data-t="dDinner">Price</dt><dd data-th="vDinner"><b>About 500 kr per person</b> for the food, and everyone pays for their own. Drinks on top of that.</dd></div>
+    <div><dt data-t="dDinner">Price</dt><dd data-th="vDinner"><b>About 500 kr per person</b> for the food. I'll take care of the space and the <span class='nw'>pre-drinks</span>.</dd></div>
+    <div><dt data-t="dGifts">Gifts</dt><dd data-th="vGifts"><b>None, please.</b> If you can come and pay for your own dinner, that is more than enough.</dd></div>
     <div><dt data-t="dPlus">Plus one</dt><dd data-th="vPlus"><b>Yes!</b> Bring a partner or a friend, just add their name in the form.</dd></div>
     <div><dt data-t="dLater">Only later?</dt><dd data-th="vLater">If you can't make the dinner, <b>come later in the evening</b>. There's an option for that in the form.</dd></div>
     <div><dt data-t="dBy">Answer by</dt><dd data-th="vBy"><b>22 November</b>, please.</dd></div>
@@ -235,7 +237,8 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       l4: "You're very welcome to bring a partner or a friend!",
       dWhen: 'When', vWhen: "<b>Saturday 19 December</b> 2026. Dinner from <b>around 18.00</b>, and then until late.",
       dWhere: 'Where', vWhere: "<b>Restaurant somewhere in Stockholm.</b> Not booked yet, I'll send you the address.",
-      dDinner: "Price", vDinner: "<b>About 500 kr per person</b> for the food, and everyone pays for their own. Drinks on top of that.",
+      dDinner: "Price", vDinner: "<b>About 500 kr per person</b> for the food. I'll take care of the space and the <span class='nw'>pre-drinks</span>.",
+      dGifts: "Gifts", vGifts: "<b>None, please.</b> If you can come and pay for your own dinner, that is more than enough.",
       dPlus: 'Plus one', vPlus: "<b>Yes!</b> Bring a partner or a friend, just add their name in the form.",
       dLater: 'Only later?', vLater: "If you can't make the dinner, <b>come later in the evening</b>. There's an option for that in the form.",
       dBy: 'Answer by', vBy: "<b>22 November</b>, please.",
@@ -267,7 +270,8 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       l4: 'Ta gärna med en partner eller en vän!',
       dWhen: 'När', vWhen: "<b>Lördag 19 december</b> 2026. Middag från <b>ungefär 18.00</b>, och sedan till sent.",
       dWhere: 'Var', vWhere: "<b>Restaurang någonstans i Stockholm.</b> Inte bokat än, jag skickar adressen.",
-      dDinner: "Pris", vDinner: "<b>Ungefär 500 kr per person</b> för maten, och var och en betalar sin egen. Dryck tillkommer.",
+      dDinner: "Pris", vDinner: "<b>Ca 500 kr per person</b> för maten. Lokalen och fördrinken står jag för.",
+      dGifts: "Presenter", vGifts: "<b>Inga, tack.</b> Om du kan komma och betala din egen middag är det mer än nog.",
       dPlus: 'Sällskap', vPlus: "<b>Ja!</b> Ta med en partner eller en vän, skriv bara deras namn i formuläret.",
       dLater: 'Bara senare?', vLater: "Om du inte kan äta middag, <b>kom senare på kvällen</b>. Det finns ett val för det i formuläret.",
       dBy: 'Svara senast', vBy: "<b>22 november</b>, tack.",
