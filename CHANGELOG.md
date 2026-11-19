@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.1] - 2026-11-19
+
+### Changed
+- **Segregation by Design:** the household brush starts at 300 m, and the tool column is leaner. Tools that explain themselves lost their help lines; the rest keep one short line.
+
 ## [2.8.0] - 2026-11-19
 
 ### Added
