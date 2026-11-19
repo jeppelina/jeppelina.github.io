@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.2] - 2026-11-19
+
+### Fixed
+- **Segregation by Design: barriers now visibly matter.** "Crossable" means the share of neighbour ties that survive crossing (it used to act like a solid barrier below about 90%), each crossing is counted once instead of twice, and bridges connect at every scale. New cards show what a barrier does to the households it reaches, and the neighbourhood radius now runs to 3 km with 1 km as the standard.
+
 ## [2.8.1] - 2026-11-19
 
 ### Changed
