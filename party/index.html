@@ -189,7 +189,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
     <div class="pdp-robe" data-station data-c1="#2552b8" data-c2="#f26ca7"><div class="slot" data-slot></div><a class="robe-book" href="https://jesperlindmarker.com/" target="_blank" rel="noopener"><span class="a" data-t="bookA">My PhD</span><span class="b" data-t="bookB">research ↗</span></a></div>
   </div>
   <dl class="details">
-    <div><dt data-t="dWhen">When</dt><dd data-th="vWhen"><b>Saturday 19 December</b> 2026. We start at <b>19.00</b> and have the room until midnight.</dd></div>
+    <div><dt data-t="dWhen">When</dt><dd data-th="vWhen"><b>Saturday 19 December</b> 2026. Pre-drinks from <b>18.00</b>, dinner at 19.00, and we have the room until midnight.</dd></div>
     <div><dt data-t="dWhere">Where</dt><dd data-th="vWhere"><b>Gioia</b>, Gamla Brogatan 36–38, near T-Centralen. We'll be in the <b>chambre séparée</b>, a private room at the back of the restaurant. <a href="https://maps.google.com/?q=Gioia+Gamla+Brogatan+36+Stockholm" target="_blank" rel="noopener">Map ↗</a></dd></div>
     <div><dt data-t="dDinner">Price</dt><dd data-th="vDinner"><b>About 500 kr per person</b> for the food. I'll take care of the space and the <span class='nw'>pre-drinks</span>.</dd></div>
     <div><dt data-t="dGifts">Gifts</dt><dd data-th="vGifts"><b>None, please.</b> If you can come and pay for your own dinner, that is more than enough.</dd></div>
@@ -262,7 +262,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       l1: 'Hi!', l2: 'On 17 December I defend my thesis, and two days later I want to celebrate with you.',
       l3: "I've booked the chambre séparée at Gioia, an Italian restaurant in central Stockholm. The evening will go roughly like this:", p1: "Pre-drinks", p2: "Sit-down dinner together", p3: "Celebrating, and on into the night", p4: "After 00.00 we go and get tattoos at <a href=\"https://kollektivetlivet.se/hallen/\" target=\"_blank\" rel=\"noopener\">Hallen</a>", l3b: "I need to know how many we'll be for dinner, so please answer below.",
       l4: "You're very welcome to bring a partner or a friend!",
-      dWhen: 'When', vWhen: "<b>Saturday 19 December</b> 2026. We start at <b>19.00</b> and have the room until midnight.",
+      dWhen: 'When', vWhen: "<b>Saturday 19 December</b> 2026. Pre-drinks from <b>18.00</b>, dinner at 19.00, and we have the room until midnight.",
       dWhere: 'Where', vWhere: "<b>Gioia</b>, Gamla Brogatan 36–38, near T-Centralen. We'll be in the <b>chambre séparée</b>, a private room at the back of the restaurant. <a href=\"https://maps.google.com/?q=Gioia+Gamla+Brogatan+36+Stockholm\" target=\"_blank\" rel=\"noopener\">Map ↗</a>",
       dDinner: "Price", vDinner: "<b>About 500 kr per person</b> for the food. I'll take care of the space and the <span class='nw'>pre-drinks</span>.",
       dGifts: "Gifts", vGifts: "<b>None, please.</b> If you can come and pay for your own dinner, that is more than enough.",
@@ -296,7 +296,7 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
       l1: 'Hej!', l2: 'Den 17 december disputerar jag, och två dagar senare vill jag fira med dig.',
       l3: "Jag har bokat chambre séparéen på Gioia, en italiensk restaurang i centrala Stockholm. Kvällen blir ungefär så här:", p1: "Fördrink", p2: "Sittande middag tillsammans", p3: "Vi firar, och fortsätter in i natten", p4: "Efter 00.00 går vi och tatuerar oss på <a href=\"https://kollektivetlivet.se/hallen/\" target=\"_blank\" rel=\"noopener\">Hallen</a>", l3b: "Jag behöver veta hur många vi blir på middagen, så svara gärna nedan.",
       l4: 'Ta gärna med en partner eller en vän!',
-      dWhen: 'När', vWhen: "<b>Lördag 19 december</b> 2026. Vi börjar <b>19.00</b> och har rummet till midnatt.",
+      dWhen: 'När', vWhen: "<b>Lördag 19 december</b> 2026. Fördrink från <b>18.00</b>, middag 19.00, och vi har rummet till midnatt.",
       dWhere: 'Var', vWhere: "<b>Gioia</b>, Gamla Brogatan 36–38, nära T-Centralen. Vi är i <b>chambre séparéen</b>, ett eget rum längst in i restaurangen. <a href=\"https://maps.google.com/?q=Gioia+Gamla+Brogatan+36+Stockholm\" target=\"_blank\" rel=\"noopener\">Karta ↗</a>",
       dDinner: "Pris", vDinner: "<b>Ca 500 kr per person</b> för maten. Lokalen och fördrinken står jag för.",
       dGifts: "Presenter", vGifts: "<b>Inga, tack.</b> Om du kan komma och betala din egen middag är det mer än nog.",
@@ -424,12 +424,12 @@ footer .mini { font-size:14px; opacity:.7; margin-top:6px; }
   });
 
   const icsText = () => ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PartyDoctorParty//EN', 'BEGIN:VEVENT',
-    'UID:party-doctor-party-20261219@jesperlindmarker.com', 'DTSTAMP:20261119T120000Z', 'DTSTART:20261219T180000Z', 'DTEND:20261219T230000Z',
+    'UID:party-doctor-party-20261219@jesperlindmarker.com', 'DTSTAMP:20261119T120000Z', 'DTSTART:20261219T170000Z', 'DTEND:20261219T230000Z',
     'SUMMARY:PARTY DOCTOR PARTY', 'LOCATION:Gioia\\, Gamla Brogatan 36–38\\, Stockholm', 'DESCRIPTION:' + t('icsDesc').replace(/,/g, '\\,'), 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
   $('#ics').addEventListener('click', ev => { ev.currentTarget.href = URL.createObjectURL(new Blob([icsText()], { type: 'text/calendar' })); });
   $('#gcal').addEventListener('click', ev => {
     ev.currentTarget.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('PARTY DOCTOR PARTY')
-      + '&dates=20261219T180000Z/20261219T230000Z&details=' + encodeURIComponent(t('icsDesc')) + '&location=' + encodeURIComponent('Gioia, Gamla Brogatan 36–38, Stockholm');
+      + '&dates=20261219T170000Z/20261219T230000Z&details=' + encodeURIComponent(t('icsDesc')) + '&location=' + encodeURIComponent('Gioia, Gamla Brogatan 36–38, Stockholm');
   });
 
   try { const saved = JSON.parse(store.get('pdp-reply') || 'null'); if (saved && saved.p_name) { lastReply = saved; showDone(saved, false); } } catch {}
