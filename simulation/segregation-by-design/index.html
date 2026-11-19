@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Built from segregation-by-design a8c34bc on 2026-11-19 -->
+    <meta name="robots" content="noindex" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Segregation by Design</title>
+    <meta name="description" content="Paint a city, draw motorways, rivers and walls, and watch two dozen segregation measures respond as you drag." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='10' cy='11' r='5' fill='%233E6FA3'/><circle cx='22' cy='21' r='5' fill='%23D08A2E'/><path d='M4 27C12 22 20 10 28 5' stroke='%23555' stroke-width='3' fill='none'/></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&family=Courier+Prime:wght@400;700&family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="./assets/index-Jn7PPN6o.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CZMTvBLx.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand"><span class="title">Segregation <em>by</em> Design</span></div>
+        <button class="pill" id="btn-scenarios">Scenarios</button>
+        <span class="scene-title" id="scene-title"></span>
+        <div class="spacer"></div>
+        <label class="look-pick" title="Try a different look; your choice is remembered">Look
+          <select id="sel-look" aria-label="Look">
+            <option value="plain">Plain</option>
+            <option value="original">Original</option>
+            <option value="field">Field notes</option>
+            <option value="muni">Planning office</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button class="icon" id="btn-undo" title="Undo (⌘Z)" aria-label="Undo"></button>
+          <button class="icon" id="btn-redo" title="Redo (⇧⌘Z)" aria-label="Redo"></button>
+          <span class="sep"></span>
+          <button class="icon" id="btn-link" title="Copy a link to this scenario" aria-label="Copy link"></button>
+          <button class="icon" id="btn-export" title="Save city as JSON" aria-label="Save city"></button>
+          <button class="icon" id="btn-import" title="Open a saved city" aria-label="Open city"></button>
+          <button class="icon" id="btn-png" title="Save map as PNG" aria-label="Save image"></button>
+          <button class="icon" id="btn-present" title="Presentation mode (P)" aria-label="Presentation mode"></button>
+          <button class="icon" id="btn-help" title="About the measures" aria-label="Help"></button>
+        </div>
+        <input type="file" id="file-import" accept=".json,application/json" hidden />
+      </header>
+      <aside class="rail" id="rail"></aside>
+      <section class="stage">
+        <div class="map-host" id="map-host"></div>
+        <!-- Sized to the map sheet itself, so nothing floats outside the map. -->
+        <div class="map-frame" id="map-frame">
+          <div class="group-legend" id="group-legend"></div>
+          <div class="map-controls" id="map-controls"></div>
+          <div class="story" id="story" hidden></div>
+          <div class="start-card" id="start-card" hidden></div>
+        </div>
+        <div class="barrier-bar" id="barrier-bar" hidden></div>
+        <div class="nb-pop" id="nb-pop" hidden></div>
+        <div class="toast" id="toast" hidden></div>
+      </section>
+      <aside class="panel" id="panel"></aside>
+      <footer class="hint" id="hint"></footer>
+    </div>
+      <script src="/assets/js/analytics.js" defer></script>
+  </body>
+</html>

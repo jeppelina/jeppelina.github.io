@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.0] - 2026-11-19
+
+### Added
+- **New page: Segregation by Design** at `/simulation/segregation-by-design/`. Paint households of several groups onto a city, draw motorways, railways, rivers and walls, move and bend them, and watch segregation measures update while you drag. Unlisted and `noindex` for now: not linked from the simulations page and not in the sitemap.
+  - Thirty measures, chosen as cards: the Massey and Denton dimensions on tracts, spatial versions within a radius (Reardon and O'Sullivan), k-nearest neighbourhoods, and barrier measures. Distances go around barriers and through bridges and crossings
+  - Thirteen guided scenarios (the checkerboard problem, river city, the estate on the edge and more) and a Schelling sorting simulation
+  - Built in the separate `segregation-by-design` project with its `scripts/deploy-website.sh`, which copies the build here; the page's HTML names the commit it was built from
+  - Counted by the site analytics like every other page
+
 ## [2.7.1] - 2026-11-11
 
 ### Added
