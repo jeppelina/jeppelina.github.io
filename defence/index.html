@@ -27,7 +27,13 @@ button, input { font:inherit; color:inherit; }
 .lang button { border:0; font:600 15px 'Figtree'; padding:9px 14px; cursor:pointer; background:var(--blue); color:var(--paper); }
 .lang button[aria-pressed="true"] { background:var(--paper); color:var(--blue); }
 
-.hero { background:var(--blue); color:var(--paper); padding:96px 16px 44px; }
+.hero { background:var(--blue); color:var(--paper); padding:72px 16px 44px; }
+.hero-in { display:grid; gap:8px; }
+.hero .hd { width:min(62vw,250px); justify-self:center; }
+@media (min-width:720px) { .hero-in { grid-template-columns:1fr 260px; align-items:end; gap:32px; } .hero .hd { width:260px; } }
+.rsvp .w { position:relative; }
+.rsvp-st { position:absolute; width:130px; right:-4px; top:-34px; }
+@media (min-width:720px) { .rsvp-st { width:160px; top:-40px; } }
 .w { max-width:680px; margin:0 auto; }
 .k { font-size:14px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; }
 h1 { font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(56px,15vw,112px); line-height:.9; margin:10px 0 20px; }
@@ -42,7 +48,8 @@ section { padding:48px 16px; }
 .details { margin-top:32px; border-top:1.5px solid var(--ink); }
 .details div { display:grid; grid-template-columns:96px 1fr; gap:14px; padding:14px 0; border-bottom:1.5px solid var(--ink); }
 .details dt { font-weight:800; font-size:13px; letter-spacing:.14em; text-transform:uppercase; padding-top:3px; color:var(--blue); }
-.details a { color:inherit; font-weight:600; text-decoration:underline; text-decoration-color:var(--pink); text-decoration-thickness:3px; text-underline-offset:3px; }
+.details .lk { display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:4px; }
+.details a { white-space:nowrap; color:inherit; font-weight:600; text-decoration:underline; text-decoration-color:var(--pink); text-decoration-thickness:3px; text-underline-offset:3px; }
 
 .rsvp { background:var(--pink); }
 .rsvp h2 { font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(52px,13vw,90px); line-height:.9; margin-bottom:6px; }
@@ -84,10 +91,13 @@ footer a { color:inherit; }
   <button type="button" data-lang="sv" aria-pressed="false">Svenska</button>
 </div>
 
-<header class="hero"><div class="w">
-  <div class="k" data-t="kicker">Thursday 17 December</div>
-  <h1 data-th="h1">After the <i>defence</i></h1>
-  <div class="spine"><span data-t="s1">Mingle and dinner</span><span data-t="s2">Pronto, Enoteket, Norrköping</span></div>
+<header class="hero"><div class="w hero-in">
+  <div class="pdp-station hd" data-station data-hat="#f26ca7" data-hat2="#f6f1e7"></div>
+  <div>
+    <div class="k" data-t="kicker">Thursday 17 December</div>
+    <h1 data-th="h1">After the <i>defence</i></h1>
+    <div class="spine"><span data-t="s1">Mingle and dinner</span><span data-t="s2">Pronto, Enoteket, Norrköping</span></div>
+  </div>
 </div></header>
 
 <section><div class="w">
@@ -98,13 +108,14 @@ footer a { color:inherit; }
   </div>
   <dl class="details">
     <div><dt data-t="dWhen">When</dt><dd data-th="vWhen"><b>Thursday 17 December</b>, right after the defence.</dd></div>
-    <div><dt data-t="dWhere">Where</dt><dd data-th="vWhere"><b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping. <a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Map ↗</a></dd></div>
+    <div><dt data-t="dWhere">Where</dt><dd data-th="vWhere"><b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping.<span class="lk"><a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Map ↗</a> <a href="https://www.facebook.com/pronto.eno/" target="_blank" rel="noopener">Pronto ↗</a> <a href="https://www.instagram.com/enoteket/" target="_blank" rel="noopener">Instagram ↗</a></span></dd></div>
     <div><dt data-t="dDef">Defence</dt><dd data-th="vDef">14.00 in K4, Kåkenhus, Campus Norrköping, or on <a href="https://liu-se.zoom.us/j/62414184173" target="_blank" rel="noopener">Zoom</a>.</dd></div>
     <div><dt data-t="dBy">Answer by</dt><dd data-th="vBy"><b>5 December</b>, please.</dd></div>
   </dl>
 </div></section>
 
 <section class="rsvp" id="rsvp"><div class="w">
+  <div class="pdp-station rsvp-st" data-station data-hattype="party"></div>
   <h2 data-t="rsvpH">RSVP</h2>
   <p class="sub" data-t="rsvpSub">Please answer by 5 December.</p>
 
@@ -160,7 +171,7 @@ footer a { color:inherit; }
       l2: "If the defence goes well, I hope you will celebrate with me afterwards. I have booked Pronto, the bar at Enoteket, a few minutes' walk from Kåkenhus.",
       l3: 'We start with a mingle and something to eat, and those who want to stay on have dinner together. Let me know below so I know how many we will be.',
       dWhen: 'When', vWhen: '<b>Thursday 17 December</b>, right after the defence.',
-      dWhere: 'Where', vWhere: '<b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping. <a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Map ↗</a>',
+      dWhere: 'Where', vWhere: '<b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping.<span class="lk"><a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Map ↗</a> <a href="https://www.facebook.com/pronto.eno/" target="_blank" rel="noopener">Pronto ↗</a> <a href="https://www.instagram.com/enoteket/" target="_blank" rel="noopener">Instagram ↗</a></span>',
       dDef: 'Defence', vDef: '14.00 in K4, Kåkenhus, Campus Norrköping, or on <a href="https://liu-se.zoom.us/j/62414184173" target="_blank" rel="noopener">Zoom</a>.',
       dBy: 'Answer by', vBy: '<b>5 December</b>, please.',
       rsvpH: 'RSVP', rsvpSub: 'Please answer by 5 December.',
@@ -185,7 +196,7 @@ footer a { color:inherit; }
       l2: 'Om disputationen går bra hoppas jag att du vill fira med mig efteråt. Jag har bokat Pronto, baren på Enoteket, några minuters promenad från Kåkenhus.',
       l3: 'Vi börjar med mingel och något att äta, och den som vill stanna kvar äter middag tillsammans. Svara gärna nedan så att jag vet hur många vi blir.',
       dWhen: 'När', vWhen: '<b>Torsdag 17 december</b>, direkt efter disputationen.',
-      dWhere: 'Var', vWhere: '<b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping. <a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Karta ↗</a>',
+      dWhere: 'Var', vWhere: '<b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping.<span class="lk"><a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Karta ↗</a> <a href="https://www.facebook.com/pronto.eno/" target="_blank" rel="noopener">Pronto ↗</a> <a href="https://www.instagram.com/enoteket/" target="_blank" rel="noopener">Instagram ↗</a></span>',
       dDef: 'Disputation', vDef: '14.00 i K4, Kåkenhus, Campus Norrköping, eller via <a href="https://liu-se.zoom.us/j/62414184173" target="_blank" rel="noopener">Zoom</a>.',
       dBy: 'Svara senast', vBy: '<b>5 december</b>, tack.',
       rsvpH: 'OSA', rsvpSub: 'Svara gärna senast 5 december.',
@@ -294,6 +305,7 @@ footer a { color:inherit; }
   applyLang();
 })();
 </script>
+<script src="/party/concepts/head.js"></script>
 <script src="/assets/js/analytics.js" defer></script>
 </body>
 </html>
