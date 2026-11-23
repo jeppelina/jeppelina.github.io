@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>17 Dec guest list</title>
+<style>
+:root { --blue:#2552b8; --paper:#f6f1e7; --pink:#f26ca7; --ink:#14224f; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:system-ui,sans-serif; background:var(--paper); color:var(--ink); padding:24px 16px 60px; line-height:1.45; }
+.wrap { max-width:900px; margin:0 auto; }
+h1 { font-size:30px; margin-bottom:16px; }
+h2 { font-size:18px; margin:24px 0 8px; }
+form { display:flex; gap:10px; flex-wrap:wrap; max-width:480px; }
+input { flex:1 1 200px; font:inherit; padding:10px; border:2px solid var(--ink); border-radius:10px; }
+button { font:inherit; font-weight:700; cursor:pointer; padding:9px 16px; border:2px solid var(--ink); border-radius:999px; background:var(--pink); }
+button.alt { background:#fff; }
+.err { margin-top:10px; font-weight:600; color:#b0003a; }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:20px 0; }
+.stat { background:#fff; border:2px solid var(--ink); border-radius:14px; padding:12px; }
+.stat b { display:block; font-size:38px; line-height:1; }
+.stat:first-child { background:var(--blue); color:var(--paper); }
+.bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; font-size:14px; }
+.tw { overflow-x:auto; background:#fff; border:2px solid var(--ink); border-radius:14px; padding:8px; }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th, td { text-align:left; padding:7px 9px; border-bottom:1px solid #e4dccb; vertical-align:top; }
+th { border-bottom:2px solid var(--ink); white-space:nowrap; }
+tr.old td { color:#aaa; text-decoration:line-through; }
+ul { padding-left:20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>17 December: Pronto guest list</h1>
+  <form id="login"><input type="password" id="key" placeholder="Admin key (same as the party)" autocomplete="current-password"><button type="submit">Open</button></form>
+  <div class="err" id="err" hidden></div>
+  <div id="list" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="bar"><button type="button" id="refresh">Refresh</button><button type="button" class="alt" id="csv">Download CSV</button>
+      <span>Struck-through rows were replaced by a newer answer from the same browser.</span></div>
+    <div class="tw"><table id="table"></table></div>
+    <h2>Allergies and diets</h2>
+    <ul id="diets"></ul>
+  </div>
+</div>
+<script>
+(() => {
+  const URL_ = 'https://bhurxoknmyfqymtiaycx.supabase.co/rest/v1/rpc/defence_rsvp_admin';
+  const KEY = 'sb_publishable_eVv0YIKYjdwRKQFK_DORCA_QhE4qgiB';
+  const $ = s => document.querySelector(s);
+  const ls = { get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+               set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} } };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  let rows = [];
+
+  async function load(k) {
+    const r = await fetch(URL_, { method:'POST', headers:{ 'Content-Type':'application/json', apikey:KEY }, body:JSON.stringify({ p_key:k }) });
+    if (!r.ok) throw new Error('Could not load (' + r.status + ')');
+    const d = await r.json();
+    if (d.error === 'wrong_key') throw new Error('Wrong key');
+    if (d.error === 'locked') throw new Error('Too many wrong keys. Locked for up to an hour.');
+    return d.rows || [];
+  }
+
+  function render() {
+    const seen = new Set();   // rows arrive newest first; an older row from the same browser is replaced
+    rows.forEach(r => { const k = r.client_id || ('row' + r.id); r._old = seen.has(k); seen.add(k); });
+    const cur = rows.filter(r => !r._old);
+    const sum = a => cur.filter(r => r.attending === a).reduce((n, r) => n + (r.people || 1), 0);
+    const dinner = sum('dinner'), mingle = sum('mingle'), no = cur.filter(r => r.attending === 'no').length;
+    $('#stats').innerHTML = `<div class="stat"><b>${dinner + mingle}</b>at the mingle</div>
+      <div class="stat"><b>${dinner}</b>at dinner</div><div class="stat"><b>${mingle}</b>mingle only</div><div class="stat"><b>${no}</b>can't come</div>`;
+    const label = { dinner:'Mingle + dinner', mingle:'Mingle only', no:'No' };
+    $('#table').innerHTML = '<tr><th>When</th><th>Name</th><th>Answer</th><th>People</th><th>Diet</th><th>Lang</th></tr>' +
+      rows.map(r => `<tr class="${r._old ? 'old' : ''}"><td>${esc(new Date(r.created_at).toLocaleString('sv-SE', { dateStyle:'short', timeStyle:'short' }))}</td>
+        <td><b>${esc(r.name)}</b></td><td>${label[r.attending]}</td><td>${r.attending === 'no' ? '' : r.people}</td><td>${esc(r.diet)}</td><td>${esc(r.lang)}</td></tr>`).join('');
+    $('#diets').innerHTML = cur.filter(r => r.diet && r.attending !== 'no')
+      .map(r => `<li><b>${esc(r.name)}</b> (${label[r.attending].toLowerCase()}): ${esc(r.diet)}</li>`).join('') || '<li>None yet</li>';
+  }
+
+  async function open(k) {
+    $('#err').hidden = true;
+    try { rows = await load(k); ls.set('pdp-admin', k); $('#login').hidden = true; $('#list').hidden = false; render(); }
+    catch (e) { $('#err').textContent = e.message; $('#err').hidden = false; $('#login').hidden = false; $('#list').hidden = true; }
+  }
+  $('#login').addEventListener('submit', e => { e.preventDefault(); open($('#key').value.trim()); });
+  $('#refresh').addEventListener('click', () => open(ls.get('pdp-admin')));
+  $('#csv').addEventListener('click', () => {
+    const cols = ['created_at','name','attending','people','diet','lang'];
+    const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const csv = [cols.concat('replaced').join(',')].concat(rows.map(r => cols.map(c => q(r[c])).concat(q(r._old ? 'yes' : '')).join(','))).join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type:'text/csv' })); a.download = 'pronto-rsvps.csv'; a.click();
+  });
+  const saved = ls.get('pdp-admin'); if (saved) open(saved);
+})();
+</script>
+</body>
+</html>

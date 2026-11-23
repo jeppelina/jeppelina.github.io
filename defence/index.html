@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>After the defence</title>
+<meta name="description" content="Thursday 17 December 2026, after Jesper Lindmarker's PhD defence: mingle and dinner at Pronto, Enoteket, Norrköping. RSVP here.">
+<meta property="og:title" content="After the defence">
+<meta property="og:description" content="Thursday 17 December, Pronto at Enoteket, Norrköping. Mingle and dinner after Jesper's PhD defence. RSVP here.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jesperlindmarker.com/defence/">
+<meta name="theme-color" content="#2552b8">
+<link rel="icon" type="image/png" sizes="32x32" href="/party/icon-32.png">
+<link rel="apple-touch-icon" href="/party/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root { --blue:#2552b8; --paper:#f6f1e7; --pink:#f26ca7; --ink:#14224f; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Figtree',system-ui,sans-serif; background:var(--paper); color:var(--ink); line-height:1.55; font-size:17px; overflow-x:clip; }
+button, input { font:inherit; color:inherit; }
+[hidden] { display:none !important; }
+
+.lang { position:fixed; top:14px; right:14px; z-index:60; display:flex; border-radius:999px; overflow:hidden; box-shadow:0 0 0 2px var(--paper); }
+.lang button { border:0; font:600 15px 'Figtree'; padding:9px 14px; cursor:pointer; background:var(--blue); color:var(--paper); }
+.lang button[aria-pressed="true"] { background:var(--paper); color:var(--blue); }
+
+.hero { background:var(--blue); color:var(--paper); padding:96px 16px 44px; }
+.w { max-width:680px; margin:0 auto; }
+.k { font-size:14px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; }
+h1 { font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(56px,15vw,112px); line-height:.9; margin:10px 0 20px; }
+h1 i { color:var(--pink); }
+.spine { display:inline-flex; flex-wrap:wrap; background:var(--pink); color:var(--ink); font-weight:600; }
+.spine span { padding:8px 10px; font-size:14px; }
+.spine span + span { border-left:1.5px solid var(--ink); }
+
+section { padding:48px 16px; }
+.letter { font-weight:600; font-size:19px; max-width:30em; }
+.letter p + p { margin-top:14px; }
+.details { margin-top:32px; border-top:1.5px solid var(--ink); }
+.details div { display:grid; grid-template-columns:96px 1fr; gap:14px; padding:14px 0; border-bottom:1.5px solid var(--ink); }
+.details dt { font-weight:800; font-size:13px; letter-spacing:.14em; text-transform:uppercase; padding-top:3px; color:var(--blue); }
+.details a { color:inherit; font-weight:600; text-decoration:underline; text-decoration-color:var(--pink); text-decoration-thickness:3px; text-underline-offset:3px; }
+
+.rsvp { background:var(--pink); }
+.rsvp h2 { font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(52px,13vw,90px); line-height:.9; margin-bottom:6px; }
+.sub { font-weight:600; margin-bottom:24px; }
+.q { font-weight:800; font-size:14px; letter-spacing:.14em; text-transform:uppercase; margin:26px 0 10px; }
+.q:first-of-type { margin-top:0; }
+.choices { display:grid; gap:10px; }
+.choice { position:relative; cursor:pointer; text-align:left; border:0; padding:14px 18px; background:var(--paper); border-radius:0 22px 0 22px; }
+.choice b { display:block; font-family:'Instrument Serif',serif; font-weight:400; font-size:28px; line-height:1.05; }
+.choice span { font-size:15px; }
+.choice.yes { background:var(--blue); color:var(--paper); }
+.choice[aria-pressed="true"] { outline:3px solid var(--ink); outline-offset:3px; }
+.choice[aria-pressed="true"]::after { content:"✓"; position:absolute; top:-10px; right:-8px; width:32px; height:32px; border-radius:50%; display:grid; place-items:center; background:var(--ink); color:var(--paper); font-weight:800; }
+label.f { display:block; margin-top:22px; font-weight:600; font-size:15px; }
+label.f .hint { display:block; font-weight:400; font-size:14px; opacity:.75; }
+input[type="text"] { width:100%; margin-top:6px; border:0; border-bottom:2px solid var(--ink); padding:10px 2px; font-size:18px; background:transparent; outline:none; border-radius:0; }
+input[type="text"]:focus { border-bottom-color:var(--blue); background:rgba(246,241,231,.35); }
+input::placeholder { color:var(--ink); opacity:.5; }
+.count { display:flex; align-items:center; gap:14px; margin-top:8px; }
+.count button { width:44px; height:44px; border-radius:50%; border:2px solid var(--ink); background:var(--paper); font-size:24px; font-weight:800; cursor:pointer; line-height:1; }
+.count output { font-family:'Instrument Serif',serif; font-size:40px; min-width:1.2em; text-align:center; }
+.hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.err { margin-top:20px; background:var(--paper); border-left:4px solid var(--ink); padding:10px 14px; font-weight:600; }
+.send { margin-top:28px; border:0; cursor:pointer; padding:14px 32px; font:400 28px 'Instrument Serif',serif; background:var(--ink); color:var(--paper); border-radius:0 24px 0 24px; }
+.send:disabled { opacity:.6; cursor:progress; }
+.done .yay { font-family:'Instrument Serif',serif; font-size:clamp(56px,15vw,96px); line-height:.9; margin-bottom:10px; }
+.done p { font-weight:600; font-size:18px; }
+.summary { margin:18px 0; background:var(--paper); padding:12px 16px; font-size:16px; border-radius:0 18px 0 18px; }
+.summary div + div { margin-top:4px; }
+.btn { cursor:pointer; border:0; padding:10px 18px; font-weight:800; background:var(--paper); color:var(--ink); border-radius:0 16px 0 16px; }
+.fine { font-size:15px; margin:14px 0 12px; }
+footer { padding:32px 16px 52px; text-align:center; font-size:15px; }
+footer a { color:inherit; }
+</style>
+</head>
+<body>
+<div class="lang" role="group" aria-label="Language / Språk">
+  <button type="button" data-lang="en" aria-pressed="true">English</button>
+  <button type="button" data-lang="sv" aria-pressed="false">Svenska</button>
+</div>
+
+<header class="hero"><div class="w">
+  <div class="k" data-t="kicker">Thursday 17 December</div>
+  <h1 data-th="h1">After the <i>defence</i></h1>
+  <div class="spine"><span data-t="s1">Mingle and dinner</span><span data-t="s2">Pronto, Enoteket, Norrköping</span></div>
+</div></header>
+
+<section><div class="w">
+  <div class="letter">
+    <p data-t="l1">Hi!</p>
+    <p data-t="l2">If the defence goes well, I hope you will celebrate with me afterwards. I have booked Pronto, the bar at Enoteket, a few minutes' walk from Kåkenhus.</p>
+    <p data-t="l3">We start with a mingle and something to eat, and those who want to stay on have dinner together. Let me know below so I know how many we will be.</p>
+  </div>
+  <dl class="details">
+    <div><dt data-t="dWhen">When</dt><dd data-th="vWhen"><b>Thursday 17 December</b>, right after the defence.</dd></div>
+    <div><dt data-t="dWhere">Where</dt><dd data-th="vWhere"><b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping. <a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Map ↗</a></dd></div>
+    <div><dt data-t="dDef">Defence</dt><dd data-th="vDef">14.00 in K4, Kåkenhus, Campus Norrköping, or on <a href="https://liu-se.zoom.us/j/62414184173" target="_blank" rel="noopener">Zoom</a>.</dd></div>
+    <div><dt data-t="dBy">Answer by</dt><dd data-th="vBy"><b>5 December</b>, please.</dd></div>
+  </dl>
+</div></section>
+
+<section class="rsvp" id="rsvp"><div class="w">
+  <h2 data-t="rsvpH">RSVP</h2>
+  <p class="sub" data-t="rsvpSub">Please answer by 5 December.</p>
+
+  <form id="form" novalidate>
+    <div class="q" data-t="q1">Are you coming?</div>
+    <div class="choices">
+      <button type="button" class="choice yes" data-attend="dinner" aria-pressed="false"><b data-t="aDinnerB">Mingle and dinner</b><span data-t="aDinnerS">I'll stay for dinner</span></button>
+      <button type="button" class="choice" data-attend="mingle" aria-pressed="false"><b data-t="aMingleB">Only the mingle</b><span data-t="aMingleS">I'll skip dinner</span></button>
+      <button type="button" class="choice" data-attend="no" aria-pressed="false"><b data-t="aNoB">Sadly, no</b><span data-t="aNoS">I can't come</span></button>
+    </div>
+
+    <div id="fields" hidden>
+      <label class="f"><span data-t="nameL">Your name</span><span class="hint" data-t="nameH">If you come with others, write all the names.</span>
+        <input type="text" name="name" autocomplete="name" maxlength="120"></label>
+      <div id="extra">
+        <div class="q" data-t="countL">How many are you?</div>
+        <div class="count">
+          <button type="button" id="minus" aria-label="−">−</button>
+          <output id="people">1</output>
+          <button type="button" id="plus" aria-label="+">+</button>
+        </div>
+        <label class="f"><span data-t="dietL">Allergies or diet</span>
+          <input type="text" name="diet" maxlength="500" data-tp="dietP" placeholder="e.g. vegetarian, nut allergy"></label>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="err" id="err" role="alert" hidden></div>
+      <button type="submit" class="send" id="submit" data-t="send">Send</button>
+    </div>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <div class="yay" id="yay"></div>
+    <p id="doneMsg"></p>
+    <div class="summary" id="summary"></div>
+    <p class="fine" data-t="change">Changed your mind? Just send it again. The latest answer counts.</p>
+    <button type="button" class="btn" id="again" data-t="again">Change my answer</button>
+  </div>
+</div></section>
+
+<footer>
+  <p data-th="foot">Celebrating in Stockholm too? <a href="/party/">PARTY DOCTOR PARTY</a>, Saturday 19 December.</p>
+</footer>
+
+<script>
+(() => {
+  const SUPABASE_URL = 'https://bhurxoknmyfqymtiaycx.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_eVv0YIKYjdwRKQFK_DORCA_QhE4qgiB';
+
+  const T = {
+    en: {
+      kicker: 'Thursday 17 December', h1: 'After the <i>defence</i>', s1: 'Mingle and dinner', s2: 'Pronto, Enoteket, Norrköping',
+      l1: 'Hi!',
+      l2: "If the defence goes well, I hope you will celebrate with me afterwards. I have booked Pronto, the bar at Enoteket, a few minutes' walk from Kåkenhus.",
+      l3: 'We start with a mingle and something to eat, and those who want to stay on have dinner together. Let me know below so I know how many we will be.',
+      dWhen: 'When', vWhen: '<b>Thursday 17 December</b>, right after the defence.',
+      dWhere: 'Where', vWhere: '<b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping. <a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Map ↗</a>',
+      dDef: 'Defence', vDef: '14.00 in K4, Kåkenhus, Campus Norrköping, or on <a href="https://liu-se.zoom.us/j/62414184173" target="_blank" rel="noopener">Zoom</a>.',
+      dBy: 'Answer by', vBy: '<b>5 December</b>, please.',
+      rsvpH: 'RSVP', rsvpSub: 'Please answer by 5 December.',
+      q1: 'Are you coming?',
+      aDinnerB: 'Mingle and dinner', aDinnerS: "I'll stay for dinner",
+      aMingleB: 'Only the mingle', aMingleS: "I'll skip dinner",
+      aNoB: 'Sadly, no', aNoS: "I can't come",
+      nameL: 'Your name', nameH: 'If you come with others, write all the names.',
+      countL: 'How many are you?', dietL: 'Allergies or diet', dietP: 'e.g. vegetarian, nut allergy',
+      send: 'Send', sending: 'Sending…',
+      eAttend: "Pick whether you're coming.", eName: 'Please write your name.', eNet: 'Something went wrong. Try again, or tell Jesper directly.',
+      yayDinner: 'Yay!', msgDinner: 'See you at Pronto, for the mingle and dinner.',
+      yayMingle: 'Nice!', msgMingle: 'See you at Pronto for the mingle.',
+      yayNo: 'Oh no!', msgNo: "Sorry you can't make it. Thanks for letting me know!",
+      sName: 'Name', sAnswer: 'Answer', sPeople: 'People', sDiet: 'Diet',
+      change: 'Changed your mind? Just send it again. The latest answer counts.', again: 'Change my answer',
+      foot: 'Celebrating in Stockholm too? <a href="/party/">PARTY DOCTOR PARTY</a>, Saturday 19 December.'
+    },
+    sv: {
+      kicker: 'Torsdag 17 december', h1: 'Efter <i>disputationen</i>', s1: 'Mingel och middag', s2: 'Pronto, Enoteket, Norrköping',
+      l1: 'Hej!',
+      l2: 'Om disputationen går bra hoppas jag att du vill fira med mig efteråt. Jag har bokat Pronto, baren på Enoteket, några minuters promenad från Kåkenhus.',
+      l3: 'Vi börjar med mingel och något att äta, och den som vill stanna kvar äter middag tillsammans. Svara gärna nedan så att jag vet hur många vi blir.',
+      dWhen: 'När', vWhen: '<b>Torsdag 17 december</b>, direkt efter disputationen.',
+      dWhere: 'Var', vWhere: '<b>Pronto</b>, Enoteket, Laxholmstorget 3, Norrköping. <a href="https://maps.google.com/?q=Enoteket+Laxholmstorget+3+Norrk%C3%B6ping" target="_blank" rel="noopener">Karta ↗</a>',
+      dDef: 'Disputation', vDef: '14.00 i K4, Kåkenhus, Campus Norrköping, eller via <a href="https://liu-se.zoom.us/j/62414184173" target="_blank" rel="noopener">Zoom</a>.',
+      dBy: 'Svara senast', vBy: '<b>5 december</b>, tack.',
+      rsvpH: 'OSA', rsvpSub: 'Svara gärna senast 5 december.',
+      q1: 'Kommer du?',
+      aDinnerB: 'Mingel och middag', aDinnerS: 'Jag stannar på middagen',
+      aMingleB: 'Bara minglet', aMingleS: 'Jag hoppar över middagen',
+      aNoB: 'Tyvärr inte', aNoS: 'Jag kan inte komma',
+      nameL: 'Ditt namn', nameH: 'Kommer ni flera, skriv allas namn.',
+      countL: 'Hur många är ni?', dietL: 'Allergier eller specialkost', dietP: 't.ex. vegetarisk, nötallergi',
+      send: 'Skicka', sending: 'Skickar…',
+      eAttend: 'Välj om du kommer.', eName: 'Skriv ditt namn.', eNet: 'Något gick fel. Försök igen, eller säg till Jesper direkt.',
+      yayDinner: 'Jippi!', msgDinner: 'Vi ses på Pronto, på mingel och middag.',
+      yayMingle: 'Toppen!', msgMingle: 'Vi ses på Pronto på minglet.',
+      yayNo: 'Åh nej!', msgNo: 'Tråkigt att du inte kan. Tack för att du svarade!',
+      sName: 'Namn', sAnswer: 'Svar', sPeople: 'Antal', sDiet: 'Kost',
+      change: 'Ändrat dig? Skicka bara igen. Det senaste svaret gäller.', again: 'Ändra mitt svar',
+      foot: 'Firar du i Stockholm också? <a href="/party/">PARTY DOCTOR PARTY</a>, lördag 19 december.'
+    }
+  };
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} }
+  };
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  let lang = store.get('def-lang') || ((navigator.language || '').toLowerCase().startsWith('sv') ? 'sv' : 'en');
+  const t = k => (T[lang] && T[lang][k]) || T.en[k] || k;
+  const state = { attending: null, people: 1 };
+  let lastReply = null;
+  const clientId = () => { let id = store.get('def-client'); if (!id) { id = Math.random().toString(36).slice(2) + Date.now().toString(36); store.set('def-client', id); } return id; };
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    $$('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+    $$('[data-th]').forEach(el => { el.innerHTML = t(el.dataset.th); });
+    $$('[data-tp]').forEach(el => { el.placeholder = t(el.dataset.tp); });
+    $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    if (!$('#done').hidden && lastReply) showDone(lastReply, false);
+  }
+  $$('.lang button').forEach(b => b.addEventListener('click', () => { lang = b.dataset.lang; store.set('def-lang', lang); applyLang(); }));
+
+  function setAttending(v) {
+    state.attending = v;
+    $$('[data-attend]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.attend === v)));
+    $('#fields').hidden = false;
+    $('#extra').hidden = v === 'no';
+    $('#err').hidden = true;
+  }
+  $$('[data-attend]').forEach(b => b.addEventListener('click', () => {
+    const first = $('#fields').hidden;
+    setAttending(b.dataset.attend);
+    if (first) setTimeout(() => $('input[name="name"]').focus({ preventScroll: true }), 50);
+  }));
+  const setPeople = n => { state.people = Math.min(10, Math.max(1, n)); $('#people').textContent = state.people; };
+  $('#minus').addEventListener('click', () => setPeople(state.people - 1));
+  $('#plus').addEventListener('click', () => setPeople(state.people + 1));
+
+  function fail(msg, focusEl) {
+    const e = $('#err'); e.textContent = msg; e.hidden = false;
+    if (focusEl) focusEl.focus(); else e.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  $('#form').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const f = ev.target;
+    if (!state.attending) return fail(t('eAttend'));
+    const name = f.name.value.trim();
+    if (!name) return fail(t('eName'), f.name);
+    const coming = state.attending !== 'no';
+    const reply = { p_name: name, p_attending: state.attending, p_people: coming ? state.people : 1,
+      p_diet: coming ? f.diet.value.trim() : null, p_lang: lang, p_client: clientId() };
+    const btn = $('#submit'); btn.disabled = true; btn.textContent = t('sending'); $('#err').hidden = true;
+    try {
+      if (!f.website.value) {
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_defence_rsvp`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY }, body: JSON.stringify(reply)
+        });
+        if (!r.ok) throw new Error(await r.text());
+      }
+      lastReply = reply; store.set('def-reply', JSON.stringify(reply));
+      showDone(reply, true);
+    } catch (e) { console.error(e); fail(t('eNet')); }
+    finally { btn.disabled = false; btn.textContent = t('send'); }
+  });
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function showDone(r, scroll) {
+    const key = r.p_attending === 'dinner' ? 'Dinner' : r.p_attending === 'mingle' ? 'Mingle' : 'No';
+    $('#yay').textContent = t('yay' + key);
+    $('#doneMsg').textContent = t('msg' + key);
+    const rows = [[t('sName'), r.p_name], [t('sAnswer'), t('a' + key + 'B')]];
+    if (r.p_attending !== 'no') rows.push([t('sPeople'), r.p_people]);
+    if (r.p_diet) rows.push([t('sDiet'), r.p_diet]);
+    $('#summary').innerHTML = rows.map(([k, v]) => `<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join('');
+    $('#form').hidden = true; $('#done').hidden = false;
+    if (scroll) $('#rsvp').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  $('#again').addEventListener('click', () => {
+    $('#done').hidden = true; $('#form').hidden = false;
+    const r = lastReply, f = $('#form');
+    if (r) { f.name.value = r.p_name; f.diet.value = r.p_diet || ''; setPeople(r.p_people || 1); setAttending(r.p_attending); }
+  });
+
+  try { const saved = JSON.parse(store.get('def-reply') || 'null'); if (saved && saved.p_name) { lastReply = saved; showDone(saved, false); } } catch {}
+  applyLang();
+})();
+</script>
+<script src="/assets/js/analytics.js" defer></script>
+</body>
+</html>
